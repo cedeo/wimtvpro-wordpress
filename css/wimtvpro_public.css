@@ -1,0 +1,35 @@
+﻿ul.itemsPublic {
+	list-style: none;
+	display: block; padding: 0!important;
+	height: 100%;
+	width: 100%;
+}
+ul.itemsPublic li {
+	list-style: none;
+	display: block; margin: 0;
+	float: left; width:185px; 
+	border: 1px solid #FFF;
+	position: relative;
+	text-align: center;
+	font-size: 10px;
+}
+.sidebar ul.itemsPublic li {
+width: 100%;
+	margin: 0;
+}
+.sidebar ul.itemsPublic li a {
+	width:80%;
+}
+
+ul.itemsPublic li div.thumbPublic {
+	margin: 0 auto; width: 180px;
+	padding: 0;
+	z-index: 2; height: 175px;
+	position: relative;
+	float: left;
+}
+ul.itemsPublic li div.thumbPublic a, 
+ul.itemsPublic li div.thumbPublic img {
+	margin: 0 auto; width: 180px!important;
+	padding: 0; font-size:80%;
+}

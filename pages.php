@@ -362,7 +362,7 @@ function wimtvpro_upload(){
 	            	  'viewVideoModule' => '3',
 	            	  'status' => 'OWNED|'  . $_FILES['videoFile']['name'],
 	            	  'acquiredIdentifier' => '',
-	            	  'urlThumbs' => '',
+	            	  'urlThumbs' => $arrayjsonst->urlThumbs,
 	            	  'urlPlay' => '',
 	            	  'category' =>  '',
 	            	  'title' => $titlefile ,
@@ -431,7 +431,7 @@ function wimtvpro_upload(){
 	      
 	      <p><label for="edit-videofile"><?php _e("Upload Video","wimtvpro"); ?>*</label>
 	      <input onchange="wimtvpro_TestFileType()" type="file" id="edit-videofile" name="videoFile" size="60" class="form-file required" />
-		  <?php echo __("Pick a video file to upload.");?></p>
+		  <?php echo __("Pick a video file to upload");?></p>
 	
 	      <p><label for="edit-videocategory"><?php _e("Category");?> - <?php _e("Subcategory","wimtvpro");?></label><br/>
 	      <select onchange="viewCategories(this);" multiple="multiple" name="videoCategory[]" id="edit-videocategory" size="15" class="form-select"><?php echo $category; ?></select>

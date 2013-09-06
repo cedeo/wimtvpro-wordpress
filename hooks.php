@@ -92,11 +92,41 @@ function wimtvpro_configure(){
 	            update_option('wp_passwimtv', 'password');
 	
 	          } else {
-	          
-		          update_option('wp_userwimtv', $_POST['userWimtv']);
-		          update_option('wp_passwimtv', $_POST['passWimtv']);
+	              
+				  	//Call API controll user
+				  	$urlUpdate = get_option("wp_basePathWimtv") . "profile";
+				 	 $credential = $_POST['userWimtv'] . ":" . $_POST['passWimtv'];
+				  
+				  	$ch = curl_init();
+					curl_setopt($ch, CURLOPT_URL, $urlUpdate);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+					curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		
+					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+					curl_setopt($ch, CURLOPT_USERPWD, $credential);
+	
+					$response = curl_exec($ch);
+					
+					$arrayjsonst = json_decode($response);
+				
+					curl_close($ch);
+				  
+				    if (count($arrayjsonst)> 0){
+		           	 	update_option('wp_userwimtv', $_POST['userWimtv']);
+		            	update_option('wp_passwimtv', $_POST['passWimtv']);
+						echo '<div class="updated"><p><strong>';
+	          			_e('Options saved.' );
+	          			echo '</strong></p></div>'; 
+						
+					} else {
+						update_option('wp_userwimtv', "username");
+		            	update_option('wp_passwimtv', "password");
+						echo '<div class="error"><p><strong>';
+	          _e('Can not establish a connection with Wimtv. User and/or password not correct' ,"wimtvpro");
+	          echo '</strong></p></div>'; 
+					}
 		      }    
-		          
+		      
 	          update_option('wp_heightPreview', $_POST['heightPreview']);
 	          update_option('wp_widthPreview', $_POST['widthPreview']);
 	
@@ -119,9 +149,7 @@ function wimtvpro_configure(){
 	          update_option( 'wp_publicPage', $_POST['publicPage']);
 	          update_page_mystreaming();
 	
-	          echo '<div class="updated"><p><strong>';
-	          _e('Options saved.' );
-	          echo '</strong></p></div>'; 
+	   
 	        }
 	  	}
 	   

@@ -73,7 +73,7 @@
 			
 			$channel = $sxe->channel;
 			foreach ($channel->item as $items) {
-			   $position = $items->count();
+			   $position = count($items); // $items->count(); is not supported in PHP prior to 5.3.0
 			}
 			$urlVideo= $array_detail->streamingUrl->streamer . "$$" . $array_detail->streamingUrl->file . "$$" . $array_detail->streamingUrl->auth_token;
 			

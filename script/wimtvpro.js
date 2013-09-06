@@ -304,6 +304,7 @@ jQuery(document).ready(function(){
 					element.parent().children("." + changeClass).show();
 					element.parent().children("." + changeClass).attr("id", json.showtimeIdentifier);
 					element.parent().children(".icon_remove").show();
+					
 
 					if ((nomeclass == "icon_AcquiRemoveshowtime") || (nomeclass == "icon_Removeshowtime")) {
 						element.parent().children(".icon_moveThumbs").hide();
@@ -312,6 +313,8 @@ jQuery(document).ready(function(){
 						element.parent().parent().parent().children("div.infos").hide();
 					} else
 						element.parent().parent().parent().parent().hide();
+						
+					alert (refreshpage);
 				} else {
 					element.parent().hide(); 
 					element.parent().parent().children(".loader").show();

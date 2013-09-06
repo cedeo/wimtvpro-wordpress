@@ -1,6 +1,6 @@
 <?php
   global $user,$wpdb;
-  include("../../../wp-blog-header.php");
+  include("../../../wp-load.php");
   $url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosDetailWimtv");
   $credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
   $table_name = $wpdb->prefix . 'wimtvpro_video';

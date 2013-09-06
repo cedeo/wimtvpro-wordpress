@@ -7,6 +7,9 @@
 
 function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="", $sql_where="",$sql_order="") {
   global $user,$wpdb;
+  $upload = true;
+  include ("sync.php");
+  
   $table_name = $wpdb->prefix . 'wimtvpro_video';
   $my_media= "";
   $response_st = "";

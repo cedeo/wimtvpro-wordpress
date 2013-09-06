@@ -1,7 +1,7 @@
 
 
 <?php
-  include("../../../../wp-blog-header.php");
+  include("../../../../wp-load.php");
   wp_enqueue_script('swfObject', plugins_url('script/swfObject/swfobject.js', dirname(__FILE__)));
   define('WP_USE_THEMES', false);
   global $wp, $wp_query, $wp_the_query, $wp_rewrite, $wp_did_header;
@@ -61,7 +61,7 @@
 <body style="text-align:center;"> 
 <div id="page">	<h1>Producer</h1>
   
-<p>On this page you can view the video you're broadcasting live. Keep it open during the whole transmission.</p>
+<p><?php _e("On this page you can view the video you're broadcasting live. Keep it open during the whole transmission.","wimtvpro");?></p>
 <div  class="pageproducer">
 <div id="producer" ></div>
 </div>

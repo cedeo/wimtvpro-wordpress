@@ -1,5 +1,5 @@
 <?php
-  include("../../../../wp-blog-header.php");
+  include("../../../../wp-load.php");
 
 echo "<div class='live_video'></div>";
 echo "<div class='live_list'></div>";

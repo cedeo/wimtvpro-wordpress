@@ -56,9 +56,10 @@
 			$st = curl_init();
 		 	curl_setopt($st, CURLOPT_URL, $url_detail);
 		    curl_setopt($st, CURLOPT_VERBOSE, 0);
-		    curl_setopt($st, CURLOPT_RETURNTRANSFER, TRUE);
+			curl_setopt($st, CURLOPT_RETURNTRANSFER, TRUE);
 		    curl_setopt($st, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 		    curl_setopt($st, CURLOPT_SSL_VERIFYPEER, FALSE);
+			
 		    $Jsonarray = curl_exec($st);
 		   
 		    $array_detail = json_decode($Jsonarray);

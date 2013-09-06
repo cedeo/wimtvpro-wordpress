@@ -1,5 +1,5 @@
 <?php
-include("../../../../wp-blog-header.php");
+include("../../../../wp-load.php");
 $userpeer = get_option("wp_userWimtv");
 $timezone = $_POST['timezone'];
 $type = $_POST['type'];
@@ -10,6 +10,8 @@ $onlyActive = $_POST['onlyActive'];
  
    
   $url_live_select = get_option("wp_basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts?timezone=" . $timezone;
+  //$url_live_select = "http://peer.wim.tv:8080/" . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts?timezone=" . $timezone;
+  
   if ($onlyActive)  $url_live_select .= "&active=true";
 
   $credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
@@ -136,7 +138,7 @@ $onlyActive = $_POST['onlyActive'];
     else {
       if ($count==0) {
         $name = "<b>" . $name . "</b>";
-        $day =  "Begins to " . $day;
+        $day =  __("Begins to ","wimtvpro") . $day;
         $output = $name . "<br/>";
         $output .= $data . " " . $oraMin  . "<br/>" . $durata . "<br/>";
         $output .= $embedded_iframe;
@@ -146,7 +148,7 @@ $onlyActive = $_POST['onlyActive'];
    }
   }
   if ($count<0)
-    $output = __("Aren't Event Live");
+    $output = __("There are no live events","wimtvpro");
 
 echo $output;
 die();

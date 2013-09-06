@@ -583,7 +583,7 @@ jQuery(document).ready(function() {
    			  }
    			});
    			if (playlistId == ""){
-   				alert ("First, You must selected a playlist");
+   				alert (titlePlaylistJs);
    			}else{
    		
    			
@@ -601,14 +601,18 @@ jQuery(document).ready(function() {
 				  		if (response!="") 
 				  			alert(response);
 				  		else {
+							ok = false;
 					  		jQuery(".playlist").each(function(i) {
 				   			  var classe = jQuery(this).attr("class");
 				   			  if (classe=="playlist selected"){
 				   			    var counter = parseInt(jQuery(this).children(".counter").html());
 				   			    jQuery(this).children(".counter").html(counter +1);
-				   			  }
-				   			  alert ("The video is insert into playlist selected!");
+				   			  	ok = true;
+							  }
+				   			  
 				   			});
+							if (ok)
+							  alert (titlePlaylistSelectJs);
 				   		}
 
 				  	},

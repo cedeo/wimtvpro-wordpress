@@ -1,6 +1,6 @@
 <?php
   global $user;
-  include("../../../../wp-blog-header.php");
+  include("../../../../wp-load.php");
 
   $url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosDetailWimtv");
   $credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
@@ -62,7 +62,7 @@
     $output .= "<p>" . $arrayST["description"] . "</p>";
     $output .= "<p>Duration: <b>" . $arrayST["duration"] . "</b>";
     if (count($arrayST["categories"])>0){
-      $output .= "<br/>Categories<br/>";
+      $output .= "<br/>" . __("Categories","wimtvpro") . "<br/>";
       foreach ($arrayST["categories"] as $key => $value) {
         $valuescCatST = "<i>" . $value->categoryName . ":</i> ";
         $output .= $valuescCatST;

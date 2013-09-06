@@ -1,0 +1,596 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Wimtvpro\n"
+"Language: it\n"
+
+#: 
+msgid "Here are stored all video uploaded. If you want to publish on your site one of these videos, move it in My Streaming"
+msgstr "Qui vengono visualizzati i video che hai caricato. Se tu vuoi pubblicarne uno sul sito, spostalo in My Streams"
+
+#: 
+msgid "Syncronize"
+msgstr "Sincronizza"
+
+#: 
+msgid "This video is removed from Wim.tv, please Syncronize"
+msgstr "Il video è stato rimosso da wim.tv, Sincronizza nuovamente"
+
+#: 
+msgid "Create a playlist of videos (ONLY FREE) to be inserted within your website"
+msgstr "Crea la playlist dei video (SOLO FREE) per inserirlo all'interno del tuo sito"
+
+#: 
+msgid "Here you can manage the videos you want to publish on the web pages, both in posts and widgets"
+msgstr "Qui è possibile gestire i video da pubblicare sulle pagine web, sia negli articoli che nei widget"
+
+#: 
+msgid "Save"
+msgstr "Salva"
+
+#: 
+msgid "Title Video"
+msgstr "Titolo del video"
+
+#: 
+msgid "FREE OF CHARGE"
+msgstr "GRATUITO"
+
+#: 
+msgid "Insert into Post"
+msgstr "Inserisci nell'articolo"
+
+#: 
+msgid "You must write a wimlive's name."
+msgstr "Devi inserire il titolo del live"
+
+#: 
+msgid "You must write a price for your event (or free of charge)."
+msgstr "Devi inserire il prezzo dell'evento (o gratuito)"
+
+#: 
+msgid "You must write a url."
+msgstr "Devi scrivere un url."
+
+#: 
+msgid "You must write a day of your event."
+msgstr "Devi scrivere il giorno dell'evento"
+
+#: 
+msgid "You must write a hour of your event."
+msgstr "Devi scrivete l'ora dell'evento"
+
+#: 
+msgid "You must write a duration of your event."
+msgstr "Devi scrivere la durata dell'evento"
+
+#: 
+msgid "You must check if you event is public or private."
+msgstr "Devi scegliere se è un evento pubblico o privato"
+
+#: 
+msgid "Update successfully"
+msgstr "Aggiornamento avvenuto con successo"
+
+#: 
+msgid "If you are not a WIMTV's member yet"
+msgstr "Se non sei un membro di WIMTV"
+
+#: 
+msgid "REGISTER"
+msgstr "REGISTRATI"
+
+#: 
+msgid "or You have not insert the credentials"
+msgstr "oppure non hai inserito le tue credenziali"
+
+#: 
+msgid "SIGN IT"
+msgstr ""
+
+#: 
+msgid "Configuration"
+msgstr "Configurazione"
+
+#: 
+msgid "Pricing"
+msgstr "Prezzi"
+
+#: 
+msgid "Monetisation"
+msgstr "Monetizzazione"
+
+#: 
+msgid "Live configuration"
+msgstr "Configurazione dei live"
+
+#: 
+msgid "Update Personal Info"
+msgstr "Aggiorna le informazioni personali"
+
+#: 
+msgid "Features"
+msgstr "Altre funzionalità"
+
+#: 
+msgid "This file isn't format correct for jwplayer's skin"
+msgstr "Questo file non è nel formato corretto per la skin di jwplayer"
+
+#: 
+msgid "Upload and/or choose the skin of your player from"
+msgstr "Carica e/o scegli la skin del tuo player da"
+
+#: 
+msgid "or upload new player skin"
+msgstr "o caricane una nuova"
+
+#: 
+msgid "To run the skin selected, copy the"
+msgstr "Per usare la skin selezionata, copia"
+
+#: 
+msgid "Only zip. Save to a public URL"
+msgstr "Solo file .zip. Salvata nella cartella pubblica"
+
+#: 
+#, fuzzy
+msgid "file to the root directory (e.g. http://www.mysite.com). You can do it all from your FTP program (e.g. FileZilla, Classic FTP, etc). Open your FTP client program and identify your root directory. This is the folder titled or beginning with www -- and this is where you need to move that crossdomain.xml."
+msgstr "nella root del tuo sito (esempio http://www.miosito.it). Puoi utilizzare il tuo programma di client FTP e identificare la root principale. Questa è la cartella dove devi inserire il crossdomain.xml."
+
+#: 
+msgid "More information"
+msgstr "Più informazioni"
+
+#: 
+msgid "Dimensions of player for your videos"
+msgstr "Dimensioni del player dei tuoi video"
+
+#: 
+msgid "Height"
+msgstr "Altezza"
+
+#: 
+msgid "Width"
+msgstr "Larghezza"
+
+#: 
+#, fuzzy
+msgid "Would you like to add a public MyStreams Page?"
+msgstr "Vuoi aggiungere la pagina MyStream pubblica?"
+
+#: 
+msgid "Please complete the following fields if you wish to make financial transactions on Wim.tv (e.g. buy or sell video, watch pay per view videos or bundles). You may wish to fillyou’re your data now or do it later by clicking the settings button from your personal page."
+msgstr "Compila i seguenti campi, se si desidera effettuare operazioni finanziarie su Wim.tv (ad esempio acquisto o vendita di video, guardare la pay per view video). Dovresti inserire i tuoi dati ora o farlo più tardi facendo clic sul pulsante Impostazioni dalla tua pagina personale."
+
+#: 
+msgid "In this section you can enable live streaming settings to better match your specific needs. Choose between \"Live streaming\" to stream your own events, or use the features reserved for Event Organisers and Event Resellers to play the role of organiser or distributor (on behalf of Event Organiser) of live events."
+msgstr "In questa sezione è possibile attivare le impostazioni di live streaming per abbinare al meglio le vostre esigenze specifiche. Scegliere tra \"live streaming\" per pubblicare i propri eventi, oppure utilizzare le funzioni riservate agli Organizzatori di Eventi e Rivenditori di eventi per svolgere il ruolo di organizzatore o di distributore (per conto di Organizzatore eventi) di eventi dal vivo."
+
+#: 
+#, fuzzy
+msgid "Enables you to live stream your events with WimTV."
+msgstr "Abilita la diretta streaming i vostri eventi con WimTV."
+
+#: 
+msgid "Enter a password to enable live streaming"
+msgstr "Inserisci la password per abilitare la diretta"
+
+#: 
+msgid "Live stream events resale"
+msgstr "Rivendita degli eventi in diretta"
+
+#: 
+msgid "Enables you to distribute live events organised by other parties (Event Organisers)"
+msgstr "Consente di distribuire eventi live organizzati da altri soggetti (Organizzatori di Eventi)"
+
+#: 
+msgid "Live stream event organisation"
+msgstr "Organizzazione di eventi in diretta"
+
+#: 
+msgid "Enables you to be recognised by the system as Event Organiser"
+msgstr "Consente di essere riconosciuto dal sistema come Organizzatore di Evento"
+
+#: 
+msgid "Personal Information"
+msgstr "Informazioni personali"
+
+#: 
+msgid "Surname"
+msgstr "Cognome"
+
+#: 
+msgid "Gender"
+msgstr "Sesso"
+
+#: 
+msgid "Date of Birth"
+msgstr "Data di nascita"
+
+#: 
+msgid "Your social networks"
+msgstr "I tuoi pagine sociali"
+
+#: 
+msgid "(remove transport protocol, i.e. just type: twitter.com/MyName)"
+msgstr "(rimuovi il protocollo, ad esempio twitter.com/iltuonome scrivi il tuonome)"
+
+#: 
+msgid "Index and show public videos on WimTv"
+msgstr "Indicizza il tuoi video pubblici su Wimtv"
+
+#: 
+msgid "WimTV Page"
+msgstr "Pagina WimTV"
+
+#: 
+msgid "Page Name"
+msgstr "Nome della pagina"
+
+#: 
+msgid "Page Description"
+msgstr "Descrizione della pagina"
+
+#: 
+msgid "Registration successfully"
+msgstr "Registrazione andata a buon fine"
+
+#: 
+msgid "Internal error. Contact wimTV's administrator."
+msgstr "Errore interno. Contatta l'amministratore di wimTV"
+
+#: 
+msgid "You are not compiled all field required"
+msgstr "Non hai compilato tutti i campi richiesti"
+
+#: 
+msgid "WIMTV REGISTRATION"
+msgstr "REGISTRAZIONE WIMTV"
+
+#: 
+msgid "Login Credentials"
+msgstr "Credenziali per il Login"
+
+#: 
+msgid "Repeat"
+msgstr "Ripeti"
+
+#: 
+msgid "Terms of Use"
+msgstr "Termini d'uso"
+
+#: 
+msgid "I have read and agree to the wim.tv&reg;"
+msgstr "Leggi e accetta"
+
+#: 
+msgid "Terms of Service"
+msgstr "Termini di servizio"
+
+#: 
+msgid "Privacy Policies"
+msgstr "Politiche di privacy di wimtv"
+
+#: 
+msgid "Register"
+msgstr "Registrati"
+
+#: 
+msgid "Categories"
+msgstr "Categorie"
+
+#: 
+msgid "Uploaded file is"
+msgstr "Il file caricato ha"
+
+#: 
+msgid "Kb. It must be less than"
+msgstr "Kb. Deve essere meno di"
+
+#: 
+msgid "The username is required"
+msgstr "La tua username è richiesta"
+
+#: 
+msgid "The password is required"
+msgstr "La tua password è richiesta"
+
+#: 
+msgid "for your videos"
+msgstr "per i tuoi video"
+
+#: 
+msgid "add a page My WimTv Streaming"
+msgstr "aggiungi alla pagina My Stream"
+
+#: 
+msgid "Billing address"
+msgstr "Indirizzo di fatturazione"
+
+#: 
+msgid "Tax Info"
+msgstr "Informazioni fiscali"
+
+#: 
+msgid "Tax Code"
+msgstr "Codice fiscale"
+
+#: 
+msgid "Vat Code"
+msgstr "Partita iva"
+
+#: 
+msgid "Street"
+msgstr "Via"
+
+#: 
+msgid "City"
+msgstr "Città"
+
+#: 
+msgid "State"
+msgstr "Stato"
+
+#: 
+msgid "Zip Code"
+msgstr "Cap"
+
+#: 
+msgid "Here you find all videos you have uploaded. If you wish to publish one of these videos on your site, move it to My Streaming"
+msgstr "Qui potete trovare tutti i video che hai caricato. Se desideri pubblicare uno di questi video sul tuo sito, spostalo in MyStreams"
+
+#: 
+msgid "Here you can"
+msgstr "Qui puoi"
+
+#: 
+msgid "Manage the videos you want to publish, both in posts and widgets"
+msgstr "Pubblicare i tuoi video, sia in articoli che in widget"
+
+#: 
+msgid "Create playlists"
+msgstr "Creare playlist"
+
+#: 
+msgid "Create a playlist of videos (ONLY FREE videos are possible) to be posted to your website"
+msgstr "Creare una playlist (è possibile solo per i video GRATUITI) e pubblicala sul sito"
+
+#: 
+msgid "You must write a title"
+msgstr "Devi scrivere un titolo"
+
+#: 
+msgid "Upload successfully"
+msgstr "Caricamento avvenuto con successo"
+
+#: 
+msgid "Upload error"
+msgstr "Errore nel caricamento"
+
+#: 
+msgid "You must upload a file"
+msgstr "Devi caricare un file"
+
+#: 
+msgid "Upload Video"
+msgstr "Carica un video"
+
+#: 
+msgid "Subcategory"
+msgstr "Sottocategoria"
+
+#: 
+msgid "Multiselect with CTRL"
+msgstr "Multiselezione con il tasto CTRL premuto"
+
+#: 
+msgid "Do not leave this page until if file upload is not completed"
+msgstr "Non lasciare la pagina fin quando il caricamento non è stato completato"
+
+#: 
+msgid "Here you can create and publish live streaming events on your website."
+msgstr "Qui puoi creare e pubblicare gli eventi live sul tuo sito."
+
+#: 
+msgid "This service can be used in one of these two modalities:"
+msgstr "Il servizio può essere usato secondo due modalità:"
+
+#: 
+msgid "Install a video encoding software (e.g. Adobe Flash Media Live Encoder, Wirecast etc.) on your pc"
+msgstr "Installare un software di video encoding (esempio Adobe Flash Media Live Encored, Wirecast, ecc.) sul tuo pc"
+
+#: 
+msgid "By clicking the icon, the producer will open in a new browser tab. Keep it open during the whole transmission"
+msgstr "Facendo clic sull'icona (Live now), si aprirà in una nuova scheda del browser. Tenerlo aperto durante tutta la trasmissione"
+
+#: 
+msgid "Embedded Code"
+msgstr "Codice embedded"
+
+#: 
+msgid "Event's name"
+msgstr "Nome dell'evento"
+
+#: 
+msgid "0 as free of charge or you can decide the price of access for each viewer (in &euro;)."
+msgstr "0 se è gratuito oppure puoi decidere il prezzo per visitatore (in &euro;)"
+
+#: 
+msgid "URL through which the streaming can be done."
+msgstr "L'URL attraverso il quale lo streaming può essere fatto."
+
+#: 
+msgid "CREATE YOUR URL"
+msgstr "CREA L'URL"
+
+#: 
+msgid "REMOVE YOUR URL"
+msgstr "RIMUOVI L'URL"
+
+#: 
+msgid "Password Live is missing, insert a password for live streaming:"
+msgstr "La password del live non è stata trovata, inserirne una per gli eventi live:"
+
+#: 
+msgid "Event Public or Private"
+msgstr "Evento pubblico o privato"
+
+#: 
+msgid "If you want to index your event on the website"
+msgstr "Se vuoi far visualizzare l'evento sul sito"
+
+#: 
+msgid "select the \"Public\" option."
+msgstr "seleziona l'opzione \"Pubblica\"."
+
+#: 
+msgid "There are no live events"
+msgstr "Non ci sono eventi live"
+
+#: 
+msgid "Begins to"
+msgstr "Inzia"
+
+#: 
+msgid "I want to record "
+msgstr "Voglio registrare l'evento"
+
+#: 
+msgid "I don't want to record"
+msgstr "Non voglio registrare l'evento"
+
+#: 
+msgid "Date of the event"
+msgstr "Data dell'evento"
+
+#: 
+msgid "Event duration"
+msgstr "Durata dell'evento"
+
+#: 
+msgid "For use this section you need to enable"
+msgstr "Per usare questa sezione abilitare"
+
+#: 
+msgid "Current month"
+msgstr "Mese corrente"
+
+#: 
+msgid "Change Date"
+msgstr "Cambia date"
+
+#: 
+msgid "You commercial packet"
+msgstr "Il tuo pacchetto commerciale"
+
+#: 
+msgid "You account don't generate traffic in this period"
+msgstr "Il tuo account non ha generato traffico in questo periodo"
+
+#: 
+msgid "Traffic"
+msgstr "Traffico"
+
+#: 
+msgid "Storage space"
+msgstr "Spazio disco"
+
+#: 
+msgid "Max viewer"
+msgstr "Massimo visualizzatori"
+
+#: 
+msgid "Activate View"
+msgstr "Visualizzatori attivi"
+
+#: 
+msgid "viewers"
+msgstr "visualizzatori"
+
+#: 
+msgid "Activate Viewer"
+msgstr "Visualizzatori attivi"
+
+#: 
+msgid "Duration"
+msgstr "Durata"
+
+#: 
+msgid "Total viewers"
+msgstr "Totale visualizzatori"
+
+#: 
+msgid "Average Traffic"
+msgstr "Traffico medio"
+
+#: 
+msgid "viewer"
+msgstr "visualizzatore"
+
+#: 
+msgid "On this page you can view the video you're broadcasting live. Keep it open during the whole transmission."
+msgstr "In questa pagina è possibile visualizzare il video che si sta trasmettendo in diretta. Tenerlo aperto durante tutta la trasmissione."
+
+#: 
+msgid "First, You must selected a playlist"
+msgstr "Prima scegliere la playlist."
+
+#: 
+msgid "The video is insert into playlist selected!"
+msgstr "Il video è stato inserito nella playlist selezionata!"
+
+#: 
+msgid "Can not establish a connection with Wimtv. Contact the administrator"
+msgstr "Non si riesce a stabilire una connessione con Wimtv. Contatta l'amministratore"
+
+#: 
+msgid "You aren't videos"
+msgstr "Non ci sono video"
+
+#: 
+msgid "Password isn't same"
+msgstr "La password non è uguale"
+
+#: 
+msgid "Pick a video file to upload."
+msgstr "Prendi un video per caricarlo"
+
+#: 
+msgid "graphic"
+msgstr "grafico"
+
+#: 
+msgid "Bandwidth"
+msgstr "Larghezza di banda"
+
+#: 
+msgid "Storage"
+msgstr "Spazio di memoria"
+
+#: 
+msgid "Support"
+msgstr "Supporto"
+
+#: 
+msgid "Price/mo."
+msgstr "Prezzo/mese"
+
+#: 
+msgid "day left"
+msgstr "giorni mancanti"
+
+#: 
+msgid "Note that, if you stay within the usage limits of the Free Package, use of WimTV is free."
+msgstr "Nota: se si rimane entro i limiti di utilizzo del pacchetto FREE, l'uso di WimTV è gratuito."
+
+#: 
+msgid "If you license content and/or provide services in WimTV, revenue sharing will apply."
+msgstr "Se hai la licenza sui contenuti e / o sei un fornire servizi in WimTV, si applicherà la \"revenue sharing\"."
+
+#: 
+msgid "Enjoy your WimTVPro video plugin!"
+msgstr "Godetevi il vostro plugin video WimTVPro!"
+

@@ -19,7 +19,6 @@
 	else $thumbs = explode ('"',$arrayPlay[0]->urlThumbs);
 	$thumbs = str_replace('\\','',$thumbs);
 	$dirJwPlayer = plugin_dir_url(dirname(__FILE__)) . "script/jwplayer/player.swf";
-	
 	$configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$contentItem,$arrayPlay,$dirJwPlayer);
 	
 	echo "<script type='text/javascript'>jwplayer('container').setup({";

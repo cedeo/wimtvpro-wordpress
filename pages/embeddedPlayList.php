@@ -1,6 +1,6 @@
 <?php
   	global $user,$wpdb;
-  	include("../../../../wp-blog-header.php");
+  	include("../../../../wp-load.php");
 	
 
   	$idPlayList=$_GET['id'];

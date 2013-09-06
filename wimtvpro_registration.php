@@ -14,7 +14,7 @@ function wimtvpro_registration(){
 		
 		if ($_POST['reg_RepeatPassword']!=$_POST['reg_Password']){
 			$error ++;
-			$testoErrore .= "Password isn't same<br/>";
+			$testoErrore .= __("Password isn't same","wimtvpro") . "<br/>";
 			$_POST['reg_RepeatPassword'] = "";
 			$_POST['reg_Password'] = "";
 		}		
@@ -23,7 +23,7 @@ function wimtvpro_registration(){
 			$ch = curl_init();
             $url_reg = get_option("wp_basePathWimtv") . 'register';
             curl_setopt($ch, CURLOPT_URL, $url_reg);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json","Accept: application/json","Accept-Language: en-US,en;q=0.5"));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json","Accept: application/json","Accept-Language: " . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
             curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -49,7 +49,7 @@ function wimtvpro_registration(){
 				//-->
 				</script>';
               echo '<div class="updated"><p><strong>';
-              _e("Registration successfully.");
+              _e("Registration successfully.","wimtvpro");
               echo  '</strong></p></div>';
               update_option('wp_userwimtv', $_POST['reg_Username']);
           	  update_option('wp_passwimtv', $_POST['reg_Password']);
@@ -63,32 +63,32 @@ function wimtvpro_registration(){
             	$error++;
             }
           } else {
-          	$testoErrore .= "Internal error. Contact wimTV's administrator.";
+          	$testoErrore .= __("Internal error. Contact wimTV's administrator.","wimtvpro");
           	$error ++;
           }
 		} else {
 			$error++;
-			$testoErrore .= "You are not compiled all field required";
+			$testoErrore .= __("You are not compiled all field required","wimtvpro");
 		}
 		if ($error>0) {
 			$styleReg = "display:block";
 			echo '<div class="error"><p><strong>' . $testoErrore . '</strong></p></div>';	
 		} 
     }
-	echo " <div class='wrap'><h2>Registration WimTv</h2>";
+	echo " <div class='wrap'><h2>" . __("WIMTV REGISTRATION","wimtvpro") . "</h2>";
 	echo "</div>";
 
 ?>
 	<form enctype="multipart/form-data" action="#" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
 		
-		<h4>Personal Information</h4>
+		<h4><?php _e("Personal Information","wimtvpro");?></h4>
 			<table class="form-table">			
 				<tr>
-					<th><label for="edit-name">Name<span class="form-required" title="">*</span></label></th>
+					<th><label for="edit-name"><?php _e("Name");?><span class="form-required" title="">*</span></label></th>
 					<td><input type="text" id="edit-name" name="reg_name" value="<?php echo $_POST['reg_name'];?>" size="40" maxlength="200"/></td>
 				</tr>
 				<tr>
-					<th><label for="edit-Surname">Surname<span class="form-required" title="">*</span></label></th>				
+					<th><label for="edit-Surname"><?php _e("Surname","wimtvpro");?><span class="form-required" title="">*</span></label></th>				
 					<td><input type="text" id="edit-Surname" name="reg_Surname" value="<?php echo $_POST['reg_Surname'];?>" size="40" maxlength="200"/></td>
 				</tr>
 				<tr>
@@ -97,7 +97,7 @@ function wimtvpro_registration(){
 				</tr>
 				
 				<tr>
-					<th><label for="edit-sex">Gender<span class="form-required" title="">*</span></label></th>
+					<th><label for="edit-sex"><?php _e("Gender","wimtvpro");?><span class="form-required" title="">*</span></label></th>
 					<td>
 						<select id="edit-sex" name="reg_sex" class="form-select">
 							<option value="M" <?php if ( $_POST['reg_sex']=="M") echo "selected='selected'" ?>>M</option>
@@ -110,7 +110,7 @@ function wimtvpro_registration(){
 				
 			</table>	
 
-		<h4>Login Credentials</h4>
+		<h4><?php _e("Login Credentials","wimtvpro");?></h4>
 			<input type="hidden" value="No" name="sandbox"> 
 			<table class="form-table"> <!-- SANDBOX -->
 				<!--tr>	
@@ -134,7 +134,7 @@ function wimtvpro_registration(){
 				</tr>
 				
 				<tr>
-					<th><label for="edit-repPassword">Repeat Password<span class="form-required" title="">*</span></label></th>
+					<th><label for="edit-repPassword"><?php _e("Repeat","wimtvpro");?> Password<span class="form-required" title="">*</span></label></th>
 					<td><input type="password" id="edit-repPassword" name="reg_RepeatPassword" value="<?php echo $_POST['reg_RepeatPassword'];?>" size="30" maxlength="200"/></td>
 				</tr>
 				
@@ -148,12 +148,12 @@ function wimtvpro_registration(){
 
 					
 					?>
-					<th><label for="edit-acceptEula">Terms of Use<span class="form-required" title="">*</span></label></th>
+					<th><label for="edit-acceptEula"><?php _e("Terms of Use","wimtvpro");?><span class="form-required" title="">*</span></label></th>
 					<td>
-						<div class="description"><input type="checkbox" id="edit-acceptEula" name="reg_acceptEula" value="true" <?php if (isset($_POST['reg_acceptEula'])) echo "checked='checked'"; ?>/> I have read and agree to the wim.tv&reg; 
-						<a class="termsLink" href="<?php echo $baseWimtv; ?>wimtv-webapp/term.do">Terms of Service</a> 
+						<div class="description"><input type="checkbox" id="edit-acceptEula" name="reg_acceptEula" value="true" <?php if (isset($_POST['reg_acceptEula'])) echo "checked='checked'"; ?>/><?php _e("I have read and agree to the wim.tv&reg;","wimtvpro");?> 
+						<a class="termsLink" href="<?php echo $baseWimtv; ?>wimtv-webapp/term.do"><?php _e("Terms of Service","wimtvpro"); ?></a> 
 						and
-						<a class="termsLink" href="<?php echo $baseWimtv; ?>wimtv-webapp/privacy.do">Privacy Policies</a></div>	
+						<a class="termsLink" href="<?php echo $baseWimtv; ?>wimtv-webapp/privacy.do"><?php _e("Privacy Policies","wimtvpro");?></a></div>	
 					</td>
 				
 				</tr>

@@ -126,27 +126,34 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 		$licenseType = $stLicense[$showtime_identifier];	
 	}
 	
+	$isfound = false;
+	if (!strstr($replace_video, 'Not Found'))
+	  $isfound = true; 
 	
-
-    $replace_video = '<img src="' . $replace_video . '" title="' . $title . '" class="" />';
-    if ($licenseType!="") $replace_video .= '<div class="icon_licence ' . $licenseType . '"></div>';
+    if ($isfound) {
+      $replace_video = '<img src="' . $replace_video . '" title="' . $title . '" class="" />';
+      if ($licenseType!="") $replace_video .= '<div class="icon_licence ' . $licenseType . '"></div>';
+	} 
+	
    }
    
    $wimtvpro_url = "";
    //For Admin
-  
-   if ((!$private) && (!$insert_into_page))
-    $wimtvpro_url = wimtvpro_checkCleanUrl("pages", "embedded.php?c=" . $content_item_new . "&s=" . $showtime_identifier);
-    $video  = "<a class='wimtv-thumbnail' href='" . $wimtvpro_url . "'>" . $replace_video . "</a>";
-   if (($private) && ($insert_into_page))
-    $wimtvpro_url = wimtvpro_checkCleanUrl("pages", "embedded.php?c=" . $content_item_new . "&s=" . $showtime_identifier);
-    $video  = "<a class='wimtv-thumbnail' href='" . $wimtvpro_url . "'>" . $replace_video . "</a>";
+   if ($isfound) {
+      if ((!$private) && (!$insert_into_page)) 
+        $wimtvpro_url = wimtvpro_checkCleanUrl("pages", "embedded.php?c=" . $content_item_new . "&s=" . $showtime_identifier);
+      if (($private) && ($insert_into_page))
+        $wimtvpro_url = wimtvpro_checkCleanUrl("pages", "embedded.php?c=" . $content_item_new . "&s=" . $showtime_identifier);
+	  $video  = "<a class='wimtv-thumbnail' href='" . $wimtvpro_url . "'>" . $replace_video . "</a>";
+   } else {
+      $replace_video = false;
+   }
    if ($replace_video) {
    
    
    
     $form_st = '
-		<div class="free">FREE OF CHARGE</div>
+		<div class="free">' . __("FREE OF CHARGE","wimtvpro") . '</div>
 		
 		<div class="cc">CREATIVE COMMONS</div>
 		
@@ -190,8 +197,8 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
    
    if ((!$showtime) || (trim($showtime)=="FALSE")) {
     $id  = "";
-    $title_add = __("Add to My Streaming");
-    $title_remove = __("Remove from My Streaming");
+    $title_add = __("Add") .  " My Streaming";
+    $title_remove = __("Remove") .  " My Streaming";
     if ($state!="") {
       //The video is into My Streaming
       $id= "id='" . $showtime_identifier . "'";
@@ -284,7 +291,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     if ($insert_into_page) {
       $my_media .= '<input type="hidden" value="' . $_GET['post_id'] . '" name="post_id">';
       $my_media .= "W <input style='width:30px;' maxweight='3' class='w' type='text' value='" . get_option("wp_widthPreview") . "'>px  -  H <input style='width:30px;' maxweight='3' class='h' type='text' value='" . get_option("wp_heightPreview") . "'>px";
-      $send = get_submit_button( __( 'Insert into Post' ), 'buttonInsert', $content_item_new, false );
+      $send = get_submit_button( __( 'Insert into Post',"wimtvpro" ), 'buttonInsert', $content_item_new, false );
     }  
     $my_media .= $send .  "</div> </li>";
     $position_new = $position;
@@ -296,7 +303,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 //MY STREAMING: This API allows to list videos in my streaming public area. Even details may be returned
 function wimtvpro_detail_showtime($single, $st_id) {
   if (!$single) {
-    $url_detail =  get_option("wp_basePathWimtv") . str_replace(get_option("wp_replaceUserWimtv"), get_option("wp_userWimtv"), get_option("wp_urlShowTimeDetailWimtv"));
+    $url_detail =  get_option("wp_basePathWimtv") . str_replace(get_option("wp_replaceUserWimtv"), get_option("wp_userWimtv"), get_option("wp_urlShowTimeDetailWimtv")) ;
   } 
   else {
     $showtime_item = $st_id;
@@ -374,44 +381,44 @@ if (isset($_POST["wimtvpro_live"])) {
     
   if (strlen(trim($_POST['name']))==0) {        
       echo '<div class="error"><p><strong>';
-      _e("You must write a wimlive's name.");
+      _e("You must write a wimlive's name.","wimtvpro");
       echo '</strong></p></div>';
       $error ++;
   }
   if (strlen(trim($_POST['payperview']))==0) {        
       echo '<div class="error"><p><strong>';
-      _e("You must write a price for your event (or free of charge).");
+      _e("You must write a price for your event (or free of charge).","wimtvpro");
       echo '</strong></p></div>';
       $error ++;
   }
   if (strlen(trim($_POST['Url']))==0) {        
       echo '<div class="error"><p><strong>';
-      _e("You must write a url.");
+      _e("You must write a url.","wimtvpro");
       echo '</strong></p></div>';
       $error ++;
   }
   if (strlen(trim($_POST['Giorno']))==0) {        
       echo '<div class="error"><p><strong>';
-      _e("You must write a day of your event.");
+      _e("You must write a day of your event.","wimtvpro");
       echo '</strong></p></div>';
       $error ++;
   }
   if (strlen(trim($_POST['Ora']))==0) {        
       echo '<div class="error"><p><strong>';
-      _e("You must write a hour of your event.");
+      _e("You must write a hour of your event.","wimtvpro");
       echo '</strong></p></div>';
       $error ++;
   }
   if (strlen(trim($_POST['Duration']))==0) {        
       echo '<div class="error"><p><strong>';
-      _e("You must write a duration of your event.");
+      _e("You must write a duration of your event.","wimtvpro");
       echo '</strong></p></div>';
       $error ++;
   }
   
   if (!isset($_POST['Public'])) {        
       echo '<div class="error"><p><strong>';
-      _e("You must check if you event is public or private.");
+      _e("You must check if you event is public or private.","wimtvpro");
       echo '</strong></p></div>';
       $error ++;
   }
@@ -501,7 +508,7 @@ if (isset($_POST["wimtvpro_live"])) {
 		</script>';
 
         echo '<div class="updated"><p><strong>';
-        if ($function=="modify") _e("Update successfully.");
+        if ($function=="modify") _e("Update successfully.","wimtvpro");
         else _e("Insert successfully.");
         echo '</strong></p></div>';
                
@@ -580,7 +587,7 @@ function wimtvpro_alert_reg(){
 	//If user isn't register or not inser user and password
 	if ((get_option("wp_registration")=='FALSE') && ((get_option("wp_userwimtv")=="username") && get_option("wp_passwimtv")=="password")){
 	
-		echo "<div class='error'>If you are not a WIMTV's member yet <a href='?page=WimTvPro_Registration'>REGISTER</a> or You have not insert the credentials  <a href='?page=WimTvPro'>SIGN IT</a></div>";
+		echo "<div class='error'>" . __("If you are not a WIMTV's member yet","wimtvpro") . " <a href='?page=WimTvPro_Registration'>" . __("REGISTER","wimtvpro") . "</a> " .  __("or You have not insert the credentials","wimtvpro") . "  <a href='?page=WimTvPro'>" . __("SIGN IT","wimtvpro") . "</a></div>";
 		
 		return FALSE;
 	
@@ -595,16 +602,16 @@ function wimtvpro_alert_reg(){
 
 function wimtvpro_viever_jwplayer($userAgent,$contentId,$video,$dirJwPlayer){
 
-$isiPad = (bool) strpos($userAgent,'iPad');
+		$isiPad = (bool) strpos($userAgent,'iPad');
         $urlPlay = explode("$$",$video[0]->urlPlay); 
 		$isiPhone = (bool) strpos($userAgent,'iPhone');
-		if ($isiPad  || $isiPhone) {
-			$urlPlayIPadIphone = "";
+		$isiAndroid = (bool) strpos($userAgent,'Android');
+		
+		if ($isiPad  || $isiPhone || $isiAndroid) {
+		
 			$contentId = $video[0]->contentidentifier;
-			
 			$url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosWimtv") . "/" . $contentId . "?details=true";
 			$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-		    
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL,  $url_video);
 			curl_setopt($ch, CURLOPT_USERAGENT,$userAgent); 
@@ -617,13 +624,28 @@ $isiPad = (bool) strpos($userAgent,'iPad');
 		    $response = curl_exec($ch);
 			$arrayjson   = json_decode($response);
 			
+		}
+		
+		if ($isiPad  || $isiPhone) {
+			$urlPlayIPadIphone = "";
+			
+			
 			$urlPlayIPadIphone = $arrayjson->streamingUrl->streamer;
 			$configFile = "'file': '" . $urlPlayIPadIphone . "',";	
 		
-		}	else {
+		}
+		else if ($isiAndroid){
+ 			$urlPlayAndroid =$arrayjson->streamingUrl->streamer;
+			$filePlayAndroid =$arrayjson->streamingUrl->file;
+			var_dump ($arrayjson);
+			$configFile = "modes: [ { type: 'html5', config: { file: '" . $arrayjson->url . "','provider': 'video' } }],";
+		}
+		
+		else {
 		
 			$configFile = "'flashplayer':'" . $dirJwPlayer . "','file': '" . $urlPlay[1] . "','streamer':'" . $urlPlay[0] . "',";
 		
 		}
   return $configFile;
 }
+

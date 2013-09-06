@@ -26,7 +26,7 @@
   curl_close($ch);
 
   if ($array_json_videos==NULL) {
-    _e("Non si riesce a stabilire una connessione con Wimtv. Contattare l'amministratore.");
+    _e("Can not establish a connection with Wimtv. Contact the administrator", "wimtvpro");
   } 
   else {
   //$num = (array)simplexml_load_string($response);
@@ -131,7 +131,7 @@
 		}
 	} else {
 		
-	_e("You aren't videos");
+	_e("You aren't videos","wimtvpro");
 		
 	}
 
@@ -150,7 +150,7 @@
 	update_page_mystreaming();    
   }
   else {
-    echo t("Non ci sono elementi");
+    _e("You aren't videos","wimtvpro");
   }
 }
 

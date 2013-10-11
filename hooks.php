@@ -8,7 +8,7 @@ function wimtvpro_submenu($view_page){
 	if ($view_page) $submenu .= "<li><a href='admin.php?page=WimTvPro&pack=1' class='packet'>" . __("Pricing","wimtvpro") . "</a> |";
 	if ($view_page) $submenu .= "<li><a href='admin.php?page=WimTvPro&update=1' class='payment'>" . __("Monetisation","wimtvpro") . "</a> |";
 	if ($view_page) $submenu .= "<li><a href='admin.php?page=WimTvPro&update=2' class='live'>"  . __('Live',"wimtvpro") . "</a> |";
-	if ($view_page) $submenu .= "<li><a href='admin.php?page=WimTvPro&update=3' class='user'>" . __("Update Personal Info","wimtvpro") . "</a> |";
+	if ($view_page) $submenu .= "<li><a href='admin.php?page=WimTvPro&update=3' class='user'>" . __("Personal Info","wimtvpro") . "</a> |";
 	if ($view_page) $submenu .= "<li><a href='admin.php?page=WimTvPro&update=4' class='other'>" . __("Features","wimtvpro") . "</a> ";
 	$submenu .= "</ul>";
 	return $submenu;
@@ -17,7 +17,6 @@ function wimtvpro_submenu($view_page){
 
 function wimtvpro_configure(){
   $uploads_info = wp_upload_dir();
-
   echo "<div class='clear'></div>";
   if (!isset($_GET["pack"]))	{	
     if (!isset($_GET["update"])){
@@ -43,7 +42,7 @@ function wimtvpro_configure(){
 				    echo '<div class="error"><p><strong>';
 	                _e("Uploaded file is ","wimtvpro") ;
 					echo " " . round(filesize($tmpfile) / 1048576, 2);
-					_e("Kb. It must be less than");
+					_e("Kb. It must be less than","wimtvpro");
 					echo   " 10Mb.";
 	                echo '</strong></p></div>';
 	                $error ++;
@@ -55,7 +54,13 @@ function wimtvpro_configure(){
 	                  echo '</strong></p></div>';
 	                  $error ++;
 		            }
-		            update_option('wp_nameSkin', $arrayFile[0]);
+		            
+					$return = wimtvpro_unzip($directory . "/" . get_option('wp_nameSkin') . ".zip", $directory);
+					
+					update_option('wp_nameSkin', $arrayFile[0]);
+					
+					
+					
 				  }
 				}
 	        } else {
@@ -65,14 +70,14 @@ function wimtvpro_configure(){
 	        // Required
 	        if (strlen(trim($_POST['userWimtv']))==0) {        
 	        	echo '<div class="error"><p><strong>';
-	            _e("The username is required");
+	            _e("The username is required","wimtvpro");
 	            echo '</strong></p></div>';
 	            $error ++;
 	        }
 	        // Required
 	        if (strlen(trim($_POST['passWimtv']))==0) {
 	        	echo '<div class="error"><p><strong>';
-	            _e("The password is required");
+	            _e("The password is required","wimtvpro");
 	            echo '</strong></p></div>';
 	            $error ++;     
 	        }
@@ -108,21 +113,24 @@ function wimtvpro_configure(){
 					$response = curl_exec($ch);
 					
 					$arrayjsonst = json_decode($response);
-				
+			
 					curl_close($ch);
 				  
 				    if (count($arrayjsonst)> 0){
+						  
+				
+						
 		           	 	update_option('wp_userwimtv', $_POST['userWimtv']);
 		            	update_option('wp_passwimtv', $_POST['passWimtv']);
 						echo '<div class="updated"><p><strong>';
-	          			_e('Options saved.' );
+	          			_e('Update successful' ,"wimtvpro");
 	          			echo '</strong></p></div>'; 
 						
 					} else {
 						update_option('wp_userwimtv', "username");
 		            	update_option('wp_passwimtv', "password");
 						echo '<div class="error"><p><strong>';
-	          _e('Can not establish a connection with Wimtv. User and/or password not correct' ,"wimtvpro");
+	          _e('Can not establish a connection with Wim.tv. Username and/or Password are not correct.' ,"wimtvpro");
 	          echo '</strong></p></div>'; 
 					}
 		      }    
@@ -147,7 +155,12 @@ function wimtvpro_configure(){
 	          update_option( 'wp_replaceacquiredIdentifier','{acquiredIdentifier}');
 	          update_option( 'wp_replaceshowtimeIdentifier','{showtimeIdentifier}'); 
 	          update_option( 'wp_publicPage', $_POST['publicPage']);
-	          update_page_mystreaming();
+	         
+			  update_page_mystreaming();
+			  
+			  
+			  
+			  
 	
 	   
 	        }
@@ -157,6 +170,7 @@ function wimtvpro_configure(){
 	   if (!is_dir($directory)) {
 	      $directory_create = mkdir($uploads_info["basedir"] . "/skinWim");
 	   }
+	   
 	   if (is_dir($directory)) {
 	     if ($directory_handle = opendir($directory)) {
 	     //Read directory for skin JWPLAYER
@@ -183,7 +197,7 @@ function wimtvpro_configure(){
 	$uploads_info = wp_upload_dir();	
 	?>
 	  <div class="wrap">
-	         <h2>WimTvPro Configuration</h2>
+	         <h2><?php _e("Configuration","wimtvpro");?></h2>
 			
 <?php
 	$view_page = wimtvpro_alert_reg();
@@ -194,40 +208,43 @@ function wimtvpro_configure(){
 				<?php echo str_replace("config","current",$submenu) ; ?>
 				
 	            <div>
-											
+					<div class="empty"></div>
+                    <h4><?php _e("Connect to your account on WimTV","wimtvpro");?></h4>
+                    						
 					<form enctype="multipart/form-data" action="#" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
 					
 						<table class="form-table">
 					
 			              	<tr>
-			              		<th><label for="edit-userwimtv">WimTV Username<span class="form-required" title="">*</span></label></th>
+			              		<th><label for="edit-userwimtv"><?php _e("Username","wimtvpro"); ?><span class="form-required" title="">*</span></label></th>
 								<td><input type="text" id="edit-userwimtv" name="userWimtv" value="<?php echo get_option("wp_userwimtv");?>" size="100" maxlength="200"/></td>
 							</tr>
 							
 							<tr>
-								<th><label for="edit-passwimtv">WimTV Password<span class="form-required" title="">*</span></label></th>
+								<th><label for="edit-passwimtv">Password<span class="form-required" title="">*</span></label></th>
 								<td><input value="<?php echo get_option("wp_passwimtv");?>" type="password" id="edit-passwimtv" name="passWimtv" size="100" maxlength="200" class="form-text required" /></td>
 							</tr>
 						</table>
 						
-						<h4><?php _e("Upload and/or choose the skin of your player from","wimtvpro");?> <a target='new' href='http://www.longtailvideo.com/addons/skins'>Jwplayer skin</a> <?php _e("for your videos","wimtvpro" ); ?></h4>
+						<h4><?php _e("Upload and/or choose the skin for your player","wimtvpro");?> 
+                        . <?php _e("Download it from","wimtvpro")?> <a target='new' href='http://www.longtailvideo.com/addons/skins'>Jwplayer skin</a></h4>
 	
 						<table class="form-table">	
 							<tr>
-								<th><label for="edit-nameskin"><?php _e("Skin Name");?></label></th>
+								<th><label for="edit-nameskin"><?php _e("Skin Name","wimtvpro");?></label></th>
 								<td><select id="edit-nameskin" name="nameSkin" class="form-select"><?php echo $createSelect; ?></select></td>
 							</tr>
 							<tr>
-								<th><label for="edit-uploadskin"><?php _e("or upload new player skin");?></label></th>
+								<th><label for="edit-uploadskin"><?php _e("upload a new skin for your player","wimtvpro");?></label></th>
 								<td><input type="file" id="edit-uploadskin" name="files[uploadSkin]" size="100" class="form-file" />
-									<div class="description"><?php echo __("Only zip. Save to a public URL","wimtvpro") .  " wp-content/uploads/skinWim <br/>" . 
-									__("To run the skin selected, copy the","wimtvpro") .  " <a href='http://plugins.longtailvideo.com/crossdomain.xml' target='_new'>crossdomain.xml</a> " . __("file to the root directory (e.g. http://www.mysite.com). You can do it all from your FTP program (e.g. FileZilla, Classic FTP, etc). Open your FTP client program and identify your root directory. This is the folder titled or beginning with www -- and this is where you need to move that crossdomain.xml.","wimtvpro") . "<br/><a href='http://www.adobe.com/devnet/adobe-media-server/articles/cross-domain-xml-for-streaming.html'>" . __("More information","wimtvpro") . "</a>"; ?>
+									<div class="description"><?php echo __("Only .zip files are supported Save to a public URL","wimtvpro") .  " wp-content/uploads/skinWim <br/>" . 
+									__("To use the skin of your choice, copy the","wimtvpro") .  " <a href='http://plugins.longtailvideo.com/crossdomain.xml' target='_new'>crossdomain.xml</a> " . __("file to the root directory (e.g. http://www.mysite.com). You can do it all via FTP  (e.g. FileZilla, Classic FTP, etc). Open your FTP client and identify the root directory of your site. This is the folder titled or beginning with www - and this is where you need to move the crossdomain.xml file","wimtvpro") . ".<br/><a href='http://www.adobe.com/devnet/adobe-media-server/articles/cross-domain-xml-for-streaming.html'>" . __("More mation","wimtvpro") . "</a>"; ?>
 									</div>
 								</td>
 							</tr>
 						</table>
 		
-						<h4><?php _e("Dimensions of player for your videos","wimtvpro" ); ?></h4>
+						<h4><?php _e("Size of the player for your videos","wimtvpro" ); ?></h4>
 		
 						<table class="form-table">	
 							<tr>
@@ -257,20 +274,32 @@ function wimtvpro_configure(){
 					</td>
 				</tr-->
 			
+            				<!--tr>
+								<th><label for="edit-publicPage"><?php _e('Would you like to add the "Share" button in the video player?',"wimtvpro");?></label></th>
+								<td>
+									<select id="edit-publicPage" name="publicPage" class="form-select">
+										<option value="No" <?php if (get_option("wp_shareVideo")=="No") echo "selected='selected'" ?>>No</option>
+										<option value="Yes" <?php if (get_option("wp_shareVideo")=="Yes") echo "selected='selected'" ?>><?php _e("Yes"); ?></option>
+									</select>
+
+								</td>
+							</tr-->
+            
 							<tr>
-								<th><label for="edit-publicPage"><?php _e("Would you like to add a public MyStreaming Page?","wimtvpro");?></label></th>
+								<th><label for="edit-publicPage"><?php _e("Would you like to add a public WimVod Page to your site?","wimtvpro");?></label></th>
 								<td>
 									<select id="edit-publicPage" name="publicPage" class="form-select">
 										<option value="No" <?php if (get_option("wp_publicPage")=="No") echo "selected='selected'" ?>>No</option>
-										<option value="Yes" <?php if (get_option("wp_publicPage")=="Yes") echo "selected='selected'" ?>>Yes (<?php _e("add a page My WimTv Streaming","wimtvpro");?>)</option>
+										<option value="Yes" <?php if (get_option("wp_publicPage")=="Yes") echo "selected='selected'" ?>><?php _e("Yes"); ?></option>
 									</select>
+
 								</td>
 							</tr>
 						
 						</table>
 						
 						<input type="hidden" name="wimtvpro_update" value="Y" />
-						<?php submit_button(); ?>
+						<?php submit_button(__("Save changes","wimtvpro")); ?>
 					</form> 
 				</div>	
 			
@@ -315,10 +344,16 @@ function wimtvpro_configure(){
 	        
 	        $arrayjsonst = json_decode($response);
 	        curl_close($ch);
+			 if ($dati['paypalEmail']!="") 
+				update_option('wp_activePayment', "true");
+			  else
+				update_option('wp_activePayment', "false");
+			  
+			
 			if ($arrayjsonst->result=="SUCCESS") {
 			
 				 echo '<div class="updated"><p><strong>';
-	              _e("Update successfully");
+	              _e("Update successful","wimtvpro");
 	              echo  '</strong></p></div>';
 	
 			
@@ -370,8 +405,9 @@ function wimtvpro_configure(){
 
 			  echo '<div class="clear"></div>
 			  <p>';
-			  _e("Please complete the following fields if you wish to make financial transactions on Wim.tv (e.g. buy or sell video, watch pay per view videos or bundles). You may wish to fillyou’re your data now or do it later by clicking the settings button from your personal page.");
+			  _e("Please complete the following fields if you wish to make financial transactions on Wim.tv (e.g. buy or sell videos, post pay per view videos or bundles). You may wish to fill your data now or do it later by returning in this section of your Settings.","wimtvpro");
 			  echo '</p>';
+
 			  echo '
 			  
 			  <form enctype="multipart/form-data" action="#" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
@@ -393,7 +429,9 @@ function wimtvpro_configure(){
 							<tr>
 			              		<th><label for="vatCode">' . __("Tax Code","wimtvpro") . '</label></th>
 								<td><input type="text" id="edit-taxCode" name="taxCode" value="' . $dati['taxCode'] . '" size="80" maxlength="20"/></td>
-								<th><label for="vatCode">or ' . __("Vat Code","wimtvpro") . '</label></th>
+							</tr>
+							<tr>
+								<th><label for="vatCode">' . __("VAT Code","wimtvpro") . '</label></th>
 								<td><input type="text" id="edit-vatCode" name="vatCode" value="' . $dati['vatCode'] . '" size="80" maxlength="20"/></td>
 							</tr>
 
@@ -420,7 +458,7 @@ function wimtvpro_configure(){
 							</tr>
 							
 							<tr>
-			              		<th><label for="billingAddress[zipCode]">' . __("Zip Code","wimtvpro") . '</label></th>
+			              		<th><label for="billingAddress[zipCode]">' . __("Zip/Postal Code","wimtvpro") . '</label></th>
 								<td><input type="text" id="edit-billingAddressCity" name="billingAddress[zipCode]" value="' . $dati['billingAddress']['zipCode'] . '" size="100" maxlength="100"/></td>
 							</tr>
 
@@ -461,7 +499,7 @@ function wimtvpro_configure(){
 			  if ($dati['liveStreamPwd']=="null") $dati['liveStreamPwd']= "";
 				
 			  echo '<div class="clear"></div>
-			  <p>' . __('In this section you can enable live streaming settings to better match your specific needs. Choose between "Live streaming" to stream your own events, or use the features reserved for Event Organisers and Event Resellers to play the role of organiser or distributor (on behalf of Event Organiser) of live events.',"wimtvpro") . '</p>';
+			  <p>In ' . __('this section you can enable live streaming settings to better match your specific needs. Choose between "Live streaming" to stream your own events, or use the features reserved for Event Organisers and Event Resellers to play the role of organiser or distributor (on behalf of Event Organiser) of live events.',"wimtvpro"). '</p>';
 			  echo '
 			  
 			  <script>
@@ -500,10 +538,15 @@ function wimtvpro_configure(){
 								<td>
 								  <input type="checkbox" id="edit-liveStreamEnabled" name="liveStreamEnabled" value="true"
 								  ';
-								  if (strtoupper($dati['liveStreamEnabled'])=="TRUE") echo ' checked="checked"';
+								  if (strtoupper($dati['liveStreamEnabled'])=="TRUE") {
+									  echo ' checked="checked"';
+								  	  update_option('wp_activeLive', "true");
+								  } else {
+							       	  update_option('wp_activeLive', "false");
+								  }
 								 echo  ' 
 								  />
-								  <div class="description">'  . __("Enables you to live stream your events with WimTV.","wimtvpro")  . '</div>
+								  <div class="description">'  . __("Enables you to live stream your events with WimTV","wimtvpro")  . '</div>
 								</td>
 							</tr>
 							
@@ -511,7 +554,7 @@ function wimtvpro_configure(){
 			              		<th><label for="liveStreamPwd">' . __("Password") . '</label></th>
 								<td>
 								  <input type="password" id="edit-liveStreamPwd" name="liveStreamPwd" value="' . $dati['liveStreamPwd'] .  '"/>
-								  <div class="description">' . __("Enter a password to enable live streaming","wimtvpro") .  '</div>
+								  <div class="description">' . __("A password is required for live streaming (for authenticating yourself with the streaming server).","wimtvpro") .  '</div>
 								</td>
 							</tr>
 
@@ -524,19 +567,19 @@ function wimtvpro_configure(){
 								  if (strtoupper($dati['eventResellerEnabled'])=="TRUE") echo ' checked="checked"';
 								 echo '
 								  />
-								  <div class="description">' . __("Enables you to distribute live events organised by other parties (Event Organisers)","wimtvpro") . '</div>
+								  <div class="description">' . __("Enables you to distribute live events organised by other parties (Event Organisers).","wimtvpro") . '</div>
 								</td>
 							</tr>
 							
 							<tr>
-			              		<th><label for="eventOrganizerEnabled">' . __("Live stream event organisation","wimtvpro") . '</label></th>
+			              		<th><label for="eventOrganizerEnabled">' . __("Live stream events organisation","wimtvpro") . '</label></th>
 								<td>
 								  <input type="checkbox" id="edit-eventOrganizerEnabled" name="eventOrganizerEnabled" value="true"
 								  ';
 								  if (strtoupper($dati['eventOrganizerEnabled'])=="TRUE") echo ' checked="checked"';
 								 echo '
 								  />
-								  <div class="description">' . __("Enables you to be recognised by the system as Event Organiser","wimtvpro") . '</div>
+								  <div class="description">' . __("Select if you want to organise live evants and collaborate with an Event Reseller for their distribution.","wimtvpro") . '</div>
 								</td>
 							</tr>
 
@@ -547,7 +590,7 @@ function wimtvpro_configure(){
 						</table>';
 						echo '<div class="hidden_value"></div>';
 						echo '<input type="hidden" name="wimtvpro_update" value="Y" />';
-						submit_button(__("Update")); 
+						submit_button(__("Update","wimtvpro")); 
 
 						
 			  echo '</form>';
@@ -560,7 +603,7 @@ function wimtvpro_configure(){
 			
 			break;
 			
-			case "3": //Update personal information
+			case "3": //Update 
 			 	echo ' 
 		        <script type="text/javascript">
 		  		jQuery(document).ready(function(){
@@ -572,7 +615,7 @@ function wimtvpro_configure(){
 		     	';
 
 			
-			  echo '<h2>' . __("Personal Information","wimtvpro") . '</h2>';
+			  echo '<h2>' . __("Personal Info","wimtvpro") . '</h2>';
 			  $view_page = wimtvpro_alert_reg();
 			  $submenu = wimtvpro_submenu($view_page);
 
@@ -580,12 +623,13 @@ function wimtvpro_configure(){
 			  
 			  echo '<div class="clear"></div>
 			  <form enctype="multipart/form-data" action="#" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
-			  <h4>' . __("Personal Information","wimtvpro") . '</h4>
+			  <h4>' . __("Personal Info","wimtvpro") . '</h4>
 				<table class="form-table">			
 					<tr>
-						<th><label for="edit-name">' . __("Name") . '<span class="form-required" title="">*</span></label></th>
+						<th><label for="edit-name">' . __("First Name","wimtvpro") . '<span class="form-required" title="">*</span></label></th>
 						<td><input type="text" id="edit-name" name="name" value="' . $dati['name'] . '" size="40" maxlength="200"/></td>
-					    <th><label for="edit-Surname">' . __("Surname","wimtvpro") . '<span class="form-required" title="">*</span></label></th>				
+					</tr>
+					<tr><th><label for="edit-Surname">' . __("Last Name","wimtvpro") . '<span class="form-required" title="">*</span></label></th>				
 						<td><input type="text" id="edit-Surname" name="surname" value="' . $dati['surname'] . '" size="40" maxlength="200"/></td>
 					</tr>
 					<tr>
@@ -606,11 +650,12 @@ function wimtvpro_configure(){
 							</select>
 	
 						</td>
-						
+						</tr>
+						<tr>
 						<th><label for="dateOfBirth">' . __("Date of Birth","wimtvpro") . '</label></th>
 						<td>
 							<input  type="text" class="pickadate" id="edit-giorno" name="dateOfBirth" value="' . $dati['dateOfBirth'] . '" size="10" maxlength="10">		     				
-							<div class="description">mm/dd/yy</div>
+							<div class="description">dd/mm/yy</div>
 						</td>
 
 						
@@ -624,13 +669,13 @@ function wimtvpro_configure(){
 			  			  
 			  
 				 
-				 <h4>' . __("Your social networks","wimtvpro") . '</h4>
-				 <p>' . __("(remove transport protocol, i.e. just type: twitter.com/MyName)","wimtvpro") . '</p>
+				 <h4>' . __("Social networks","wimtvpro") . '</h4>
+				 
 				 <table class="form-table">
 					
 			              								
 						<tr>
-							<th><label for="facebookUri">Facebook Url</label></th>
+							<th><label for="facebookUri">Facebook http://</label></th>
 							<td>
 								<input  type="text"  id="edit-facebookURI" name="facebookUri" value="' . $dati['facebookURI'] . '" size="100" maxlength="100">	
 							</td>
@@ -640,7 +685,7 @@ function wimtvpro_configure(){
 						
 						<tr>
 						
-						<th><label for="twitterUri">Twitter Url</label></th>
+						<th><label for="twitterUri">Twitter http://</label></th>
 							<td>
 								<input  type="text"  id="edit-twitterURI" name="twitterUri" value="' . $dati['twitterURI'] . '" size="100" maxlength="100">	
 							</td>
@@ -649,7 +694,7 @@ function wimtvpro_configure(){
 						</tr>
 
 						
-						<th><label for="linkedInUri">LinkedIn Url</label></th>
+						<th><label for="linkedInUri">LinkedIn http://</label></th>
 							<td>
 								<input  type="text"  id="edit-LinkedInUri" name="linkedInUri" value="' . $dati['linkedInURI'] . '" size="100" maxlength="100">	
 							</td>
@@ -666,7 +711,7 @@ function wimtvpro_configure(){
 				  </table>';
 				echo '<div class="hidden_value"></div>';
 				echo '<input type="hidden" name="wimtvpro_update" value="Y" />';
-				submit_button(__("Update")); 
+				submit_button(__("Update","wimtvpro")); 
 
 						
 			  echo '</form>';
@@ -704,7 +749,7 @@ echo "<h2>" . __("Features","wimtvpro") . "</h2>";
 		
 				<table class="form-table">			
 					<tr>
-						<th><label for="edit-name">' . __("Index and show public videos on WimTv","wimtvpro") . '</label></th>
+						<th><label for="edit-name">' . __("Index and show public videos on WimTV","wimtvpro") . ' (<a href="http://www.wim.tv" target="new">www.wim.tv</a>)</label></th>
 						<td>
 							<select id="edit-hidePublicShowtimeVideos" name="hidePublicShowtimeVideos" class="form-select">
 								<option value="false"';
@@ -757,7 +802,7 @@ echo "<h2>" . __("Features","wimtvpro") . "</h2>";
 				  </table>';
 				echo '<div class="hidden_value"></div>';
 				echo '<input type="hidden" name="wimtvpro_update" value="Y" />';
-				submit_button(__("Update")); 
+				submit_button(__("Update","wimtvpro")); 
 
 						
 			  echo '</form>';
@@ -784,7 +829,7 @@ echo "<h2>" . __("Features","wimtvpro") . "</h2>";
   	
 		
 echo "<div class='wrap'>";
-		echo "<h2>Pricing";
+		echo "<h2>" . __("Pricing","wimtvpro");
 		if (isset($_GET['return']))  echo "<a href='?page=WimVideoPro_Report' class='add-new-h2'>" . __("Back") . "</a>";
 		echo "</h2>";
 		
@@ -933,17 +978,14 @@ echo "<div class='wrap'>";
 	    curl_setopt($ch2, CURLOPT_RETURNTRANSFER, TRUE);
 	    curl_setopt($ch2, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 
-	    $response2 = curl_exec($ch2);
-	    
+	    $response2 = curl_exec($ch2);	    
 	    //$info = curl_getinfo($ch2);
-
-
 	    $packet_json = json_decode($response2);
-	    
-
 	    //var_dump ($packet_json);
 	    curl_close($ch2);
 	    //var_dump ($response2);
+	echo "<div class='empty'></div>";
+		echo "<h4>"  . __("Use of WimTV requires subscription to a monthly storage and bandwidth package","wimtvpro") . "</h4>";
 
 		echo "<table class='wp-list-table widefat fixed pages'>";
 	    echo "<thead><tr><th></th>";
@@ -981,7 +1023,9 @@ echo "<div class='wrap'>";
 
 	
 		echo "<tr>";
-			echo "<td>" . __("Price/mo.","wimtvpro") . "</td>";
+			echo "<td>";
+			printf( __( 'Price/mo. for %d Mo', 'wimtvpro' ), "1" );
+			echo "</td>";
 			foreach ($packet_json -> items as $a) {
 	    	echo "<td>" . number_format($a->price,2) . " &euro; / " . __("m","wimtvpro") . "</td>";		    
 	    	}
@@ -996,7 +1040,8 @@ echo "<div class='wrap'>";
 	    	if ($id_packet_user==$a->id) {
 	    		
 	    		echo "<img  src='" . plugins_url('images/check.png', __FILE__) . "' title='Checked'><br/>";
-	    		echo $count_date . " " . __("day left","wimtvpro");
+	    		if ($a->name!="Free")
+					echo $count_date . " " . __("day left","wimtvpro");
 	    	}
 	    	else {
 	    		echo "<a href='?page=WimTvPro&pack=1";
@@ -1015,10 +1060,19 @@ echo "<div class='wrap'>";
 		echo "</tbody>";
 		echo "</table>";
 		
-		echo "<h3>" . __("Note that, if you stay within the usage limits of the Free Package, use of WimTV is free.","wimtvpro") . "</h3>";
+		echo "<h4>(**) " . __("VAT to be added","wimtvpro") . "</h4>";
+		
+		echo "<p>" .
+		__("If, before the end of the month, you","wimtvpro") . 
+		"<ol><li>" . 
+		__("reach 80% level you will be notified","wimtvpro") .  "</li><li>" .
+		__("exceed 100% level you will be asked to upgrade to another package.","wimtvpro")
+		 . "</li></ol></p>";
+		
+		echo "<h3>" . __("Note that, if you stay within the usage limits of the Free Package, use of WimTV is free","wimtvpro") . "</h3>";
 		
 		
-		echo "<h3>" . __("If you license content and/or provide services in WimTV, revenue sharing will apply.","wimtvpro") . "</h3>";
+		echo "<h3>" . __("If you license content and/or provide services in WimTV, revenue sharing will apply","wimtvpro") . "</h3>";
 		
 		echo "<h3>" . __("Enjoy your WimTVPro video plugin!","wimtvpro") . "</h3>";
 
@@ -1034,7 +1088,7 @@ echo "<div class='wrap'>";
 function media_wimtvpro_process() {
   media_upload_header();
   
-  $videos .= "<h3 class='media-title'>My Streams</h3><ul class='itemsInsert'>" . wimtvpro_getThumbs(TRUE, FALSE, TRUE) . "</ul><div class='empty'></div>";
+  $videos .= "<h3 class='media-title'>My Streams</h3><table class='itemsInsert'>" . wimtvpro_getThumbs(TRUE, FALSE, TRUE) . "</table><div class='empty'></div>";
   
   global $wpdb; 
   $table_name = $wpdb->prefix . 'wimtvpro_playlist';
@@ -1067,7 +1121,7 @@ function media_wimtvpro_process() {
         $send = get_submit_button( __( 'Insert into Post',"wimtvpro" ), 'buttonInsertPlayList', $record_new->id, false );
 
   		
-  		$videos .= $send . '</li>';
+  		$videos .= $send . '</tr>';
 
   			}
 }

@@ -1,14 +1,15 @@
 <?php
 /**
   * @file
-  * Syncronize the video with wim.tv.
+  * Synchronize the video with wim.tv.
   *
   */
-  if (!isset($upload))
-  	include("../../../wp-blog-header.php");
+    if (!isset($upload))
+  	include("../../../wp-load.php");
   else
-    include("../wp-blog-header.php");
+    include("../wp-load.php");
   global $user,$wpdb;
+
   $url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosDetailWimtv");
   $credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
   $table_name = $wpdb->prefix . 'wimtvpro_video';
@@ -26,7 +27,7 @@
   curl_close($ch);
 
   if ($array_json_videos==NULL) {
-    _e("Can not establish a connection with Wimtv. Contact the administrator", "wimtvpro");
+    _e("Can not establish a connection with Wim.tv. Contact the administrator.", "wimtvpro");
   } 
   else {
   //$num = (array)simplexml_load_string($response);
@@ -142,7 +143,8 @@
 		  "DELETE FROM " . $table_name . " WHERE contentidentifier ='"  . $value . "'"
       );
     }
-    if (isset($_GET['sync'])) {
+	
+    if ((isset($_GET['sync']))) {
       echo wimtvpro_getThumbs($_GET['showtime'], TRUE);
     }
     

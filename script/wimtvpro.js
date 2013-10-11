@@ -1,5 +1,147 @@
+
 jQuery(document).ready(function(){ 
 
+	jQuery("span.wimtv-thumbnail").click(function(){viewVideo(this);});
+	
+	jQuery("#wimtvpro-upload").submit(function(event){
+		
+		event.preventDefault();
+		jQuery (".progress-bar span").css("width","0");
+		jQuery (".progress-bar span").html("0%");
+		var $form = jQuery(this);
+		var $inputs = $form.find("input, select, button, textarea");
+		$inputs.prop("disabled", true);
+
+		var formData = new FormData(jQuery("form")[0]);
+		jQuery.each(jQuery('#edit-videofile')[0].files, function(i, file) {
+			formData.append('videoFile', file);
+		});
+		$inputs.each(function(index, element) {
+			formData.append(jQuery(this).attr("name"), jQuery(this).attr("value"));			
+        });
+		jQuery.ajax({
+			
+			url:  url_pathPlugin + "scripts.php", 		      
+			type: "POST",
+			data:  formData,
+			cache: true,
+       	 	contentType: false,
+			async:true,
+        	processData: false,
+			enctype: 'multipart/form-data',
+			
+			beforeSend: function(){ 
+				jQuery (".progress-bar").show();
+			},
+			progress: function(e) {
+					//make sure we can compute the length
+			
+					if(e.lengthComputable) {
+						//calculate the percentage loaded
+						var pct = (e.loaded / e.total) * 100;
+			
+						//log percentage loaded
+						jQuery (".progress-bar span").css("width",Math.round(pct) + "%");
+						jQuery (".progress-bar span").html(Math.round(pct) + "%");
+						
+					}
+					//this usually happens when Content-Length isn't set
+					else {
+						console.warn('Content Length not reported!');
+					}
+				},
+				success: function(response) {
+					jQuery (".progress-bar").hide();
+					jQuery("#message").html (response);
+					$inputs.prop("disabled", false);
+					jQuery("#addCategories").html("");
+					$inputs.each(function(index, element) {
+	
+						if ((jQuery(this).attr("id")!="submit") && (jQuery(this).attr("id")!="nameFunction"))
+							jQuery(this).attr("value","");
+				});
+			    
+				
+			},
+			
+			complete: function(response){ 
+				
+			},
+			
+			error: function(request,error) {
+				alert(request.responseText);
+			}	
+		});	
+		
+	});
+	
+	
+	
+	
+	
+	function viewVideo(elem){
+		if( jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").length  ) {
+			var url = jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").attr("id");
+			jQuery(elem).colorbox({href:url});
+		}else{
+			alert (videoproblem);	
+		}
+	}
+	
+	function callSync(elem){
+		jQuery.ajax({
+			url:   url_pathPlugin  + "sync.php",
+			dataType: "html",
+			data: {sync:true,showtime:jQuery("table.items").attr("id")},
+			type: "GET",
+			beforeSend: function(){ 
+			   
+				jQuery(".loaderTable").show();
+				
+				jQuery("table.items tbody tr").remove(); 						   
+			},
+			complete: function(){ 
+				jQuery(".loaderTable").hide();
+			
+			},
+			success: function(response) {	
+				jQuery("table.items tbody").html(response);
+				
+				jQuery("a.viewThumb").click( function(){
+                  jQuery(this).colorbox({href:jQuery(this).attr("id")});
+                });
+                jQuery("span.wimtv-thumbnail").click(function(){viewVideo(this);});
+                
+				jQuery(".icon_Putshowtime,.icon_AcquiPutshowtime").click(function(){
+					callViewForm(jQuery(this));					
+				});
+			
+				jQuery(".icon_AcqRemoveshowtime,.icon_Removeshowtime,.icon_RemoveshowtimeInto").click(function(){
+					callRemoveShowtime(jQuery(this));
+				});
+				jQuery(".free,.cc,.pay").click(function(){
+					callPutShowtime(jQuery(this));					
+				});
+				jQuery(".icon_remove").click(function(){
+				callRemoveVideo(jQuery(this));
+				});
+				jQuery('.icon_playlist').click(function() {    
+					callInsertIntoPlayList(jQuery(this));	   
+				});
+				
+				if (elem!="") {
+					callviewVideothumbs(jQuery(elem));
+				}
+			},
+			
+			error: function(response) {	
+				jQuery("ul.items").html(response);
+			}
+		});
+		
+		
+	}
+	
 	function callRemoveVideo(element){
 	
 		jQuery.ajax({
@@ -10,20 +152,20 @@ jQuery(document).ready(function(){
 			async: false,
 			data: "namefunction=RemoveVideo&id=" + element.parent().parent().attr("id") , 
 			beforeSend: function(){ 
-				element.parent().children(".headerBox").children(".icon").hide(); 
-				element.parent().children(".headerBox").children(".loader").show();						   
+				element.parent("tr").children(".icon").hide();
+				element.parent().append("<span class='loading'></span>");						   
 			},
 			complete: function(){ 
-				element.parent().children(".headerBox").children(".icon").show(); 
-				element.parent().children(".headerBox").children(".loader").hide(); 
+				element.parent("tr").children(".icon").show(); 
+				jQuery(".loading").remove(); 
 			},
 			success: function(response) {
 				var json =  jQuery.parseJSON(response);
 				var result = json.result;
 				if (result=="SUCCESS"){
-					element.parent().parent().hide();
+					alert (json.message);	
 				}
-				alert (json.result + " : " + json.message);
+				location.reload();
 			},
 			error: function(request,error) {
 				alert(request.responseText);
@@ -34,8 +176,9 @@ jQuery(document).ready(function(){
 	}
 
 	function callviewVideothumbs (element){
-		var id = element.parent().parent().parent().parent("li").attr("id");
+		var id = element.parent().parent("tr").attr("id");
 		jQuery(".icon_viewVideo").colorbox({
+			height:"80%",
 	        html:function(){
 		    var stateView = jQuery(this).attr("rel").split('|');
 		    var roles = jQuery.ajax({
@@ -50,6 +193,20 @@ jQuery(document).ready(function(){
 						},
 						success: function(response) {
 							roles = response;
+						}
+			}).responseText;
+			var alls = jQuery.ajax({
+						context: this,
+						url:  url_pathPlugin + "scripts.php", 
+						type: "GET",
+						dataType: "html",
+						async: false, 
+						data:{ 
+							namefunction: "getAlls",
+							id : id						
+						},
+						success: function(response) {
+							alls = response;
 						}
 			}).responseText;
 			var users = jQuery.ajax({
@@ -68,35 +225,34 @@ jQuery(document).ready(function(){
 			}).responseText;
 
 								
-				text  = '<b>Who should see the video?</b><br/>';
+				text  = '<b>' + videoPrivacy[0] + '</b><br/>';
 				
 				text += '<select onChange="viewWho(this);" id="users" multiple="multiple" style="height:100px;width:270px">';
-				text += '<option value="All">Everybody</option>';
-				text += '<option value="No">Nobody (only administrator)</option>';
-				text += '<optgroup label="Users" id="optUsers">';
+				text += alls;
+				text += '<optgroup label="' + videoPrivacy[8] + '" id="optUsers">';
 				text += users;
 				text += '</optgroup>';
-				text += '<optgroup label="Roles" id="optRoles">';
+				text += '<optgroup label="' + videoPrivacy[9] + '" id="optRoles">';
 				text += roles;
 				text += '</optgroup>';
 				text += '</select>';
-				text += '<br/><p class="description">(Multiselect with CTRL) You are selected <br/><strong id="AddUser"></strong>  <strong id="AddRole"></strong></p>';
+				text += '<br/><p class="description">' + selectCat + '<br/><strong id="AddUser"></strong>  <strong id="AddRole"></strong></p>';
 				
-				text  += '<b>Where should see the video for public user? (If you are selected Everyone)</b>';
+				text  += '<b>' + videoPrivacy[3] + '</b>';
 				
 				text += '<p class="viewThumbs';
 				if (stateView[0]=="0") text += " selected";
-				text += '" id="0">Invisible</p>';
+				text += '" id="0">' + videoPrivacy[4] + '</p>';
 				text += '<p class="viewThumbs';
 				if (stateView[0]=="1") text += " selected";
-				text += '" id="1">Only into widget</p>';
+				text += '" id="1">' + videoPrivacy[5] + '</p>';
 				text += '<p class="viewThumbs';
 				if (stateView[0]=="2") text += " selected";
-				text += '" id="2">Only into pages</p>';
+				text += '" id="2">' + videoPrivacy[6] + '</p>';
 				text += '<p class="viewThumbs';
 				if (stateView[0]=="3") text += " selected";
-				text += '" id="3">Into widget and page</p>';
-				text += '<div class="action"><span class="form_save">Save</span><span class="icon_sync2" style="display:none;">Loading...</span></div>';
+				text += '" id="3">' + videoPrivacy[7] + '</p>';
+				text += '<div class="action"><span class="form_save button-primary">' + update + '</span><span class="loading" style="display:none;"></span></div>';
 				text += '<br/><br/>';
 				text += '&nbsp;&nbsp;&nbsp;';
 				
@@ -138,12 +294,12 @@ jQuery(document).ready(function(){
 							//jQuery(this).parent().hide(); 
 							//jQuery(this).parent().parent().children(".loader").show(); 	
 							//jQuery(this).colorBox(wimtvproAddShowtime);	
-							jQuery(".icon_sync2").show();	
+							jQuery(".loading").show();	
 							jQuery(".form_save").hide();		   
 						},
 						success: function(response) {
 							jQuery.colorbox.close();
-							alert ("Change State view successfully");
+							alert (updateSuc);
 							element.parent().parent().children(".icon").children("span").attr("rel",state); 	
 						}
 					});
@@ -172,30 +328,24 @@ jQuery(document).ready(function(){
 			},
 			
 			beforeSend: function(){ 
-				jQuery(".icon_sync2").show();	
+				jQuery(".loading").show();	
 				jQuery(".form_save").hide();			   
 			},
 			success: function(response) {
-		    
+		    	
 				var json =  jQuery.parseJSON(response);
 				console.log (json.messages);
 				var result = json.result;
 				
 				if (result=="SUCCESS"){
 					jQuery.colorbox.close();
-					element.parent().parent().children(".icon").children("span").hide();				 	
-					element.parent().parent().children(".icon").children("span." + changeClass).show();
-					element.parent().parent().children(".icon").children("span." + changeClass).attr("id", json.showtimeIdentifier);			        		
-					
-					element.parent().parent().children(".icon").children("a.viewThumb").show();
-					url=  "admin/config/embedded/" + id + "/" + json.showtimeIdentifier;
-					element.parent().parent().children(".icon").children("a.viewThumb").attr("id",url);
-					element.parent().remove();			        		
+					callSync("");
+								        		
 				} else {
 				    var message = json.messages[0].field + ":" + json.messages[0].message; 
 					jQuery(this).parent().hide(); 
 					jQuery(this).parent().parent().children(".loader").show();
-					jQuery(".icon_sync2").hide();	
+					jQuery(".loading").hide();	
 					jQuery(".form_save").show();
 					alert (message);
 				}
@@ -206,14 +356,22 @@ jQuery(document).ready(function(){
 		});
 	}
 	function callViewForm(element){
-		element.parent().parent().children(".formVideo").fadeToggle("slow");
+		element.parent().children(".formVideo").fadeToggle("slow");
 	}
 	function callPutShowtime(element){
+		 var thisclass = element.attr("class");
+		 if (thisclass.indexOf("cc") >= 0){
+			height = "70%";
+		 } else {
+	     	height = "35%";
+		 } 
+		
 		jQuery(element).colorbox({
+			
 			html:function(){
-				var thisclass = element.attr("class");
+				
 				if (thisclass.indexOf("free") >= 0){	
-					text = "<p>Do you want your video to be visible to all for free?</p><div class='action'><span class='form_save'>Save</span><span class='icon_sync2' style='display:none;'>Loading...</span></div>";
+					text = "<h3>" + gratuito + "</h3><div class='action'><span class='form_save button-primary'>" + messageSave + "</span><span class='loading' style='display:none;'></span></div>";
 				}else if (thisclass.indexOf("cc") >= 0){	
 					text  = '<p class="cc_set" id="BY_NC_SA"><img src="http://www.wim.tv/wimtv-webapp/images/cclicense/Attribution Non-commercial No Derivatives.png" 	title="Attribution Non-Commercial No Derivatives" /> Attribution Non-Commercial No Derivatives</p>';		
 					text += '<p class="cc_set" id="BY_NC_ND"><img src="http://www.wim.tv/wimtv-webapp/images/cclicense/Attribution Non-commercial Share Alike.png" 	title="Attribution Non-Commercial Share Alike" /> Attribution Non-Commercial Share Alike</p>';
@@ -221,14 +379,18 @@ jQuery(document).ready(function(){
 					text += '<p class="cc_set" id="BY_ND"><img src="http://www.wim.tv/wimtv-webapp/images/cclicense/Attribution No Derivatives.png" 			title="Attribution No Derivatives" /> Attribution No Derivatives</p>';
 					text += '<p class="cc_set" id="BY_SA"><img src="http://www.wim.tv/wimtv-webapp/images/cclicense/Attribution Share Alike.png" 				title"Attribution Share Alike" /> Attribution Share Alike</p>';
 					text += '<p class="cc_set" id="BY"><img src="http://www.wim.tv/wimtv-webapp/images/cclicense/Attribution.png" 						title="Attribution" /> Attribution</p>';      
-					text += '<div class="action"><span class="form_save">Save</span><span class="icon_sync2" style="display:none;">Loading...</span></div>';
+					text += '<div class="action"><span class="form_save button-primary">'  + messageSave  + '</span><span class="loading" style="display:none;"></span></div>';
 				} else if (thisclass.indexOf("ppv") >= 0){
-					text  = '<form><input type="text" name="amount" class="amount" value="00" />.<input type="text" name="amount_cent" class="amount_cent" value="00" maxlength="2"/>';
-					text  += 'Euro<input type="hidden" name="currency" class="currency" value="EUR"></form>';
-					text += '<div class="action"><span class="form_save">Save</span><span class="icon_sync2" style="display:none;">Loading...</span></div>';
+					text  = '<form id="amount"><input type="text" name="amount" class="amount" value="00" maxlength="4"/>' + point + '<input type="text" name="amount_cent" class="amount_cent" value="00" maxlength="2"/>';
+					text  += 'Euro<input type="hidden" name="currency" class="currency" value="EUR">';
+					text += '<br/><br/><span class="form_save button-primary">'  + messageSave  + '</span><span class="loading" style="display:none;"></span></form>';
 				}
 				return text;
 			},
+			
+			width:"30%",
+			height:height ,
+			
 			onComplete: function(){
 				jQuery(".cc_set").click(function(){
 					jQuery(".cc_set").removeClass("selected");
@@ -236,9 +398,9 @@ jQuery(document).ready(function(){
 				});	
 				jQuery(".form_save").click(function(){
 					var namefunction,licenseType,paymentMode,ccType,pricePerView,pricePerViewCurrency,changeClass,coId,id ="";
-					var id = element.parent().parent().parent().parent("li").attr("id");
-					var icon = element.parent().parent().children(".icon");
-					var nomeclass = element.parent().parent().children(".icon").children("span.add").attr("class");		
+					var id = element.parent().parent().parent("tr").attr("id");
+					var icon = element.parent().parent().parent("tr").children(".icon");
+					var nomeclass = element.parent().parent().parent("tr").children(".icon").children("span.add").attr("class");		
 					var thisclass = element.attr("class");
 					if (nomeclass == "add icon_Putshowtime") {
 						namefunction = "putST";
@@ -258,7 +420,7 @@ jQuery(document).ready(function(){
 					} else if (thisclass.indexOf("ppv") >= 0){
 						licenseType ="TEMPLATE_LICENSE";
 						paymentMode ="PAYPERVIEW";
-						pricePerView = jQuery(".amount").val() + "." + jQuery(".amount_cent").val();
+						pricePerView = jQuery(".amount").val() + point + jQuery(".amount_cent").val();
 						pricePerViewCurrency = jQuery(".currency").val();
 					}
 					
@@ -287,12 +449,12 @@ jQuery(document).ready(function(){
 				dataType: "html",
 				data: "namefunction=" + namefunction + "&id=" + element.parent().parent().parent().parent().attr("id") + coId , 
 				beforeSend: function(){ 
-				element.parent().hide(); 
-				element.parent().parent().children(".loader").show(); 						   
+				element.hide();
+				element.parent().append("<span class='loading'></span>");					   
 			},
 			complete: function(){ 
-				element.parent().show(); 
-				element.parent().parent().children(".loader").hide(); 
+				 jQuery('.loading').remove();
+				
 			},
 			success: function(response) {
 				var json =  jQuery.parseJSON(response);
@@ -300,7 +462,7 @@ jQuery(document).ready(function(){
 				if (result=="SUCCESS"){
 					//element.removeClass();
 					//element.addClass(changeClass);
-					element.hide();
+					/*element.parent().hide();
 					element.parent().children("." + changeClass).show();
 					element.parent().children("." + changeClass).attr("id", json.showtimeIdentifier);
 					element.parent().children(".icon_remove").show();
@@ -312,9 +474,10 @@ jQuery(document).ready(function(){
 						element.parent().children(".viewThumb").attr("href","#");
 						element.parent().parent().parent().children("div.infos").hide();
 					} else
-						element.parent().parent().parent().parent().hide();
-						
-					alert (refreshpage);
+						element.parent().parent().parent().parent().hide();*/
+					
+					callSync("");	
+					//alert (refreshpage);
 				} else {
 					element.parent().hide(); 
 					element.parent().parent().children(".loader").show();
@@ -327,60 +490,13 @@ jQuery(document).ready(function(){
 		});
 	}
 	jQuery(".icon_sync0").click(function(){
-		jQuery.ajax({
-			context: this,
-			url:   url_pathPlugin  + "sync.php",
-			dataType: "html",
-			data: {sync:true,showtime:jQuery("ul.items").attr("id")},
-			type: "GET",
-			beforeSend: function(){ 
-				jQuery(this).removeClass();
-				jQuery(this).addClass("icon_sync1");
-				jQuery("ul.items li").remove(); 						   
-			},
-			complete: function(){ 
-				jQuery(this).removeClass();
-				jQuery(this).addClass("icon_sync0");
-			},
-			success: function(response) {	
-				jQuery("ul.items").html(response);
-				jQuery("a.viewThumb").click( function(){
-                  jQuery(this).colorbox({href:jQuery(this).attr("id")});
-                });
-                jQuery("a.wimtv-thumbnail").click( function(){
-				    if( jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").length  ) {
-						var url = jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").attr("id");
-						jQuery(this).colorbox({href:url});
-					}
-				});
-                
-				jQuery(".icon_Putshowtime,.icon_AcquiPutshowtime").click(function(){
-					callViewForm(jQuery(this));					
-				});
-			
-				jQuery(".icon_AcqRemoveshowtime,.icon_Removeshowtime,.icon_RemoveshowtimeInto").click(function(){
-					callRemoveShowtime(jQuery(this));
-				});
-				jQuery(".free,.cc,.pay").click(function(){
-					callPutShowtime(jQuery(this));					
-				});
-				jQuery(".icon_remove").click(function(){
-				callRemoveVideo(jQuery(this));
-				});
-				jQuery('.icon_playlist').click(function() {    
-					callInsertIntoPlayList(jQuery(this));	   
-				});
-				callviewVideothumbs(jQuery(this));
-			},
-			
-			error: function(response) {	
-				jQuery("ul.items").html(response);
-			}
-		});
+		callSync(this);
 	});
 	jQuery(".free,.cc,.ppv").click(function(){
 		callPutShowtime(jQuery(this));					
 	});
+	
+		
 	jQuery(".icon_Putshowtime,.icon_AcquiPutshowtime").click(function(){
 		callViewForm(jQuery(this));
 	});
@@ -415,10 +531,11 @@ jQuery(document).ready(function(){
 			  	jQuery("#edit-url").attr("readonly", "readonly");
 			  	jQuery("#edit-url").attr("value", json.liveUrl);
 			  	jQuery(this).hide();
+				jQuery("#urlcreate").hide();
 				jQuery(".removeUrl").show();
 			  } else {
 			    //alert (response);
-			    alert ("Insert a password for live streaming is required");
+			    alert (passwordReq);
 			    jQuery(".passwordUrlLive").show();
 			    jQuery(".createPass").click(function(){
 			     jQuery.ajax({
@@ -449,6 +566,7 @@ jQuery(document).ready(function(){
      jQuery("#edit-url").removeAttr("readonly");
      jQuery("#edit-url").removeAttr("disabled");
      jQuery("#edit-url").val("");	
+	 jQuery("#urlcreate").show();
    });
       
 });
@@ -456,7 +574,7 @@ jQuery(document).ready(function(){
 
 
 function viewCategories(obj){
-    jQuery("#addCategories").html("You are selected");
+    jQuery("#addCategories").html(selectCat);
     var selectedArray = new Array();
     count = 0;
     for (i=0; i<obj.options.length; i++) {
@@ -483,11 +601,11 @@ function viewWho(obj){
         count++;
 		
         if ( obj.options[i].parentNode.id == "optUsers"){
-            if (jQuery("#AddUser").html() == "") jQuery("#AddUser").html("Users:");
+            if (jQuery("#AddUser").html() == "") jQuery("#AddUser").html(videoPrivacy[8]);
         	jQuery("#AddUser").append(" " + valueSelected);
         }
         if ( obj.options[i].parentNode.id == "optRoles"){
-        	if (jQuery("#AddRole").html() == "") jQuery("#AddRole").html("Roles:");
+        	if (jQuery("#AddRole").html() == "") jQuery("#AddRole").html(videoPrivacy[9]);
         	jQuery("#AddRole").append(" " + valueSelected);
         }
         	
@@ -629,8 +747,41 @@ jQuery(document).ready(function() {
   
   function functionPlaylist(){
   
-         
-	   jQuery('.playlist input.title').change(function() {
+         /*SORTABLE*/      						
+		jQuery( "table.items_playlist tbody" ).sortable({
+		  placeholder: "ui-state-highlight",
+		  connectWith: "table tbody"		,
+		  active: function (){
+			
+			$count = jQuery(".sortable1 table#droptrue").find('tbody > tr').length;
+			if ($count==0) {
+				jQuery(".sortable1 table#droptrue tbody").append("<tr class='appoggio'></tr>");
+			}
+			
+		},
+		  deactivate: function( event, ui ) {
+			jQuery(".appoggio").remove();
+		    var sort = jQuery(".sortable2 table#dropfalse tbody").sortable("toArray");
+			jQuery(".list").val(sort);
+			if (sort=="")
+				jQuery(".sortable2 table#dropfalse tbody").append("<tr class='appoggio'></tr>");
+			$count = jQuery(".sortable1 table#droptrue").find('tbody > tr').length;
+			if ($count==0) {
+				jQuery(".sortable1 table#droptrue tbody").append("<tr class='appoggio'></tr>");
+			}
+		  }
+		});
+		/*jQuery( ".sortable1 table#droptrue" ).sortable({
+		  connectWith: "tr"		
+		});
+		jQuery( ".sortable2 table#dropfalse" ).sortable({
+		  connectWith: "tr",
+		  deactivate: function( event, ui ) {
+		    var sort = jQuery(".sortable2 table#dropfalse").sortable("toArray");
+			jQuery(".list").val(sort);
+		  }
+		});*/
+	   jQuery('input.title').change(function() {
 	    jQuery(this).parent().children('.icon_modTitlePlay').show();
 	   });
 	   
@@ -640,7 +791,7 @@ jQuery(document).ready(function() {
 	  });
 	
 	jQuery(".icon_viewPlay").click(function () {
-		var id= jQuery(this).parent().attr("rel");
+		var id= jQuery(this).attr("id");
 		jQuery(this).colorbox({href:  url_pathPlugin + "pages/embeddedPlayList.php?id=" + id});
 	});
 	
@@ -658,56 +809,19 @@ jQuery(document).ready(function() {
 		      namePlayList : nameNewPlaylist,
 		      namefunction: "createPlaylist"
 		    },
-		    success: function(response){
-		        
-		  		var newRiga = '<div class="playlist new" id="playlist_' +  count  + '" rel=""><span class="icon_selectPlay" style="visibility:hidden"></span><input type="text" value="Playlist ' +  count  + '" /><span class="icon_createPlay"></span></div>';
-		  		jQuery(this).parent().parent().append(newRiga);
-		  		jQuery(this).parent().removeClass("new");
-		  		jQuery(this).parent().append('(<span class="counter">0</span>)<span class="icon_deletePlay"></span><span class="icon_modTitlePlay"></span><span class="icon_viewPlay"></span>');
-		  		jQuery(this).parent().children("input").addClass("title");
-		  		jQuery(this).parent().attr("rel",response);
-		  		jQuery(this).parent().children(".icon_selectPlay").attr("style","");
-		  		jQuery(".playlist").removeClass("selected");
-		  		jQuery(this).parent().addClass("selected");
-		  		jQuery(this).remove();
-		  		functionPlaylist();
-		  		
-		  		
-		  	},
-		    error: function(jqXHR, textStatus, errorThrown){alert(errorThrown);} 
+		   success: function(){location.reload();},
+		   error: function(){location.reload();}
 		  });
-	  
-	  	
+
 	  });
 	  
-	  jQuery('.icon_modTitlePlay').click(function() {
-	  	var nameNewPlaylist = jQuery(this).parent().children("input").val();
-	  	//ID = playlist_##
-	  	var idPlayList = jQuery(this).parent().attr("rel"); 
-	  	//add to DB
-	  	jQuery.ajax({
-		    context: this,
-	        url:  url_pathPlugin + "script_playlist.php", 
-		    type: "GET",
-		    data:{
-		      idPlayList : idPlayList,
-		      namePlayList : nameNewPlaylist,
-		      namefunction: "modTitlePlaylist"
-		    },
-		    success: function(response){
-		  		jQuery(this).hide();
-		  	},
-		    error: function(jqXHR, textStatus, errorThrown){alert(errorThrown);} 
-		  });
 	  
-	  	
-	  });
 	
 	  
 	  jQuery('.icon_deletePlay').click(function() {
 	  	var nameNewPlaylist = jQuery(this).parent().children("input").val();
 	  	//remove from DB
-	  	var idPlayList = jQuery(this).parent().attr("rel");
+	  	var idPlayList = jQuery(this).parent().parent().attr("rel");
 	  	//add to DB
 	  	jQuery.ajax({
 		    context: this,
@@ -717,12 +831,8 @@ jQuery(document).ready(function() {
 		      idPlayList : idPlayList,
 		      namefunction: "removePlaylist"
 		    },
-		    success: function(response){
-		  		jQuery(this).parent().remove();
-		  		var count = jQuery(".playlist").size();
-		  		jQuery(".new").children("input").val("Playlist " + count);
-		  	},
-		    error: function(jqXHR, textStatus, errorThrown){alert(errorThrown);} 
+		   success: function(){location.reload();},
+		   error: function(){location.reload();}
 		  });
 	  	
 	  });
@@ -745,7 +855,9 @@ jQuery(document).ready(function() {
     
     
     jQuery(".termsLink").colorbox({width:"80%", height:"80%", iframe:true, href:jQuery(this).attr("href")});
-    
-	
+
+jQuery(".ppvNoActive").click(function(){
+		alert (nonePayment);				
+	});
 
 }); 

@@ -25,12 +25,21 @@
     $arrayST["contentId"] = $arrayjSonST->{"contentId"};
     $arrayST["url"] = $arrayjSonST->{"url"};
 
+	/*$sharing = "'plugins': {
+			
+			   'sharing-3': {
+				   'link': '" . $embedded . "',
+				   'code': '" . $embedded  . "'
+			   }},";*/
+
+
     $ch = curl_init();
     if (get_option('wp_nameSkin')!="") {
-     $uploads_info = wp_upload_dir();
-        $directory =  $uploads_info["baseurl"] .  "/skinWim";
-
-      $skin = "&skin=" . $directory  . "/" . get_option('wp_nameSkin') . ".zip";
+        $uploads_info = wp_upload_dir();
+        $directory =  $uploads_info["baseurl"] .  "/skinWim/" . get_option('wp_nameSkin') . "/";
+	    $nomeFilexml  = wimtvpro_searchFile($uploads_info["basedir"] .  "/skinWim/" . get_option('wp_nameSkin'),"xml");
+	
+      $skin = "&skin=" . $directory  . "/" . $nomeFilexml;
     }
     else
       $skin = "";
@@ -46,7 +55,8 @@
     //echo $url;
     curl_setopt($ch, CURLOPT_URL,  $url);
     curl_setopt($ch, CURLOPT_VERBOSE, 0);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: en-us,en;'));
+	//echo $_SERVER["HTTP_USER_AGENT"];
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language:' . $_SERVER["HTTP_ACCEPT_LANGUAGE"], 'User-Agent:' . $_SERVER['HTTP_USER_AGENT']));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_setopt($ch, CURLOPT_USERPWD, $credential);

@@ -5,7 +5,7 @@ Requires at least: 3.4
 Tested up to: 3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.5.4
+Stable tag: 2.5.5
 
 WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
 
@@ -68,7 +68,7 @@ For install "sudo apt-get install php5-curl"
 = 1.0 =
 * Fixed problem with url of images and script jquery
 = 1.1 =
-* Fixed bug Syncronize
+* Fixed bug Synchronize
 = 1.2 =
 * Fixed url jquery
 = 2.0 =

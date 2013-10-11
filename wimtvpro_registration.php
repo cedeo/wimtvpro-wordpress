@@ -49,7 +49,7 @@ function wimtvpro_registration(){
 				//-->
 				</script>';
               echo '<div class="updated"><p><strong>';
-              _e("Registration successfully.","wimtvpro");
+              _e("Registration successful.","wimtvpro");
               echo  '</strong></p></div>';
               update_option('wp_userwimtv', $_POST['reg_Username']);
           	  update_option('wp_passwimtv', $_POST['reg_Password']);
@@ -81,14 +81,14 @@ function wimtvpro_registration(){
 ?>
 	<form enctype="multipart/form-data" action="#" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
 		
-		<h4><?php _e("Personal Information","wimtvpro");?></h4>
+		<h4><?php _e("Personal Info","wimtvpro");?></h4>
 			<table class="form-table">			
 				<tr>
-					<th><label for="edit-name"><?php _e("Name");?><span class="form-required" title="">*</span></label></th>
+					<th><label for="edit-name"><?php _e("First Name");?><span class="form-required" title="">*</span></label></th>
 					<td><input type="text" id="edit-name" name="reg_name" value="<?php echo $_POST['reg_name'];?>" size="40" maxlength="200"/></td>
 				</tr>
 				<tr>
-					<th><label for="edit-Surname"><?php _e("Surname","wimtvpro");?><span class="form-required" title="">*</span></label></th>				
+					<th><label for="edit-Surname"><?php _e("Last Name","wimtvpro");?><span class="form-required" title="">*</span></label></th>				
 					<td><input type="text" id="edit-Surname" name="reg_Surname" value="<?php echo $_POST['reg_Surname'];?>" size="40" maxlength="200"/></td>
 				</tr>
 				<tr>
@@ -124,7 +124,7 @@ function wimtvpro_registration(){
 				</tr-->
 				
 				<tr>
-					<th><label for="edit-name">Username<span class="form-required" title="">*</span></label></th>
+					<th><label for="edit-name"><?php _e("Username","wimtvpro");?><span class="form-required" title="">*</span></label></th>
 					<td><input type="text" id="edit-Username" name="reg_Username" value="<?php echo $_POST['reg_Username'];?>" size="30" maxlength="200"/></td>
 				</tr>
 				
@@ -148,9 +148,9 @@ function wimtvpro_registration(){
 
 					
 					?>
-					<th><label for="edit-acceptEula"><?php _e("Terms of Use","wimtvpro");?><span class="form-required" title="">*</span></label></th>
+					<th><label for="edit-acceptEula"><?php _e("Terms of Service","wimtvpro");?><span class="form-required" title="">*</span></label></th>
 					<td>
-						<div class="description"><input type="checkbox" id="edit-acceptEula" name="reg_acceptEula" value="true" <?php if (isset($_POST['reg_acceptEula'])) echo "checked='checked'"; ?>/><?php _e("I have read and agree to the wim.tv&reg;","wimtvpro");?> 
+						<div class="description"><input type="checkbox" id="edit-acceptEula" name="reg_acceptEula" value="true" <?php if (isset($_POST['reg_acceptEula'])) echo "checked='checked'"; ?>/> <?php _e("I have read and agree to WimTV","wimtvpro");?> 
 						<a class="termsLink" href="<?php echo $baseWimtv; ?>wimtv-webapp/term.do"><?php _e("Terms of Service","wimtvpro"); ?></a> 
 						and
 						<a class="termsLink" href="<?php echo $baseWimtv; ?>wimtv-webapp/privacy.do"><?php _e("Privacy Policies","wimtvpro");?></a></div>	

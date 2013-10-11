@@ -17,7 +17,7 @@
     $jSonST =wimtvpro_detail_showtime(true, $streamItem);
     $arrayjSonST = json_decode($jSonST);
     $arrayST["showtimeIdentifier"] = $arrayjSonST->{"showtimeIdentifier"};
-    $arrayST["title"] = $arrayjSonST->{"title"};
+    $arrayST[""] = $arrayjSonST->{"title"};
     $arrayST["duration"] = $arrayjSonST->{"duration"};
     $arrayST["categories"] = $arrayjSonST->{"categories"};
     $arrayST["description"] = $arrayjSonST->{"description"};

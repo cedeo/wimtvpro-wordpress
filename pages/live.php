@@ -5,9 +5,7 @@ $timezone = $_POST['timezone'];
 $type = $_POST['type'];
 $id =  $_POST['id'];
 $onlyActive = $_POST['onlyActive'];
- 
- 
- 
+
    
   $url_live_select = get_option("wp_basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts?timezone=" . $timezone;
   //$url_live_select = "http://peer.wim.tv:8080/" . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts?timezone=" . $timezone;
@@ -118,7 +116,11 @@ $onlyActive = $_POST['onlyActive'];
      
       $output .="<tr>
       <td>" . $name . "</td>";
-      if ($liveIsNow)  $output .=" <td><a target='newTab' href='" .  plugin_dir_url(dirname(__FILE__))  . "/pages/live_webproducer.php?id=" . $identifier . "' class='clickWebProducer' id='" . $identifier . "'><img src='" . plugins_url('images/webcam.png', dirname(__FILE__)) . "'></a></td>";
+	  
+	  if ($identifier==get_option("wp_liveNow"))  $file= "live_rec.gif";
+	  else $file= "webcam.png";
+	  
+      if ($liveIsNow)  $output .= "<td><a  target='page_newTab' href='" .  plugin_dir_url(dirname(__FILE__))  . "pages/live_webproducer.php?id=" . $identifier . "' class='clickWebProducer' id='" . $identifier . "'><img  onClick='clickImg(this)' src='" . plugins_url('images/' . $file, dirname(__FILE__)) . "' /></a></td>";
       else $output .="<td></td>";
       
       $output .=  "<td>" . $payment_mode . "</td>
@@ -126,8 +128,8 @@ $onlyActive = $_POST['onlyActive'];
       <td>"  . $data . " " . $oraMin . "<br/>" . $durata . "</td>
       <td>" . $embedded_code . "</td>
       <td> 
-      <a href='?page=WimVideoPro_WimLive&namefunction=modifyLive&id=" . $identifier . "'>" . __("Edit") . "</a> |
-       <a href='?page=WimVideoPro_WimLive&namefunction=deleteLive&id=" . $identifier . "'>" . __("Delete") . "</a></td>
+      <a href='?page=WimVideoPro_WimLive&namefunction=modifyLive&id=" . $identifier . "' alt='" . __("Remove") . "'   title='" . __("Modify","wimtvpro") . "'><img src='" . plugins_url('images/mod.png',dirname(__FILE__)) . "'  alt='" . __("Modify","wimtvpro") . "'></a>   
+       <a href='?page=WimVideoPro_WimLive&namefunction=deleteLive&id=" . $identifier . "' title='" . __("Remove") . "'><img src='" . plugins_url('images/remove.png',dirname(__FILE__)) . "' alt='" . __("Remove") . "'></a></td>
       </tr>";
     }
     elseif ($type=="list") {

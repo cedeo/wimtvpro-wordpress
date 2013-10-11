@@ -66,7 +66,8 @@
 		    curl_close($st);
 			
 			$uploads_info = wp_upload_dir();
-	        $directory = $uploads_info["basedir"] .  "/skinWim";
+	        $directory = $uploads_info["basedir"] .  "/playlistWim";
+		   
 			$nameFile = "/playlist_" .  $idPlayList . ".xml";
 			$doc = simplexml_load_file($directory . $nameFile);
 			$sxe = new SimpleXMLElement($doc->asXML());
@@ -99,7 +100,10 @@
   
     case "createPlaylist":
       $uploads_info = wp_upload_dir();
-      $directory = $uploads_info["basedir"] .  "/skinWim";
+      $directory = $uploads_info["basedir"] .  "/playlistWim";
+		   if (!is_dir($directory)) {
+			  $directory = mkdir($uploads_info["basedir"] . "/playlistWim");
+			}
       $wpdb->insert( $table_name, 
 	  array (
 	  				'uid' => get_option("wp_userwimtv"),
@@ -113,7 +117,7 @@
         die("unable to create file");
       fputs ($fh, '<rss><channel><title>' . $name . '</title></channel></rss>');
       fclose ($fh);
-	  echo $wpdb->insert_id;
+	  //echo $wpdb->insert_id;
       die();
     
     break;
@@ -125,13 +129,14 @@
       
       
       $uploads_info = wp_upload_dir();
-        $directory = $uploads_info["basedir"] .  "/skinWim";
+	   $directory = $uploads_info["basedir"] .  "/playlistWim";
+	   
 		$nameFile = "/playlist_" .  $idPlayList . ".xml";
 		$doc = simplexml_load_file($directory . $nameFile);
 		$sxe = new SimpleXMLElement($doc->asXML());
 		$sxe->channel->title = $name; 
 		
-		$directory = $uploads_info["basedir"] .  "/skinWim";
+		$directory = $uploads_info["basedir"] .  "/playlistWim";
 		$nameFile = "/playlist_" .  $idPlayList . ".xml";
 
 		
@@ -152,8 +157,7 @@
 	case "removePlaylist":
 	  
 	  $uploads_info = wp_upload_dir();
-      $directory = $uploads_info["basedir"] .  "/skinWim";
-
+	  $directory = $uploads_info["basedir"] .  "/playlistWim";
 	  $sql = "DELETE FROM " . $table_name  . " WHERE id='" . $idPlayList . "'";
       $wpdb->query($sql);
       //remove File

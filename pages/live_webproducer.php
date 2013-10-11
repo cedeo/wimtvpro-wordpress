@@ -1,15 +1,36 @@
-
-
 <?php
-  include("../../../../wp-load.php");
-  wp_enqueue_script('swfObject', plugins_url('script/swfObject/swfobject.js', dirname(__FILE__)));
-  define('WP_USE_THEMES', false);
-  global $wp, $wp_query, $wp_the_query, $wp_rewrite, $wp_did_header;
+define('WP_USE_THEMES', false);
+global $wp, $wp_query, $wp_the_query, $wp_rewrite, $wp_did_header;
+include("../../../../wp-load.php");
 
-  ?>
-  
-  <?php
-	$id =  $_GET['id'];
+$current_user = wp_get_current_user();
+
+if ( !$current_user->exists() ) {
+
+	echo "Non abilitato alla pagina";	
+
+}
+else {
+  wp_enqueue_script('swfObject', plugins_url('script/swfObject/swfobject.js', dirname(__FILE__)));
+  $id =  $_GET['id'];
+	update_option('wp_liveNow', $id);
+
+	$urlUpdate = get_option("wp_basePathWimtv") . "profile";
+	$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
+	
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $urlUpdate);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($ch, CURLOPT_USERPWD, $credential);
+	$response = curl_exec($ch);
+	$dati = json_decode($response, true);
+	//var_dump ($dati);
+	curl_close($ch);
+	$passwordLive = $dati['liveStreamPwd'];
+
+	
 
 	$userpeer = get_option("wp_userWimtv");
 	$url_live_embedded = get_option("wp_basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts/" . $id;
@@ -83,11 +104,11 @@ jQuery(document).ready(function(){
     attributes.align = "left";
 
 	swfobject.embedSWF(url_pathPlugin  + "script/swfObject/producer.swf", "producer", "640", "480", "11.4.0",xiSwfUrlStr, flashvars, params, attributes );
-	setTimeout(function () {
+	    setTimeout(function () {
 		producer = jQuery('#producer')[0];
 	    console.log(producer);
 	    
-	    producer.setCredentials('<?php echo get_option("wp_userWimtv"); ?>', '<?php echo get_option("wp_passWimtv"); ?>');
+	    producer.setCredentials('<?php echo get_option("wp_userWimtv"); ?>', '<?php echo $passwordLive; ?>');
 	    producer.setUrl(decodeURIComponent('<?php echo $url;?>'));
 	    producer.setStreamName('<?php echo $stream_name;?>');
 	    producer.setStreamWidth(640);
@@ -97,6 +118,12 @@ jQuery(document).ready(function(){
     
 });
 </script>
+
+<?php
+}
+
+?>
+
 </div>
 
 </body>

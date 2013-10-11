@@ -1,15 +1,18 @@
 <?php
   global $user;
-  include("../../../../wp-blog-header.php");
+  include("../../../../wp-load.php");
   $table_name = $wpdb->prefix . 'wimtvpro_video';
   $contentItem = $_GET['c'];
   $directory = $uploads_info["baseurl"] .  "/skinWim";
+  $streamItem = $_GET['s'];
+
   if (strlen($contentItem)>0) {
 
     $arrayPlay = $wpdb->get_results("SELECT * FROM {$table_name} WHERE contentidentifier='" . $contentItem . "'");
-
-	echo "<div style='text-align:center;'>";
-	echo "<div id='container'></div>";
+    $heightDiv = get_option("wp_heightPreview") +150;
+	$widthDiv = get_option("wp_widthPreview") +280;
+	echo "<div style='text-align:center; height: " . $heightDiv . "px; width: " . $widthDiv . "px' class='responsiveVideo'>";
+	echo "<div id='container'> </div>";
 	
 	$dimensions = "width: '" . get_option("wp_widthPreview") . "', height: '" . get_option("wp_heightPreview") . "',";
 	
@@ -21,12 +24,13 @@
 	$dirJwPlayer = plugin_dir_url(dirname(__FILE__)) . "script/jwplayer/player.swf";
 	$configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$contentItem,$arrayPlay,$dirJwPlayer);
 	
+	//Ricerca NomeFilexml
+	$uploads_info = wp_upload_dir();
+	$nomeFilexml  = wimtvpro_searchFile($uploads_info["basedir"] .  "/skinWim/" . get_option('wp_nameSkin'),"xml");
 	echo "<script type='text/javascript'>jwplayer('container').setup({";
     if (get_option('wp_nameSkin')!="") {
-     $uploads_info = wp_upload_dir();
-        $directory =  $uploads_info["baseurl"] .  "/skinWim";
-
-      $skin = "'skin':'" . $directory  . "/" . get_option('wp_nameSkin') . ".zip',";
+       	$directory =  $uploads_info["baseurl"] .  "/skinWim"; 
+        $skin = "'skin':'" . $directory  . "/" . get_option('wp_nameSkin') . "/" . $nomeFilexml . "',";
     }
     
     
@@ -47,8 +51,15 @@
         $output = substr($output, 0, -2); 
         $output .= "<br/>";
       }
+	 
+	  
       $output .= "</p>";
     }
+	if (trim($streamItem)!="") {
+	  	//Video is PAYPERVIEW
+		$output .= "<p><b>Video PAY PER VIEW</b></p>";
+	}
+
     echo $output . "</div>";
  }   
 

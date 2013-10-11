@@ -20,8 +20,23 @@ div.action span {
 
 
 .icon_sync0 {
-	background: transparent url('../images/3_sync.gif') no-repeat center left;
-	cursor: pointer;
+	 cursor:pointer; display:none;
+  background: linear-gradient(to bottom, #FEFEFE, #F4F4F4) repeat scroll 0 0 #F3F3F3;
+    border-color: #BBBBBB;
+    color: #333333;
+    text-shadow: 0 1px 0 #FFFFFF;
+	 -moz-box-sizing: border-box;
+    border-radius: 3px 3px 3px 3px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer; 
+    font-size: 12px;
+    height: 24px;
+    line-height: 23px;
+    margin: 0;
+    padding: 3px 10px  ;
+    text-decoration: none;
+    white-space: nowrap;
 }
 div.action .icon_sync1 {
 	background: transparent url('../images/3.gif') no-repeat center left;
@@ -36,33 +51,23 @@ div.action .icon_save {
 
 
 .form_save {
-	background: transparent url('../images/save.gif') no-repeat center left;
+	/*background: transparent url('../images/save.gif') no-repeat center left;
 	cursor: pointer;
 	height: 40px;
 	margin: 0 10px 0 0;
 	padding: 0 0 0 45px;
 	float: left;
-	display: block;
+	display: block;*/
 }
-ul.items {
+table.items {
 	list-style: none;
 	display: block;
 	height: 100%;
 	width: 100%;
 	margin: 0 auto 20px auto;
 }
-ul.items li {
-	list-style: none;
-	display: block;
-	float: left;
-	width: 31%;
-	height: 220px;
-	margin: 0 5px 10px 0!Important;
-	border: 1px solid #FFF;
-	position: relative;
-	text-align: center;
-}
-ul.items li div.thumb {
+
+table.items  div.thumb {
 	margin: 0 auto;
 	padding: 0;
 	width: 100%; 	text-align: center;
@@ -71,80 +76,88 @@ ul.items li div.thumb {
 	position: relative;
 }
 
-ul.items li div.thumb div.icon_licence  {
-	width:30px; height:30px; position:absolute; bottom:5px; left:5px;
-	 z-index: 10; 
+table.items .icon_licence  {
+	width:30px; height:30px; position: absolute;
+	 z-index: 10;  top:0 \;
+}
+*+html table.items .icon_licence  { top:0; }
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    table.items .icon_licence {top:0;}
 }
 
-ul.items li div.thumb div.PAYPERVIEW  {
+table.items tr.streams {background-color:#CFC;}
+
+table.items div.PAYPERVIEW  {
 	background: transparent url("https://www.wim.tv/wimtv-webapp/images/licenseConditions/pay.png") no-repeat center center;
 }
-ul.items li div.thumb div.CREATIVE_COMMONS{
+table.items  div.CREATIVE_COMMONS{
 	background: transparent url("https://www.wim.tv/wimtv-webapp/images/licenseConditions/cc.png") no-repeat center center;
 }
 
-ul.items li div.thumb div.FREEOFCHARGE{
+table.items  div.FREEOFCHARGE{
 	background: transparent url("https://www.wim.tv/wimtv-webapp/images/licenseConditions/play.png") no-repeat center center;
 }
 
-ul.items li div.thumb span {
+table.items   span {
 	display: inline-block;
-	zoom: 1;
+	zoom: 1; height: 43px;
+    width: 32px;
 	display: -moz-inline-stack;
-	width: 36px;
-	height: 36px;
+
 	cursor: pointer;
 }
-ul.items li div.thumb .icon_Putshowtime, 
-ul.items li div.thumb .icon_AcquiPutshowtime {
+table.items   .icon_Putshowtime, 
+table.items   .icon_AcquPutshowtime {
 	background: transparent url('../images/putST.png') no-repeat center center;
 }
-ul.items li div.thumb .icon_Removeshowtime, 
-ul.items li div.thumb .icon_RemoveshowtimeInto, 
-ul.items li div.thumb .icon_AcqRemoveshowtime {
+table.items  .icon_Removeshowtime, 
+table.items   .icon_RemoveshowtimeInto, 
+table.items   .icon_AcqRemoveshowtime {
 	background: transparent url('../images/removeST.png') no-repeat center center;
 }
-ul.items li div.thumb .icon_view {
+table.items   .icon_view {
 	background: transparent url('../images/view.png') no-repeat center center;
 }
-ul.items li div.thumb .icon_remove {
+table.items   .icon_remove {
 	background: transparent url('../images/remove.png') no-repeat center center;
-	bottom: 0;
-	right: 0;
-	position: absolute;
+
 }
 
-ul.items li div.thumb .icon_viewVideo {
+table.items   .icon_viewVideo {
 	background: transparent url('../images/viewThumb.png') no-repeat center center;
 }
-ul.items li div.thumb .icon_playlist {
+table.items  .icon_playlist {
 	background: transparent url('../images/playlist.png') no-repeat center center;
 }
 
-ul.items li div.thumb .icon_moveThumbs {
+table.items .icon_moveThumbs {
 	background: transparent url('../images/arrow.png') no-repeat center center;
 }
 
-ul.items li div.thumb .icon_download {
+table.items  .icon_download {
 	background: transparent url('../images/download.png') no-repeat center center;
 }
 
 
-ul.items li div.thumb a,
-ul.items li div.thumb img {
+table.items  div.thumb span,
+table.items  div.thumb img {
 	margin: 0 auto!important;
 	padding: 0; position:relative;
-	width: 200px; height:140px; 
+	width:160px; height:100px; 
 }
-div.formVideo {
-	text-align: left; z-index: 1000;
-	top: 40px;
+
+td div.formVideo {
+	padding: 10px;
+	width: 135px;
+	text-align: left;
+	z-index: 1000;
+	border: 1px solid #999;
 	background: #fff;
 	display: none;
-	position: absolute;
-	left: 10px;
-	padding: 5px;
 }
+
+td div.formVideo div:hover {text-decoration:underline;}
+span.loading {background: transparent url('../images/ajax-loader.gif') no-repeat center center;}
 div.formVideo div {
 	cursor: pointer;
 }
@@ -175,6 +188,14 @@ div.loader {
 	top: 0;
 	left: 0;
 }
+
+div.loaderTable {
+	height: 36px;
+	background: transparent url('../images/ajax-loader.gif') no-repeat center center;
+	display: none;
+	width: 100%;
+}
+
 div.headerBox {
 	height: 36px;
 	width: 100%;
@@ -209,6 +230,22 @@ div.empty {
 }
 .removeUrl {
   cursor:pointer; display:none;
+  background: linear-gradient(to bottom, #FEFEFE, #F4F4F4) repeat scroll 0 0 #F3F3F3;
+    border-color: #BBBBBB;
+    color: #333333;
+    text-shadow: 0 1px 0 #FFFFFF;
+	 -moz-box-sizing: border-box;
+    border-radius: 3px 3px 3px 3px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer; 
+    font-size: 12px;
+    height: 24px;
+    line-height: 23px;
+    margin: 0;
+    padding: 3px 10px  ;
+    text-decoration: none;
+    white-space: nowrap;
 }
 .passwordUrlLive{
 	display:none;
@@ -221,52 +258,35 @@ background-color: #ccddcc;
 	cursor:pointer;
 }
 
-ul.itemsInsert {
-	list-style: none;
-	display: block;
-	height: 150px;
-	width: 100%;
-	margin: 0 auto 20px auto;
-}
-ul.itemsInsert li {
-list-style: none;
-display: block;
-float: left;
-margin: 0 5px 20px 10px!Important;
-position: relative;
-text-align: center;
-font-size: 10px;
-width: 150px; height:100%;
 
-}
-ul.itemsInsert li div.thumbPublic {
-	margin: 0 auto;
-	padding: 0;
-	width: 100%;
-	z-index: 2;
-	position: relative;
-	float: left;
-}
-ul.itemsInsert li div.select {
+ul.itemsInsert tr div.select {
 	background-color: aqua;
 }
-ul.itemsInsert li div.thumbPublic .removeThumb {
+ul.itemsInsert tr div.thumbPublic .removeThumb {
 	display: none;
 }
-ul.itemsInsert li div.select .removeThumb {
+ul.itemsInsert tr div.select .removeThumb {
 	display: block;
 }
-ul.itemsInsert li div.select .addThumb {
+ul.itemsInsert tr div.select .addThumb {
 	display: none;
 }
-ul.itemsInsert li div.thumbPublic a, 
-ul.itemsInsert li div.thumbPublic img {
+ul.itemsInsert td img {
+   width: 100px!Important; height:70px!Important;
+
+}
+ul.itemsInsert td {
+   width:25%;
+
+}
+ul.itemsInsert tr div.thumbPublic span, 
+ul.itemsInsert tr div.thumbPublic img {
    margin: 0 auto!important;
    padding: 0; 
    width: 150px; height:90px;
 
 }
-ul.itemsInsert li img {
+table.itemsInsert tr img {
 	width: 100%;
 	height: 60%;
 }
@@ -286,19 +306,23 @@ div.empty {
 	background-color:#fff!important; border:1px solid #666!important;
 }
 .playlist input{
-	width:40%; display:block; float:left; background-color:#fff!important; border:1px solid #666!important;
+	width: 60%; float: left;
+height: 45px;background-color:#fff!important; border:1px solid #666!important;
+}
+.icon_modPlay {
+	background: transparent url('../images/mod.png') no-repeat top center; width:20px; height:20px; display:none;  cursor:pointer;
 }
 .icon_modTitlePlay {
-	background: transparent url('../images/mod.png') no-repeat center center; width:20px; height:20px; display:none; float:right; cursor:pointer;
+	background: transparent url('../images/mod3.png') no-repeat top center; width:20px; height:20px;  cursor:pointer; 
 }
 .icon_selectPlay {
-	background: transparent url('../images/select.png') no-repeat center center; width:20px; height:20px;display:block; float:left; cursor:pointer;
+	background: transparent url('../images/select.png') no-repeat center center; width:20px; height:20px;display:block; cursor:pointer;
 	opacity:0.4;
 	filter:alpha(opacity=40); /* For IE8 and earlier */	
 }
 
 .playlist .icon_viewPlay{
-	background: transparent url('../images/view2.png') no-repeat center center; width:20px; height:20px;display:block; float:right; cursor:pointer; margin:0 30px 0 0;
+	background: transparent url('../images/view.png') no-repeat center center; width:32px; height:32px;display:block; cursor:pointer; 
 }
 
 
@@ -310,14 +334,14 @@ div.empty {
 }
 
 .icon_createPlay {
-	background: transparent url('../images/add.png') no-repeat center center; width:20px; height:20px;display:block; float:right; cursor:pointer;
+	background: transparent url('../images/add.png') no-repeat center center; width:20px; height:20px;display:block;  cursor:pointer; float: left;
 }
 .icon_deletePlay {
-	background: transparent url('../images/remove.png') no-repeat center center; width:20px; height:20px;display:block; float:right; cursor:pointer;
+	background: transparent url('../images/remove.png') no-repeat top center; width:20px; height:20px;display:block; float:right; cursor:pointer;
 }
-
-table td.image img{
-	width:200px; height:120px;
+table td.image{position:relative;}
+table td.image img,table td.image span{
+	width:160px; height:100px;
 }
 
 div.registration{
@@ -430,10 +454,123 @@ div#view_graph div.cols div.col div.countview .barTraffic{
 	background-repeat: repeat-x;
 }
 
-a.wimtv-thumbnail {
-	height:100%; width:100%; display:block; background:#fff url('../images/empty.jpg') no-repeat center center;
+span.wimtv-thumbnail img{
+	width:100%;	 background:#fff url('../images/empty.jpg') no-repeat center center;
 }
-
+span.wimtv-thumbnail{
+	width:100%;
+}
 iframe {
 	overflow:hidden;
 }
+
+
+#container_wrapper{margin:0 auto!important; text-align:center;}
+.responsiveVideo object{margin:0 auto;}
+.responsiveVideo video{margin:0 auto;}
+
+form#amount {font-size:20px; text-align:center;}
+form .amount,form .amount_cent{
+	width:80px; font-size:20px;
+}
+.progress-bar {
+	position:absolute; top:30px; 
+      /* Can be anything */
+	display:none;
+	position: relative;
+	background: #555;
+	-moz-border-radius: 25px;
+	-webkit-border-radius: 25px;
+	border-radius: 25px;
+	padding: 10px;
+	-webkit-box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
+	-moz-box-shadow   : inset 0 -1px 1px rgba(255,255,255,0.3);
+	box-shadow        : inset 0 -1px 1px rgba(255,255,255,0.3);
+}
+
+.progress-bar p {text-align:center; margin:0; padding:10px 0 10px 0;font-weight:bold;font-size:16px; color:#CCC;}
+
+.progress-bar span {
+    display: inline-block;
+    height: 20px; color: green;
+    text-align:center;  font-size:22px; 
+    display: block; line-height:20px;
+
+	background:#3C6 url('../images/loadingProgressBar.gif');
+	   -webkit-border-top-right-radius: 20px;
+	-webkit-border-bottom-right-radius: 20px;
+	       -moz-border-radius-topright: 20px;
+	    -moz-border-radius-bottomright: 20px;
+	           border-top-right-radius: 20px;
+	        border-bottom-right-radius: 20px;
+	    -webkit-border-top-left-radius: 20px;
+	 -webkit-border-bottom-left-radius: 20px;
+	        -moz-border-radius-topleft: 20px;
+	     -moz-border-radius-bottomleft: 20px;
+	            border-top-left-radius: 20px;
+	         border-bottom-left-radius: 20px;
+	
+	-webkit-box-shadow: 
+	  inset 0 2px 9px  rgba(255,255,255,0.3),
+	  inset 0 -2px 6px rgba(0,0,0,0.4);
+	-moz-box-shadow: 
+	  inset 0 2px 9px  rgba(255,255,255,0.3),
+	  inset 0 -2px 6px rgba(0,0,0,0.4);
+	position: relative;
+	overflow: hidden;
+
+}
+
+
+table.items_playlist {
+	list-style: none;
+	display: block;
+	width: 100%; height:250px;
+	margin: 0 auto 0 auto;
+}
+table.items_playlist tr {
+	list-style: none;
+	display: block;
+	float: left; width:110px;
+	height: 120px;
+	margin: 0 5px 10px 0!Important;
+	border: 1px solid #FFF;
+	position: relative;
+	text-align: center; cursor:pointer;
+}
+table.items_playlist tr div.thumb {
+	margin: 0 auto;
+	padding: 0;
+	width: 100%; 	text-align: center;
+	height: 100%;
+	z-index: 2;
+	position: relative;
+}
+table.items_playlist tr div.thumb span {
+	display: inline-block;
+	zoom: 1;
+	display: -moz-inline-stack;
+	width: 36px;
+	height: 36px;
+	cursor: pointer;
+}
+
+table.items_playlist tr  a,
+table.items_playlist tr img {
+	margin: 0 auto!important;
+	padding: 0;
+	width: 100px; height:80px;
+}
+table.items_playlist .icon_remove{display:none!important;}
+table.items_playlist .headerBox{display:none!important;}
+table.items_playlist .title{font-size:10px; width:100px; height:24px;}
+
+
+div.sortable1, div.sortable2{ width:46%; float:left; height:250px; min-height:250px; height:auto !important; border:1px solid #ccc; margin:0 1% 0 1%; text-align:center;}
+
+div.sortable2{ background-color:#e4e4e4; height:250px; min-height:250px; height:auto !important;}
+div.sortable1{  height:500px; min-height:500px; height:auto !important;}
+
+
+div.embeddedCode{ clear:both; width:100%; margin:10px;}
+div.embeddedCode textarea{ width:80%; color:#999; font-size:12px; height:90px;}

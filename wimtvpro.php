@@ -3,7 +3,7 @@
 Plugin Name: Wim Tv Pro
 Plugin URI: http://wimtvpro.tv
 Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-Version: 2.5.4
+Version: 2.5.5
 Author: WIMLABS
 Author URI: http://www.wimlabs.com
 License: GPLv2 or later
@@ -50,12 +50,12 @@ function wimtvpro_install() {
   
 	  // Create page MyWimTv Streaming
 	  $my_streaming_page = array(
-	    'post_title'    => 'My WimTv Streaming',
+	    'post_title'    => 'WimVod',
 	    'post_content'  => '',
 	    'post_status'   => 'future',
 	    'post_author'   => 1,
 	    'post_type'   => 'page',
-	    'post_name' => 'my_streaming_wimtv',
+	    'post_name' => 'wimvod_wimtv',
 	  );
 	
 	  // Insert the post into the database
@@ -114,7 +114,9 @@ function wimtvpro_setting() {
   register_setting('configwimtvpro-group', 'wp_replaceacquiredIdentifier');			
   register_setting('configwimtvpro-group', 'wp_replaceshowtimeIdentifier');
   register_setting('configwimtvpro-group', 'wp_sandbox');
-  
+  register_setting('configwimtvpro-group', 'wp_activeLive');
+  register_setting('configwimtvpro-group', 'wp_activePayment');
+  register_setting('configwimtvpro-group', 'wp_shareVideo');
   register_setting('profilewimtvpro-group', 'wp_name');
   register_setting('profilewimtvpro-group', 'wp_logo');
   register_setting('profilewimtvpro-group', 'wp_date');
@@ -128,14 +130,19 @@ function wimtvpro_setting() {
   add_option( 'wp_uploadSkin','');
   add_option( 'wp_heightPreview','280');
   add_option( 'wp_widthPreview','500');
-  
+  add_option( 'wp_widthPreview','500');
   add_option( 'wp_name','si');
   add_option( 'wp_logo','si');
   add_option( 'wp_date','');
   add_option( 'wp_email','');
   add_option( 'wp_social','si');
   add_option( 'wp_sandbox','No');
-  add_option( 'wp_publicPage','No'); 
+  add_option( 'wp_publicPage','No');
+  add_option( 'wp_shareVideo','No');  
+  
+  add_option( 'wp_activePayment','false');
+  add_option( 'wp_activeLive','false');
+  
 } 
 add_action( 'admin_init', 'wimtvpro_setting');
 
@@ -256,28 +263,30 @@ function wimtvpro_menu(){
           
       add_menu_page('WimTvPro', 'WimTvPro', 'administrator', 'WimTvPro', 'wimtvpro_configure', plugins_url('images/iconMenu.png', __FILE__), 6);      
 		
-      add_submenu_page('WimTvPro', __('Configuration',"wimtvpro"),  __('Configuration',"wimtvpro"), 'administrator', 'WimTvPro', 'wimtvpro_configure');
+      add_submenu_page('WimTvPro', __('Settings',"wimtvpro"),  __('Settings',"wimtvpro"), 'administrator', 'WimTvPro', 'wimtvpro_configure');
       
       if ((get_option("wp_registration")==FALSE) || ((get_option("wp_userwimtv")=="username") && get_option("wp_passwimtv")=="password")){
-      	add_submenu_page('WimTvPro', __('Registrazione',"wimtvpro"), __('Registrazione',"wimtvpro"), 'administrator', 'WimTvPro_Registration', 'wimtvpro_registration');
+      	add_submenu_page('WimTvPro', __('WimTV Registration',"wimtvpro"), __('WimTV Registration',"wimtvpro"), 'administrator', 'WimTvPro_Registration', 'wimtvpro_registration');
       }
 
       
-      add_submenu_page('WimTvPro', 'My Media', 'My Media', 'administrator', 'WimVideoPro_MyMedia', 'wimtvpro_mymedia');
-      add_submenu_page('WimTvPro', 'My Streams', 'My Streams', 'administrator', 'WimVideoPro_MyStreaming', 'wimtvpro_mystreaming');
+      add_submenu_page('WimTvPro', 'WimBox', 'WimBox', 'administrator', 'WimVideoPro_MyMedia', 'wimtvpro_mymedia');
+      add_submenu_page('WimTvPro', 'WimVod', 'WimVod', 'administrator', 'WimVideoPro_MyStreaming', 'wimtvpro_mystreaming');
+	  
       add_submenu_page('WimTvPro', __('Upload Video',"wimtvpro"),  __('Upload Video',"wimtvpro"), 'administrator', 'WimVideoPro_UploadVideo', 'wimtvpro_upload');
 	  //TO DO add_submenu_page('WimTvPro', 'Programming', 'Programming', 'administrator', 'WimVideoPro_Programming', 'wimtvpro_programming');
-      add_submenu_page('WimTvPro', 'WimLive', 'WimLive', 'administrator', 'WimVideoPro_WimLive', 'wimtvpro_live');
-      add_submenu_page('WimTvPro', 'Report', 'Report', 'administrator', 'WimVideoPro_Report', 'wimtvpro_Report');
+      add_submenu_page('WimTvPro', __('Playlist',"wimtvpro"),  __('Playlist',"wimtvpro"), 'administrator', 'WimVideoPro_Playlist', 'wimtvpro_playlist');
+	  add_submenu_page('WimTvPro', 'WimLive', 'WimLive', 'administrator', 'WimVideoPro_WimLive', 'wimtvpro_live');
+      add_submenu_page('WimTvPro', __('Analytics'), __('Analytics'), 'administrator', 'WimVideoPro_Report', 'wimtvpro_Report');
 
     
     }
     
     if ($user->roles[0]=="author") {
-      add_menu_page('WimTvPro', 'Streams Wimtv', 'author', 'WimVideo', 'wimtvpro_mystreaming', plugins_url('images/iconMenu.png', __FILE__), 6);
+      add_menu_page('WimTvPro', 'WimVod', 'author', 'WimVideo', 'wimtvpro_mystreaming', plugins_url('images/iconMenu.png', __FILE__), 6);
     }
     if ($user->roles[0]=="editor") {
-      add_menu_page('My Streams', 'Streams Wimtv', 'editor', 'WimVideo', 'wimtvpro_mystreaming', plugins_url('images/iconMenu.png', __FILE__), 6);
+      add_menu_page('WimVod', 'WimVod', 'editor', 'WimVideo', 'wimtvpro_mystreaming', plugins_url('images/iconMenu.png', __FILE__), 6);
     }
 }
 add_action('admin_menu', 'wimtvpro_menu');
@@ -286,7 +295,9 @@ add_action('admin_menu', 'wimtvpro_menu');
 
 // Attach video into post
 function wimtvpro_media_menu($tabs) {
-  $newtab = array('wimtvpro' => __('My Streams / My Playlist', 'wimtvpro_insert'));
+  $newtab = array('wimtvpro' => __('WimVod/Playlist', 'wimtvpro_insert'),
+  					'wimtvproLive' => __('Live', 'wimtvpro_insertLive')
+				);
   return array_merge($tabs, $newtab);
   
   //VEDERE http://axcoto.com/blog/article/307
@@ -308,7 +319,7 @@ function wimtvpro_install_jquery() {
   wp_enqueue_script('jwplayer', plugins_url('script/jwplayer/jwplayer.js', __FILE__));
  // wp_enqueue_script('jwplayerHtml5', plugins_url('script/jwplayer/jwplayer.html5.js', __FILE__));
   wp_enqueue_script('timepicker', plugins_url('script/timepicker/jquery.ui.timepicker.js', __FILE__));
-  wp_enqueue_script('colorbox', plugins_url('script/colorbox/js/jquery.colorbox.js', __FILE__));
+  wp_enqueue_script('', plugins_url('script/colorbox/js/jquery.colorbox.js', __FILE__));
   
   
   
@@ -340,10 +351,33 @@ function wimtvpro_install_jquery() {
 
 function my_custom_js() {
     echo '<script type="text/javascript">
+	
 	var url_pathPlugin ="' . plugin_dir_url(__FILE__) . '";
 	var titlePlaylistJs = "' . __("First, You must selected a playlist","wimtvpro") . '";
 	var titlePlaylistSelectJs = "' . __("The video is insert into playlist selected!","wimtvpro") . '";
-	var refreshpage = "' . __("Refresh page for view video") . '";
+	var updateSuc = "' . __("Update successful","wimtvpro") . '";
+	var refreshpage = "' . __("Refresh page for view video","wimtvpro") . '";
+	var passwordReq = "' . __("The password is required","wimtvpro") . '";
+	var selectCat = "' . __("You selected","wimtvpro") . '";
+	var nonePayment = "' . __('You need compile fiscal information for your account, for enabling pay per view posting. Please provide it in Monetisation section of your Settings','wimtvpro') . '";
+	var gratuito = "' . __('Do you want to publish your videos for free?','wimtvpro') . '";
+	var messageSave = "' . __('Publish',"wimtvpro") . '";
+	var update = "' . __('Update',"wimtvpro") . '";
+	var videoproblem = "' . __('This video has not yet been processed, wait a few minutes and try to synchronize',"wimtvpro") . '";
+	var videoPrivacy = new Array();
+	 videoPrivacy[0] = "' . __('Select who can see the video',"wimtvpro") . '";
+	 videoPrivacy[1] = "' . __('Everybody',"wimtvpro") . '";
+	 videoPrivacy[2] = "' . __('Nobody (Administrators Only)',"wimtvpro") . '";
+	 videoPrivacy[3] = "' . __('Where can anonymous viewers see the video (if you selected Everybody)?',"wimtvpro") . '";
+	 videoPrivacy[4] = "' . __('Nowhere',"wimtvpro") . '";
+	 videoPrivacy[5] = "' . __('Widget',"wimtvpro") . '";
+	 videoPrivacy[6] = "' . __('Pages',"wimtvpro") . '";
+	 videoPrivacy[7] = "' . __('Widget and Pages',"wimtvpro") . '";
+	 videoPrivacy[8] = "' . __('Roles',"wimtvpro") . '";
+	 videoPrivacy[9] = "' . __('Users',"wimtvpro") . '";
+	 
+	 var point = "' . __('.',"wimtvpro") . '";
+	 
 	</script>';
     /*echo '<script type="text/javascript">
     ProgUtils.endpoint="' . plugin_dir_url(__FILE__) . 'rest";
@@ -359,17 +393,17 @@ add_action('admin_head', 'my_custom_js');
 //Widget
 class myStreaming extends WP_Widget {
     function myStreaming() {
-        parent::__construct( false, 'Wimtv: My Streams' );
+        parent::__construct( false, 'Wimtv: WimVod' );
     }
     function widget( $args, $instance ) {
         extract($args);
         echo $before_widget;
-        $title = apply_filters( 'My WimTV Videos', $instance['title'] );
+        $title = apply_filters( 'WimVod', $instance['title'] );
         echo $before_widget;
         if ( ! empty( $title ) )
 			echo $before_title . $title . $after_title;
 
-        echo "<ul class='itemsPublic'>" . wimtvpro_getThumbs(TRUE, FALSE, FALSE, "block") . "</ul>";
+        echo "<table class='itemsPublic'>" . wimtvpro_getThumbs(TRUE, FALSE, FALSE, "block") . "</table>";
          
         echo $after_widget;
     }
@@ -380,7 +414,7 @@ class myStreaming extends WP_Widget {
     }
     function form( $instance ) {
        _e("Title");
-        $title = apply_filters( 'My WimTV Videos', $instance['title'] );
+        $title = apply_filters( 'WimVod', $instance['title'] );
         ?>
         <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
           
@@ -389,12 +423,12 @@ class myStreaming extends WP_Widget {
 }
 class myPersonalDate extends WP_Widget {
     function myPersonalDate () {
-        parent::__construct( false, 'Wimtv: My Profile' );
+        parent::__construct( false, 'Wimtv:' . __("Profile") );
     }
         
     function widget( $args, $instance ) {
         extract($args);
-		$title = apply_filters( 'My WimTV Profile', $instance['title'] );
+		$title = apply_filters( 'WimTV' . __("Profile"), $instance['title'] );
         echo $before_widget;
         if ( ! empty( $title ) )
 			echo $before_title . $title . $after_title;
@@ -419,7 +453,7 @@ class myPersonalDate extends WP_Widget {
         }
         $profileuser .= $namepage;
         if (get_option("wp_date")=="si")
-          $profileuser .= "<p><b>" . __("My Detail") . "</b><br/>" . $arrayjsuser->name . " " . $arrayjsuser->surname . "<br/>" . $arrayjsuser->dateOfBirth . "<br/>" . $arrayjsuser->sex . "<br/>" . "</p>"; 
+          $profileuser .= "<p><br/>" . $arrayjsuser->name . " " . $arrayjsuser->surname . "<br/>" . $arrayjsuser->dateOfBirth . "<br/>" . $arrayjsuser->sex . "<br/>" . "</p>"; 
         if (get_option("wp_email")=="si")
           $profileuser .= "<p><b>" . __("Contact") . "</b><br/>" . $arrayjsuser->email . "<br/>";
         if (get_option("wp_social")=="si") {
@@ -447,16 +481,16 @@ class myPersonalDate extends WP_Widget {
     function form( $instance ) {
         
     	_e("Title");
-    	$title = apply_filters( 'My WimTV Profile', $instance['title'] );
+    	$title = apply_filters( 'WimTV' . __("Profile"), $instance['title'] );
         ?>
         <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
-          <p>Would you like view...<br/>
-           <input type="checkbox" id="edit-imagelogoprofile" name="ImageLogoProfile" value="si" <?php if (get_option("wp_logo")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-imagelogoprofile">Image Logo</label><br/>
-           <input type="checkbox" id="edit-pagenameprofile" name="pageNameProfile" value="si" <?php if (get_option("wp_name")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-pagenameprofile">Page name</label><br/>
-           <input type="checkbox" id="edit-personaldateprofile" name="personalDateProfile" value="si"  <?php if (get_option("wp_date")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-personaldateprofile">Personal Date</label><br/>
+          <p>
+           <input type="checkbox" id="edit-imagelogoprofile" name="ImageLogoProfile" value="si" <?php if (get_option("wp_logo")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-imagelogoprofile">Logo</label><br/>
+           <input type="checkbox" id="edit-pagenameprofile" name="pageNameProfile" value="si" <?php if (get_option("wp_name")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-pagenameprofile"><?php  _e("Page Name","wimtvpro"); ?></label><br/>
+           <input type="checkbox" id="edit-personaldateprofile" name="personalDateProfile" value="si"  <?php if (get_option("wp_date")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-personaldateprofile"><?php _e("Personal Info","wimtvpro"); ?></label><br/>
            <input type="checkbox" id="edit-emailprofile" name="EmailProfile" value="si"  <?php if (get_option("wp_email")=="si") echo 'checked="checked"'; ?> class="form-checkbox" /> <label class="option" for="edit-emailprofile">Email</label><br/>
            <input type="checkbox" id="edit-socialprofile" name="SocialProfile" value="si"  <?php if (get_option("wp_social")=="si") echo 'checked="checked"'; ?> checked="checked" class="form-checkbox" />  <label class="option" for="edit-socialprofile">Link Social</label>
-           <br/>... of Wimtv Profile</p>
+           </p>
                    
         <?php
     }
@@ -555,8 +589,6 @@ function wimtvpro_registration_script() {
 	//$basePath = get_option("wp_basePathWimtv");
 	$basePath ="http://peer.wim.tv/wimtv-webapp/rest/";
 	$baseRoot = str_replace("rest/","",$basePath);
-	
-   
 
 	wp_enqueue_style( 'calendarWimtv', $baseRoot . 'css/fullcalendar.css' );
 	wp_enqueue_style( 'programmingWimtv', $baseRoot . 'css/programming.css' );
@@ -580,4 +612,16 @@ if ($_GET['page']=="WimVideoPro_Programming"){
 	add_action( 'admin_init','wimtvpro_registration_script');
 }
 
+if ($_GET['page']=="WimVideoPro_UploadVideo"){
+	add_action( 'admin_footer','wimtvpro_uploadScript');
+}
+
+
+
+function wimtvpro_uploadScript() {
+	wp_enqueue_script('jquery.preloadWidget', plugins_url('script/progressbar/jquery.ajax-progress.js', __FILE__));
+	
+
+
+}
 

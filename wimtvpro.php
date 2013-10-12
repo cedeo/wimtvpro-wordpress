@@ -296,7 +296,7 @@ add_action('admin_menu', 'wimtvpro_menu');
 // Attach video into post
 function wimtvpro_media_menu($tabs) {
   $newtab = array('wimtvpro' => __('WimVod/Playlist', 'wimtvpro_insert'),
-  					'wimtvproLive' => __('Live', 'wimtvpro_insertLive')
+  					//'wimtvproLive' => __('Live', 'wimtvpro_insertLive')
 				);
   return array_merge($tabs, $newtab);
   

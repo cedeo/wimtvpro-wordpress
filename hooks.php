@@ -55,9 +55,22 @@ function wimtvpro_configure(){
 	                  $error ++;
 		            }
 		            
-					$return = wimtvpro_unzip($directory . "/" . get_option('wp_nameSkin') . ".zip", $directory);
+					//$return = wimtvpro_unzip($directory . "/" . get_option('wp_nameSkin') . ".zip", $directory);
+					require_once(ABSPATH .'/wp-admin/includes/file.php'); //the cheat
+
+					WP_Filesystem();
+					$return = unzip_file($directory . "/" . get_option('wp_nameSkin') . ".zip", $directory);
 					
-					update_option('wp_nameSkin', $arrayFile[0]);
+					if ($return) {
+						update_option('wp_nameSkin', $arrayFile[0]);
+						
+					} else{
+						$error++;
+						echo '<div class="error"><p><strong>';
+						  _e("Internal error.");
+						  var_dump( $return);
+						  echo '</strong></p></div>';
+					}
 					
 					
 					

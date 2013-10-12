@@ -773,14 +773,9 @@ function wimtvpro_viever_jwplayer($userAgent,$contentId,$video,$dirJwPlayer){
 }
 
 function wimtvpro_unzip($location,$newLocation){
-	$zip = new ZipArchive;
-	if ($zip->open($location) === TRUE) {
-		$zip->extractTo($newLocation);
-		$zip->close();
-		return TRUE;
-	} else {
-		return FALSE; 
-	}
+	require_once(ABSPATH .'/wp-admin/includes/file.php'); //the cheat
+	WP_Filesystem();
+	return unzip_file($location, $newLocation);
 }
 
 function  wimtvpro_searchFile($mainDir, $ext) {

@@ -390,6 +390,16 @@
 		if (!is_dir($directory)) {
 		  $directory_create = mkdir($uploads_info["basedir"] . "/videotmp");
 		}
+		
+		//create file tmp
+		$unique_temp_filename = $directory .  "/" . time() . '.' . preg_replace('/.*?\//', '',"tmp");
+		$unique_temp_filename = str_replace("\\" , "/" , $unique_temp_filename);
+		if (@move_uploaded_file( $urlfile , $unique_temp_filename)) {
+			//echo "copiato";
+		}else{
+			echo "non copiato";
+		}
+		
 		$error = 0;
 		$titlefile = $_POST['titlefile'];
 		$descriptionfile = $_POST['descriptionfile'];
@@ -416,7 +426,7 @@
 			$url_upload = get_option("wp_basePathWimtv") . 'videos';
 			//$url_upload = "http://192.168.31.200:8082/wimtv-webapp/rest/videos";
 			//$credential = "albi:12345678";
-			curl_setopt($ch, CURLOPT_URL, $url_upload);
+			curl_setopt($ch, CURLOPT_URL, $unique_temp_filename);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data","Accept-Language: " . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
 			curl_setopt($ch, CURLOPT_VERBOSE, 0);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);

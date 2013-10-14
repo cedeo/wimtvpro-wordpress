@@ -390,8 +390,6 @@
 		if (!is_dir($directory)) {
 		  $directory_create = mkdir($uploads_info["basedir"] . "/videotmp");
 		}
-		
-		//create file tmp
 		$unique_temp_filename = $directory .  "/" . time() . '.' . preg_replace('/.*?\//', '',"tmp");
 		$unique_temp_filename = str_replace("\\" , "/" , $unique_temp_filename);
 		if (@move_uploaded_file( $urlfile , $unique_temp_filename)) {
@@ -399,7 +397,6 @@
 		}else{
 			echo "non copiato";
 		}
-		
 		$error = 0;
 		$titlefile = $_POST['titlefile'];
 		$descriptionfile = $_POST['descriptionfile'];
@@ -426,7 +423,7 @@
 			$url_upload = get_option("wp_basePathWimtv") . 'videos';
 			//$url_upload = "http://192.168.31.200:8082/wimtv-webapp/rest/videos";
 			//$credential = "albi:12345678";
-			curl_setopt($ch, CURLOPT_URL, $unique_temp_filename);
+			curl_setopt($ch, CURLOPT_URL, $url_upload);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data","Accept-Language: " . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
 			curl_setopt($ch, CURLOPT_VERBOSE, 0);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -437,7 +434,7 @@
 			//add category/ies (if exist)
 			$category_tmp = array();
 			$subcategory_tmp = array();    
-			$post= array("file" => "@" . $urlfile,"title" => $titlefile,"description" => $descriptionfile);
+			$post= array("file" => "@" . $unique_temp_filename ,"title" => $titlefile,"description" => $descriptionfile);
 			
 			if (count($video_category)>0) {
 			  $id=0;
@@ -456,12 +453,13 @@
 			$response = curl_exec($ch);
 			curl_close($ch);
 			$arrayjsonst = json_decode($response);
+			
 			if (isset($arrayjsonst->contentIdentifier)) {
 				echo '<div class="updated"><p><strong>';
 				_e("Upload successful","wimtvpro");
 				$handle = opendir($directory);
 				while (($file = readdir($handle)) !== false) {
-				@unlink($directory . "/" . $file);
+					@unlink($directory . "/" . $file);
 				}
 				closedir($handle);
 				echo  '</strong></p></div>';

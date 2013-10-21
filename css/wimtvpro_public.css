@@ -1,0 +1,47 @@
+﻿table.itemsPublic {
+	list-style: none;
+	display: block; padding: 0!important;
+	height: 100%;
+	width: 100%;
+}
+table.itemsPublic tr {
+	list-style: none;
+	display: block; margin: 0;
+	float: left; width:185px; 
+	position: relative;
+	text-align: center;
+	font-size: 10px;
+}
+.sidebar table.itemsPublic tr {
+width: 100%;
+	margin: 0;
+}
+.sidebar table.itemsPublic tr span {
+	width:80%;
+}
+
+table.itemsPublic    tr td{padding:0 0 10px 0;}
+table.itemsPublic    tr span, 
+table.itemsPublic  tr img {
+	margin: 0 auto; width: 180px!important;
+	padding: 0; font-size:80%; cursor: pointer;
+}
+
+table.itemsPublic .icon_licence  {
+	width:30px; height:30px; position:absolute; bottom:25px; left:10px;
+	 z-index: 10; 
+}
+table.itemsPublic div.PAYPERVIEW  {
+	background: transparent url("https://www.wim.tv/wimtv-webapp/images/licenseConditions/pay.png") no-repeat center center;
+}
+table.itemsPublic  div.CREATIVE_COMMONS{
+	background: transparent url("https://www.wim.tv/wimtv-webapp/images/licenseConditions/cc.png") no-repeat center center;
+}
+
+table.itemsPublic  div.FREEOFCHARGE{
+	background: transparent url("https://www.wim.tv/wimtv-webapp/images/licenseConditions/play.png") no-repeat center center;
+}
+
+#container_wrapper{margin:0 auto!important; text-align:center;}
+.responsiveVideo object{margin:0 auto;}
+.responsiveVideo video{margin:0 auto;}

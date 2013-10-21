@@ -102,7 +102,6 @@ $onlyActive = $_POST['onlyActive'];
       $secondiDurata = 60 * $durata;
       $ora= date("H:i:s", $secondiDurata);
       $arrayDurata = explode (":",$ora);
-
       $startSeconds = isset($arrayOra[2]) ? $arrayOra[2] : 0;
       $timeStampFine =  mktime($arrayOra[0]+$arrayDurata[0],$arrayOra[1]+$arrayDurata[1],$startSeconds+$arrayDurata[2],$arrayData[1],$arrayData[0],$arrayData[2]);
 

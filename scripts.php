@@ -11,7 +11,6 @@
 
   initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
 
-
   $function = "";
   $id="";
   $acid="";
@@ -205,7 +204,6 @@
       curl_setopt($ch, CURLOPT_USERPWD, $credential);
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
       curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: ' . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));*/
-
 	  
       $response = apiCreateUrl(urlencode($_GET['titleLive']));  //curl_exec($ch);
       echo $response;

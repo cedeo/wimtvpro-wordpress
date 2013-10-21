@@ -662,12 +662,15 @@ function wimtvpro_live(){
 		  		    jQuery("#timelivejs").val(timezone);
                   });    
 		  		  jQuery(document).ready(function(){jQuery( ".pickatime" ).timepicker({  defaultTime:"00:00"  });});
-		  		  jQuery(document).ready(function(){jQuery( ".pickaduration" ).timepicker({   defaultTime:"00h05",showPeriodLabels: false,timeSeparator: "h" });});});
+		  		  jQuery(document).ready(function(){jQuery( ".pickaduration" ).timepicker({   defaultTime:"00h05",showPeriodLabels: false,timeSeparator: "h", });});});
 		  		  jQuery(document).ready(function(){jQuery( ".pickadate" ).datepicker({
 		            dateFormat: "dd/mm/yy",
 		            autoSize: true,
-		            minDate: 0
+		            minDate: 0,
 		          });});
+	
+		          jQuery(".edit-eventTimeZone[value=\"' . $timezone . '\"]").attr("selected", "selected");
+		          
 		  		</script>
 		     ';
 		     echo "<div class='wrap'><h2>WimLive";
@@ -840,6 +843,7 @@ function wimtvpro_report (){
 			}
 		
             $style_date = "";
+
 		    if ($current_month==TRUE){
 		    	
 				

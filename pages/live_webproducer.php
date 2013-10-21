@@ -6,7 +6,6 @@ include("../../../../wp-load.php");
 $current_user = wp_get_current_user();
 
 header('Content-type: text/html');
-
 if ( !$current_user->exists() ) {
 
 	echo "Non abilitato alla pagina";	

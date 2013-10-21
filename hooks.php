@@ -402,8 +402,6 @@ function wimtvpro_configure(){
 	        $response = apiGetProfile();
 			$dati = json_decode($response, true);
 			//var_dump ($dati);
-
-		
 		
 		switch ($_GET['update']){
 		

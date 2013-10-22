@@ -65,8 +65,8 @@ class Api {
     function execute($request, $expectedMimeType='text/html') {
         $request->expects($expectedMimeType);
         $request->_curlPrep();
-        if ($request->serialized_payload != "")
-            trigger_error("Payload: ". $request->serialized_payload, E_USER_NOTICE);
+        /*if ($request->serialized_payload != "")
+            trigger_error("Payload: ". $request->serialized_payload, E_USER_NOTICE);*/
         return $request->send();
     }
 }
@@ -90,6 +90,15 @@ function apiCreateUrl($name) {
 function apiGetProfile() {
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('profile');
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
+function apiChangePassword($password) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->putRequest("users/" . $apiAccessor->username . "/updateLivePwd");
+    $params = array('liveStreamPwd' => $password);
+    $request->body($params);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
@@ -164,6 +173,28 @@ function apiGetVideoCategories() {
 function apiGetUUID() {
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('uuid');
+    return $apiAccessor->execute($request);
+}
+
+function apiUpload($parameters) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->postRequest('videos');
+    $request->body($parameters);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
+function apiDownload($hostId) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->getRequest('videos/' . $hostId . '/download');
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request, "");
+}
+
+function apiDeleteVideo($hostId) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->deleteRequest('videos/' . $hostId);
+    $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
 

@@ -207,38 +207,18 @@
       
       die();
     break;
+
     case "urlCreate":
-      /*$url_createurl = get_option('wp_basePathWimtv') . "liveStream/uri?name=" . urlencode($_GET['titleLive']);
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL,  $url_createurl);
-      curl_setopt($ch, CURLOPT_VERBOSE, 0);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-      curl_setopt($ch, CURLOPT_USERPWD, $credential);
-      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: ' . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));*/
-	  
       $response = apiCreateUrl(urlencode($_GET['titleLive']));  //curl_exec($ch);
       echo $response;
-      //curl_close($ch);
-    break;
+      break;
+
     case "passCreate":
-      $url_passcreate = get_option('wp_basePathWimtv') . "users/" . get_option("wp_userwimtv") . "/updateLivePwd";
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL,  $url_passcreate);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-       curl_setopt($ch, CURLOPT_USERPWD, $credential);
-	   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-	   curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: ' . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
-
-      curl_setopt($ch, CURLOPT_POSTFIELDS,"liveStreamPwd=" . $_GET['newPass']);      
-      $response = curl_exec($ch);
+      $response = apiChangePassword($_GET['newPass']);
       echo $response;
-
-      curl_close($ch);
 	  die();
-    break;
+      break;
+      
     case "getIFrameVideo":
     /*
       if (get_option('wp_nameSkin')!="") {
@@ -272,23 +252,7 @@
     
     case "RemoveVideo":
 		//connect at API for upload video to wimtv
-		
-		$ch = curl_init();
-		$url_delete = get_option("wp_basePathWimtv") . 'videos';
-		$url_delete .= "/" . $id;
-		
-		
-		curl_setopt($ch, CURLOPT_URL, $url_delete);
-		curl_setopt($ch, CURLOPT_VERBOSE, 0);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		curl_setopt($ch, CURLOPT_USERPWD, $credential);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: ' . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
-
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		$response = curl_exec($ch);
-		curl_close($ch);
+		$response = apiDeleteVideo($id);
 		$arrayjsonst = json_decode($response);
 		if ($arrayjsonst->result=="SUCCESS")
 			$wpdb->query( 
@@ -355,27 +319,11 @@
 	
 
     case "downloadVideo":
-      
-		$url_download = get_option("wp_basePathWimtv") . "videos/" . $id . "/download";
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,  $url_download);
-		curl_setopt($ch, CURLOPT_HEADER, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_USERPWD, $credential);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 	  
-		$file = curl_exec($ch);
-	
-		$file_array = explode("\n\r", $file, 2);
-		$header_array = explode("\n", $file_array[0]);
-		foreach($header_array as $header_value) {
-		  $header_pieces = explode(':', $header_value);
-		  if(count($header_pieces) == 2) {
-			$headers[$header_pieces[0]] = trim($header_pieces[1]);
-		  }
-		}
-	
+		$file = apiDownload($id); //curl_exec($ch);
+	    $headers = $file->headers;
+
+
 		header('Content-type: ' . $headers['Content-Type']);
 		
 		$checkHeader = explode(";",$headers['Content-Disposition']);
@@ -430,20 +378,7 @@
 	
 			//UPLOAD VIDEO INTO WIMTV
 			set_time_limit(0);
-			//connect at API for upload video to wimtv
-			$ch = curl_init();
-			$url_upload = get_option("wp_basePathWimtv") . 'videos';
-			//$url_upload = "http://192.168.31.200:8082/wimtv-webapp/rest/videos";
-			//$credential = "albi:12345678";
-			curl_setopt($ch, CURLOPT_URL, $url_upload);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data","Accept-Language: " . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
-			curl_setopt($ch, CURLOPT_VERBOSE, 0);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-			curl_setopt($ch, CURLOPT_USERPWD, $credential);
-			curl_setopt($ch, CURLOPT_POST, TRUE);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);	            
-			//add category/ies (if exist)
+
 			$category_tmp = array();
 			$subcategory_tmp = array();    
 			$post= array("file" => "@" . $unique_temp_filename ,"title" => $titlefile,"description" => $descriptionfile);
@@ -460,10 +395,9 @@
 			  }
 			  
 			}
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+			/*curl_setopt($ch, CURLOPT_POSTFIELDS, $post);*/
  
-			$response = curl_exec($ch);
-			curl_close($ch);
+			$response = apiUpload($post);
 			$arrayjsonst = json_decode($response);
 			
 			if (isset($arrayjsonst->contentIdentifier)) {

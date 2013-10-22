@@ -17,6 +17,7 @@ header('Content-type: application/json');
 header('Response: HTTP/1.1 200 OK');
 // chiama
 $ch = curl_init();
+print_r($_POST);
 curl_setopt($ch, CURLOPT_URL,$basePath . "programming/".$progId."/items");
 curl_setopt($ch, CURLOPT_VERBOSE, 1);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);

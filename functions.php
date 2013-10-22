@@ -221,7 +221,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
     $licenseType = "";
 	if ( $showtime_identifier!=""){	
-		$licenseType = $stLicense[$showtime_identifier];	
+		$licenseType = isset($stLicense[$showtime_identifier]) ? $stLicense[$showtime_identifier] : "";
 	}
 
 	
@@ -442,16 +442,16 @@ function wimtvpro_detail_showtime($single, $st_id) {
 }
 
 function wimtvpro_elencoLive($type, $identifier,$onlyActive=true){
-echo '
-<script type="text/javascript"> 
+    echo '
+        <script type="text/javascript">
 
-jQuery(document).ready(function(){
-';
+        jQuery(document).ready(function(){
+    ';
 
 	if ($type!="table")
 		echo 'var url_pathPlugin ="' . plugin_dir_url(__FILE__) . '";';
 
-echo '	
+    echo '
     var timezone = -(new Date().getTimezoneOffset())*60*1000;
 	//window.location.assign(window.location + "&timezone="+timezone);
 

@@ -541,8 +541,6 @@ function wimtvpro_live(){
 
 		  $noneElenco = FALSE;
 		  $userpeer = get_option("wp_userWimtv");
-		  $url_live =  get_option("wp_basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts";
-		  $credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
 
           if (!isset($_GET['namefunction']))
               $_GET['namefunction'] = "";
@@ -562,6 +560,7 @@ function wimtvpro_live(){
 		       $giorno = "";
 		       $ora = "00:00";
 		       $durata = "00h00m";
+               $timezone = "";
 		       
 		     
 		     break;
@@ -585,7 +584,7 @@ function wimtvpro_live(){
 		        $payperview =  $arraydati->pricePerView;
 		       $url = $arraydati->url;
 		       $giorno = $arraydati->eventDate;
-		       //$timezone = $arraydati->eventTimeZone;
+               $timezone = isset($arraydati->eventTimeZone) ? $arraydati->eventTimeZone : $arraydati->timezone;
 		       if (intval($arraydati->eventMinute)<10) $arraydati->eventMinute = "0" .  $arraydati->eventMinute;
 		       $ora = $arraydati->eventHour . ":" . $arraydati->eventMinute;
 		       $tempo = $arraydati->duration;

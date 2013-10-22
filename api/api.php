@@ -9,6 +9,7 @@ use Httpful\Mime;
  * Written by walter at 16/10/13
  */
 
+
 class Api {
     private $host = null;
     public $username = null;
@@ -100,11 +101,35 @@ function apiGetShowtimes() {
     return $apiAccessor->execute($request);
 }
 
-function apiGetLive($host_id) {
+function apiGetLiveEvents($timezone, $activeOnly) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->getRequest($apiAccessor->liveHostsUrl . '/' . $host_id);
+    $url = $apiAccessor->liveHostsUrl . '?timezone=' . $timezone;
+    if ($activeOnly) {
+        $url .= '&active=true';
+    }
+    $request = $apiAccessor->getRequest($url);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request, 'application/json');
+}
+
+function apiGetLive($host_id, $timezone="") {
+    $apiAccessor = getApi();
+    $url = $apiAccessor->liveHostsUrl . '/' . $host_id;
+    if (strlen($timezone))
+        $url .= '?timezone=' . $timezone;
+    $request = $apiAccessor->getRequest($url);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request, 'application/json');
+}
+
+function apiGetLiveIframe($host_id, $timezone="") {
+    $apiAccessor = getApi();
+    $url = $apiAccessor->liveHostsUrl . '/' . $host_id . '/embed';
+    if (strlen($timezone))
+        $url .= '?timezone=' . $timezone;
+    $request = $apiAccessor->getRequest($url);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request, 'text/xml, application/xml');
 }
 
 function apiAddLive($parameters) {

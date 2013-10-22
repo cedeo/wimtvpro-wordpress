@@ -5,6 +5,7 @@ include("../../../../wp-load.php");
 
 $current_user = wp_get_current_user();
 
+header('Content-type: text/html');
 if ( !$current_user->exists() ) {
 
 	echo "Non abilitato alla pagina";	
@@ -62,7 +63,7 @@ else {
 ?>
 
   
-  <html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?>>
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 <title>Producer Live <?php echo $title;?></title>

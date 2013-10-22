@@ -343,46 +343,46 @@ function wimtvpro_install_jquery() {
     wp_register_style('wimtvproCssCore',plugins_url('script/css/redmond/jquery-ui-1.8.21.custom.css', __FILE__));
     wp_enqueue_style('wimtvproCssCore');
  }
- if ($_GET['page']!="WimVideoPro_Programming"){
- wp_enqueue_script('wimtvproScript',plugins_url('script/wimtvpro.js', __FILE__));
+ if (isset($_GET['page']) && $_GET['page']!="WimVideoPro_Programming"){
+wp_enqueue_script('wimtvproScript',plugins_url('script/wimtvpro.js', __FILE__));
 }
 }
 
 
 function my_custom_js() {
-    echo '<script type="text/javascript">
-	
-	var url_pathPlugin ="' . plugin_dir_url(__FILE__) . '";
-	var titlePlaylistJs = "' . __("First, You must selected a playlist","wimtvpro") . '";
-	var titlePlaylistSelectJs = "' . __("The video is insert into playlist selected!","wimtvpro") . '";
-	var updateSuc = "' . __("Update successful","wimtvpro") . '";
-	var refreshpage = "' . __("Refresh page for view video","wimtvpro") . '";
-	var passwordReq = "' . __("The password is required","wimtvpro") . '";
-	var selectCat = "' . __("You selected","wimtvpro") . '";
-	var nonePayment = "' . __('You need compile fiscal information for your account, for enabling pay per view posting. Please provide it in Monetisation section of your Settings','wimtvpro') . '";
-	var gratuito = "' . __('Do you want to publish your videos for free?','wimtvpro') . '";
-	var messageSave = "' . __('Publish',"wimtvpro") . '";
-	var update = "' . __('Update',"wimtvpro") . '";
-	var videoproblem = "' . __('This video has not yet been processed, wait a few minutes and try to synchronize',"wimtvpro") . '";
-	var videoPrivacy = new Array();
-	 videoPrivacy[0] = "' . __('Select who can see the video',"wimtvpro") . '";
-	 videoPrivacy[1] = "' . __('Everybody',"wimtvpro") . '";
-	 videoPrivacy[2] = "' . __('Nobody (Administrators Only)',"wimtvpro") . '";
-	 videoPrivacy[3] = "' . __('Where can anonymous viewers see the video (if you selected Everybody)?',"wimtvpro") . '";
-	 videoPrivacy[4] = "' . __('Nowhere',"wimtvpro") . '";
-	 videoPrivacy[5] = "' . __('Widget',"wimtvpro") . '";
-	 videoPrivacy[6] = "' . __('Pages',"wimtvpro") . '";
-	 videoPrivacy[7] = "' . __('Widget and Pages',"wimtvpro") . '";
-	 videoPrivacy[8] = "' . __('Roles',"wimtvpro") . '";
-	 videoPrivacy[9] = "' . __('Users',"wimtvpro") . '";
-	 
-	 var point = "' . __('.',"wimtvpro") . '";
-	 
-	</script>';
-    /*echo '<script type="text/javascript">
-    ProgUtils.endpoint="' . plugin_dir_url(__FILE__) . 'rest";
-    ProgUtils.extension=".php";
-    </script>';*/
+echo '<script type="text/javascript">
+
+var url_pathPlugin ="' . plugin_dir_url(__FILE__) . '";
+var titlePlaylistJs = "' . __("First, You must selected a playlist","wimtvpro") . '";
+var titlePlaylistSelectJs = "' . __("The video is insert into playlist selected!","wimtvpro") . '";
+var updateSuc = "' . __("Update successful","wimtvpro") . '";
+var refreshpage = "' . __("Refresh page for view video","wimtvpro") . '";
+var passwordReq = "' . __("The password is required","wimtvpro") . '";
+var selectCat = "' . __("You selected","wimtvpro") . '";
+var nonePayment = "' . __('You need compile fiscal information for your account, for enabling pay per view posting. Please provide it in Monetisation section of your Settings','wimtvpro') . '";
+var gratuito = "' . __('Do you want to publish your videos for free?','wimtvpro') . '";
+var messageSave = "' . __('Publish',"wimtvpro") . '";
+var update = "' . __('Update',"wimtvpro") . '";
+var videoproblem = "' . __('This video has not yet been processed, wait a few minutes and try to synchronize',"wimtvpro") . '";
+var videoPrivacy = new Array();
+ videoPrivacy[0] = "' . __('Select who can see the video',"wimtvpro") . '";
+ videoPrivacy[1] = "' . __('Everybody',"wimtvpro") . '";
+ videoPrivacy[2] = "' . __('Nobody (Administrators Only)',"wimtvpro") . '";
+ videoPrivacy[3] = "' . __('Where can anonymous viewers see the video (if you selected Everybody)?',"wimtvpro") . '";
+ videoPrivacy[4] = "' . __('Nowhere',"wimtvpro") . '";
+ videoPrivacy[5] = "' . __('Widget',"wimtvpro") . '";
+ videoPrivacy[6] = "' . __('Pages',"wimtvpro") . '";
+ videoPrivacy[7] = "' . __('Widget and Pages',"wimtvpro") . '";
+ videoPrivacy[8] = "' . __('Roles',"wimtvpro") . '";
+ videoPrivacy[9] = "' . __('Users',"wimtvpro") . '";
+ 
+ var point = "' . __('.',"wimtvpro") . '";
+ 
+</script>';
+/*echo '<script type="text/javascript">
+ProgUtils.endpoint="' . plugin_dir_url(__FILE__) . 'rest";
+ProgUtils.extension=".php";
+</script>';*/
 
 }
 // Add hook for admin <head></head>
@@ -392,115 +392,115 @@ add_action('admin_head', 'my_custom_js');
 
 //Widget
 class myStreaming extends WP_Widget {
-    function myStreaming() {
-        parent::__construct( false, 'Wimtv: WimVod' );
-    }
-    function widget( $args, $instance ) {
-        extract($args);
-        echo $before_widget;
-        $title = apply_filters( 'WimVod', $instance['title'] );
-        echo $before_widget;
-        if ( ! empty( $title ) )
-			echo $before_title . $title . $after_title;
+function myStreaming() {
+parent::__construct( false, 'Wimtv: WimVod' );
+}
+function widget( $args, $instance ) {
+extract($args);
+echo $before_widget;
+$title = apply_filters( 'WimVod', $instance['title'] );
+echo $before_widget;
+if ( ! empty( $title ) )
+		echo $before_title . $title . $after_title;
 
-        echo "<table class='itemsPublic'>" . wimtvpro_getThumbs(TRUE, FALSE, FALSE, "block") . "</table>";
-         
-        echo $after_widget;
-    }
-    function update( $new_instance, $old_instance ) {
-    	$instance['title'] = strip_tags( $new_instance['title'] );
+echo "<table class='itemsPublic'>" . wimtvpro_getThumbs(TRUE, FALSE, FALSE, "block") . "</table>";
+ 
+echo $after_widget;
+}
+function update( $new_instance, $old_instance ) {
+$instance['title'] = strip_tags( $new_instance['title'] );
 
-        return $new_instance;
-    }
-    function form( $instance ) {
-       _e("Title");
-        $title = apply_filters( 'WimVod', $instance['title'] );
-        ?>
-        <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
-          
-        <?php
-    }
+return $new_instance;
+}
+function form( $instance ) {
+_e("Title");
+$title = apply_filters( 'WimVod', $instance['title'] );
+?>
+<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+  
+<?php
+}
 }
 class myPersonalDate extends WP_Widget {
-    function myPersonalDate () {
-        parent::__construct( false, 'Wimtv:' . __("Profile") );
-    }
-        
-    function widget( $args, $instance ) {
-        extract($args);
-		$title = apply_filters( 'WimTV' . __("Profile"), $instance['title'] );
-        echo $before_widget;
-        if ( ! empty( $title ) )
-			echo $before_title . $title . $after_title;
-        // This example is adapted from node.module.
-        $urlprofile = get_option("wp_basePathWimtv") . str_replace( get_option("wp_replaceUserWimtv"), get_option("wp_userWimtv"), get_option("wp_urlUserProfileWimtv"));
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $urlprofile);
-        curl_setopt($ch, CURLOPT_VERBOSE, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        $arrayjsuser = json_decode($response);
-        $profileuser= "";
-        $namepage = "";
-        if (get_option("wp_logo")=="si")  
-          $profileuser .= "<img src='" . $arrayjsuser ->imageLogoPath . "'>";
-        if (get_option("wp_name")=="si"){
-          if (isset($arrayjsuser->pageName)) $namepage .= "<p><b>" . $arrayjsuser->pageName . "</b><br/>" . $arrayjsuser->pageDescription . "</p>";
-          else $namepage .= "<p><b>" . $arrayjsuser->username . "</b></p>";
-        }
-        $profileuser .= $namepage;
-        if (get_option("wp_date")=="si")
-          $profileuser .= "<p><br/>" . $arrayjsuser->name . " " . $arrayjsuser->surname . "<br/>" . $arrayjsuser->dateOfBirth . "<br/>" . $arrayjsuser->sex . "<br/>" . "</p>"; 
-        if (get_option("wp_email")=="si")
-          $profileuser .= "<p><b>" . __("Contact") . "</b><br/>" . $arrayjsuser->email . "<br/>";
-        if (get_option("wp_social")=="si") {
-          if (isset($arrayjsuser->linkedinURI))
-            $profileuser .= "<a target='_new' href='" . $arrayjsuser->linkedinURI . "'><img src='" . plugins_url('images/linkedin.png', __FILE__) . "'></a>";
-          if (isset($arrayjsuser->twitterURI))
-            $profileuser .= "<a target='_new' href='" . $arrayjsuser->twitterURI . "'><img src='" . plugins_url('images/twitter.png', __FILE__) . "'></a>";
-          if (isset($arrayjsuser->facebookURI))
-            $profileuser .= "<a target='_new' href='" . $arrayjsuser->facebookURI . "'><img src='" . plugins_url('images/facebook.png', __FILE__) . "'></a>";
-          $profileuser .= "</p>";
-        }
-        echo $profileuser;
-        echo $after_widget;
-    }
-    function update( $new_instance, $old_instance ) {
-      var_dump($old_instance);
-      $instance['title'] = strip_tags( $new_instance['title'] );
-      update_option('wp_logo', $_POST['ImageLogoProfile']);
- 	  update_option('wp_name', $_POST['pageNameProfile']);
- 	  update_option('wp_date', $_POST['personalDateProfile']);
- 	  update_option('wp_email', $_POST['EmailProfile']);
- 	  update_option('wp_social', $_POST['SocialProfile']);
-      return $new_instance;
-    }
-    function form( $instance ) {
-        
-    	_e("Title");
-    	$title = apply_filters( 'WimTV' . __("Profile"), $instance['title'] );
-        ?>
-        <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
-          <p>
-           <input type="checkbox" id="edit-imagelogoprofile" name="ImageLogoProfile" value="si" <?php if (get_option("wp_logo")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-imagelogoprofile">Logo</label><br/>
-           <input type="checkbox" id="edit-pagenameprofile" name="pageNameProfile" value="si" <?php if (get_option("wp_name")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-pagenameprofile"><?php  _e("Page Name","wimtvpro"); ?></label><br/>
-           <input type="checkbox" id="edit-personaldateprofile" name="personalDateProfile" value="si"  <?php if (get_option("wp_date")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-personaldateprofile"><?php _e("Personal Info","wimtvpro"); ?></label><br/>
-           <input type="checkbox" id="edit-emailprofile" name="EmailProfile" value="si"  <?php if (get_option("wp_email")=="si") echo 'checked="checked"'; ?> class="form-checkbox" /> <label class="option" for="edit-emailprofile">Email</label><br/>
-           <input type="checkbox" id="edit-socialprofile" name="SocialProfile" value="si"  <?php if (get_option("wp_social")=="si") echo 'checked="checked"'; ?> checked="checked" class="form-checkbox" />  <label class="option" for="edit-socialprofile">Link Social</label>
-           </p>
-                   
-        <?php
-    }
+function myPersonalDate () {
+parent::__construct( false, 'Wimtv:' . __("Profile") );
+}
+
+function widget( $args, $instance ) {
+extract($args);
+	$title = apply_filters( 'WimTV' . __("Profile"), $instance['title'] );
+echo $before_widget;
+if ( ! empty( $title ) )
+		echo $before_title . $title . $after_title;
+// This example is adapted from node.module.
+$urlprofile = get_option("wp_basePathWimtv") . str_replace( get_option("wp_replaceUserWimtv"), get_option("wp_userWimtv"), get_option("wp_urlUserProfileWimtv"));
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $urlprofile);
+curl_setopt($ch, CURLOPT_VERBOSE, 0);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+$response = curl_exec($ch);
+curl_close($ch);
+$arrayjsuser = json_decode($response);
+$profileuser= "";
+$namepage = "";
+if (get_option("wp_logo")=="si")  
+  $profileuser .= "<img src='" . $arrayjsuser ->imageLogoPath . "'>";
+if (get_option("wp_name")=="si"){
+  if (isset($arrayjsuser->pageName)) $namepage .= "<p><b>" . $arrayjsuser->pageName . "</b><br/>" . $arrayjsuser->pageDescription . "</p>";
+  else $namepage .= "<p><b>" . $arrayjsuser->username . "</b></p>";
+}
+$profileuser .= $namepage;
+if (get_option("wp_date")=="si")
+  $profileuser .= "<p><br/>" . $arrayjsuser->name . " " . $arrayjsuser->surname . "<br/>" . $arrayjsuser->dateOfBirth . "<br/>" . $arrayjsuser->sex . "<br/>" . "</p>"; 
+if (get_option("wp_email")=="si")
+  $profileuser .= "<p><b>" . __("Contact") . "</b><br/>" . $arrayjsuser->email . "<br/>";
+if (get_option("wp_social")=="si") {
+  if (isset($arrayjsuser->linkedinURI))
+    $profileuser .= "<a target='_new' href='" . $arrayjsuser->linkedinURI . "'><img src='" . plugins_url('images/linkedin.png', __FILE__) . "'></a>";
+  if (isset($arrayjsuser->twitterURI))
+    $profileuser .= "<a target='_new' href='" . $arrayjsuser->twitterURI . "'><img src='" . plugins_url('images/twitter.png', __FILE__) . "'></a>";
+  if (isset($arrayjsuser->facebookURI))
+    $profileuser .= "<a target='_new' href='" . $arrayjsuser->facebookURI . "'><img src='" . plugins_url('images/facebook.png', __FILE__) . "'></a>";
+  $profileuser .= "</p>";
+}
+echo $profileuser;
+echo $after_widget;
+}
+function update( $new_instance, $old_instance ) {
+var_dump($old_instance);
+$instance['title'] = strip_tags( $new_instance['title'] );
+update_option('wp_logo', $_POST['ImageLogoProfile']);
+  update_option('wp_name', $_POST['pageNameProfile']);
+  update_option('wp_date', $_POST['personalDateProfile']);
+  update_option('wp_email', $_POST['EmailProfile']);
+  update_option('wp_social', $_POST['SocialProfile']);
+return $new_instance;
+}
+function form( $instance ) {
+
+_e("Title");
+$title = apply_filters( 'WimTV' . __("Profile"), $instance['title'] );
+?>
+<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+  <p>
+   <input type="checkbox" id="edit-imagelogoprofile" name="ImageLogoProfile" value="si" <?php if (get_option("wp_logo")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-imagelogoprofile">Logo</label><br/>
+   <input type="checkbox" id="edit-pagenameprofile" name="pageNameProfile" value="si" <?php if (get_option("wp_name")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-pagenameprofile"><?php  _e("Page Name","wimtvpro"); ?></label><br/>
+   <input type="checkbox" id="edit-personaldateprofile" name="personalDateProfile" value="si"  <?php if (get_option("wp_date")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-personaldateprofile"><?php _e("Personal Info","wimtvpro"); ?></label><br/>
+   <input type="checkbox" id="edit-emailprofile" name="EmailProfile" value="si"  <?php if (get_option("wp_email")=="si") echo 'checked="checked"'; ?> class="form-checkbox" /> <label class="option" for="edit-emailprofile">Email</label><br/>
+   <input type="checkbox" id="edit-socialprofile" name="SocialProfile" value="si"  <?php if (get_option("wp_social")=="si") echo 'checked="checked"'; ?> checked="checked" class="form-checkbox" />  <label class="option" for="edit-socialprofile">Link Social</label>
+   </p>
+	   
+<?php
+}
 }
 function my_register_widgets() {
-    register_widget( "myPersonalDate" );
+register_widget( "myPersonalDate" );
 }
 
 function my_register_widgets2() {
-    register_widget( "myStreaming" );
+register_widget( "myStreaming" );
 }
 
 add_action( 'widgets_init', 'my_register_widgets' );
@@ -511,108 +511,109 @@ add_action( 'widgets_init', 'my_register_widgets2' );
 // [bartag foo="foo-value"]
 function wimtvpro_shortcode($atts) {
 
-	global $wpdb,$user;
-	$table_name = $wpdb->prefix . 'wimtvpro_video';
-	$user = wp_get_current_user();
-  	$idUser = $user->ID;
-  	$userRole = $user->roles[0];
-	
-	extract( shortcode_atts( array('id'=>$id,'width'=>$width,'height'=>$height), $atts ) );
-	
-	$arrayPlay = $wpdb->get_results("SELECT * FROM {$table_name} WHERE contentidentifier='" . $id . "'");
+global $wpdb,$user;
+$table_name = $wpdb->prefix . 'wimtvpro_video';
+$user = wp_get_current_user();
+$idUser = $user->ID;
+$userRole = $user->roles[0];
 
-	$view_video_state = $arrayPlay[0]->viewVideoModule;
-	$stateView = explode ("|",$view_video_state);
-	
-	$array =  explode (",",$stateView[1]);
-	$typeUser["U"] = array();
-	$typeUser["R"] = array();
-	$viewPublicVideo = FALSE;
-	foreach ($array as $key=>$value) {
-		$var = explode ("-",$value);
-		if ($var[0]=="U") {
-			array_push($typeUser["U"], $var[1]);
-		}
-		elseif ($var[0]=="R") {
-			array_push($typeUser["R"], $var[1]);
-		}
-		else
-			$typeUser[$var[0]] = "";
-		if (($var[0]=="All") || ($var[0]=="")) {
-			$viewPublicVideo = TRUE;
-		}	
+extract( shortcode_atts( array('id'=>$id,'width'=>$width,'height'=>$height), $atts ) );
+
+$arrayPlay = $wpdb->get_results("SELECT * FROM {$table_name} WHERE contentidentifier='" . $id . "'");
+
+$view_video_state = $arrayPlay[0]->viewVideoModule;
+$stateView = explode ("|",$view_video_state);
+
+$array =  explode (",",$stateView[1]);
+$typeUser["U"] = array();
+$typeUser["R"] = array();
+$viewPublicVideo = FALSE;
+foreach ($array as $key=>$value) {
+	$var = explode ("-",$value);
+	if ($var[0]=="U") {
+		array_push($typeUser["U"], $var[1]);
 	}
-	
-	
-  	//Check if user is authorized to see video
-  
-  	if ((($userRole=="administrator") || (in_array($idUser,$typeUser["U"])) || (in_array($userRole,$typeUser["R"])) || (array_key_exists("All",$typeUser)) || (array_key_exists ("",$typeUser)))){
-  
+	elseif ($var[0]=="R") {
+		array_push($typeUser["R"], $var[1]);
+	}
+	else
+		$typeUser[$var[0]] = "";
+	if (($var[0]=="All") || ($var[0]=="")) {
+		$viewPublicVideo = TRUE;
+	}	
+}
 
-		extract( shortcode_atts( array('id'=>$id,'width'=>$width,'height'=>$height), $atts ) );
-		$credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
 
-		if (get_option('wp_nameSkin')!="") {
-	        $uploads_info = wp_upload_dir();
-	        $directory =  $uploads_info["baseurl"] .  "/skinWim";
+//Check if user is authorized to see video
+
+if ((($userRole=="administrator") || (in_array($idUser,$typeUser["U"])) || (in_array($userRole,$typeUser["R"])) || (array_key_exists("All",$typeUser)) || (array_key_exists ("",$typeUser)))){
+
+
+	extract( shortcode_atts( array('id'=>$id,'width'=>$width,'height'=>$height), $atts ) );
+	$credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
+
+	if (get_option('wp_nameSkin')!="") {
+	$uploads_info = wp_upload_dir();
+	$directory =  $uploads_info["baseurl"] .  "/skinWim";
+
+	$skin = "&skin=" . $directory  . "/" . get_option('wp_nameSkin') . ".zip";      
+      }
+      else
+	$skin = "";
+
+      $url = get_option("wp_basePathWimtv") . get_option("wp_urlVideosWimtv") . "/" . $id . '/embeddedPlayers';
+      $url .= "?get=1&width=" . $width . "&height=" . $height . $skin;
+
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL,  $url);
+      curl_setopt($ch, CURLOPT_VERBOSE, 0);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+      curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+      curl_setopt($ch, CURLOPT_USERPWD, $credential);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+      $response = curl_exec($ch);
+	  
+	  return $response;
+} else {
 	
-	        $skin = "&skin=" . $directory  . "/" . get_option('wp_nameSkin') . ".zip";      
-	      }
-	      else
-	        $skin = "";
+	return "<p>You don't have permission to see the video</p>";
 
-	      $url = get_option("wp_basePathWimtv") . get_option("wp_urlVideosWimtv") . "/" . $id . '/embeddedPlayers';
-	      $url .= "?get=1&width=" . $width . "&height=" . $height . $skin;
-
-	      $ch = curl_init();
-	      curl_setopt($ch, CURLOPT_URL,  $url);
-	      curl_setopt($ch, CURLOPT_VERBOSE, 0);
-	      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	      curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-	      curl_setopt($ch, CURLOPT_USERPWD, $credential);
-	      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-	      $response = curl_exec($ch);
-		  
-		  return $response;
-	} else {
-		
-		return "<p>You don't have permission to see the video</p>";
-	
-	}  
+}  
 }
 
 
 
 function wimtvpro_registration_script() {
 
-	//TODO : in produzione usare la stringa commentata
-	//$basePath = get_option("wp_basePathWimtv");
-	$basePath ="http://peer.wim.tv/wimtv-webapp/rest/";
-	$baseRoot = str_replace("rest/","",$basePath);
+//TODO : in produzione usare la stringa commentata
+//$basePath = get_option("wp_basePathWimtv");
+$basePath ="http://peer.wim.tv/wimtv-webapp/rest/";
+$baseRoot = str_replace("rest/","",$basePath);
 
-	wp_enqueue_style( 'calendarWimtv', $baseRoot . 'css/fullcalendar.css' );
-	wp_enqueue_style( 'programmingWimtv', $baseRoot . 'css/programming.css' );
-	wp_enqueue_style( 'jQueryWimtv', $baseRoot . 'css/jquery-ui/jquery-ui.custom.min.css' );
-    wp_enqueue_style( 'fancyboxWimtv', $baseRoot . 'css/jquery.fancybox.css' );
+wp_enqueue_style( 'calendarWimtv', $baseRoot . 'css/fullcalendar.css' );
+wp_enqueue_style( 'programmingWimtv', $baseRoot . 'css/programming.css' );
+wp_enqueue_style( 'jQueryWimtv', $baseRoot . 'css/jquery-ui/jquery-ui.custom.min.css' );
+wp_enqueue_style( 'fancyboxWimtv', $baseRoot . 'css/jquery.fancybox.css' );
 
-	wp_enqueue_script('jquery.minWimtv', 'https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
-    wp_enqueue_script('jquery.customWimtv', $baseRoot . 'script/jquery-ui.custom.min.js');
-	wp_enqueue_script('jquery.fancyboxWimtv', $baseRoot . 'script/jquery.fancybox.min.js');
-	wp_enqueue_script('jquery.mousewheelWimtv', $baseRoot . 'script/jquery.mousewheel.min.js');
-	wp_enqueue_script('fullcalendarWimtv', $baseRoot . 'script/fullcalendar/fullcalendar.min.js');
-	wp_enqueue_script('utilsWimtv', $baseRoot . 'script/utils.js');
-	wp_enqueue_script('programmingWimtv', $baseRoot . 'script/programming/programming.js');
-	wp_enqueue_script('programmingApi', plugins_url('script/programming-api.js', __FILE__));
-	wp_enqueue_script('calendarWimtv', $baseRoot . 'script/programming/calendar.js');
-	
-	 
-	
+wp_enqueue_script('jquery.minWimtv', 'https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
+wp_enqueue_script('jquery.customWimtv', $baseRoot . 'script/jquery-ui.custom.min.js');
+wp_enqueue_script('jquery.fancyboxWimtv', $baseRoot . 'script/jquery.fancybox.min.js');
+wp_enqueue_script('jquery.mousewheelWimtv', $baseRoot . 'script/jquery.mousewheel.min.js');
+wp_enqueue_script('fullcalendarWimtv', $baseRoot . 'script/fullcalendar/fullcalendar.min.js');
+wp_enqueue_script('utilsWimtv', $baseRoot . 'script/utils.js');
+wp_enqueue_script('programmingWimtv', $baseRoot . 'script/programming/programming.js');
+wp_enqueue_script('programmingApi', plugins_url('script/programming-api.js', __FILE__));
+wp_enqueue_script('calendarWimtv', $baseRoot . 'script/programming/calendar.js');
+
+ 
+
 }
-if ($_GET['page']=="WimVideoPro_Programming"){
+
+if (isset($_GET['page']) && $_GET['page']=="WimVideoPro_Programming"){
 	add_action( 'admin_init','wimtvpro_registration_script');
 }
 
-if ($_GET['page']=="WimVideoPro_UploadVideo"){
+if (isset($_GET['page']) && $_GET['page']=="WimVideoPro_UploadVideo"){
 	add_action( 'admin_footer','wimtvpro_uploadScript');
 }
 

@@ -1,12 +1,20 @@
 <?php
 
+include_once("api/api.php");
+
+header('Content-type: application/json');
+
+initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
+
 //Page for view My Media
 function wimtvpro_mymedia (){
 
 	$view_page = wimtvpro_alert_reg();
 	
 	if ($view_page==TRUE){
-	
+
+        $sql_order = "";
+        $sql_where = "";
 		$upload = true;
 		$stampsync = false;
   		//include("sync.php");
@@ -39,15 +47,15 @@ function wimtvpro_mymedia (){
 	
 	
 	
-	   	if ($_POST['titleVideo']!="") $sql_where  = " AND title LIKE '%" . $_POST['titleVideo'] . "%' ";
+	   	if (isset($_POST['titleVideo']) && $_POST['titleVideo'] !="") $sql_where  = " AND title LIKE '%" . $_POST['titleVideo'] . "%' ";
 	   	
 	   	
-	    if ($_POST['ordertitleVideo']!="") {
+	    if (isset($_POST['ordertitleVideo']) && $_POST['ordertitleVideo'] !="") {
 	    	$sql_order  = " title " . $_POST['ordertitleVideo'];
 	   		$_POST['orderdateVideo'] = "";
 	   	}
-	   	
-	   	if ($_POST['orderdateVideo']!="") {
+
+	   	if (isset($_POST['orderdateVideo']) && $_POST['orderdateVideo'] !="") {
 	   		$_POST['ordertitleVideo'] = "";
 	   		$sql_order  .= " mytimestamp " . $_POST['orderdateVideo'];
 	   	}
@@ -60,24 +68,28 @@ function wimtvpro_mymedia (){
 		$videos= wimtvpro_getThumbs(FALSE,TRUE,FALSE,'',$sql_where, $sql_order);
 		
 		if ($videos!=""){
+
+            $title_video = isset($_POST['titleVideo']) ? $_POST['titleVideo'] : "";
 		
 			echo '<form method="post" action="#">';
-			echo '<b>' . __("Search") . '</b><label for="title">' . "  " . __("video title","wimtvpro") . ":</label><input type='text' value='" . $_POST['titleVideo'] . "' name='titleVideo' />";
+			echo '<b>' . __("Search") . '</b><label for="title">' . "  " . __("video title","wimtvpro") . ":</label><input type='text' value='" . $title_video . "' name='titleVideo' />";
 			//echo ' - <label for="title">Search to DATE: </label><input type="text" value="' . $_POST['titleVideo'] . '" name="titleVideo" />';
 			echo '<input type="submit" class="button button-primary" value="' . __("Search") . '">';
 			
 			
 			echo '<br/><br/><b>' . __("Order","wimtvpro")  . '</b><label for="title">' . "  " . __("by title","wimtvpro") . ':</label><select name="ordertitleVideo">
 			<option value=""';
-			if ($_POST['ordertitleVideo']=="") echo ' selected="selected" ';
-				echo '	>---</option><option value="ASC"';
-	
-			if ($_POST['ordertitleVideo']=="ASC") echo ' selected="selected" ';
-				echo '>ASC</option>
-						<option value="DESC"';
-				if ($_POST['ordertitleVideo']=="DESC") echo ' selected="selected" ';
-				echo ">" . __("DESC","wimtvpro") . "</option>
-				</select>";
+            if (isset($_POST['ordertitleVideo'])) {
+                if ($_POST['ordertitleVideo']=="") echo ' selected="selected" ';
+                    echo '	>---</option><option value="ASC"';
+
+                if ($_POST['ordertitleVideo']=="ASC") echo ' selected="selected" ';
+                    echo '>ASC</option>
+                            <option value="DESC"';
+                if ($_POST['ordertitleVideo']=="DESC") echo ' selected="selected" ';
+            }
+            echo ">" . __("DESC","wimtvpro") . "</option>
+            </select>";
 			
 			/*
 			
@@ -228,7 +240,8 @@ function wimtvpro_playlist(){
 			
 	global $wpdb; 
 	$table_name = $wpdb->prefix . 'wimtvpro_playlist';
-	if ($_GET["namefunction"]=="modPlaylist"){
+    $linkReturn = "";
+	if (isset($_GET["namefunction"]) && $_GET["namefunction"]=="modPlaylist"){
 		$linkReturn =  "<a href='" . $_SERVER['REQUEST_URI'] . "&namefunction=listPlaylist' class='add-new-h2'>" . __( 'Return to list', 'wimtvpro') . "</a> ";
 	}
 		
@@ -236,7 +249,7 @@ function wimtvpro_playlist(){
 	echo "<p>" . __("Create a playlist of videos (ONLY FREE videos are possible) to be posted to your website","wimtvpro") . "</p>";
 	echo "<p>" . __("Move videos from left to right","wimtvpro") . "</p>";
 	
-	if ($_GET["namefunction"]=="modPlaylist"){
+	if (isset($_GET["namefunction"]) && $_GET["namefunction"]=="modPlaylist"){
 		
 		
 		if ($_POST["modPlaylist"]=="true"){
@@ -349,22 +362,10 @@ function wimtvpro_upload(){
 		</div>';
 		
 		$category="";
-		
-		
-		$url_categories = get_option("wp_basePathWimtv") . "videoCategories";
-		
-		$ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $url_categories);
 	
-	    curl_setopt($ch, CURLOPT_VERBOSE, 0);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-	    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept-Language: " . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
-	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-	
-	    $response = curl_exec($ch);
+	    $response = apiGetVideoCategories();
 	    $category_json = json_decode($response);
-	    $category = array();
+	    $category = "";
 	
 	    foreach ($category_json as $cat) {
 	      foreach ($cat as $sub) {
@@ -531,38 +532,24 @@ function wimtvpro_live(){
 	</script>';
 	//echo timezone = ;
 	if ($view_page==TRUE){
-     
-	  $urlUpdate = get_option("wp_basePathWimtv") . "profile";
-	  $credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-		
-	  $ch = curl_init();
-	  curl_setopt($ch, CURLOPT_URL, $urlUpdate);
-
-	  curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json","Accept: application/json","Accept-Language: " . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
-	  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-	  curl_setopt($ch, CURLOPT_USERPWD, $credential);
-	  $response = curl_exec($ch);
-
+	  $response = apiGetProfile();
 	  $dati = json_decode($response, true);
 
 	  $enabledLive = $dati["liveStreamEnabled"];
-	  curl_close($ch);
-		
+
       if (strtoupper($enabledLive)=="TRUE"){
 
 		  $noneElenco = FALSE;
 		  $userpeer = get_option("wp_userWimtv");
 		  $url_live =  get_option("wp_basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts";
 		  $credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-		
-		   
+
+          if (!isset($_GET['namefunction']))
+              $_GET['namefunction'] = "";
 		
 		  switch ($_GET['namefunction']) {
 		  
-		         case "addLive":
+		     case "addLive":
 		     
 		       $noneElenco = TRUE;
 		       //aggiungere script per pickdata e pickhour
@@ -574,7 +561,7 @@ function wimtvpro_live(){
 		       $url = "";
 		       $giorno = "";
 		       $ora = "00:00";
-		       $tempo = "00:00";
+		       $durata = "00h00m";
 		       
 		     
 		     break;
@@ -588,16 +575,8 @@ function wimtvpro_live(){
 		
 		       
 		       //Recove dates live
-		       $url_live .= "/" . $_GET['id'] . "/embed";
-		       $ch_embedded = curl_init();
-		       curl_setopt($ch_embedded, CURLOPT_URL, $url_live);
-		       curl_setopt($ch_embedded, CURLOPT_VERBOSE, 0);
-		       curl_setopt($ch_embedded, CURLOPT_RETURNTRANSFER, TRUE);
-		       curl_setopt($ch_embedded, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		       curl_setopt($ch_embedded, CURLOPT_USERPWD, $credential);
-		       curl_setopt($ch_embedded, CURLOPT_SSL_VERIFYPEER, FALSE);
-		       $dati = curl_exec($ch_embedded);
-		
+		       $dati = apiGetLive($_GET['id']);
+		       //trigger_error($dati, E_USER_NOTICE);
 		       $arraydati = json_decode($dati);
 		       $name = $arraydati->name;
 		       if ($arraydati->paymentMode=="FREEOFCHARGE") 
@@ -606,8 +585,7 @@ function wimtvpro_live(){
 		        $payperview =  $arraydati->pricePerView;
 		       $url = $arraydati->url;
 		       $giorno = $arraydati->eventDate;
-		       $giorno = $arraydati->eventDate;
-		       $timezone = $arraydati->eventTimeZone;
+		       //$timezone = $arraydati->eventTimeZone;
 		       if (intval($arraydati->eventMinute)<10) $arraydati->eventMinute = "0" .  $arraydati->eventMinute;
 		       $ora = $arraydati->eventHour . ":" . $arraydati->eventMinute;
 		       $tempo = $arraydati->duration;
@@ -623,20 +601,7 @@ function wimtvpro_live(){
 		    break;
 		     
 		    case "deleteLive":
-		      $url_live .= "/" . $_GET['id'];
-		      $ch = curl_init();
-		      curl_setopt($ch, CURLOPT_URL, $url_live);
-		      curl_setopt($ch, CURLOPT_VERBOSE, 0);
-		      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-		      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		      curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		      curl_setopt($ch, CURLOPT_USERPWD, $credential);
-			  curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept-Language: " . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
-		      curl_setopt($ch, CURLOPT_POST, TRUE);
-		      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		      $response = curl_exec($ch);
-		      //echo $response;
-		      curl_close($ch);   
+              apiDeleteLive($_GET['id']);
 		     break;	
 			
 		     default:
@@ -682,7 +647,7 @@ function wimtvpro_live(){
 		    echo "<thead><tr><th>" . __("Title") . "</th><th>Live Now</th><th>Pay-Per-View</th><th>URL</th><th>" . __("Schedule") . "</th><th>" . __("Embed Code","wimtvpro") . "</th><th>" . __("Tools") . "</th></tr></thead>";
 		    echo "<tbody>";
 
-		    echo wimtvpro_elencoLive("table", "all");
+		    wimtvpro_elencoLive("table", "all");
 		    echo "</thead></table>";
 		    echo "</div>";
 		
@@ -842,7 +807,8 @@ function wimtvpro_report (){
 				$baseReport = "http://peer.wim.tv:3131/api/";
 			$megabyte = 1024*1024;
 			
-			
+			$from = "";
+            $to = "";
 			
 			if ((isset($_POST['from'])) && (isset($_POST['to'])) && (trim($_POST['from'])!="") && (trim($_POST['to'])!="")) {
 				$from = $_POST['from'];
@@ -876,6 +842,7 @@ function wimtvpro_report (){
 				$to_dmy = date("m") . "/" . $dayMe . "/" . date("y");
 			}
 		
+            $style_date = "";
 
 		    if ($current_month==TRUE){
 		    	
@@ -1031,51 +998,55 @@ function wimtvpro_report (){
 			    $dateNumber = array();
 			    $dateTraffic = array();
 				foreach ($arrayStream as $value){
-					$arrayPlay = $wpdb->get_results("SELECT * FROM {$table_name} WHERE contentidentifier='" . $value->contentId . "'");
-					$thumbs = $arrayPlay[0]->urlThumbs;
-					$thumbs = str_replace('\"','',$thumbs);
-					if ((isset($value->title))) $video = $thumbs . "<br/><b>" . $value->title . "</b><br/>" . $value->type ;
-					else $video = $thumbs . "<br/>" . $value->id;
-					
-					$html_view_exp = "<b>" . __("Total","wimtvpro") . ": " . $value->views . " " . __("viewers","wimtvpro") . "</b><br/>";
-					$view_exp = $value->views_expanded;
-					if (count($view_exp)>0) {
-						$html_view_exp .= "<table class='wp-list-table'>
-						<tr>
-					        <th class='manage-column column-title' style='font-size:10px;'>" . __("Date","wimtvpro") . "</th>
-					    	<th class='manage-column column-title' style='font-size:10px;'>" . __("Duration","wimtvpro") . "</th>
-					    	<th class='manage-column column-title' style='font-size:10px;'>" . __("Traffic","wimtvpro") . "</th>
-					    </tr>
-						";
-						foreach ($view_exp as $value_exp){
-							$value_exp->traffic =  round($value_exp->traffic / $megabyte, 2) . " MB";
-							$date_human =  date('d/m/Y', ($value_exp->end_time/1000));
-							$html_view_exp .= "<tr>";
-							$html_view_exp .= "<td style='font-size:10px;'>" . $date_human . "</td>";
-							$html_view_exp .= "<td style='font-size:10px;'>" . $value_exp->duration . "s</td>";
-							$html_view_exp .= "<td style='font-size:10px;'>" . $value_exp->traffic  . "</td>";
-							$html_view_exp .= "</tr>";
-							
-							if (isset($dateNumber[$date_human])) $dateNumber[$date_human] = $dateNumber[$date_human] + 1;
-							else $dateNumber[$date_human] = 1;
-							
-							if (isset($dateTraffic[$date_human])) array_push($dateTraffic[$date_human], $value_exp->traffic);
-							else $dateTraffic[$date_human] = array($value_exp->traffic);
-		
-							
-						}
-						$html_view_exp .= "</table>";
-					} else
-					{
-					  $html_view_exp .= "";
-					}
-					echo "
-					 <tr class='alternate'>
-					  <td class='image'>" .  $video . "</td>
-					  <td>" .  $html_view_exp . "</td>
-					  <td>" . $value->viewers . "</td>
-					  <td>" .  $value->max_viewers . "</td>
-					 </tr>";
+                    $thumbs = "";
+                    if (isset($value->contentId)) {
+                        $arrayPlay = $wpdb->get_results("SELECT * FROM {$table_name} WHERE contentidentifier='" . $value->contentId . "'");
+                        $thumbs = $arrayPlay[0]->urlThumbs;
+                    }
+                    $thumbs = str_replace('\"','',$thumbs);
+                    if ((isset($value->title))) $video = $thumbs . "<br/><b>" . $value->title . "</b><br/>" . $value->type ;
+                    else $video = $thumbs . "<br/>" . $value->id;
+
+                    $html_view_exp = "<b>" . __("Total","wimtvpro") . ": " . $value->views . " " . __("viewers","wimtvpro") . "</b><br/>";
+                    $view_exp = $value->views_expanded;
+                    if (count($view_exp)>0) {
+                        $html_view_exp .= "<table class='wp-list-table'>
+                        <tr>
+                            <th class='manage-column column-title' style='font-size:10px;'>" . __("Date","wimtvpro") . "</th>
+                            <th class='manage-column column-title' style='font-size:10px;'>" . __("Duration","wimtvpro") . "</th>
+                            <th class='manage-column column-title' style='font-size:10px;'>" . __("Traffic","wimtvpro") . "</th>
+                        </tr>
+                        ";
+                        foreach ($view_exp as $value_exp){
+                            $value_exp->traffic =  round($value_exp->traffic / $megabyte, 2) . " MB";
+                            $date_human =  date('d/m/Y', ($value_exp->end_time/1000));
+                            $html_view_exp .= "<tr>";
+                            $html_view_exp .= "<td style='font-size:10px;'>" . $date_human . "</td>";
+                            $html_view_exp .= "<td style='font-size:10px;'>" . $value_exp->duration . "s</td>";
+                            $html_view_exp .= "<td style='font-size:10px;'>" . $value_exp->traffic  . "</td>";
+                            $html_view_exp .= "</tr>";
+
+                            if (isset($dateNumber[$date_human])) $dateNumber[$date_human] = $dateNumber[$date_human] + 1;
+                            else $dateNumber[$date_human] = 1;
+
+                            if (isset($dateTraffic[$date_human])) array_push($dateTraffic[$date_human], $value_exp->traffic);
+                            else $dateTraffic[$date_human] = array($value_exp->traffic);
+
+
+                        }
+                        $html_view_exp .= "</table>";
+                    } else
+                    {
+                      $html_view_exp .= "";
+                    }
+                    echo "
+                     <tr class='alternate'>
+                      <td class='image'>" .  $video . "</td>
+                      <td>" .  $html_view_exp . "</td>
+                      <td>" . $value->viewers . "</td>
+                      <td>" .  $value->max_viewers . "</td>
+                     </tr>";
+
 				
 				}
 				echo "</table><div class='clear'></div></div>";

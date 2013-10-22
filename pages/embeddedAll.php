@@ -3,8 +3,8 @@
   include("../../../../wp-load.php");
   $table_name = $wpdb->prefix . 'wimtvpro_video';
   $contentItem = $_GET['c'];
-  $directory = $uploads_info["baseurl"] .  "/skinWim";
-  $streamItem = $_GET['s'];
+  $directory = isset($uploads_info) ? $uploads_info["baseurl"] .  "/skinWim" : "";
+  $streamItem = isset($_GET['s']) ? $_GET['s'] : "";
 
   if (strlen($contentItem)>0) {
 

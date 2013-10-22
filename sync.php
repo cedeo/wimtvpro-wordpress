@@ -55,11 +55,16 @@
       }
       if ($array_all_videos) {
 	      foreach ($array_all_videos as $video) {
+            //echo json_encode($video);
 	        $url_video = $video["actionUrl"];
 	        $status = $video["status"];
-	        //$acquired_identifier = $video["acquired_identifier "];
+	        //$acquired_identifier = $video["acquired_identifier"];
 	        $title= $video["title"];
-	        $urlVideo= $video["streamingUrl"]->streamer . "$$" . $video["streamingUrl"]->file . "$$" . $video["streamingUrl"]->auth_token;
+            if (isset($video["streamingUrl"])) {
+                $urlVideo = $video["streamingUrl"]->streamer . "$$";
+                $urlVideo .= $video["streamingUrl"]->file . "$$";
+                $urlVideo .= $video["streamingUrl"]->auth_token;
+            }
 	        $duration= $video["duration"];
 	        $content_item =  $video["contentId"];
 	        $url_thumbs = '<img src="' . $video["thumbnailUrl"] . '"  title="' . $title . '" class="wimtv-thumbnail" />';
@@ -104,11 +109,11 @@
 	            	'state' => $pos_wimtv,
 	            	'viewVideoModule' => '3',
 	            	'status' => $status,
-	            	'acquiredIdentifier' => $acquired_identifier,
-	            	'urlThumbs' => mysql_escape_string($url_thumbs),
+	            	//'acquiredIdentifier' => $acquired_identifier,
+	            	'urlThumbs' => mysql_real_escape_string($url_thumbs),
 	            	'category' =>  $categories,
-	            	'urlPlay' =>  mysql_escape_string($urlVideo),
-	            	'title' =>  mysql_escape_string($title),
+	            	'urlPlay' =>  mysql_real_escape_string($urlVideo),
+	            	'title' =>  mysql_real_escape_string($title),
 	            	'duration' => $duration,
 	            	'showtimeidentifier' => $showtime_identifier
 	            	)
@@ -119,9 +124,9 @@
 	          	$query = "UPDATE " . $table_name . 
 	            " SET state = '" . $pos_wimtv . "'," . 
 	            " status = '" . $status . "'," . 
-	            " title = '" . mysql_escape_string($title) . "'," .             
-	            " urlThumbs = '" . mysql_escape_string($url_thumbs) . "'," .
-	            " urlPlay = '" . mysql_escape_string($urlVideo) . "'," .
+	            " title = '" . mysql_real_escape_string($title) . "'," .             
+	            " urlThumbs = '" . mysql_real_escape_string($url_thumbs) . "'," .
+	            " urlPlay = '" . mysql_real_escape_string($urlVideo) . "'," .
 	            " duration = '" . $duration . "'," .
 	            " showtimeidentifier = '" . $showtime_identifier . "'," .
 	            " category = '" . $categories . "'" .

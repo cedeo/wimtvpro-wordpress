@@ -56,17 +56,9 @@ function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $inse
 	}
 
 	//Select Showtime
-	$param_st = get_option("wp_basePathWimtv") . "users/" . get_option("wp_userWimtv") . 	"/showtime?details=true";
-	$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-	$ch_st = curl_init();
-	curl_setopt($ch_st, CURLOPT_URL, $param_st);
-	curl_setopt($ch_st, CURLOPT_VERBOSE, 0);
-	curl_setopt($ch_st, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch_st, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-	curl_setopt($ch_st, CURLOPT_USERPWD, $credential);
-	curl_setopt($ch_st, CURLOPT_SSL_VERIFYPEER, FALSE);
-	$details_st  =curl_exec($ch_st);
-	$arrayjson_st = json_decode( $details_st);
+
+	$details_st  = apiGetShowtimes();
+	$arrayjson_st = json_decode($details_st);
 	$st_license = array();
 	foreach ($arrayjson_st->items as $st){
 		$st_license[$st->showtimeIdentifier] = $st->licenseType;
@@ -91,6 +83,8 @@ function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $inse
 function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="", $sql_where="",$sql_order="") {
   global $user,$wpdb, $wp_query ;
 
+  $replace_content = get_option("wp_replaceContentWimtv");
+
   $table_name = $wpdb->prefix . 'wimtvpro_video';
   $my_media= "";
   $response_st = "";
@@ -108,7 +102,7 @@ function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FA
   $array_count  = $resultCount[0]->count;
 
   $rows_per_page = 10 ;
-  $current_page = $_GET['paged'];
+  $current_page = isset($_GET['paged']) ? $_GET['paged'] : "";
   $current = (intval($current_page)) ? intval($current_page) : 1;
   $number_page = ceil($array_count/$rows_per_page);
   $offset = ( $current  * $rows_per_page ) - $rows_per_page;
@@ -119,17 +113,9 @@ function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FA
  /* $array_videos_new_wp0 = $wpdb->get_results("SELECT * FROM  {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "' AND  position=0 " . $sql_where . " ORDER BY " . $sql_order);*/
 
   //Select Showtime
-  $param_st = get_option("wp_basePathWimtv") . "users/" . get_option("wp_userWimtv") . "/showtime?details=true";
-  $credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-  $ch_st = curl_init();
-  curl_setopt($ch_st, CURLOPT_URL, $param_st);
-  curl_setopt($ch_st, CURLOPT_VERBOSE, 0);
-  curl_setopt($ch_st, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($ch_st, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-  curl_setopt($ch_st, CURLOPT_USERPWD, $credential);
-  curl_setopt($ch_st, CURLOPT_SSL_VERIFYPEER, FALSE);
-  $details_st  =curl_exec($ch_st);
-  $arrayjSonST = json_decode( $details_st);
+
+  $details_st  = apiGetShowtimes();
+  $arrayjSonST = json_decode($details_st);
   $stLicense = array();
   foreach ($arrayjSonST->items as $st){
   	$stLicense[$st->showtimeIdentifier] = $st->licenseType;
@@ -190,7 +176,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
   $title = $record_new -> title;
   $showtime_identifier = $record_new -> showtimeIdentifier;
   $stateView = explode ("|",$view_video_state);
-  $array =  explode (",",$stateView[1]);
+  $array =  explode (",",$stateView[0]);
   $typeUser["U"] = array();
   $typeUser["R"] = array();
   $viewPublicVideo = FALSE;
@@ -233,9 +219,11 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     curl_setopt($ch_thumb, CURLOPT_SSL_VERIFYPEER, FALSE);
     $replace_video  =curl_exec($ch_thumb);
 
+    $licenseType = "";
 	if ( $showtime_identifier!=""){	
 		$licenseType = $stLicense[$showtime_identifier];	
 	}
+
 	
 	$isfound = false;
 	if (!strstr($replace_video, 'Not Found'))
@@ -271,7 +259,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
    
 	
 	if (!$insert_into_page) {
-	 if ($showtime_identifier!="")  $my_media .= "<tr class='streams' id='" . $content_item_new . "'>"; 
+	 if ($showtime_identifier!="")  $my_media .= "<tr class='streams' id='" . $content_item_new . "'>";
      else $my_media .= "<tr id='" . $content_item_new . "'>";
    }
    else
@@ -290,7 +278,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 		    
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL,  $url_video);
-	curl_setopt($ch, CURLOPT_USERAGENT,$userAgent); 
+	//curl_setopt($ch, CURLOPT_USERAGENT,$userAgent);
     curl_setopt($ch, CURLOPT_VERBOSE, 0);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
@@ -299,6 +287,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
     $response = curl_exec($ch);
 	$arrayjson   = json_decode($response);
+    $action = "";
    if ((!$showtime) || (trim($showtime)=="FALSE")) {
     $id  = "";
     $title_add = __("Add to WimVod","wimtvpro") ;
@@ -357,7 +346,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     }
    }
   
-  $action .= "<td><span class='icon_download' id='" . $content_item_new . "|" . $status_array[1] . "' title='Download'></span></td>";
+  $action .= "<td><span class='icon_download' id='" . $content_item_new . "|" . $status_array[0] . "' title='Download'></span></td>";
   
   if ($showtime_identifier!="") {
     $style_view = "";
@@ -396,8 +385,10 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
  
   } else {
+    $style_view = "";
+    $title_view = "";
 	$href_view = wimtvpro_checkCleanUrl("pages", "embedded.php?c=" . $content_item_new . "&s=" . $showtime_identifier);
-	$action .= "<td style='display:none;'><a class='viewThumb' " . $style_view . " title='" .  $title_view . "' href='#' id='" . $href_view . "'><span class='icon_view'></span></a></td>";
+	$action = "<td style='display:none;'><a class='viewThumb' " . $style_view . " title='" .  $title_view . "' href='#' id='" . $href_view . "'><span class='icon_view'></span></a></td>";
 	  
   }
  
@@ -409,6 +400,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     }
 	if ($playlist) $action = "";
     $my_media .= "<td class='image'>" . $video . "<br/><b>" . $title . "</b>" . $linkView . "</td>" . $action ;
+    $send = "";
     if ($insert_into_page) {
       $my_media .= '<td><input type="hidden" value="' . $_GET['post_id'] . '" name="post_id">';
       $my_media .= "W <input style='width:30px;' maxweight='3' class='w' type='text' value='" . get_option("wp_widthPreview") . "'>px  -  H <input style='width:30px;' maxweight='3' class='h' type='text' value='" . get_option("wp_heightPreview") . "'>px";
@@ -494,158 +486,146 @@ echo '
 }
 
 
-function wimtvpro_savelive ($function){
+function wimtvpro_savelive($function) {
 
+    if (isset($_POST["wimtvpro_live"])) {
+      //Modify new event live
+      $error = 0;
+      //Check fields required
 
-if (isset($_POST["wimtvpro_live"])) {
-  //Modify new event live
-  $error = 0;
-  //Check fields required
-    
-  if (strlen(trim($_POST['name']))==0) {        
-     /* echo '<div class="error"><p><strong>';
-      _e("You must write a wimlive's name.","wimtvpro");
-      echo '</strong></p></div>';*/
-      $error ++;
-  }
-  if (strlen(trim($_POST['payperview']))==0) {        
-     /* echo '<div class="error"><p><strong>';
-      _e("You must write a price for your event (or free of charge).","wimtvpro");
-      echo '</strong></p></div>';*/
-      $error ++;
-  }
-  if (strlen(trim($_POST['Url']))==0) {        
-    /*  echo '<div class="error"><p><strong>';
-      _e("You must write a url.","wimtvpro");
-      echo '</strong></p></div>';*/
-      $error ++;
-  }
-  if (strlen(trim($_POST['Giorno']))==0) {        
-    /*  echo '<div class="error"><p><strong>';
-      _e("You must write a day of your event.","wimtvpro");
-      echo '</strong></p></div>';*/
-      $error ++;
-  }
-  if (strlen(trim($_POST['Ora']))==0) {        
-      /*echo '<div class="error"><p><strong>';
-      _e("You must write a hour of your event.","wimtvpro");
-      echo '</strong></p></div>';*/
-      $error ++;
-  }
-  if (strlen(trim($_POST['Duration']))==0) {        
-      /*echo '<div class="error"><p><strong>';
-      _e("You must write a duration of your event.","wimtvpro");
-      echo '</strong></p></div>';*/
-      $error ++;
-  }
-  
-  if (!isset($_POST['Public'])) {        
-     /* echo '<div class="error"><p><strong>';
-      _e("You must check if you event is public or private.","wimtvpro");
-      echo '</strong></p></div>';*/
-      $error ++;
-  }
-  
-  if ($error==0) {
-     $name = $_POST['name'];
-     $payperview = $_POST['payperview'];
-     if ($payperview=="0") 
-       $typemode = "FREEOFCHARGE";
-     else {
-     
-       $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, get_option("wp_basePathWimtv") . "uuid");
-
-      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-      $paymentCode= curl_exec($ch);
-      curl_close($ch);
-           
-       $typemode = "PAYPERVIEW&pricePerView=" . $payperview . "&ccy=EUR&paymentCode=" . $paymentCode;
-     }
-     $url = $_POST['Url'];
-     
-     if ($_POST['Giorno']!="") {
-       $giorno = $_POST['Giorno'];
-     } 
-     else
-       $giorno = "";
-     
-     if ($_POST['Ora']!="") 
-       $ora = explode(":", $_POST['Ora']);
-     }
-    }
-    else {
-       $ora[0] = "";
-       $ora[1] = "";
-    }
-    if ($_POST['Duration']!="") {
-      $separe_duration = explode("h", $_POST['Duration']);
-      $duration = ($separe_duration[0] * 60) + $separe_duration[1];
-    }
-    else {
-      $duration = 0;
-    }
-    
-    if ($_POST['Public']!="") {
-    	$public = $_POST['Public'];
-    }
-    
-    if ($_POST['Record']!="") {
-    	$record = $_POST['Record'];
-    }
-
-    $userpeer = get_option("wp_userWimtv");
-    $fields_string = "name=" . $name . "&url=" . $url . "&eventDate=" . $giorno . "&paymentMode=" . $typemode;
-    $fields_string .= "&eventHour=" . $ora[0] . "&eventMinute=" . $ora[1] . "&duration=" . $duration . "&durationUnit=Minute&publicEvent=" . $public;
-    
-    if ($_POST['eventTimeZone']!="")
-      $fields_string .= "&eventTimeZone=" . $_POST['eventTimeZone'];
-    else
-      $fields_string .= "&timezone=" . $_POST['timelivejs'];
-    
-    $fields_string .= "&recordEvent=" . $record;
-    
-    $credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-    $url_live = get_option("wp_basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts";
-    if ($function=="modify")  $url_live .= "/" . $_GET['id'];
-    if ($_POST['eventTimeZone']=="")
-      $url_live .= "?timezone=" . $_POST['timelivejs'];
-	
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url_live);
-    curl_setopt($ch, CURLOPT_USERPWD, $credential);
-    curl_setopt($ch, CURLOPT_POST, TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string); 
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept-Language: " . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-    $response = curl_exec($ch);
-    curl_close($ch);
-    if ($response!=""){
-      $message = json_decode($response);
-      $result = $message->{"result"};
-      if ($result=="SUCCESS") {
-         echo '<script languaguage="javascript"> 
-		<!-- 
-		window.location = "admin.php?page=WimVideoPro_WimLive";  
-		//--> 
-		</script>';
-
-        echo '<div class="updated"><p><strong>';
-        if ($function=="modify") _e("Update successful","wimtvpro");
-        else _e("Insert successful","wimtvpro");
-        echo '</strong></p></div>';
-               
+      if (strlen(trim($_POST['name']))==0) {
+         /* echo '<div class="error"><p><strong>';
+          _e("You must write a wimlive's name.","wimtvpro");
+          echo '</strong></p></div>';*/
+          $error ++;
       }
-      else {
-        $formset_error = "";
-        foreach ($message->messages as $value) {
-          if ($value->message!="")
-            $formset_error .= $value->message . "<br/>";
+      if (strlen(trim($_POST['payperview']))==0) {
+         /* echo '<div class="error"><p><strong>';
+          _e("You must write a price for your event (or free of charge).","wimtvpro");
+          echo '</strong></p></div>';*/
+          $error ++;
+      }
+      if (strlen(trim($_POST['Url']))==0) {
+        /*  echo '<div class="error"><p><strong>';
+          _e("You must write a url.","wimtvpro");
+          echo '</strong></p></div>';*/
+          $error ++;
+      }
+      if (strlen(trim($_POST['Giorno']))==0) {
+        /*  echo '<div class="error"><p><strong>';
+          _e("You must write a day of your event.","wimtvpro");
+          echo '</strong></p></div>';*/
+          $error ++;
+      }
+      if (strlen(trim($_POST['Ora']))==0) {
+          /*echo '<div class="error"><p><strong>';
+          _e("You must write a hour of your event.","wimtvpro");
+          echo '</strong></p></div>';*/
+          $error ++;
+      }
+      if (strlen(trim($_POST['Duration']))==0) {
+          /*echo '<div class="error"><p><strong>';
+          _e("You must write a duration of your event.","wimtvpro");
+          echo '</strong></p></div>';*/
+          $error ++;
+      }
+
+      if (!isset($_POST['Public'])) {
+         /* echo '<div class="error"><p><strong>';
+          _e("You must check if you event is public or private.","wimtvpro");
+          echo '</strong></p></div>';*/
+          $error ++;
+      }
+
+      if ($error==0) {
+        $name = $_POST['name'];
+        $payperview = $_POST['payperview'];
+        if ($payperview=="0") {
+            $typemode = "FREEOFCHARGE";
+        } else {
+            $paymentCode= apiGetUUID();
+            $typemode = "PAYPERVIEW&pricePerView=" . $payperview . "&ccy=EUR&paymentCode=" . $paymentCode;
         }
-        echo '<div class="error"><p><strong>' . $formset_error . '</strong></p></div>';
+        $url = $_POST['Url'];
+
+        if ($_POST['Giorno']!="") {
+            $giorno = $_POST['Giorno'];
+        } else {
+            $giorno = "";
+        }
+        if ($_POST['Ora']!="") {
+            $ora = explode(":", $_POST['Ora']);
+        } else {
+            $ora[0] = "";
+            $ora[1] = "";
+        }
+        if ($_POST['Duration']!="") {
+            $separe_duration = explode("h", $_POST['Duration']);
+            $duration = ($separe_duration[0] * 60) + $separe_duration[1];
+        }
+        else {
+            $duration = 0;
+        }
+
+        if ($_POST['Public']!="") {
+            $public = $_POST['Public'];
+        }
+
+        if ($_POST['Record']!="") {
+            $record = $_POST['Record'];
+        }
+
+        $parameters = array('name' => $name,
+                            'url' => $url,
+                            'eventDate' => $giorno,
+                            'paymentMode' => $typemode,
+                            'eventHour' => $ora[0],
+                            'eventMinute' => $ora[1],
+                            'duration' => $duration,
+                            'durationUnit' => 'Minute',
+                            'publicEvent' => $public,
+                            'eventTimeZone' => $_POST['eventTimeZone'],
+                            'recordEvent' => $record);
+
+        if ($_POST['eventTimeZone']!="")
+            $parameters['eventTimeZone'] = $_POST['eventTimeZone'];
+        else
+            $parameters['timezone'] = $_POST['timelivejs'];
+
+        if ($function=="modify") {
+            $response = apiModifyLive($_GET['id'], $parameters);
+        } else {
+            $response = apiAddLive($parameters);
+        }
+        if ($response!="") {
+            $message = json_decode($response);
+            $result = $message->{"result"};
+        }
+        if ($result=="SUCCESS") {
+            echo '<script language="javascript">
+            <!--
+            window.location = "admin.php?page=WimVideoPro_WimLive";
+            //-->
+            </script>';
+
+
+            echo '<div class="updated"><p><strong>';
+            if ($function=="modify")
+                _e("Update successful","wimtvpro");
+            else
+                _e("Insert successful","wimtvpro");
+            echo '</strong></p></div>';
+        } else {
+            $formset_error = "";
+            foreach ($message->messages as $value) {
+                if ($value->message!="")
+                    $formset_error .= $value->message . "<br/>";
+            }
+            echo '<div class="error"><p><strong>' . $formset_error . '</strong></p></div>';
+            echo '<div><strong>'.$response.'</strong></div>';
+        }
       }
-  }
+    }
 }
 
 function update_page_mystreaming(){
@@ -667,17 +647,18 @@ function update_page_mystreaming(){
   }
 
 }
+
 function change_post_status($post_id,$status){
     $current_post = get_post( $post_id, 'ARRAY_A' );
     $current_post['post_status'] = $status;
     wp_update_post($current_post);
 }
+
 function wimtvpro_checkCleanUrl($base, $url) {
-  return plugins_url($base . "/" . $url, __FILE__);
+    return plugins_url($base . "/" . $url, __FILE__);
 }
 
-
-function getDateRange($startDate, $endDate, $format="d/m/Y"){
+function getDateRange($startDate, $endDate, $format="d/m/Y") {
 
     //Create output variable
 
@@ -687,16 +668,14 @@ function getDateRange($startDate, $endDate, $format="d/m/Y"){
 
     $total_days = round(abs(strtotime($endDate) - strtotime($startDate)) / 86400, 0) + 1;
 
-    if($days<0) { return false; }
+    if($total_days<0) {
+        return false;
+    }
 
     //Populate array of weekdays and counts
 
-    for($day=0; $day<$total_days; $day++)
-
-    {
-
+    for($day=0; $day<$total_days; $day++) {
         $datesArray[] = date($format, strtotime("{$startDate} + {$day} days"));
-
     }
 
     //Return results array
@@ -705,80 +684,66 @@ function getDateRange($startDate, $endDate, $format="d/m/Y"){
 
 }
 
-
-function wimtvpro_alert_reg(){
+function wimtvpro_alert_reg() {
 
 	//If user isn't register or not inser user and password
 	if ((get_option("wp_registration")=='FALSE') && ((get_option("wp_userwimtv")=="username") && get_option("wp_passwimtv")=="password")){
-	
 		echo "<div class='error'>" . __("If you don't have a WimTV account","wimtvpro") . " <a href='?page=WimTvPro_Registration'>" . __("REGISTER","wimtvpro") . "</a> | <a href='?page=WimTvPro'>" . __("LOGIN","wimtvpro") . "</a> " .   __("with your WimTV credentials","wimtvpro") . "</div>";
-		
 		return FALSE;
-	
 	} else {
-	
-	
 		return TRUE;
-	
 	}
 }
 
+function wimtvpro_viever_jwplayer($userAgent,$contentId,$video,$dirJwPlayer) {
 
-function wimtvpro_viever_jwplayer($userAgent,$contentId,$video,$dirJwPlayer){
+    $isiPad = (bool) strpos($userAgent,'iPad');
+    $urlPlay = explode("$$",$video[0]->urlPlay);
+    $isiPhone = (bool) strpos($userAgent,'iPhone');
+    $isiAndroid = (bool) strpos($userAgent,'Android');
 
-		$isiPad = (bool) strpos($userAgent,'iPad');
-        $urlPlay = explode("$$",$video[0]->urlPlay); 
-		$isiPhone = (bool) strpos($userAgent,'iPhone');
-		$isiAndroid = (bool) strpos($userAgent,'Android');
-		
-		if ($isiPad  || $isiPhone || $isiAndroid) {
-		
-			$contentId = $video[0]->contentidentifier;
-			$url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosWimtv") . "/" . $contentId . "?details=true";
-			$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL,  $url_video);
-			curl_setopt($ch, CURLOPT_USERAGENT,$userAgent); 
-		    curl_setopt($ch, CURLOPT_VERBOSE, 0);
-		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		    curl_setopt($ch, CURLOPT_USERPWD, $credential);
-		    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    if ($isiPad  || $isiPhone || $isiAndroid) {
 
-		    $response = curl_exec($ch);
-			$arrayjson   = json_decode($response);
-			
-		}
-		
-		if ($isiPad  || $isiPhone) {
-			$urlPlayIPadIphone = "";
-			
-			
-			$urlPlayIPadIphone = $arrayjson->streamingUrl->streamer;
-			$configFile = "'file': '" . $urlPlayIPadIphone . "',";	
-		
-		}
-		else if ($isiAndroid){
- 			$urlPlayAndroid =$arrayjson->streamingUrl->streamer;
-			$filePlayAndroid =$arrayjson->streamingUrl->file;
-			$configFile = "modes: [ { type: 'html5', config: { file: '" . $arrayjson->url . "','provider': 'video' } }],";
-		}
-		
-		else {
-		
-			$configFile = "'flashplayer':'" . $dirJwPlayer . "','file': '" . $urlPlay[1] . "','streamer':'" . $urlPlay[0] . "',";
-		
-		}
-  return $configFile;
+        $contentId = $video[0]->contentidentifier;
+        $url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosWimtv") . "/" . $contentId . "?details=true";
+        $credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,  $url_video);
+        curl_setopt($ch, CURLOPT_USERAGENT,$userAgent);
+        curl_setopt($ch, CURLOPT_VERBOSE, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_USERPWD, $credential);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+        $response = curl_exec($ch);
+        $arrayjson   = json_decode($response);
+
+    }
+
+    if ($isiPad  || $isiPhone) {
+        $urlPlayIPadIphone = "";
+        $urlPlayIPadIphone = $arrayjson->streamingUrl->streamer;
+        $configFile = "'file': '" . $urlPlayIPadIphone . "',";
+    } else if ($isiAndroid) {
+        $urlPlayAndroid =$arrayjson->streamingUrl->streamer;
+        $filePlayAndroid =$arrayjson->streamingUrl->file;
+        $configFile = "modes: [ { type: 'html5', config: { file: '" . $arrayjson->url . "','provider': 'video' } }],";
+    }
+
+    else {
+        $configFile = "'flashplayer':'" . $dirJwPlayer . "','file': '" . $urlPlay[1] . "','streamer':'" . $urlPlay[0] . "',";
+    }
+    return $configFile;
 }
 
-function wimtvpro_unzip($location,$newLocation){
+function wimtvpro_unzip($location,$newLocation) {
 	require_once(ABSPATH .'/wp-admin/includes/file.php'); //the cheat
 	WP_Filesystem();
 	return unzip_file($location, $newLocation);
 }
 
-function  wimtvpro_searchFile($mainDir, $ext) {
+function wimtvpro_searchFile($mainDir, $ext) {
 	if ($directory_handle = @opendir($mainDir)) {
 		//Read directory for skin JWPLAYER
 		while (($file = readdir($directory_handle)) !== FALSE) {
@@ -799,17 +764,19 @@ function  wimtvpro_searchFile($mainDir, $ext) {
 	}
 } 
 
-
 function return_bytes($val) {
     $val = trim($val);
     $last = strtolower($val[strlen($val)-1]);
-    switch($last) {
+    switch ($last) {
         case 'g':
             $val *= 1024;
+            break;
         case 'm':
             $val *= 1024;
+            break;
         case 'k':
             $val *= 1024;
+            break;
     }
 
     return $val;

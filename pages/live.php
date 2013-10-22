@@ -1,7 +1,7 @@
 <?php
 include("../../../../wp-load.php");
 $userpeer = get_option("wp_userWimtv");
-$timezone = $_POST['timezone'];
+$timezone = isset($_POST['timezone']) ? $_POST['timezone'] : "";
 $type = $_POST['type'];
 $id =  $_POST['id'];
 $onlyActive = $_POST['onlyActive'];
@@ -102,8 +102,8 @@ $onlyActive = $_POST['onlyActive'];
       $secondiDurata = 60 * $durata;
       $ora= date("H:i:s", $secondiDurata);
       $arrayDurata = explode (":",$ora);
-    
-      $timeStampFine =  mktime($arrayOra[0]+$arrayDurata[0],$arrayOra[1]+$arrayDurata[1],$arrayOra[2]+$arrayDurata[2],$arrayData[1],$arrayData[0],$arrayData[2]);
+      $startSeconds = isset($arrayOra[2]) ? $arrayOra[2] : 0;
+      $timeStampFine =  mktime($arrayOra[0]+$arrayDurata[0],$arrayOra[1]+$arrayDurata[1],$startSeconds+$arrayDurata[2],$arrayData[1],$arrayData[0],$arrayData[2]);
 
       $timeStampNow =  mktime(date("H"),date("i"),date("s"));
 		
@@ -146,7 +146,6 @@ $onlyActive = $_POST['onlyActive'];
         $output .= $embedded_iframe;
       }
     }
-    if (($number=="0") && ($count==0)) break;
    }
   }
   if ($count<0)

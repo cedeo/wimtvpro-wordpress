@@ -1,5 +1,11 @@
 <?php
 
+include_once("api/api.php");
+
+header('Content-type: application/json');
+
+initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
+
 define('BASE_URL', get_bloginfo('url'));
 
 function wimtvpro_submenu($view_page){
@@ -23,7 +29,7 @@ function wimtvpro_configure(){
 	    $directory = $uploads_info["basedir"] .  "/skinWim";
 	    $styleReg = "display:none";
 	        
-	    if($_POST['wimtvpro_update'] == 'Y') {  
+	    if(isset($_POST['wimtvpro_update']) && $_POST['wimtvpro_update'] == 'Y') {
 	        //Form data sent 
 	
 	        $error = 0;
@@ -180,7 +186,10 @@ function wimtvpro_configure(){
 	  	}
 	   
 	   // If directory skinWim don't exist, create the directory (if change Public file system path into admin/config/media/file-system after installation of this module or is the first time)
-	   if (!is_dir($directory)) {
+
+       $elencoSkin = [];
+
+       if (!is_dir($directory)) {
 	      $directory_create = mkdir($uploads_info["basedir"] . "/skinWim");
 	   }
 	   
@@ -329,7 +338,7 @@ function wimtvpro_configure(){
 		$urlUpdate = get_option("wp_basePathWimtv") . "profile";
 		$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
 		
-		if ($_POST['wimtvpro_update'] == 'Y'){
+		if (isset($_POST['wimtvpro_update']) && $_POST['wimtvpro_update'] == 'Y'){
 			//UPDATE INFORMATION
 			
 			foreach ($_POST as $key=>$value){		
@@ -390,21 +399,9 @@ function wimtvpro_configure(){
 		} 
 		
 		//Read
-			$urlUpdate = get_option("wp_basePathWimtv") . "profile";
-			$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-
-			$ch = curl_init();
-	        curl_setopt($ch, CURLOPT_URL, $urlUpdate);
-	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-	        curl_setopt($ch, CURLOPT_USERPWD, $credential);
-	        $response = curl_exec($ch);
+	        $response = apiGetProfile();
 			$dati = json_decode($response, true);
 			//var_dump ($dati);
-			curl_close($ch);
-			
-		
 		
 		switch ($_GET['update']){
 		
@@ -781,6 +778,16 @@ echo "<h2>" . __("Features","wimtvpro") . "</h2>";
 					
 				</table>';
 
+              $page_name = "";
+              if (isset($dati['pageName'])) {
+                  $page_name = $dati['pageName'];
+              }
+
+                $page_description = "";
+                if (isset($dati['pageDescription'])) {
+                    $page_description = $dati['pageDescription'];
+                }
+
 			  echo '
 			  
 				 
@@ -795,7 +802,7 @@ echo "<h2>" . __("Features","wimtvpro") . "</h2>";
 						<tr>
 							<th><label for="pageName">' . __("Page Name","wimtvpro") . '</label></th>
 							<td>
-								<input  type="text"  id="edit-pageName" name="pageName" value="' . $dati['pageName'] . '" size="100" maxlength="100">	
+								<input  type="text"  id="edit-pageName" name="pageName" value="' . $page_name . '" size="100" maxlength="100">
 							</td>
 						</tr>
 						
@@ -805,7 +812,7 @@ echo "<h2>" . __("Features","wimtvpro") . "</h2>";
 						
 						<th><label for="pageDescription">' . __("Page Description","wimtvpro") . '</label></th>
 							<td>
-								<textarea  type="text" style="width:260px; height:90px;" id="edit-pageDescription" name="pageDescription">' . $dati['pageDescription'] . '</textarea>	
+								<textarea  type="text" style="width:260px; height:90px;" id="edit-pageDescription" name="pageDescription">' . $page_description . '</textarea>
 							</td>
 
 						

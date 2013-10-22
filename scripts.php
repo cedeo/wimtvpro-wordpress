@@ -9,6 +9,11 @@
   $credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
   $table_name = $wpdb->prefix . 'wimtvpro_video';
 
+  $uploadMaxFile = return_bytes(ini_get('upload_max_filesize'));
+  $postmaxsize = return_bytes(ini_get('post_max_size'));
+  $uploadMaxFile_mb =  number_format($uploadMaxFile / 1048576, 2) . 'MB';
+  $postmaxsize_mb = number_format($postmaxsize / 1048576, 2) . 'MB';
+
   initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
 
   $function = "";
@@ -28,6 +33,14 @@
     $stid = $_GET['showtimeId'];
   if (isset($_GET['ordina']))
     $ordina = $_GET['ordina'];
+
+  if(empty($_FILES) && empty($_POST) && isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+      echo '<div class="error"><p><strong>';
+      echo str_replace("%d",$postmaxsize_mb,__("The server where your Wordpress is installed does not support upload of files exceeding %d. If you want to upload videos larger than %d, please modify your server settings. WimTV supports up to 2GB file size per upload.","wimtvpro"));
+      echo '</strong></p></div>';
+  }
+
+  //trigger_error($function, E_USER_NOTICE);
   switch ($function) {
     case "putST":
       $license_type = "";
@@ -382,11 +395,6 @@
     
 	
 	case "uploadFile":
-	
-		$uploadMaxFile = return_bytes(ini_get('upload_max_filesize'));
-		$postmaxsize = return_bytes(ini_get('post_max_size')); 
-		$uploadMaxFile_mb =  number_format($uploadMaxFile / 1048576, 2) . 'MB';
-		$postmaxsize_mb = number_format($postmaxsize / 1048576, 2) . 'MB';
 		$sizefile = filesize($_FILES['videoFile']['tmp_name']);
 		$urlfile = @$_FILES['videoFile']['tmp_name'];
 		$uploads_info = wp_upload_dir();
@@ -399,7 +407,7 @@
 		if (@move_uploaded_file( $urlfile , $unique_temp_filename)) {
 			//echo "copiato";
 		}else{
-			echo "non copiato";
+			//echo "non copiato";
 		}
 		$error = 0;
 		$titlefile = $_POST['titlefile'];
@@ -503,23 +511,23 @@
 			   _e("You must upload a file","wimtvpro");
 			   echo '</strong></p></div>';
 			} else {
-				
+
 				switch ($_FILES['videoFile']['error']){
-				
+
 					case "1":
 						echo '<div class="error"><p><strong>';
 						echo str_replace("%d",$uploadMaxFile_mb,__("The server where your Wordpress is installed does not support upload of files exceeding %d. If you want to upload videos larger than %d, please modify your server settings. WimTV supports up to 2GB file size per upload.","wimtvpro")) . " [upload_max_filesize] ";
 						echo '</strong></p></div>';
 					break;
-					
+
 					case "2":
 						echo '<div class="error"><p><strong>';
 						echo str_replace("%d",$postmaxsize_mb,__("The server where your Wordpress is installed does not support upload of files exceeding %d. If you want to upload videos larger than %d, please modify your server settings. WimTV supports up to 2GB file size per upload.","wimtvpro")) . " [MAX_FILE_SIZE] ";
 						echo '</strong></p></div>';
 					break;
-				
+
 				}
-				
+
 			}
  		 die();
 	    }
@@ -529,7 +537,7 @@
 	break;
 	
     default:
-      echo "Non entro";
+      //echo "Non entro";
       die();
   }
     

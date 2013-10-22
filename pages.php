@@ -360,9 +360,7 @@ function wimtvpro_upload(){
 			<span></span>
 			<p>' . __("Do not leave this page until the upload is complete","wimtvpro") . '</p>
 		</div>';
-		
-		$category="";
-	
+
 	    $response = apiGetVideoCategories();
 	    $category_json = json_decode($response);
 	    $category = "";
@@ -376,8 +374,7 @@ function wimtvpro_upload(){
 	        $category .= '</optgroup>';
 	      }
 	    }
-	    curl_close($ch);
-?>
+ ?>
 
 	    <form enctype="multipart/form-data" action="#" method="post" id="wimtvpro-upload" accept-charset="UTF-8"><div><div class="form-item form-type-textfield form-item-titlefile">
 	      
@@ -408,7 +405,7 @@ function wimtvpro_upload(){
 }
 
 
-/*TO DO 
+/*TODO
 function wimtvpro_programming(){
 
   $view_page = wimtvpro_alert_reg();

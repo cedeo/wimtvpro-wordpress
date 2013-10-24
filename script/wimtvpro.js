@@ -102,14 +102,18 @@ jQuery(document).ready(function(){
 			beforeSend: function(){ 
 			   
 				jQuery(".loaderTable").show();
-				
+				jQuery("form#formVideo").hide();
+				jQuery("table.items").hide();
 				jQuery("table.items tbody tr").remove(); 						   
 			},
 			complete: function(){ 
 				jQuery(".loaderTable").hide();
 			
 			},
-			success: function(response) {	
+			success: function(response) {
+				jQuery("form#formVideo").show();
+				jQuery("table.items").show();
+				console.log(response);	
 				jQuery("table.items tbody").html(response);
 				
 				jQuery("a.viewThumb").click( function(){
@@ -465,24 +469,7 @@ jQuery(document).ready(function(){
 				var json =  jQuery.parseJSON(response);
 				var result = json.result;
 				if (result=="SUCCESS"){
-					//element.removeClass();
-					//element.addClass(changeClass);
-					/*element.parent().hide();
-					element.parent().children("." + changeClass).show();
-					element.parent().children("." + changeClass).attr("id", json.showtimeIdentifier);
-					element.parent().children(".icon_remove").show();
-					
-
-					if ((nomeclass == "icon_AcquiRemoveshowtime") || (nomeclass == "icon_Removeshowtime")) {
-						element.parent().children(".icon_moveThumbs").hide();
-						element.parent().children(".viewThumb").hide();
-						element.parent().children(".viewThumb").attr("href","#");
-						element.parent().parent().parent().children("div.infos").hide();
-					} else
-						element.parent().parent().parent().parent().hide();*/
-					
 					callSync("");	
-					//alert (refreshpage);
 				} else {
 					element.parent().hide(); 
 					element.parent().parent().children(".loader").show();
@@ -631,8 +618,12 @@ function viewWho(obj){
 }
 
 
-function wimtvpro_TestFileType() {	
-    fileName = jQuery("input[name=\"files[videoFile]\"]").val();
+
+
+jQuery(document).ready(function() { 
+
+   jQuery("input#edit-videofile").change(function() {	
+    fileName = jQuery(this).val();
     fileTypes = [ "", "mov", "mpg", "avi", "flv", "mpeg", "mp4", "mkv", "m4v" ];
     if (!fileName) {
       return;
@@ -645,14 +636,13 @@ function wimtvpro_TestFileType() {
     if (fileTypes.join(".").indexOf(fileType.toLowerCase()) != -1) {
       return TRUE;
     } else {
-      alert("Please only upload files that end in types: \n\n"
+      alert(erroreFile[0] + " \n\n"
       + (fileTypes.join(" ."))
-      + "\n\nPlease select a new file and try again.");
+      + "\n\n" + erroreFile[1]);
       jQuery("input[name=\"files[videoFile]\"]").val("");
     }
-}
+});
 
-jQuery(document).ready(function() { 
   jQuery("ul.itemsPublic li a").colorbox();
   jQuery('.buttonInsert').click(function() {
       var width = jQuery(this).parent().children('.w').val();
@@ -819,10 +809,7 @@ jQuery(document).ready(function() {
 		  });
 
 	  });
-	  
-	  
-	
-	  
+
 	  jQuery('.icon_deletePlay').click(function() {
 	  	var nameNewPlaylist = jQuery(this).parent().children("input").val();
 	  	//remove from DB
@@ -836,7 +823,11 @@ jQuery(document).ready(function() {
 		      idPlayList : idPlayList,
 		      namefunction: "removePlaylist"
 		    },
-		   success: function(){location.reload();},
+		   success: function(){
+			 location.reload();
+			 
+			 
+		},
 		   error: function(){location.reload();}
 		  });
 	  	
@@ -865,4 +856,25 @@ jQuery(".ppvNoActive").click(function(){
 		alert (nonePayment);				
 	});
 
+jQuery(".icon_download").click(function() {
+	
+	if( jQuery(this).parent().parent("tr").children("td").children("a.viewThumb").length  ) {
+
+		var id = jQuery(this).attr("id").split("|");
+		var contentid = id[0];
+		var infoFile = id[1];
+		var uri =  url_pathPlugin + "scripts.php?namefunction=downloadVideo&id=" + contentid + "&infofile=" + infoFile;
+		jQuery("body").append("<iframe src=\"" + uri + "\" style=\"display:none;\" />");
+	
+	}else{
+		alert (videoproblem);	
+	}
+ 
+});
+jQuery(".icon_downloadNone").click(function() {
+	alert(videoproblem);
+});
+
+
 }); 
+

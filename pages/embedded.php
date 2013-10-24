@@ -15,6 +15,7 @@
     $contentItem = $_GET['c'];
     $streamItem = $_GET['s'];
     $jSonST =wimtvpro_detail_showtime(true, $streamItem);
+	
     $arrayjSonST = json_decode($jSonST);
     $arrayST["showtimeIdentifier"] = $arrayjSonST->{"showtimeIdentifier"};
     $arrayST["title"] = $arrayjSonST->{"title"};
@@ -44,16 +45,15 @@
     else
       $skin = "";
 
-    
     $height = get_option("wp_heightPreview") +150;
 	$width = get_option("wp_widthPreview") +280;
 	$widthP = get_option("wp_widthPreview") +250;
-    
 
     $url = get_option("wp_basePathWimtv") . get_option("wp_urlVideosWimtv") . "/" . $arrayST["contentId"] . '/embeddedPlayers';
     $url .= "?get=1&width=" . get_option("wp_widthPreview") . "&height=" . get_option("wp_heightPreview") . $skin;
     //echo $url;
     curl_setopt($ch, CURLOPT_URL,  $url);
+
     curl_setopt($ch, CURLOPT_VERBOSE, 0);
 	//echo $_SERVER["HTTP_USER_AGENT"];
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language:' . $_SERVER["HTTP_ACCEPT_LANGUAGE"], 'User-Agent:' . $_SERVER['HTTP_USER_AGENT']));

@@ -9,264 +9,33 @@ initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("
    
 //Page for view My Video streaming  
 function wimtvpro_mystreaming(){
-  
-  $view_page = wimtvpro_alert_reg();
-	
-	if ($view_page==TRUE){
-
-
-	  echo ' <script type="text/javascript">
-	  jQuery(document).ready(function(){ 
-	
-	
-		 jQuery(".icon_download").click(function() {
-			var id = jQuery(this).attr("id").split("|");
-			
-			var uri = "' . get_option("wp_basePathWimtv") . 'videos/" + id[0] + "/download";
-			if (id[1]!=""){
-				var file = id[1].split(".");
-				uri = uri + "?ext=" + file[1] + "&filename=" + file[0];
-			} 
-			jQuery("body").append("<iframe src=\"" + uri + "\" style=\"display:none;\" />");
-	
-		});
-
-	
-	  /*SORTABLE*/      						
-	  jQuery( ".items tbody" ).sortable({
-		  placeholder: "ui-state-highlight",
-		  handle : ".icon_moveThumbs",	
-		  
-		  out: function( event, ui ) {
-				var ordina =	jQuery(".items tbody").sortable("toArray") ;
-				
-				jQuery.ajax({
-					context: this,
-					url:  url_pathPlugin + "scripts.php",
-					type: "GET",
-					dataType: "html",
-					data: "namefunction=ReSortable&ordina=" + ordina, 
-					error: function(request,error) {
-						alert(request.responseText); 
-					}	
-		  		});
-		  }
-	
-	  });
-  });	
-	    jQuery(document).ready(function(){
-	       	       
-	       jQuery("a.viewThumb").click( function(){
-	        var url = jQuery(this).attr("id");
-	        jQuery(this).colorbox({href:url});
-	       });
-	       jQuery("a.wimtv-thumbnail").click( function(){
-		      if( jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").length  ) {
-				var url = jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").attr("id");
-				jQuery(this).colorbox({href:url});
-			  }
-			});
-	     }); 
-	    
-	    </script>';
-	
-	   	echo "<div class='wrap'><h2>WimVod</h2>";
-	   	echo "<p>" . __("Here you can","wimtvpro") . " " . __("Manage the videos you want to publish, both in posts and widgets","wimtvpro") . "</p>";
-	   	$title = "<div class='action'>
-	   	<span class='icon_sync0 button-primary' title='Synchronize'>" . __("Synchronize","wimtvpro")  . "</span>";
-	   	$user = wp_get_current_user();
-		$idUser = $user->ID;
-		$userRole = $user->roles[0];
-	   	/*if ($user->roles[0] == "administrator"){
-	   	  $title .= "<span class='icon_save' id='save'>" . __("Save") . "</span>";
-		}*/
-		echo   $title . "</div>
-			<div id='post-body' class='metabox-holder columns-2'>
-				<div id='post-body-content'>"; 
-					
-		
-		
-		echo "<table  id='TRUE' class='items wp-list-table widefat fixed pages'>";
-		    echo "<thead><tr style='width:100%'><th  style='width:20%'>Video</th><th style='width:15%'>" . __("Posted","wimtvpro") . "</th><th style='width:20%'>" . __("Change position","wimtvpro") . "</th><th style='width:20%'>Privacy</th><th style='width:20%'>Download</th><th style='width:15%'>" . __("Preview") . "</th><th></th></tr></thead>";
-		    echo "<tbody>";
-
-		    echo wimtvpro_getThumbs(TRUE);
-		    echo "</tbody></table><div class='loaderTable'></div>";
-		
-		echo "</div>
-			</div>";
-		
-
-	}
+	  $paged = "wimvod"; //ALL VIDEO
+	  include("pages/list_media.php");
 }
 
 
 function wimtvpro_playlist(){
-			
-	global $wpdb; 
-	$table_name = $wpdb->prefix . 'wimtvpro_playlist';
-    $linkReturn = "";
-	if (isset($_GET["namefunction"]) && $_GET["namefunction"]=="modPlaylist"){
-		$linkReturn =  "<a href='" . $_SERVER['REQUEST_URI'] . "&namefunction=listPlaylist' class='add-new-h2'>" . __( 'Return to list', 'wimtvpro') . "</a> ";
-	}
-		
-	echo "<div class='wrap'><h2>Playlist " . $linkReturn  . "</h2>";
-	echo "<p>" . __("Create a playlist of videos (ONLY FREE videos are possible) to be posted to your website","wimtvpro") . "</p>";
-	echo "<p>" . __("Move videos from left to right","wimtvpro") . "</p>";
-	
-	if (isset($_GET["namefunction"]) && $_GET["namefunction"]=="modPlaylist"){
-		
-		
-		if ($_POST["modPlaylist"]=="true"){
-		
-			$sql = "UPDATE " . $table_name  . " SET name='" . $_POST["namePlaylist"] . "' ,listvideo='" . $_POST["listVideo"] . "' WHERE id='" . $_GET["id"] . "'";
-	      	$wpdb->query($sql);		
-			echo '<div class="updated"><p><strong>';
-			_e("Update successful","wimtvpro");
-			echo '</strong></p></div>';
-			
-		}
-		
-		$playlist = $wpdb->get_results("SELECT * FROM {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "' AND id=" . $_GET["id"]);
-		
-		if (count($playlist)>0) {
-          $option = $playlist[0]->option;
-	      $array_option = explode(",",$option);
-	      $options = array();
-	      foreach ($array_option as $value){
-	        $array = explode(":",$value);
-	        if ($array[0]!="")
-              $options[$array[0]] = $array[1];
-	      }	
-        } else {
-			$options["loop"] = "";
-			$playlist[0]->listVideo = "";
-		}
-		
-		$embedded  = "";
-
-		echo '<form method="post" action="#">';
-		echo '<input type="submit" class="icon_sync0 button-primary" value="' . __("Update","wimtvpro") . '"/>';
-		
-		echo '<input type="hidden" class="list" name="listVideo" value="' . $playlist[0]->listVideo . '">';
-		echo '<input type="hidden" name="modPlaylist" value="true">';
-		echo '<input type="hidden" name="idPlaylist" value="' . $_GET["id"] . '">';
-		echo "<div id='post-body' class='metabox-holder columns-2'><div id='post-body-content'><div id='titlediv'><div id='titlewrap'><input type='text' id='title' class='title' name='namePlaylist' value='" . $playlist[0]->name . "'></div></div></div></div>";
-		echo '</form>';
-	
-	$page = "<div class='sortable1'>" . __("All video","wimtvpro") . "<table class='items_playlist' id='droptrue'>" . str_replace("<td></td>","",wimtvpro_getThumbs_playlist($playlist[0]->listVideo,TRUE,TRUE,FALSE,"",FALSE)) . "<tr class='appoggio'></tr></table></div>";
-	$page .= "<div class='sortable2'><b>" . __("Playlist","wimtvpro") . "</b><table class='items_playlist' id='dropfalse'>" .  str_replace("<td></td>","",wimtvpro_getThumbs_playlist($playlist[0]->listVideo,TRUE,TRUE,FALSE,"",TRUE)) . "<tr class='appoggio'></tr></table>
-	";
-	
-	echo $page;
-	
-	} else {
-
-		echo "<table  id='tablePlaylist' class='items wp-list-table widefat fixed pages'>";
-		    echo "<thead><tr style='width:100%'><th  style='width:30%'>" .  __("Title") . "</th><th style='width:30%'>N. Video</th><th style='width:20%'>" . __("Preview") . "</th>
-			<th style='width:20%'>" . __("Modify","wimtvpro") . "</th>
-			<th style='width:20%'>" . __("Remove") . "</th>
-			
-			</tr></thead>";
-		    echo "<tbody>";
-		//Count playlist saved in DB
-
-	    $table_name = $wpdb->prefix . 'wimtvpro_playlist';
-		$array_playlist = $wpdb->get_results("SELECT * FROM {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "'  ORDER BY name ASC");
-	  	$numberPlaylist=count($array_playlist);
-	  	$count = 1;
-	  	if ($numberPlaylist>0) {
-	    	foreach ($array_playlist as $record_new) {
-	    	
-	    	    $listVideo = $record_new->listVideo;
-	    	    $arrayVideo = explode(",", $listVideo);
-	    	    if ($listVideo=="") $countVideo = 0;
-	    	    else $countVideo = count($arrayVideo);
-	      		echo '
-				<tr class="playlist" id="playlist_' . $count . '" rel="' . $record_new->id . '">
-				
-				<td>' . $record_new->name .  '</td>
-				<td>' . $countVideo . '</td>
-				<td><span class="icon_viewPlay" id="' . $record_new->id . '"></span></td>
-				<td><a href="?page=WimVideoPro_Playlist&namefunction=modPlaylist&id=' . $record_new->id . '"><span class="icon_modPlay"></span></a></td>
-				<td><span class="icon_deletePlay"></span></td>
-				';
-	      		
-	      		echo '</tr>';
-	    		$count +=1;
-	    	}
-	  	}
-	    echo '<tr class="playlist new" id="playlist_' . $count . '" rel="">';         
-	    echo '
-		<td><input type="text" value="Playlist ' . $count .  '" /><span class="icon_createPlay"></span></td>
-		<td></td><td></td><td></td><td></td></div>';
-		echo "</tbody></table>";
-	}
+	include("pages/list_playlist.php");
+	wimtvpro_listplaylist();
 }
 
 //Page for view for UPLOAD new Video  
 function wimtvpro_upload(){
+	include ("pages/upload_video.php");
+	wimtvpro_pagedUpload();
+}
 
-	$view_page = wimtvpro_alert_reg();
-	
-	$serverActiveFile = ini_get("file_uploads");
-	
-	if ($serverActiveFile!=1) {
-		$view_page = FALSE;
-		echo '<div class="error"><p><strong>';
-	    _e("Attention! Your server does not support upload of files, please modify your server settings with file_uploads = On.","wimtvpro");
-	    echo '</strong></p></div>';
-	}
-	if ($view_page==TRUE){
- 		echo "<div class='wrap'><h2>" . __("Upload Video","wimtvpro") . "</h2>";
-		echo "<div id='message'></div>";
-		
-		echo '<div class="progress-bar">
-			<span></span>
-			<p>' . __("Do not leave this page until the upload is complete","wimtvpro") . '</p>
-		</div>';
 
-	    $response = apiGetVideoCategories();
-	    $category_json = json_decode($response);
-	    $category = "";
-	
-	    foreach ($category_json as $cat) {
-	      foreach ($cat as $sub) {
-	        $category .= '<optgroup label="' . $sub->name . '">';
-	        foreach ($sub->subCategories as $subname) {
-	          $category .= '<option value="' . $sub->name . '|' . $subname->name . '">' . $subname->name . '</option>';
-	        }
-	        $category .= '</optgroup>';
-	      }
-	    }
- ?>
+function wimtvpro_live(){
+  include("pages/list_live.php");
+  wimtvpro_listlive();
+}
 
-	    <form enctype="multipart/form-data" action="#" method="post" id="wimtvpro-upload" accept-charset="UTF-8"><div><div class="form-item form-type-textfield form-item-titlefile">
-	      
-           <p><label for="edit-videofile"><?php _e('Select video','wimtvpro'); ?>*</label>
-	      <input onchange="wimtvpro_TestFileType()" type="file" id="edit-videofile" name="videoFile" size="60" class="form-file required" /></p>
-          
-	      <p><label for="edit-titlefile"><?php _e("Title"); ?> *</label>
-	      <input type="text" id="edit-titlefile" name="titlefile" value="" size="100" maxlength="200" class="form-text required" /></p>
-	      <p><label for="edit-descriptionfile"><?php _e("Description"); ?> </label><br/>
-	      <textarea id="edit-descriptionfile" name="descriptionfile" cols="150" rows="5"></textarea></p>
-	      
 
-	      <p><label for="edit-videocategory"><?php _e("Category");?> - <?php _e("Subcategory","wimtvpro");?></label><br/>
-	      <select onchange="viewCategories(this);" multiple="multiple" name="videoCategory[]" id="edit-videocategory" size="15" class="form-select"><?php echo $category; ?></select>
-	      <br/>(<?php _e("Multiselect with CTRL","wimtvpro");?>)</p>
+function wimtvpro_report (){
+  
+  include("pages/report.php");
 	
-	      <p class='description' id='addCategories'></p>
-	      <input type="hidden" name="wimtvpro_upload" value="Y" />
-          <input type="hidden" name="namefunction" id="nameFunction" value="uploadFile" />
-	      <?php submit_button(__("Upload","wimtvpro"),"primary classupload"); 
-	      ?>
-	    </form>
-	
-	<?php
-	  echo "</div></div>";
-	  
-	}
 }
 
 
@@ -965,7 +734,6 @@ function wimtvpro_report (){
 		}
 			
 }
-
 
 
 

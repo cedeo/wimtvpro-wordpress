@@ -4,10 +4,13 @@
   * Synchronize the video with wim.tv.
   *
   */
-    if (!isset($upload))
-  	include("../../../wp-load.php");
+  
+
+if (!isset($upload))
+	include("../../../wp-load.php");
   else
-    include("../wp-load.php");
+	include("../wp-load.php");
+
   global $user,$wpdb;
 
   $url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosDetailWimtv");

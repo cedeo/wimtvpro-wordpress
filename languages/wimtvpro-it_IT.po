@@ -1014,3 +1014,37 @@ msgstr "Tutti i video"
 msgid "Move videos from left to right"
 msgstr "Muovi i video da sinistra a destra"
 
+#: 
+msgid "Please only upload files that end in types:"
+msgstr "Puoi solo caricare i seguenti tipi di file:"
+
+#: 
+msgid "Please select a new file and try again."
+msgstr "Si prega di selezionare un nuovo file e riprovare."
+
+#: 
+#, fuzzy
+msgid "Hours of Transmission"
+msgstr "Ore di trasmissione"
+
+#: 
+#, fuzzy
+msgid "Assuming video+audio encoded at 1 Mbps"
+msgstr "Supponendo video + audio codificato a 1 Mbps"
+
+#: 
+msgid "Affiliation"
+msgstr "Affiliazione"
+
+#: 
+msgid "Are you affiliate to the following company?"
+msgstr "Sei affiliato alla seguente azienda?"
+
+#: 
+msgid "Company Name"
+msgstr "Ragione Sociale"
+
+#: 
+msgid "Have you the legal right of acting as an affiliate to the preceeding company?"
+msgstr "Hai i diritti legali per operare come affiliato dell’azienza precedente?"
+

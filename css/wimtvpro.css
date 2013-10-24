@@ -137,6 +137,9 @@ table.items .icon_moveThumbs {
 table.items  .icon_download {
 	background: transparent url('../images/download.png') no-repeat center center;
 }
+table.items  .icon_downloadNone {
+	background: transparent url('../images/downloadNone.png') no-repeat center center;
+}
 
 
 table.items  div.thumb span,
@@ -523,20 +526,26 @@ form .amount,form .amount_cent{
 
 
 table.items_playlist {
+	padding: 10px;
+	height: auto !important;
+	height: 250px;  table-layout:fixed;
+	min-height: 250px !important;
 	list-style: none;
 	display: block;
-	width: 100%; height:250px;
+	width: 100%;
 	margin: 0 auto 0 auto;
 }
 table.items_playlist tr {
+	font-size: 10px;
 	list-style: none;
 	display: block;
-	float: left; width:110px;
-	height: 120px;
+	float: left;
+	height: 150px;
 	margin: 0 5px 10px 0!Important;
 	border: 1px solid #FFF;
 	position: relative;
-	text-align: center; cursor:pointer;
+	text-align: center;
+	cursor: pointer; text-overflow: ellipsis;
 }
 table.items_playlist tr div.thumb {
 	margin: 0 auto;
@@ -554,7 +563,9 @@ table.items_playlist tr div.thumb span {
 	height: 36px;
 	cursor: pointer;
 }
-
+table.items_playlist tr td.image,table.items_playlist tr.appoggio,table.items_playlist tr.ui-state-highlight {
+	width:110px; 
+}
 table.items_playlist tr  a,
 table.items_playlist tr img {
 	margin: 0 auto!important;

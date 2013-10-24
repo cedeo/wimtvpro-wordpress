@@ -1,7 +1,7 @@
 <?php
 /**
   * @file
-  * This file is use for the function and utility.
+  * This file is use for the function and utility General.
   *
   */
 
@@ -81,7 +81,6 @@ function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $inse
 }
 
 
-
 function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$stLicense,$playlist) {
   global $user,$wpdb;
   $form = "";
@@ -130,7 +129,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
   if ((!$private && $viewPublicVideo) || (($userRole=="administrator") || (in_array($idUser,$typeUser["U"])) || (in_array($userRole,$typeUser["R"])) || (array_key_exists("All",$typeUser)) || (array_key_exists ("",$typeUser)))){
   
-   if ((!isset($replace_video)) || ($replace_video == "")) {
+   
     $param_thumb = get_option("wp_basePathWimtv") . str_replace(get_option("wp_replaceContentWimtv"), 		$content_item_new, get_option("wp_urlThumbsWimtv"));
     $credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
     $ch_thumb = curl_init();
@@ -148,14 +147,18 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 	}
 
 	
+
+	
 	$isfound = false;
-	if (!strstr($replace_video, 'Not Found'))
+	if ((!strstr($replace_video, 'Not Found')) || (!isset($replace_video)) || ($replace_video==""))
 	  $isfound = true; 
 	
     if ($isfound!="") {
       $replace_video = '<img src="' . $replace_video . '" title="' . $title . '" class="" />';
       if ($licenseType!="") $replace_video .= '<div class="icon_licence ' . $licenseType . '"></div>';
-	} 
+	} else {
+		
+	}
 
    }
    
@@ -268,9 +271,12 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
       /*if ($licenseType!="PAYPERVIEW") $action  .= "<td><span class='icon_playlist' rel='" . $showtime_identifier . "' title='Add to Playlist selected'></span></td>";*/
     }
    }
-  
-  $action .= "<td><span class='icon_download' id='" . $content_item_new . "|" . $status_array[0] . "' title='Download'></span></td>";
-  
+ 
+  if ($isfound) 
+  	$action .= "<td><span class='icon_download' id='" . $content_item_new . "|" . $status_array[0] . "' title='Download'></span></td>";
+  else
+  	$action .= "<td><span class='icon_downloadNone' title='Download'></span></td>";
+	
   if ($showtime_identifier!="") {
     $style_view = "";
 	if (($private) && ($licenseType=="PAYPERVIEW"))
@@ -334,8 +340,38 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     //$my_media .= $send .  "</div> </tr>";
     $position_new = $position;
   }
- }
+
   return $my_media;
+}
+
+function wimtvpro_readOptionCategory(){
+	$category="";
+	$url_categories = get_option("wp_basePathWimtv") . "videoCategories";
+	
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url_categories);
+
+	curl_setopt($ch, CURLOPT_VERBOSE, 0);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept-Language: " . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+	$response = curl_exec($ch);
+	$category_json = json_decode($response);
+	$category = array();
+
+	foreach ($category_json as $cat) {
+	  foreach ($cat as $sub) {
+		$category .= '<optgroup label="' . $sub->name . '">';
+		foreach ($sub->subCategories as $subname) {
+		  $category .= '<option value="' . $sub->name . '|' . $subname->name . '">' . $subname->name . '</option>';
+		}
+		$category .= '</optgroup>';
+	  }
+	}
+	curl_close($ch);
+	return  $category;
 }
 
 //MY STREAMING: This API allows to list videos in my streaming public area. Even details may be returned

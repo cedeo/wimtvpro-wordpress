@@ -3,7 +3,7 @@ jQuery(document).ready(function(){
 
 	jQuery("span.wimtv-thumbnail").click(function(){viewVideo(this);});
 	
-	jQuery("#wimtvpro-upload").submit(function(event){
+	/*jQuery("#wimtvpro-upload").submit(function(event){
 		
 		event.preventDefault();
 		jQuery (".progress-bar span").css("width","0");
@@ -78,7 +78,7 @@ jQuery(document).ready(function(){
             }
 
 	    });
-    });
+    });*/
 	
 	
 	
@@ -634,7 +634,7 @@ jQuery(document).ready(function() {
     fileType = "." + dots[dots.length - 1];
 
     if (fileTypes.join(".").indexOf(fileType.toLowerCase()) != -1) {
-      return TRUE;
+      return true;
     } else {
       alert(erroreFile[0] + " \n\n"
       + (fileTypes.join(" ."))

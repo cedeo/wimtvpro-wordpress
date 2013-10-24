@@ -68,8 +68,10 @@ jQuery(document).ready(function(){
 			},
 			
 			error: function(request,error) {
-				alert(request.responseText);
-			}	
+                jQuery (".progress-bar").hide();
+                jQuery("#message").html (request.responseText);
+                $inputs.prop("disabled", false);
+			}
 		});	
 		
 	});

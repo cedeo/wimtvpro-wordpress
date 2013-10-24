@@ -159,7 +159,7 @@ if ($view_page==TRUE){
 				echo "<thead><tr style='width:100%'><th  style='width:20%'>Video</th><th style='width:15%'>" . __("Posted","wimtvpro") . "</th><th style='width:20%'>" . __("Change position","wimtvpro") . "</th><th style='width:20%'>Privacy</th><th style='width:20%'>Download</th><th style='width:15%'>" . __("Preview") . "</th><th></th></tr></thead>";
 				echo "<tbody>";
 	
-				echo wimtvpro_getThumbs(TRUE);
+				echo wimtvpro_getVideos(TRUE);
 				echo "</tbody></table><div class='loaderTable'></div>";
 			
 			echo "</div>

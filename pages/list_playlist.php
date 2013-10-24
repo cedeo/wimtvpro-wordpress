@@ -111,8 +111,7 @@ function wimtvpro_listplaylist() {
 			echo "</tbody></table>";
 		}
 	}
-	
-	}
+
 
 }
 

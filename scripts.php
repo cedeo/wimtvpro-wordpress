@@ -411,7 +411,9 @@
 
 			$category_tmp = array();
 			$subcategory_tmp = array();    
-			$post= array("file" => "@" . $unique_temp_filename ,"title" => $titlefile,"description" => $descriptionfile);
+			$post= array("file" => "@" . $unique_temp_filename ,
+                         "title" => $titlefile,
+                         "description" => $descriptionfile);
 			
 			if (count($video_category)>0) {
 			  $id=0;

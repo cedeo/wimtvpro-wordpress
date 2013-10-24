@@ -153,7 +153,7 @@ if (!isset($upload))
     }
 	
     if ((isset($_GET['sync']))) {
-      echo wimtvpro_getThumbs($_GET['showtime'], TRUE);
+      echo wimtvpro_getVideos($_GET['showtime'], TRUE);
     }
     
     //UPDATE PAGE MY STREAMING

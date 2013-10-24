@@ -6,7 +6,7 @@
   */
 
 
-function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="",$playlist=FALSE) {
+/*function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="",$playlist=FALSE) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'wimtvpro_video';
 	$replace_content = get_option("wp_replaceContentWimtv");
@@ -78,7 +78,7 @@ function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $inse
 	}
 
 	return $my_media;
-}
+}*/
 
 
 function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$stLicense,$playlist) {
@@ -359,7 +359,7 @@ function wimtvpro_readOptionCategory(){
 
 	$response = curl_exec($ch);
 	$category_json = json_decode($response);
-	$category = array();
+	$category = "";
 
 	foreach ($category_json as $cat) {
 	  foreach ($cat as $sub) {

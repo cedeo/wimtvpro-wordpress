@@ -355,7 +355,7 @@ function wimtvpro_install_jquery() {
  if (isset($_GET['page']) && $_GET['page']!="WimVideoPro_Programming"){
 	wp_enqueue_script('wimtvproScript',plugins_url('script/wimtvpro.js', __FILE__));
 }
- if (isset($_GET['page']) && $$_GET['page']=="WimVideoPro_UploadVideo"){
+ if (isset($_GET['page']) && $_GET['page']=="WimTV_Upload"){
  	wp_enqueue_script('wimtvproScriptUpload',plugins_url('script/upload.js', __FILE__));
  }
 }

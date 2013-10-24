@@ -6,6 +6,7 @@
 //WimBox
 include_once('modules/wimbox.php');
 
+/// LOGICA
 function wimtvpro_wimbox () {
 
     $view_page = wimtvpro_alert_reg();
@@ -33,8 +34,9 @@ function wimtvpro_wimbox () {
 
     $videos= wimtvpro_getVideos(FALSE,TRUE,FALSE,'',$sql_where, $sql_order);
 
-
 ?>
+
+    <!----- HTML ----->
     <div class='wrap'>
         <h2>WimBox</h2>
         <p>
@@ -55,13 +57,15 @@ function wimtvpro_wimbox () {
                 <select name="ordertitleVideo">
                     <option value=""
                         <?php if ($orderTitleVideo=="") echo ' selected="selected"'?>
-                    >---</option>
+                        >---
+                    </option>
                     <option value="ASC"
                         <?php if ($orderTitleVideo=="ASC") echo ' selected="selected"'?>
-                    >ASC</option>
+                        >ASC
+                    </option>
                     <option value="DESC"
                         <?php if ($orderTitleVideo=="DESC") echo ' selected="selected"'?>
-                    ><? echo __("DESC","wimtvpro") ?>
+                        ><? echo __("DESC","wimtvpro") ?>
                     </option>
                 </select>
                 <input type="submit" class="button button-primary" value="<? echo __("Order","wimtvpro") ?>">

@@ -198,4 +198,12 @@ function apiDeleteVideo($hostId) {
     return $apiAccessor->execute($request);
 }
 
+function apiRegistration($params) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->postRequest('register');
+    $request->sendsJson();
+    $request->body(json_encode($params));
+    return $apiAccessor->execute($request);
+}
+
 ?>

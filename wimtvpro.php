@@ -33,7 +33,15 @@ License: GPLv2 or later
 include ("hooks.php");
 include ("functions.php");
 include ("pages.php");
-include ("wimtvpro_registration.php");
+include("menu/pages/registration.php");
+include("menu/pages/analytics.php");
+include("menu/pages/playlist.php");
+include("menu/pages/settings.php");
+include("menu/pages/upload_video.php");
+include("menu/pages/wimbox.php");
+include("menu/pages/wimlive.php");
+include("menu/pages/wimvod.php");
+
 
 load_plugin_textdomain( 'wimtvpro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
@@ -129,7 +137,6 @@ function wimtvpro_setting() {
   add_option( 'wp_nameSkin','');
   add_option( 'wp_uploadSkin','');
   add_option( 'wp_heightPreview','280');
-  add_option( 'wp_widthPreview','500');
   add_option( 'wp_widthPreview','500');
   add_option( 'wp_name','si');
   add_option( 'wp_logo','si');
@@ -259,8 +266,7 @@ function wimtvpro_menu(){
     $user = wp_get_current_user();
     //For Admin
     if ($user->roles[0] == "administrator"){
-    
-          
+
       add_menu_page('WimTvPro', 'WimTvPro', 'administrator', 'WimTvPro', 'wimtvpro_configure', plugins_url('images/iconMenu.png', __FILE__), 6);      
 		
       add_submenu_page('WimTvPro', __('Settings',"wimtvpro"),  __('Settings',"wimtvpro"), 'administrator', 'WimTvPro', 'wimtvpro_configure');
@@ -269,16 +275,14 @@ function wimtvpro_menu(){
       	add_submenu_page('WimTvPro', __('WimTV Registration',"wimtvpro"), __('WimTV Registration',"wimtvpro"), 'administrator', 'WimTvPro_Registration', 'wimtvpro_registration');
       }
 
-      
-      add_submenu_page('WimTvPro', 'WimBox', 'WimBox', 'administrator', 'WimVideoPro_MyMedia', 'wimtvpro_mymedia');
-      add_submenu_page('WimTvPro', 'WimVod', 'WimVod', 'administrator', 'WimVideoPro_MyStreaming', 'wimtvpro_mystreaming');
-	  
-      add_submenu_page('WimTvPro', __('Upload Video',"wimtvpro"),  __('Upload Video',"wimtvpro"), 'administrator', 'WimVideoPro_UploadVideo', 'wimtvpro_upload');
-	  //TO DO add_submenu_page('WimTvPro', 'Programming', 'Programming', 'administrator', 'WimVideoPro_Programming', 'wimtvpro_programming');
-      add_submenu_page('WimTvPro', __('Playlist',"wimtvpro"),  __('Playlist',"wimtvpro"), 'administrator', 'WimVideoPro_Playlist', 'wimtvpro_playlist');
-	  add_submenu_page('WimTvPro', 'WimLive', 'WimLive', 'administrator', 'WimVideoPro_WimLive', 'wimtvpro_live');
-      add_submenu_page('WimTvPro', __('Analytics'), __('Analytics'), 'administrator', 'WimVideoPro_Report', 'wimtvpro_Report');
+      add_submenu_page('WimTvPro', 'WimBox', 'WimBox', 'administrator', 'WimBox', 'wimtvpro_wimbox');
+      add_submenu_page('WimTvPro', 'WimVod', 'WimVod', 'administrator', 'WimVod', 'wimtvpro_mystreaming');
+      add_submenu_page('WimTvPro', __('Upload Video',"wimtvpro"), __('Upload Video',"wimtvpro"), 'administrator', 'WimTV_Upload', 'wimtvpro_upload');
+      add_submenu_page('WimTvPro', __('Playlist',"wimtvpro"), __('Playlist',"wimtvpro"), 'administrator', 'WimTV_Playlist', 'wimtvpro_playlist');
+	  add_submenu_page('WimTvPro', 'WimLive', 'WimLive', 'administrator', 'WimLive', 'wimtvpro_live');
+      add_submenu_page('WimTvPro', __('Analytics'), __('Analytics'), 'administrator', 'WimTVPro_Report', 'wimtvpro_Report');
 
+      //TODO: add_submenu_page('WimTvPro', 'Programming', 'Programming', 'administrator', 'WimVideoPro_Programming', 'wimtvpro_programming');
     
     }
     

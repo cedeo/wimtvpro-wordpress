@@ -218,7 +218,7 @@
       echo $response;
 	  die();
       break;
-      
+
     case "getIFrameVideo":
     /*
       if (get_option('wp_nameSkin')!="") {

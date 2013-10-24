@@ -248,13 +248,13 @@ msgstr "Errore interno. Contatta l'assistenza di wimTV"
 
 #: 
 #, fuzzy
-msgid "You did not  compile all requested fields"
+msgid "You did not compile all requested fields"
 msgstr "Non hai compilato tutti i campi obbligatori"
 
 #: 
 #, fuzzy
 msgid "WimTV Registration"
-msgstr "Registratione WimTV"
+msgstr "Registrazione WimTV"
 
 #: 
 msgid "Login Credentials"

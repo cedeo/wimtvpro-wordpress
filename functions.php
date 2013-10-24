@@ -1,96 +1,12 @@
 <?php
 /**
   * @file
-  * This file is use for the function and utility.
+  * This file is use for the function and utility General.
   *
   */
 
-
-function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="",$playlist=FALSE) {
-	global $wpdb;
-	$table_name = $wpdb->prefix . 'wimtvpro_video';
-	$replace_content = get_option("wp_replaceContentWimtv");
-	$my_media= "";
-	$response_st = "";
-	$sql_where  = "  ";
-	$videoList = explode (",",$list);
-	if ($showtime)
-		$sql_where  = "  state='showtime'";
-	else
-		if ($playlist)
-			$sql_where  = "  1=2";
-		else
-			$sql_where  = "  1=1";
-	if ($playlist) {
-		for ($i=0;$i<count($videoList);$i++){
-			if ($videoList[$i]!="")
-				$sql_where .= "  OR contentidentifier='" . $videoList[$i] . "' ";
-		}
-		$sql_where = "AND (" . $sql_where . ")";  
-	} 
-	else {
-		for ($i=0;$i<count($videoList);$i++){
-			if ($videoList[$i]!="")
-				$sql_where .= "  AND contentidentifier!='" . $videoList[$i] . "' ";
-		}
-		$sql_where = "AND (" . $sql_where . ")"; 
-	}
-
-
- 	$array_videos  = $wpdb->get_results("SELECT * FROM " . $table_name . " WHERE uid='" .  get_option("wp_userWimtv") . "' " . $sql_where);
-
-	$array_videos_new_drupal = array();
-
-	if ($playlist==TRUE) {
-
-		for ($i=0;$i<count($videoList);$i++){
-			foreach ($array_videos  as $record_new) {
-				if ($videoList[$i] == $record_new->contentidentifier){
-					array_push($array_videos_new_drupal, $record_new);	
-				}
-			}
-
-		}
-	} else {
-		$array_videos_new_drupal = $array_videos;
-	}
-
-	//Select Showtime
-	$param_st = get_option("wp_basePathWimtv") . "users/" . get_option("wp_userWimtv") . 	"/showtime?details=true";
-	$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-	$ch_st = curl_init();
-	curl_setopt($ch_st, CURLOPT_URL, $param_st);
-	curl_setopt($ch_st, CURLOPT_VERBOSE, 0);
-	curl_setopt($ch_st, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch_st, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-	curl_setopt($ch_st, CURLOPT_USERPWD, $credential);
-	curl_setopt($ch_st, CURLOPT_SSL_VERIFYPEER, FALSE);
-	$details_st  =curl_exec($ch_st);
-	$arrayjson_st = json_decode( $details_st);
-	$st_license = array();
-	foreach ($arrayjson_st->items as $st){
-		$st_license[$st->showtimeIdentifier] = $st->licenseType;
-	}
-	$position_new=1;
-	//Select video with position
-	if (count($array_videos_new_drupal )>0) {
-		foreach ($array_videos_new_drupal  as $record_new) {
-			if ($showtime) {
-				if ((isset($st_license[$record_new->showtimeIdentifier])) && ($st_license[$record_new->showtimeIdentifier] !="PAYPERVIEW"))
-					$my_media .= wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$st_license,TRUE);
-			}
-			else {
-				$my_media .= wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$st_license,TRUE);
-			}
-		}
-	}
-
-	return $my_media;
-}
-
 function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="", $sql_where="",$sql_order="") {
   global $user,$wpdb, $wp_query ;
-
   $table_name = $wpdb->prefix . 'wimtvpro_video';
   $my_media= "";
   $response_st = "";
@@ -103,18 +19,20 @@ function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FA
       $sql_where .= " AND ((viewVideoModule like '2%') OR (viewVideoModule like '3%')) ";
     }
   }
-
   $resultCount = $wpdb->get_results("SELECT count(*) as count FROM " . $table_name  . " WHERE uid='" . get_option("wp_userwimtv") . "' " . $sql_where);
   $array_count  = $resultCount[0]->count;
-
   $rows_per_page = 10 ;
   $current_page = $_GET['paged'];
   $current = (intval($current_page)) ? intval($current_page) : 1;
   $number_page = ceil($array_count/$rows_per_page);
   $offset = ( $current  * $rows_per_page ) - $rows_per_page;
   $sqllimit = "  LIMIT ${offset}, ${rows_per_page}" ;
-
   $array_videos_new_wp = $wpdb->get_results("SELECT * FROM {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "' " . $sql_where . " ORDER BY Title ASC" . $sqllimit);
+  if (($current_page>1) && (count($array_videos_new_wp)==0)){
+   	$queryString = $_SERVER['QUERY_STRING'];
+	$queryString = str_replace("paged=" . $current_page, "paged=" . ($current_page-1),$queryString );
+	echo "<script>location.href='?" . $queryString . "'</script>";
+  }
 
  /* $array_videos_new_wp0 = $wpdb->get_results("SELECT * FROM  {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "' AND  position=0 " . $sql_where . " ORDER BY " . $sql_order);*/
 
@@ -221,7 +139,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
   if ((!$private && $viewPublicVideo) || (($userRole=="administrator") || (in_array($idUser,$typeUser["U"])) || (in_array($userRole,$typeUser["R"])) || (array_key_exists("All",$typeUser)) || (array_key_exists ("",$typeUser)))){
   
-   if ((!isset($replace_video)) || ($replace_video == "")) {
+   
     $param_thumb = get_option("wp_basePathWimtv") . str_replace(get_option("wp_replaceContentWimtv"), 		$content_item_new, get_option("wp_urlThumbsWimtv"));
     $credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
     $ch_thumb = curl_init();
@@ -237,14 +155,18 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 		$licenseType = $stLicense[$showtime_identifier];	
 	}
 	
+
+	
 	$isfound = false;
-	if (!strstr($replace_video, 'Not Found'))
+	if ((!strstr($replace_video, 'Not Found')) || (!isset($replace_video)) || ($replace_video==""))
 	  $isfound = true; 
 	
     if ($isfound!="") {
       $replace_video = '<img src="' . $replace_video . '" title="' . $title . '" class="" />';
       if ($licenseType!="") $replace_video .= '<div class="icon_licence ' . $licenseType . '"></div>';
-	} 
+	} else {
+		
+	}
 
    }
    
@@ -356,9 +278,12 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
       /*if ($licenseType!="PAYPERVIEW") $action  .= "<td><span class='icon_playlist' rel='" . $showtime_identifier . "' title='Add to Playlist selected'></span></td>";*/
     }
    }
-  
-  $action .= "<td><span class='icon_download' id='" . $content_item_new . "|" . $status_array[1] . "' title='Download'></span></td>";
-  
+ 
+  if ($isfound) 
+  	$action .= "<td><span class='icon_download' id='" . $content_item_new . "|" . $status_array[1] . "' title='Download'></span></td>";
+  else
+  	$action .= "<td><span class='icon_downloadNone' title='Download'></span></td>";
+	
   if ($showtime_identifier!="") {
     $style_view = "";
 	if (($private) && ($licenseType=="PAYPERVIEW"))
@@ -408,7 +333,8 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 		//<div class='icon'><a class='addThumb' href='#' id='" . $showtime_identifier . "'>" . __("Add") . "</a>  <a class='removeThumb' href='#' id='" . $showtime_identifier . "'>" . __("Remove") . "</a></div>";
     }
 	if ($playlist) $action = "";
-    $my_media .= "<td class='image'>" . $video . "<br/><b>" . $title . "</b>" . $linkView . "</td>" . $action ;
+	else $br = "</br>";
+    $my_media .= "<td class='image'>" . $video . $br  . "<b>" . $title. "</b>" . $linkView . "</td>" . $action ;
     if ($insert_into_page) {
       $my_media .= '<td><input type="hidden" value="' . $_GET['post_id'] . '" name="post_id">';
       $my_media .= "W <input style='width:30px;' maxweight='3' class='w' type='text' value='" . get_option("wp_widthPreview") . "'>px  -  H <input style='width:30px;' maxweight='3' class='h' type='text' value='" . get_option("wp_heightPreview") . "'>px";
@@ -419,8 +345,38 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     //$my_media .= $send .  "</div> </tr>";
     $position_new = $position;
   }
- }
+
   return $my_media;
+}
+
+function wimtvpro_readOptionCategory(){
+	$category="";
+	$url_categories = get_option("wp_basePathWimtv") . "videoCategories";
+	
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url_categories);
+
+	curl_setopt($ch, CURLOPT_VERBOSE, 0);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept-Language: " . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+	$response = curl_exec($ch);
+	$category_json = json_decode($response);
+	$category = array();
+
+	foreach ($category_json as $cat) {
+	  foreach ($cat as $sub) {
+		$category .= '<optgroup label="' . $sub->name . '">';
+		foreach ($sub->subCategories as $subname) {
+		  $category .= '<option value="' . $sub->name . '|' . $subname->name . '">' . $subname->name . '</option>';
+		}
+		$category .= '</optgroup>';
+	  }
+	}
+	curl_close($ch);
+	return  $category;
 }
 
 //MY STREAMING: This API allows to list videos in my streaming public area. Even details may be returned

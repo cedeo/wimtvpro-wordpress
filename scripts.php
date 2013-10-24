@@ -222,39 +222,13 @@
       curl_close($ch);
 	  die();
     break;
+	
     case "getIFrameVideo":
-    /*
-      if (get_option('wp_nameSkin')!="") {
-        $uploads_info = wp_upload_dir();
-        $directory =  $uploads_info["baseurl"] .  "/skinWim";
-
-        $skin = "&skin=" . $directory  . "/" . get_option('wp_nameSkin') . ".zip";      
-      }
-      else
-        $skin = "";
-      
-      $url = get_option("wp_basePathWimtv") . get_option("wp_urlVideosWimtv") . "/" . $id . '/embeddedPlayers';
-      $url .= "?get=1&width=" . $_GET['WFrame'] . "&height=" . $_GET['HFrame'] . $skin;
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL,  $url);
-      curl_setopt($ch, CURLOPT_VERBOSE, 0);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-      curl_setopt($ch, CURLOPT_USERPWD, $credential);
-      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-      $response = curl_exec($ch);
-      */
       $shortcode = "[streamingWimtv id='" . $id . "' width='" . $_GET['WFrame'] . "' height='" .  $_GET['HFrame'] . "' ]";
       echo $shortcode; 
-      
-      //echo $response;
-       
-      
     break;
-    
-    
+
     case "RemoveVideo":
-		//connect at API for upload video to wimtv
 		
 		$ch = curl_init();
 		$url_delete = get_option("wp_basePathWimtv") . 'videos';
@@ -339,39 +313,75 @@
 
     case "downloadVideo":
       
-		$url_download = get_option("wp_basePathWimtv") . "videos/" . $id . "/download";
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,  $url_download);
-		curl_setopt($ch, CURLOPT_HEADER, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_USERPWD, $credential);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-	  
-		$file = curl_exec($ch);
-	
-		$file_array = explode("\n\r", $file, 2);
-		$header_array = explode("\n", $file_array[0]);
-		foreach($header_array as $header_value) {
-		  $header_pieces = explode(':', $header_value);
-		  if(count($header_pieces) == 2) {
-			$headers[$header_pieces[0]] = trim($header_pieces[1]);
-		  }
+	  	$filename = "";
+		$ext = "";
+	  	if ($_GET["infofile"]!=""){
+			$infoFile = explode (".",$_GET["infofile"]);
+			$numeroCount = count($infoFile); // se ci fosse un file che ha più di un punto
+			$ext = $infoFile[$numeroCount-1];
+			$filename = $infoFile[0];
+			for ($i=1;$i<$numeroCount-1;$i++){
+				$filename .= "." . $infoFile[$i];
+			}
 		}
-	
-		header('Content-type: ' . $headers['Content-Type']);
-		
-		$checkHeader = explode(";",$headers['Content-Disposition']);
-		//echo $checkHeader[1];
-		$checkextension = explode(".",$checkHeader[1]);
-		if ((!isset($checkextension[1]))  || ($checkextension[1]==""))
-			header('Content-Disposition: ' . $headers['Content-Disposition'] . "mp4");
-		else
+		// download?filename=[nomefilename]&ext=[mp4,avi,...]&compressed=[true/false]
+		$url_download = get_option("wp_basePathWimtv") . "videos/" . $id . "/download";
+		if ($filename!=""){
+			$url_download .= "?filename=" . $filename . "&ext=" . $ext;
+		}
+		try {
+
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL,  $url_download);
+			curl_setopt($ch, CURLOPT_HEADER, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_BINARYTRANSFER, 0);
+			curl_setopt($ch, CURLOPT_NOBODY, 1);
+			curl_setopt($ch, CURLOPT_USERPWD, $credential);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			$file = curl_exec($ch);
+			$file_array = explode("\n\r", $file, 2);
+			$header_array = explode("\n", $file_array[0]);
+			foreach($header_array as $header_value) {
+			  $header_pieces = explode(':', $header_value);
+			  if(count($header_pieces) == 2) {
+					$headers[$header_pieces[0]] = trim($header_pieces[1]);
+			  }
+			}
+			curl_close($ch);
+			
+			$explodeContent = explode("filename=",$headers['Content-Disposition']);
+			$filename = $explodeContent[1];
+			
+			header('Content-type: ' . $headers['Content-Type']);
+			$checkHeader = explode(";",$headers['Content-Disposition']);
+			$checkextension = explode(".",$checkHeader[1]);
+			if ((!isset($checkextension[1]))  || ($checkextension[1]==""))
+					$headers['Content-Disposition'] .= "mp4";
 			header('Content-Disposition: ' . $headers['Content-Disposition']);
-		
-		echo substr($file_array[1], 1);
-	
-		//echo "<iframe src=\"" . $url_download . "\" style=\"display:none;\" />"; 
+			
+			if (is_file( sys_get_temp_dir() .  "/" . $filename))
+				unlink ( sys_get_temp_dir() .  "/" . $filename);
+			$fh = fopen(  sys_get_temp_dir() .  "/" . $filename, 'xb');
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL,  $url_download);
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 0);
+			curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_USERPWD, $credential);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 200);
+			curl_setopt($ch, CURLOPT_FILE, $fh);
+			curl_exec($ch);
+			curl_close($ch);
+			fclose($fh);
+
+			
+		} catch (Exception $e) {
+		  header('Content-type: text/plain');
+		  header('Content-Disposition: attachment; filename="error.txt"');
+		  echo 'Caught exception: ',  $e->getMessage(), "\n";
+		}
 		die();
 
     break;
@@ -390,12 +400,15 @@
 		if (!is_dir($directory)) {
 		  $directory_create = mkdir($uploads_info["basedir"] . "/videotmp");
 		}
-		$unique_temp_filename = $directory .  "/" . time() . '.' . preg_replace('/.*?\//', '',"tmp");
-		$unique_temp_filename = str_replace("\\" , "/" , $unique_temp_filename);
-		if (@move_uploaded_file( $urlfile , $unique_temp_filename)) {
-			//echo "copiato";
-		}else{
-			echo "non copiato";
+		$unique_temp_filename = "";
+		if ($urlfile!=""){
+			$unique_temp_filename = $directory .  "/" . time() . '.' . preg_replace('/.*?\//', '',"tmp");
+			$unique_temp_filename = str_replace("\\" , "/" , $unique_temp_filename);
+			if (@move_uploaded_file( $urlfile , $unique_temp_filename)) {
+				//echo "copiato";
+			}else{
+				echo "non copiato";
+			}
 		}
 		$error = 0;
 		$titlefile = $_POST['titlefile'];

@@ -3,82 +3,6 @@ jQuery(document).ready(function(){
 
 	jQuery("span.wimtv-thumbnail").click(function(){viewVideo(this);});
 	
-	jQuery("#wimtvpro-upload").submit(function(event){
-		
-		event.preventDefault();
-		jQuery (".progress-bar span").css("width","0");
-		jQuery (".progress-bar span").html("0%");
-		var $form = jQuery(this);
-		var $inputs = $form.find("input, select, button, textarea");
-		$inputs.prop("disabled", true);
-
-		var formData = new FormData(jQuery("form")[0]);
-		jQuery.each(jQuery('#edit-videofile')[0].files, function(i, file) {
-			formData.append('videoFile', file);
-		});
-		$inputs.each(function(index, element) {
-			formData.append(jQuery(this).attr("name"), jQuery(this).attr("value"));			
-        });
-		jQuery.ajax({
-			
-			url:  url_pathPlugin + "scripts.php", 		      
-			type: "POST",
-			data:  formData,
-			cache: true,
-       	 	contentType: false,
-			async:true,
-        	processData: false,
-			enctype: 'multipart/form-data',
-			
-			beforeSend: function(){ 
-				jQuery (".progress-bar").show();
-			},
-			progress: function(e) {
-					//make sure we can compute the length
-			
-					if(e.lengthComputable) {
-						//calculate the percentage loaded
-						var pct = (e.loaded / e.total) * 100;
-			
-						//log percentage loaded
-						jQuery (".progress-bar span").css("width",Math.round(pct) + "%");
-						jQuery (".progress-bar span").html(Math.round(pct) + "%");
-						
-					}
-					//this usually happens when Content-Length isn't set
-					else {
-						console.warn('Content Length not reported!');
-					}
-				},
-				success: function(response) {
-					jQuery (".progress-bar").hide();
-					jQuery("#message").html (response);
-					$inputs.prop("disabled", false);
-					jQuery("#addCategories").html("");
-					$inputs.each(function(index, element) {
-	
-						if ((jQuery(this).attr("id")!="submit") && (jQuery(this).attr("id")!="nameFunction"))
-							jQuery(this).attr("value","");
-				});
-			    
-				
-			},
-			
-			complete: function(response){ 
-				
-			},
-			
-			error: function(request,error) {
-				alert(request.responseText);
-			}	
-		});	
-		
-	});
-	
-	
-	
-	
-	
 	function viewVideo(elem){
 		if( jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").length  ) {
 			var url = jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").attr("id");
@@ -97,14 +21,18 @@ jQuery(document).ready(function(){
 			beforeSend: function(){ 
 			   
 				jQuery(".loaderTable").show();
-				
+				jQuery("form#formVideo").hide();
+				jQuery("table.items").hide();
 				jQuery("table.items tbody tr").remove(); 						   
 			},
 			complete: function(){ 
 				jQuery(".loaderTable").hide();
 			
 			},
-			success: function(response) {	
+			success: function(response) {
+				jQuery("form#formVideo").show();
+				jQuery("table.items").show();
+				console.log(response);	
 				jQuery("table.items tbody").html(response);
 				
 				jQuery("a.viewThumb").click( function(){
@@ -460,24 +388,7 @@ jQuery(document).ready(function(){
 				var json =  jQuery.parseJSON(response);
 				var result = json.result;
 				if (result=="SUCCESS"){
-					//element.removeClass();
-					//element.addClass(changeClass);
-					/*element.parent().hide();
-					element.parent().children("." + changeClass).show();
-					element.parent().children("." + changeClass).attr("id", json.showtimeIdentifier);
-					element.parent().children(".icon_remove").show();
-					
-
-					if ((nomeclass == "icon_AcquiRemoveshowtime") || (nomeclass == "icon_Removeshowtime")) {
-						element.parent().children(".icon_moveThumbs").hide();
-						element.parent().children(".viewThumb").hide();
-						element.parent().children(".viewThumb").attr("href","#");
-						element.parent().parent().parent().children("div.infos").hide();
-					} else
-						element.parent().parent().parent().parent().hide();*/
-					
 					callSync("");	
-					//alert (refreshpage);
 				} else {
 					element.parent().hide(); 
 					element.parent().parent().children(".loader").show();
@@ -626,8 +537,12 @@ function viewWho(obj){
 }
 
 
-function wimtvpro_TestFileType() {	
-    fileName = jQuery("input[name=\"files[videoFile]\"]").val();
+
+
+jQuery(document).ready(function() { 
+
+   jQuery("input#edit-videofile").change(function() {	
+    fileName = jQuery(this).val();
     fileTypes = [ "", "mov", "mpg", "avi", "flv", "mpeg", "mp4", "mkv", "m4v" ];
     if (!fileName) {
       return;
@@ -640,14 +555,13 @@ function wimtvpro_TestFileType() {
     if (fileTypes.join(".").indexOf(fileType.toLowerCase()) != -1) {
       return TRUE;
     } else {
-      alert("Please only upload files that end in types: \n\n"
+      alert(erroreFile[0] + " \n\n"
       + (fileTypes.join(" ."))
-      + "\n\nPlease select a new file and try again.");
+      + "\n\n" + erroreFile[1]);
       jQuery("input[name=\"files[videoFile]\"]").val("");
     }
-}
+});
 
-jQuery(document).ready(function() { 
   jQuery("ul.itemsPublic li a").colorbox();
   jQuery('.buttonInsert').click(function() {
       var width = jQuery(this).parent().children('.w').val();
@@ -814,10 +728,7 @@ jQuery(document).ready(function() {
 		  });
 
 	  });
-	  
-	  
-	
-	  
+
 	  jQuery('.icon_deletePlay').click(function() {
 	  	var nameNewPlaylist = jQuery(this).parent().children("input").val();
 	  	//remove from DB
@@ -831,7 +742,11 @@ jQuery(document).ready(function() {
 		      idPlayList : idPlayList,
 		      namefunction: "removePlaylist"
 		    },
-		   success: function(){location.reload();},
+		   success: function(){
+			 location.reload();
+			 
+			 
+		},
 		   error: function(){location.reload();}
 		  });
 	  	
@@ -860,4 +775,25 @@ jQuery(".ppvNoActive").click(function(){
 		alert (nonePayment);				
 	});
 
+jQuery(".icon_download").click(function() {
+	
+	if( jQuery(this).parent().parent("tr").children("td").children("a.viewThumb").length  ) {
+
+		var id = jQuery(this).attr("id").split("|");
+		var contentid = id[0];
+		var infoFile = id[1];
+		var uri =  url_pathPlugin + "scripts.php?namefunction=downloadVideo&id=" + contentid + "&infofile=" + infoFile;
+		jQuery("body").append("<iframe src=\"" + uri + "\" style=\"display:none;\" />");
+	
+	}else{
+		alert (videoproblem);	
+	}
+ 
+});
+jQuery(".icon_downloadNone").click(function() {
+	alert(videoproblem);
+});
+
+
 }); 
+

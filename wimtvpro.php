@@ -3,7 +3,7 @@
 Plugin Name: Wim Tv Pro
 Plugin URI: http://wimtvpro.tv
 Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-Version: 2.5.5
+Version: 3.0.0
 Author: WIMLABS
 Author URI: http://www.wimlabs.com
 License: GPLv2 or later
@@ -46,6 +46,11 @@ register_deactivation_hook( __FILE__, 'wimtvpro_remove');
 function wimtvpro_install() {
 	/* Create a new database field */
   	global $wpdb;
+	
+	 if (!function_exists('curl_init')){
+      die('cURL non disponibile!');
+  } 
+	
 	wimtvpro_create_metadata_table($table_name);
   
 	  // Create page MyWimTv Streaming
@@ -344,8 +349,13 @@ function wimtvpro_install_jquery() {
     wp_enqueue_style('wimtvproCssCore');
  }
  if ($_GET['page']!="WimVideoPro_Programming"){
- wp_enqueue_script('wimtvproScript',plugins_url('script/wimtvpro.js', __FILE__));
-}
+ 	wp_enqueue_script('wimtvproScript',plugins_url('script/wimtvpro.js', __FILE__));
+ }
+ 
+ if ($_GET['page']=="WimVideoPro_UploadVideo"){
+ 	wp_enqueue_script('wimtvproScriptUpload',plugins_url('script/upload.js', __FILE__));
+ }
+ 
 }
 
 
@@ -375,7 +385,9 @@ function my_custom_js() {
 	 videoPrivacy[7] = "' . __('Widget and Pages',"wimtvpro") . '";
 	 videoPrivacy[8] = "' . __('Roles',"wimtvpro") . '";
 	 videoPrivacy[9] = "' . __('Users',"wimtvpro") . '";
-	 
+	 var erroreFile = new Array();
+	 erroreFile[0] = "' . __('Please only upload files that end in types:',"wimtvpro") . '";
+	 erroreFile[1] = "' . __('Please select a new file and try again.',"wimtvpro") . '";
 	 var point = "' . __('.',"wimtvpro") . '";
 	 
 	</script>';

@@ -4,10 +4,13 @@
   * Synchronize the video with wim.tv.
   *
   */
-    if (!isset($upload))
-  	include("../../../wp-load.php");
+  
+
+if (!isset($upload))
+	include("../../../wp-load.php");
   else
-    include("../wp-load.php");
+	include("../wp-load.php");
+
   global $user,$wpdb;
 
   $url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosDetailWimtv");
@@ -118,7 +121,6 @@
 	          else {
 	          	$query = "UPDATE " . $table_name . 
 	            " SET state = '" . $pos_wimtv . "'," . 
-	            " status = '" . $status . "'," . 
 	            " title = '" . mysql_escape_string($title) . "'," .             
 	            " urlThumbs = '" . mysql_escape_string($url_thumbs) . "'," .
 	            " urlPlay = '" . mysql_escape_string($urlVideo) . "'," .
@@ -156,5 +158,4 @@
   }
 }
 
-if (!isset($upload))
-  die();
+if ((!isset($upload)))  die();

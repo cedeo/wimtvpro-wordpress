@@ -108,6 +108,7 @@ function wimtvpro_configure(){
 	            update_option('wp_registration', 'FALSE'); 
 	            update_option('wp_userwimtv', 'username');
 	            update_option('wp_passwimtv', 'password');
+				
 	
 	          } else {
 	              
@@ -130,9 +131,7 @@ function wimtvpro_configure(){
 					curl_close($ch);
 				  
 				    if (count($arrayjsonst)> 0){
-						  
-				
-						
+
 		           	 	update_option('wp_userwimtv', $_POST['userWimtv']);
 		            	update_option('wp_passwimtv', $_POST['passWimtv']);
 						echo '<div class="updated"><p><strong>';
@@ -340,8 +339,10 @@ function wimtvpro_configure(){
   
 			unset($dati['wimtvpro_update']);
 			unset($dati['submit']);
-			
-			$jsonValue = json_encode($dati);	
+			unset($dati['submit']);
+			unset($dati['affiliate2']);
+			unset($dati['affiliateConfirm2']);
+			$jsonValue = json_encode($dati);
 			//var_dump  ($jsonValue);
 			$ch = curl_init();
 	        curl_setopt($ch, CURLOPT_URL, $urlUpdate);
@@ -349,7 +350,7 @@ function wimtvpro_configure(){
 	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 	        curl_setopt($ch, CURLOPT_USERPWD, $credential);
 	        curl_setopt($ch, CURLOPT_POST, TRUE);
 	        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonValue); 
@@ -401,11 +402,8 @@ function wimtvpro_configure(){
 	        curl_setopt($ch, CURLOPT_USERPWD, $credential);
 	        $response = curl_exec($ch);
 			$dati = json_decode($response, true);
-			//var_dump ($dati);
 			curl_close($ch);
-			
-		
-		
+
 		switch ($_GET['update']){
 		
 			case "1": //Payment
@@ -421,9 +419,83 @@ function wimtvpro_configure(){
 			  _e("Please complete the following fields if you wish to make financial transactions on Wim.tv (e.g. buy or sell videos, post pay per view videos or bundles). You may wish to fill your data now or do it later by returning in this section of your Settings.","wimtvpro");
 			  echo '</p>';
 
+
 			  echo '
 			  
+			  <script>
+			  
+			  	jQuery(document).ready(function() {
+			    
+			    	jQuery("#edit-affiliate").click(function() {
+							var name = jQuery(this).attr("name");
+							if (jQuery(this).attr("checked")=="checked") {
+								jQuery(".affiliateTr").show();
+								jQuery("#edit-affiliateHidden").value("true");
+							}
+							else {
+								jQuery(".affiliateTr").hide();
+								jQuery("#edit-affiliateHidden").attr("value","false");
+								jQuery("#edit-affiliateConfirmHidden").attr("value","false");
+								jQuery("#edit-companyName").attr("value","");
+							}
+						})
+			    	jQuery("#edit-affiliateConfirm").click(function() {
+						var name = jQuery(this).attr("name");
+							if (jQuery(this).attr("checked")=="checked") {
+								jQuery("#edit-affiliateConfirmHidden").attr("value","true");
+							}
+							else {
+								jQuery("#edit-affiliateConfirmHidden").attr("value","false");
+							}
+					})
+			    });
+			  
+			  </script>
+			  
 			  <form enctype="multipart/form-data" action="#" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
+			  
+			    <h4>' . __("Affiliation","wimtvpro") . '</h4>
+						<table class="form-table">
+					
+			              	<tr>
+			              		<th><label for="liveStreamEnabled">' . __("Are you affiliate to the following company?","wimtvpro") . '</label></th>
+								<td>
+								  <input type="checkbox" id="edit-affiliate" name="affiliate2" value="true"
+								  ';
+								  if (strtoupper($dati['affiliate'])=="TRUE") {
+									  echo ' checked="checked"';
+								  }
+					echo '>	<td>	 
+							</tr>';
+					
+					if (strtoupper($dati['affiliate'])!="TRUE") $style="style='display:none'";
+					
+						echo '		
+							<tr class="affiliateTr" ' .  $style .  ' >
+			              		<th><label for="companyName">' . __("Company Name","wimtvpro") . '</label></th>
+								<td>
+								  <input type="text" id="edit-companyName" name="companyName" value="' . $dati['companyName']  .  '"  size="80" maxlength="20"> ';
+								  
+							echo '	<td>		 
+							</tr>
+							';		
+							
+					echo '	
+					
+							<tr class="affiliateTr" ' .  $style .  ' >
+			              		<th><label for="affiliateConfirm">' . __("Have you the legal right of acting as an affiliate to the preceeding company?","wimtvpro") . '</label></th>
+								<td>
+								  <input type="checkbox" id="edit-affiliateConfirm" name="affiliateConfirm2" value="true"
+								  ';
+								  if (strtoupper($dati['affiliateConfirm'])=="TRUE") {
+									  echo ' checked="checked"';
+								  }
+					echo '>	<td>	 
+							</tr>
+					
+						</table>
+			  <input type="hidden" id="edit-affiliateHidden" name="affiliate" value="'  . $dati['affiliate'] . '">
+			  <input type="hidden" id="edit-affiliateConfirmHidden" name="affiliateConfirm" value="'  . $dati['affiliateConfirm'] . '">
 				 <h4>' . __("PayPal") . '</h4>
 						<table class="form-table">
 					
@@ -1034,11 +1106,17 @@ echo "<div class='wrap'>";
 
 		echo "</tr>";
 
-	
+		echo "<tr>";
+			echo "<td>" . __("Hours of Transmission","wimtvpro") . "(*)</td>";
+			foreach ($packet_json -> items as $a) {
+	    	echo "<td>" . $a->streamingAmount . "</td>";		    
+	    	}
+
+		echo "</tr>";
 		echo "<tr>";
 			echo "<td>";
 			printf( __( 'Price/mo. for %d Mo', 'wimtvpro' ), "1" );
-			echo "</td>";
+			echo " (**)</td>";
 			foreach ($packet_json -> items as $a) {
 	    	echo "<td>" . number_format($a->price,2) . " &euro; / " . __("m","wimtvpro") . "</td>";		    
 	    	}
@@ -1072,7 +1150,7 @@ echo "<div class='wrap'>";
 	
 		echo "</tbody>";
 		echo "</table>";
-		
+		echo "<h4>(*) " . __("Assuming video+audio encoded at 1 Mbps","wimtvpro") . "</h4>";
 		echo "<h4>(**) " . __("VAT to be added","wimtvpro") . "</h4>";
 		
 		echo "<p>" .

@@ -29,7 +29,7 @@ License: GPLv2 or later
 
 
 
-
+include ("log/log.php");
 include ("hooks.php");
 include ("functions.php");
 include ("pages.php");

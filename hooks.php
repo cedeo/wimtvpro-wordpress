@@ -186,7 +186,7 @@ function wimtvpro_configure(){
 	   
 	   // If directory skinWim don't exist, create the directory (if change Public file system path into admin/config/media/file-system after installation of this module or is the first time)
 
-       $elencoSkin = [];
+       $elencoSkin = array();
 
        if (!is_dir($directory)) {
 	      $directory_create = mkdir($uploads_info["basedir"] . "/skinWim");

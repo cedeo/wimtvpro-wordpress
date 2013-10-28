@@ -157,7 +157,7 @@ jQuery(document).ready(function(){
 			context: this,
 			url:  url_pathPlugin + "scripts.php", 		      
 			type: "GET",
-			dataType: "html",
+			dataType: "json",
 			async: false,
 			data: "namefunction=RemoveVideo&id=" + element.parent().parent().attr("id") , 
 			beforeSend: function(){ 
@@ -169,10 +169,9 @@ jQuery(document).ready(function(){
 				jQuery(".loading").remove(); 
 			},
 			success: function(response) {
-				var json =  jQuery.parseJSON(response);
-				var result = json.result;
+				var result = response.result;
 				if (result=="SUCCESS"){
-					alert (json.message);	
+					alert (response.message);	
 				}
 				location.reload();
 			},
@@ -324,7 +323,7 @@ jQuery(document).ready(function(){
 			context: this,
 			url:  url_pathPlugin + "scripts.php", 
 			type: "GET",
-			dataType: "html",
+			dataType: "json",
 			data:{ 
 				coId : coId, 
 				id : id,
@@ -341,17 +340,15 @@ jQuery(document).ready(function(){
 				jQuery(".form_save").hide();			   
 			},
 			success: function(response) {
-		    	
-				var json =  jQuery.parseJSON(response);
-				console.log (json.messages);
-				var result = json.result;
+
+				var result = response.result;
 				
 				if (result=="SUCCESS"){
 					jQuery.colorbox.close();
 					callSync("");
 								        		
 				} else {
-				    var message = json.messages[0].field + ":" + json.messages[0].message; 
+				    var message = response.messages[0].field + ":" + response.messages[0].message; 
 					jQuery(this).parent().hide(); 
 					jQuery(this).parent().parent().children(".loader").show();
 					jQuery(".loading").hide();	
@@ -455,7 +452,7 @@ jQuery(document).ready(function(){
 				context: this,
 				url:  url_pathPlugin + "scripts.php", 		      
 				type: "GET",
-				dataType: "html",
+				dataType: "json",
 				data: "namefunction=" + namefunction + "&id=" + element.parent().parent().parent().parent().attr("id") + coId , 
 				beforeSend: function(){ 
 				element.hide();
@@ -466,14 +463,13 @@ jQuery(document).ready(function(){
 				
 			},
 			success: function(response) {
-				var json =  jQuery.parseJSON(response);
-				var result = json.result;
+				var result = response.result;
 				if (result=="SUCCESS"){
 					callSync("");	
 				} else {
 					element.parent().hide(); 
 					element.parent().parent().children(".loader").show();
-					alert (json.messages[0].message); 
+					alert (response.messages[0].message); 
 				}
 			},
 			error: function(request,error) {
@@ -819,6 +815,7 @@ jQuery(document).ready(function() {
 		    context: this,
 	        url:  url_pathPlugin + "script_playlist.php", 
 		    type: "GET",
+			
 		    data:{
 		      idPlayList : idPlayList,
 		      namefunction: "removePlaylist"

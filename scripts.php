@@ -96,11 +96,7 @@
       curl_close($ch);
       
       echo $response;
-      
-      //UPDATE PAGE MY STREAMING
-	  update_page_mystreaming();
-      
-      
+   
       die();
     break;
     case "putAcqST":
@@ -143,11 +139,7 @@
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $post_field);
       $response = curl_exec($ch);
-      echo $response;
-      
-      //UPDATE PAGE MY STREAMING
-	  update_page_mystreaming();
-      
+      echo $response;   
       curl_close($ch);
       die();
     break;
@@ -175,10 +167,6 @@
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
       $response = curl_exec($ch);
       echo $response;
-      //UPDATE PAGE MY STREAMING
-	  update_page_mystreaming();
-
-      
       curl_close($ch);
       die();
     break;
@@ -235,10 +223,6 @@
       		);
 
 		echo $response;
-		
-		//UPDATE PAGE MY STREAMING
-	    update_page_mystreaming();
-
     break;
     
     case "getUsers":

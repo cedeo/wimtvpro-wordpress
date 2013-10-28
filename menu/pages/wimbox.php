@@ -48,12 +48,12 @@ function wimtvpro_wimbox () {
         <?php if ($videos != "") { ?>
             <form method="post" action="#">
                 <b><? echo __("Search") ?></b>
-                <label for="title"><? echo __("video title","wimtvpro") ?>:</label>
-                <input type='text' value='<? echo $titleVideo ?>' name='titleVideo' />
-                <input type="submit" class="button button-primary" value="<? echo __("Search") ?>">
+                <label for="title"><?php echo __("video title","wimtvpro") ?>:</label>
+                <input type='text' value='<?php echo $titleVideo ?>' name='titleVideo' />
+                <input type="submit" class="button button-primary" value="<?php echo __("Search") ?>">
                 <br/>
-                <b><? echo __("Order","wimtvpro")  ?></b>
-                <label for="title"><? echo __("by title","wimtvpro") ?>:</label>
+                <b><?php echo __("Order","wimtvpro")  ?></b>
+                <label for="title"><?php echo __("by title","wimtvpro") ?>:</label>
                 <select name="ordertitleVideo">
                     <option value=""
                         <?php if ($orderTitleVideo=="") echo ' selected="selected"'?>
@@ -65,10 +65,10 @@ function wimtvpro_wimbox () {
                     </option>
                     <option value="DESC"
                         <?php if ($orderTitleVideo=="DESC") echo ' selected="selected"'?>
-                        ><? echo __("DESC","wimtvpro") ?>
+                        ><?php echo __("DESC","wimtvpro") ?>
                     </option>
                 </select>
-                <input type="submit" class="button button-primary" value="<? echo __("Order","wimtvpro") ?>">
+                <input type="submit" class="button button-primary" value="<?php echo __("Order","wimtvpro") ?>">
             </form>
 
         <?php } ?>

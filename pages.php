@@ -13,12 +13,6 @@ function wimtvpro_mystreaming(){
 	  include("pages/list_media.php");
 }
 
-
-function wimtvpro_playlist(){
-	include("pages/list_playlist.php");
-	wimtvpro_listplaylist();
-}
-
 //Page for view for UPLOAD new Video  
 function wimtvpro_upload(){
 	include ("pages/upload_video.php");

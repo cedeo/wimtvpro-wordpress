@@ -96,8 +96,8 @@ header('Content-type: text/html');
       <td>"  . $data . " " . $oraMin . "<br/>" . $durata . "</td>
       <td>" . $embedded_code . "</td>
       <td> 
-      <a href='?page=WimVideoPro_WimLive&namefunction=modifyLive&id=" . $identifier . "' alt='" . __("Remove") . "'   title='" . __("Modify","wimtvpro") . "'><img src='" . plugins_url('images/mod.png',dirname(__FILE__)) . "'  alt='" . __("Modify","wimtvpro") . "'></a>   
-       <a href='?page=WimVideoPro_WimLive&namefunction=deleteLive&id=" . $identifier . "' title='" . __("Remove") . "'><img src='" . plugins_url('images/remove.png',dirname(__FILE__)) . "' alt='" . __("Remove") . "'></a></td>
+      <a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "' alt='" . __("Remove") . "'   title='" . __("Modify","wimtvpro") . "'><img src='" . plugins_url('images/mod.png',dirname(__FILE__)) . "'  alt='" . __("Modify","wimtvpro") . "'></a>
+       <a href='?page=WimLive&namefunction=deleteLive&id=" . $identifier . "' title='" . __("Remove") . "'><img src='" . plugins_url('images/remove.png',dirname(__FILE__)) . "' alt='" . __("Remove") . "'></a></td>
       </tr>";
     }
     elseif ($type=="list") {

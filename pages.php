@@ -20,12 +20,6 @@ function wimtvpro_upload(){
 }
 
 
-function wimtvpro_live(){
-  include("pages/list_live.php");
-  wimtvpro_listlive();
-}
-
-
 function wimtvpro_report (){
   
   include("pages/report.php");

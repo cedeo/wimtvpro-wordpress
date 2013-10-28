@@ -1187,7 +1187,7 @@ echo "<div class='wrap'>";
 function media_wimtvpro_process() {
   media_upload_header();
   
-  $videos .= "<h3 class='media-title'>WimVod</h3><table class='itemsInsert'>" . wimtvpro_getThumbs(TRUE, FALSE, TRUE) . "</table><div class='empty'></div>";
+  $videos .= "<h3 class='media-title'>WimVod</h3><table class='itemsInsert'>" . wimtvpro_getVideos(TRUE, FALSE, TRUE) . "</table><div class='empty'></div>";
   
   global $wpdb; 
   $table_name = $wpdb->prefix . 'wimtvpro_playlist';

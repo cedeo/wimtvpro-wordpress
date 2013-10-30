@@ -1,24 +1,10 @@
 <?php
 
-include_once("api/api.php");
+include_once("api/wimtv_api.php");
 
 header('Content-type: application/json');
 
 initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
-
-   
-//Page for view My Video streaming  
-function wimtvpro_mystreaming(){
-	  $paged = "wimvod"; //ALL VIDEO
-	  include("pages/list_media.php");
-}
-
-
-function wimtvpro_report (){
-  
-  include("pages/report.php");
-	
-}
 
 
 /*TODO

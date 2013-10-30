@@ -1,21 +1,30 @@
 <?php
 
-include_once("api/api.php");
+include_once("api/wimtv_api.php");
+include_once("api/analytics_api.php");
 
 header('Content-type: application/json');
 
 initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
+
+
+if (get_option("wp_sandbox")=="No")
+    initAnalytics("http://www.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
+else
+    initAnalytics("http://peer.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
 
 define('BASE_URL', get_bloginfo('url'));
 
 function wimtvpro_submenu($view_page){
 	$submenu = "<ul class='subsubsub'>";
 	$submenu .= "<li><a href='admin.php?page=WimTvPro' class='config'>" . __("Configuration","wimtvpro") . "</a> |";
-	if ($view_page) $submenu .= "<li><a href='admin.php?page=WimTvPro&pack=1' class='packet'>" . __("Pricing","wimtvpro") . "</a> |";
-	if ($view_page) $submenu .= "<li><a href='admin.php?page=WimTvPro&update=1' class='payment'>" . __("Monetisation","wimtvpro") . "</a> |";
-	if ($view_page) $submenu .= "<li><a href='admin.php?page=WimTvPro&update=2' class='live'>"  . __('Live',"wimtvpro") . "</a> |";
-	if ($view_page) $submenu .= "<li><a href='admin.php?page=WimTvPro&update=3' class='user'>" . __("Personal Info","wimtvpro") . "</a> |";
-	if ($view_page) $submenu .= "<li><a href='admin.php?page=WimTvPro&update=4' class='other'>" . __("Features","wimtvpro") . "</a> ";
+	if ($view_page) {
+        $submenu .= "<li><a href='admin.php?page=WimTvPro&pack=1' class='packet'>" . __("Pricing","wimtvpro") . "</a> |";
+        $submenu .= "<li><a href='admin.php?page=WimTvPro&update=1' class='payment'>" . __("Monetisation","wimtvpro") . "</a> |";
+        $submenu .= "<li><a href='admin.php?page=WimTvPro&update=2' class='live'>"  . __('Live',"wimtvpro") . "</a> |";
+	    $submenu .= "<li><a href='admin.php?page=WimTvPro&update=3' class='user'>" . __("Personal Info","wimtvpro") . "</a> |";
+	    $submenu .= "<li><a href='admin.php?page=WimTvPro&update=4' class='other'>" . __("Features","wimtvpro") . "</a> ";
+    }
 	$submenu .= "</ul>";
 	return $submenu;
 }
@@ -923,7 +932,7 @@ echo "<h2>" . __("Features","wimtvpro") . "</h2>";
 		
 echo "<div class='wrap'>";
 		echo "<h2>" . __("Pricing","wimtvpro");
-		if (isset($_GET['return']))  echo "<a href='?page=WimVideoPro_Report' class='add-new-h2'>" . __("Back") . "</a>";
+		if (isset($_GET['return']))  echo "<a href='?page=WimTVPro_Report' class='add-new-h2'>" . __("Back") . "</a>";
 		echo "</h2>";
 		
 		$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");

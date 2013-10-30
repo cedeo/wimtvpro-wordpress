@@ -3,21 +3,20 @@
 
 namespace Api;
 
-include_once('httpful.phar');
-
-use Httpful\Request;
-use Httpful\Mime;
+require("Httpful/Bootstrap.php");
+\Httpful\Bootstrap::init();
 
 /**
  * Written by walter at 16/10/13
  */
-
+use \Httpful\Request;
+use \Httpful\Mime;
 
 class Api {
     private $host = null;
     public $username = null;
     public $liveHostsUrl;
-    private $password = null;
+    public $password = null;
     private static $instance;
     private static $analytics;
 
@@ -77,8 +76,7 @@ class Api {
     function execute($request, $expectedMimeType='text/html') {
         $request->expects($expectedMimeType);
         $request->_curlPrep();
-        /*if ($request->serialized_payload != "")
-            trigger_error("Payload: ". $request->serialized_payload, E_USER_NOTICE);*/
+        debug($request);
         return $request->send();
     }
 }

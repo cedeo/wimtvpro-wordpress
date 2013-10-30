@@ -32,7 +32,6 @@ License: GPLv2 or later
 include ("log/log.php");
 include ("hooks.php");
 include ("functions.php");
-include ("pages.php");
 include("menu/pages/registration.php");
 include("menu/pages/analytics.php");
 include("menu/pages/playlist.php");

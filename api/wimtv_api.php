@@ -2,9 +2,12 @@
 /**
  * Written by walter at 30/10/13
  */
+
 include_once("api.php");
 
 use Api\Api;
+use \Httpful\Mime;
+use \Httpful\Request;
 
 function initApi($host, $username, $password) {
     Api::initApiAccessor($host, $username, $password);
@@ -113,8 +116,8 @@ function apiGetUUID() {
 function apiUpload($parameters) {
     $apiAccessor = getApi();
     $request = $apiAccessor->postRequest('videos');
-    $request->body(http_build_query($parameters, null, '&'));
-    $request->sends('multipart/form-data');
+    $request->body($parameters);
+    $request->sends(Mime::UPLOAD);
     $request->attach(array('file' => $parameters['file']));
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);

@@ -207,12 +207,6 @@
 	  die();
       break;
 
-	
-    case "getIFrameVideo":
-      $shortcode = "[streamingWimtv id='" . $id . "' width='" . $_GET['WFrame'] . "' height='" .  $_GET['HFrame'] . "' ]";
-      echo $shortcode; 
-    break;
-
     case "RemoveVideo":
 		//connect at API for upload video to wimtv
 		$response = apiDeleteVideo($id);

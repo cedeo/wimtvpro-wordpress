@@ -1,8 +1,10 @@
 <?php
   	global $user,$wpdb;
-  	include("../../../../wp-load.php");
+  	
+	if (!isset($itShortcode))
+		include("../../../../wp-load.php");
 	
-
+	
   	$idPlayList=$_GET['id'];
 	$page=$_GET['page'];
 	
@@ -15,8 +17,12 @@
     		$height = get_option("wp_heightPreview") +190;
 			$width = get_option("wp_widthPreview") +280;
 			$widthP = get_option("wp_widthPreview") +250; 	
-
-			echo "<div style='text-align:center;height:" . $height . "px;width:" . $width . "px;'><h3>" . $title . "</h3>";
+			
+			if (!isset($itShortcode))
+				echo "<div style='text-align:center;height:" . $height . "px;width:" . $width . "px;'><h3>" . $title . "</h3>";
+	 		else
+				echo "<div style='text-align:center;width:100%;'>";
+				
 			$playlistSize = "30%";
 			$dimensions = "width: '100%',";
 			$code = "<div id='container-" . $idPlayList . "' style='margin:0;padding:0 10px;'></div>";
@@ -74,12 +80,14 @@
     }
 	
 	$code .= $skin . $dimensions . "'flashplayer':'" .  $dirJwPlayer . "','playlist': [" .  $playlist . "],'playlist.position': 'right',	'playlist.size': '" . $playlistSize  . "'});</script>&nbsp;";
+			echo $code;
+	
+	if (!isset($itShortcode)){
 		
-	echo $code;
-	if (!isset($page))	{
-		echo "<p>Embedded:</p><textarea style='resize: none; width:90%;height:70px;font-size:10px' readonly='readonly' onclick='this.focus(); this.select();'>" . htmlentities($code) . "</textarea>";
-		echo "</div>";
+		if (!isset($page))	{
+			echo "<p>Embedded:</p><textarea style='resize: none; width:90%;height:70px;font-size:10px' readonly='readonly' onclick='this.focus(); this.select();'>" . htmlentities($code) . "</textarea>";
+			echo "</div>";
+		}
 	}
-
 
 ?>

@@ -44,7 +44,8 @@ include("menu/pages/wimvod.php");
 
 load_plugin_textdomain( 'wimtvpro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
-add_shortcode( 'streamingWimtv', 'wimtvpro_shortcode' );
+add_shortcode( 'streamingWimtv', 'wimtvpro_shortcode_streaming' );
+add_shortcode( 'playlistWimtv', 'wimtvpro_shortcode_playlist' );
 /* What to do when the plugin is activated? */
 register_activation_hook(__FILE__,'wimtvpro_install');
 /* What to do when the plugin is deactivated? */
@@ -326,16 +327,10 @@ function wimtvpro_install_jquery() {
   wp_enqueue_script('jquery-ui-datepicker');
   wp_enqueue_script('jwplayer', plugins_url('script/jwplayer/jwplayer.js', __FILE__));
  // wp_enqueue_script('jwplayerHtml5', plugins_url('script/jwplayer/jwplayer.html5.js', __FILE__));
-  wp_enqueue_script('timepicker', plugins_url('script/timepicker/jquery.ui.timepicker.js', __FILE__));
-  wp_enqueue_script('', plugins_url('script/colorbox/js/jquery.colorbox.js', __FILE__));
-  
-  
-  
+  wp_enqueue_script('timepicker', plugins_url('script/timepicker/jquery.ui.timepicker.js', __FILE__));  
   wp_register_style( 'colorboxCss', plugins_url('script/colorbox/css/colorbox.css', __FILE__) );
-  
   wp_enqueue_script('colorbox', plugins_url('script/colorbox/js/jquery.colorbox.js', __FILE__));
   wp_register_style( 'colorboxCss',plugins_url('script/colorbox/css/colorbox.css', __FILE__) );
-
   wp_enqueue_style('colorboxCss');
   wp_enqueue_script('jquery-ui-core');
   if (!is_admin()) {
@@ -351,9 +346,8 @@ function wimtvpro_install_jquery() {
     wp_register_style('wimtvproCssCore',plugins_url('script/css/redmond/jquery-ui-1.8.21.custom.css', __FILE__));
     wp_enqueue_style('wimtvproCssCore');
  }
- if (isset($_GET['page']) && $_GET['page']!="WimVideoPro_Programming"){
+
 	wp_enqueue_script('wimtvproScript',plugins_url('script/wimtvpro.js', __FILE__));
-}
  if (isset($_GET['page']) && $_GET['page']=="WimTV_Upload"){
  	wp_enqueue_script('wimtvproScriptUpload',plugins_url('script/upload.js', __FILE__));
  }
@@ -521,27 +515,26 @@ add_action( 'widgets_init', 'my_register_widgets2' );
 //End Widget
 
 //ShortCode player
-// [bartag foo="foo-value"]
-function wimtvpro_shortcode($atts) {
+function wimtvpro_shortcode_streaming($atts) {
 
-global $wpdb,$user;
-$table_name = $wpdb->prefix . 'wimtvpro_video';
-$user = wp_get_current_user();
-$idUser = $user->ID;
-$userRole = $user->roles[0];
+  global $wpdb,$user;
+  $table_name = $wpdb->prefix . 'wimtvpro_video';
+  $user = wp_get_current_user();
+  $idUser = $user->ID;
+  $userRole = $user->roles[0];
 
-extract( shortcode_atts( array('id'=>$id,'width'=>$width,'height'=>$height), $atts ) );
+  extract( shortcode_atts( array('id'=>$id,'width'=>$width,'height'=>$height), $atts ) );
 
-$arrayPlay = $wpdb->get_results("SELECT * FROM {$table_name} WHERE contentidentifier='" . $id . "'");
+  $arrayPlay = $wpdb->get_results("SELECT * FROM {$table_name} WHERE contentidentifier='" . $id . "'");
 
-$view_video_state = $arrayPlay[0]->viewVideoModule;
-$stateView = explode ("|",$view_video_state);
+  $view_video_state = $arrayPlay[0]->viewVideoModule;
+  $stateView = explode ("|",$view_video_state);
 
-$array =  explode (",",$stateView[1]);
-$typeUser["U"] = array();
-$typeUser["R"] = array();
-$viewPublicVideo = FALSE;
-foreach ($array as $key=>$value) {
+  $array =  explode (",",$stateView[1]);
+  $typeUser["U"] = array();
+  $typeUser["R"] = array();
+  $viewPublicVideo = FALSE;
+  foreach ($array as $key=>$value) {
 	$var = explode ("-",$value);
 	if ($var[0]=="U") {
 		array_push($typeUser["U"], $var[1]);
@@ -554,14 +547,11 @@ foreach ($array as $key=>$value) {
 	if (($var[0]=="All") || ($var[0]=="")) {
 		$viewPublicVideo = TRUE;
 	}	
-}
+  }
 
+  //Check if user is authorized to see video
 
-//Check if user is authorized to see video
-
-if ((($userRole=="administrator") || (in_array($idUser,$typeUser["U"])) || (in_array($userRole,$typeUser["R"])) || (array_key_exists("All",$typeUser)) || (array_key_exists ("",$typeUser)))){
-
-
+  if ((($userRole=="administrator") || (in_array($idUser,$typeUser["U"])) || (in_array($userRole,$typeUser["R"])) || (array_key_exists("All",$typeUser)) || (array_key_exists ("",$typeUser)))){
 	extract( shortcode_atts( array('id'=>$id,'width'=>$width,'height'=>$height), $atts ) );
 	$credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
 
@@ -587,17 +577,21 @@ if ((($userRole=="administrator") || (in_array($idUser,$typeUser["U"])) || (in_a
       $response = curl_exec($ch);
 	  
 	  return $response;
-} else {
-	
+  } else {
 	return "<p>You don't have permission to see the video</p>";
-
-}  
+  }  
+}
+function wimtvpro_shortcode_playlist($atts) {
+  extract( shortcode_atts( array('id'=>$id,'width'=>$width,'height'=>$height), $atts ) );
+  $_GET['id'] = $id;
+  $itShortcode = true;
+  $page = true;
+  include ("pages/embeddedPlaylist.php");
 }
 
 
-
 function wimtvpro_registration_script() {
-
+//PROGRAMMING SCRIPT
 //TODO : in produzione usare la stringa commentata
 //$basePath = get_option("wp_basePathWimtv");
 $basePath ="http://peer.wim.tv/wimtv-webapp/rest/";

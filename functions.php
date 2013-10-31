@@ -257,7 +257,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     $send = "";
     if ($insert_into_page) {
       $my_media .= '<td><input type="hidden" value="' . $_GET['post_id'] . '" name="post_id">';
-      $my_media .= "W <input style='width:30px;' maxweight='3' class='w' type='text' value='" . get_option("wp_widthPreview") . "'>px  -  H <input style='width:30px;' maxweight='3' class='h' type='text' value='" . get_option("wp_heightPreview") . "'>px";
+      $my_media .= "W <input style='width:30px;' maxweight='3' class='w' type='text' value='" . get_option("wp_widthPreview") . "'>px  <br/>  H <input style='width:30px;' maxweight='3' class='h' type='text' value='" . get_option("wp_heightPreview") . "'>px<br/>";
       $send = get_submit_button( __( 'Insert into Post',"wimtvpro" ), 'buttonInsert', $content_item_new, false );
     } 
 	$my_media .= $send .  "</td></tr>"; 

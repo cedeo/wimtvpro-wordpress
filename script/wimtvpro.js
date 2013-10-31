@@ -644,39 +644,17 @@ jQuery(document).ready(function() {
       var width = jQuery(this).parent().children('.w').val();
       var height = jQuery(this).parent().children('.h').val();
       var id = jQuery(this).attr('id');
-	  jQuery.ajax({
-	    context: this,
-        url:  url_pathPlugin + "scripts.php", 
-	    type: "GET",
-	    data:{ 
-	      HFrame : height,
-	      WFrame : width,
-	      id : id,
-	      namefunction: "getIFrameVideo"
-	    },
-	    success: function(response){
-	  	  var win = window.dialogArguments || opener || parent || top;
-          win.send_to_editor(response); 
-	    },
-	    error: function(jqXHR, textStatus, errorThrown){alert(errorThrown);} 
-	  });
+	  var win = window.dialogArguments || opener || parent || top;
+      var shortcode  =  "[streamingWimtv id='" + id + "' width='" + width + "' height='" + height + "' ]";
+	  win.send_to_editor(shortcode); 
+	    
   });
   jQuery('.buttonInsertPlayList').click(function() {
       var id = jQuery(this).attr('id');
-	  jQuery.ajax({
-	    context: this,
-        url:  url_pathPlugin + "pages/embeddedPlayList.php", 
-	    type: "GET",
-	    data:{ 
-	      id : id,
-	      page:true
-	    },
-	    success: function(response){
-	  	  var win = window.dialogArguments || opener || parent || top;
-          win.send_to_editor(response); 
-	    },
-	    error: function(jqXHR, textStatus, errorThrown){alert(errorThrown);} 
-	  });
+	  var win = window.dialogArguments || opener || parent || top;
+      var shortcode  =  "[playlistWimtv id='" + id + "']";
+	  win.send_to_editor(shortcode); 
+	   
   });
     
   //Playlist

@@ -43,46 +43,18 @@
   //trigger_error($function, E_USER_NOTICE);
   switch ($function) {
     case "putST":
-      $license_type = "";
-      if ($_GET['licenseType']!="")
-        $license_type = "licenseType=" . $_GET['licenseType'];
-      $payment_mode= "";
-      if ($_GET['paymentMode']!="")
-        $payment_mode = "&paymentMode=" . $_GET['paymentMode'];
-      $cc_type= "";
-      if ($_GET['ccType']!="")
-        $cc_type= "&ccType=" . $_GET['ccType'];
-      $price_per_view  = "";
-      if ($_GET['pricePerView']!="")
-        $price_per_view = "&pricePerView=" . $_GET['pricePerView'];
-      $price_per_view_currency = "";
-      if ($_GET['pricePerViewCurrency']!="")
-        $price_per_view_currency = "&pricePerViewCurrency=" . $_GET['pricePerViewCurrency'];
-      $post_field = $license_type . $payment_mode . $cc_type . $price_per_view . $price_per_view_currency;
-		
-        //API  http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
+    //TODO: deprecated API call. 
+    	//API  http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
         //curl -u {username}:{password} -d "license_type=TEMPLATE_LICENSE&paymentMode=PAYPERVIEW&pricePerView=50.00&pricePerViewCurrency=EUR" http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
-      $url_post_public_wimtv = get_option("wp_basePathWimtv") . str_replace( get_option("wp_replaceContentWimtv"), $id,  get_option("wp_urlPostPublicWimtv"));
-      
-     //This API allows posting an ACQUIRED video on the Web showtime for public streaming.
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, $url_post_public_wimtv);
-      curl_setopt($ch, CURLOPT_VERBOSE, 0);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-      curl_setopt($ch, CURLOPT_USERPWD, $credential);
-      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: ' . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
-
-      curl_setopt($ch, CURLOPT_POST, TRUE);
-      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $post_field);
-      
-      //echo $url_post_public_wimtv;
-      
-      $response = curl_exec($ch);
-      
-    
      
+      $param=array( 'licenseType'=>$_GET['licenseType'],
+      				'paymentMode'=>$_GET['paymentMode'],
+      				'ccType'=>$_GET['ccType'],
+      				'pricePerView'=>$_GET['pricePerView'],
+      				'pricePerViewCurrency'=>$_GET['pricePerViewCurrency']
+      				);
+      $response = apiPublishOnShowtime($id, $param);
+
       
       if ($response)
       $state = "showtime";

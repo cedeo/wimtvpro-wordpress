@@ -2,6 +2,7 @@
 /**
  * Written by walter at 24/10/13
  */
+
 function wimtvpro_getVideos($showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="", $sql_where="", $sql_order="") {
     global $user, $wpdb, $wp_query;
 
@@ -79,5 +80,4 @@ function wimtvpro_getVideos($showtime=FALSE, $private=TRUE, $insert_into_page=FA
 
     return $my_media . $pagination;
 }
-
 ?>

@@ -12,23 +12,12 @@ if (!isset($upload))
 	include("../wp-load.php");
 
   global $user,$wpdb;
+	
+	$table_name = $wpdb->prefix . 'wimtvpro_video';
+	$response= apiGetVideos();
 
-  $url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosDetailWimtv");
-  $credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
-  $table_name = $wpdb->prefix . 'wimtvpro_video';
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL,  $url_video);
-  curl_setopt($ch, CURLOPT_VERBOSE, 0);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-  curl_setopt($ch, CURLOPT_USERPWD, $credential);
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-  $response = curl_exec($ch);
-  $array_json_videos = json_decode($response);
-	//var_dump ($array_json_videos);
-  curl_close($ch);
-
+  	$array_json_videos = json_decode($response);
+	
   if ($array_json_videos==NULL) {
     _e("Can not establish a connection with Wim.tv. Contact the administrator.", "wimtvpro");
   } 

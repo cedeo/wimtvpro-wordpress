@@ -2,7 +2,7 @@
 /**
  * Written by walter at 24/10/13
  */
-
+header('Content-type: text/html');
 //WimBox
 include_once('modules/wimbox.php');
 
@@ -33,7 +33,6 @@ function wimtvpro_wimbox () {
     }
 
     $videos= wimtvpro_getVideos(FALSE,TRUE,FALSE,'',$sql_where, $sql_order);
-
 ?>
 
     <!----- HTML ----->
@@ -84,12 +83,11 @@ function wimtvpro_wimbox () {
                 </tr>
             </thead>
             <tbody>
-                <?php echo $videos ?>
+                <?php echo $videos  ?>
             </tbody>
         </table>
         <div class='loaderTable'></div>
     </div>
-
 
     <script type="text/javascript">
         jQuery(document).ready(function(){

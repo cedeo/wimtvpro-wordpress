@@ -31,6 +31,15 @@ function apiGetProfile() {
     return $apiAccessor->execute($request);
 }
 
+function apiEditProfile($params) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->postRequest('profile');
+    $request->sends(Mime::JSON);
+    $request->body($params);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request, 'application/json');
+}
+
 function apiChangePassword($password) {
     $apiAccessor = getApi();
     $request = $apiAccessor->putRequest("users/" . $apiAccessor->username . "/updateLivePwd");

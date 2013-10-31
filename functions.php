@@ -442,9 +442,8 @@ function wimtvpro_viever_jwplayer($userAgent,$contentId,$video,$dirJwPlayer) {
     $isiPad = (bool) strpos($userAgent,'iPad');
     $urlPlay = explode("$$",$video[0]->urlPlay);
     $isiPhone = (bool) strpos($userAgent,'iPhone');
-    $isiAndroid = (bool) strpos($userAgent,'Android');
-
-    if ($isiPad  || $isiPhone || $isiAndroid) {
+    $isAndroid = (bool) strpos($userAgent,'Android');
+    if ($isiPad  || $isiPhone || $isAndroid) {
 
         $contentId = $video[0]->contentidentifier;
         $url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosWimtv") . "/" . $contentId . "?details=true";
@@ -467,13 +466,11 @@ function wimtvpro_viever_jwplayer($userAgent,$contentId,$video,$dirJwPlayer) {
         $urlPlayIPadIphone = "";
         $urlPlayIPadIphone = $arrayjson->streamingUrl->streamer;
         $configFile = "'file': '" . $urlPlayIPadIphone . "',";
-    } else if ($isiAndroid) {
+    } else if ($isAndroid) {
         $urlPlayAndroid =$arrayjson->streamingUrl->streamer;
         $filePlayAndroid =$arrayjson->streamingUrl->file;
-        $configFile = "modes: [ { type: 'html5', config: { file: '" . $arrayjson->url . "','provider': 'video' } }],";
-    }
-
-    else {
+        $configFile = "file: '" . $arrayjson->url . "',";
+    } else {
         $configFile = "'flashplayer':'" . $dirJwPlayer . "','file': '" . $urlPlay[1] . "','streamer':'" . $urlPlay[0] . "',";
     }
     return $configFile;

@@ -45,19 +45,16 @@ class Api {
 
     function compileUrl($subUrl) {
         $url = $this->host . $subUrl;
-        //trigger_error("Calling " . $url, E_USER_NOTICE);
         return $url;
     }
 
     function getRequest($subUrl) {
         $url = $this->compileUrl($subUrl);
-        //trigger_error("Using method GET", E_USER_NOTICE);
         return Request::get($url);
     }
 
     function postRequest($subUrl) {
         $url = $this->compileUrl($subUrl);
-        //trigger_error("Using method POST", E_USER_NOTICE);
         $request = Request::post($url);
         $request->sendsType(Mime::FORM);
         return $request;
@@ -65,7 +62,6 @@ class Api {
 
     function deleteRequest($subUrl) {
         $url = $this->compileUrl($subUrl);
-        //trigger_error("Using method DELETE", E_USER_NOTICE);
         return Request::delete($url);
     }
 
@@ -76,9 +72,10 @@ class Api {
     function execute($request, $expectedMimeType='text/html') {
         $request->expects($expectedMimeType);
         $request->_curlPrep();
-        debug($request);
+        //debug($request);
         return $request->send();
     }
+
 }
 
 

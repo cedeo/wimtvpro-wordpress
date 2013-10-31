@@ -410,7 +410,7 @@ echo $before_widget;
 if ( ! empty( $title ) )
 		echo $before_title . $title . $after_title;
 
-echo "<table class='itemsPublic'>" . wimtvpro_getThumbs(TRUE, FALSE, FALSE, "block") . "</table>";
+echo "<table class='itemsPublic'>" . wimtvpro_getVideos(TRUE, FALSE, FALSE, "block") . "</table>";
  
 echo $after_widget;
 }

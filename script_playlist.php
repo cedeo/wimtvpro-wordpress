@@ -44,27 +44,12 @@
 	        $wpdb->query($sql);
 	
 	    	
-	    	// MODIFY XML playlist_## 
+	    	// MODIFY XML playlist_## chiama function apiGetVideos()
 	    	
-			$url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosDetailWimtv");
-	  		$credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
-		    $url_embedded =  get_option("wp_urlShowTimeWimtv") . "/" . get_option("wp_replaceshowtimeIdentifier") . "/details";
-		    $replace_content = get_option("wp_replaceContent");
-		    $url_detail = str_replace(get_option("wp_replaceshowtimeIdentifier"), $id , $url_embedded);
-		    $url_detail = str_replace(get_option("wp_replaceUserWimtv"), get_option("wp_userWimtv"), $url_detail);
-		    $url_detail = get_option("wp_basePathWimtv") . $url_detail;
-			$st = curl_init();
-		 	curl_setopt($st, CURLOPT_URL, $url_detail);
-		    curl_setopt($st, CURLOPT_VERBOSE, 0);
-			curl_setopt($st, CURLOPT_RETURNTRANSFER, TRUE);
-		    curl_setopt($st, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		    curl_setopt($st, CURLOPT_SSL_VERIFYPEER, FALSE);
-			
-		    $Jsonarray = curl_exec($st);
-		   
-		    $array_detail = json_decode($Jsonarray);
-		    curl_close($st);
-			
+	    	$response=apiGetVideos();
+	    	
+		    $array_detail = json_decode($response);
+		    
 			$uploads_info = wp_upload_dir();
 	        $directory = $uploads_info["basedir"] .  "/playlistWim";
 		   
@@ -127,7 +112,6 @@
 	  $sql = "UPDATE " . $table_name  . " SET name='" . $name . "' WHERE id='" . $idPlayList . "'";
       $wpdb->query($sql);
       
-      
       $uploads_info = wp_upload_dir();
 	   $directory = $uploads_info["basedir"] .  "/playlistWim";
 	   
@@ -139,7 +123,6 @@
 		$directory = $uploads_info["basedir"] .  "/playlistWim";
 		$nameFile = "/playlist_" .  $idPlayList . ".xml";
 
-		
 		$fh = fopen($directory . $nameFile, "w");
 	    if($fh==false) {
           echo "unable to create file";

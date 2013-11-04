@@ -148,7 +148,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
       $id= "id='" . $showtime_identifier . "'";
       if ($status=="ACQUIRED") {
         $class_r = "AcqRemoveshowtime";
-        $class_a = "AcquiPutshowtime";
+        $class_a = "AcquPutshowtime";
       }
       else{ 
         $class_r = "Removeshowtime";
@@ -165,7 +165,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
       $id = "id='" . $acquider_id . "'";
       if ($status=="ACQUIRED") {
         $class_r = "AcqRemoveshowtime";
-        $class_a = "Acquiputshowtime";
+        $class_a = "AcquPutshowtime";
       }
       elseif ($status=="OWNED") {
         $class_r = "Removeshowtime";

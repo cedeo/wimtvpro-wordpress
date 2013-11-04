@@ -104,8 +104,9 @@ function apiModifyLive($host_id, $parameters) {
 }
 
 function apiPublishOnShowtime($id, $parameters) {
+    d('ho chiamato api!');
     $apiAccessor = getApi();
-    $request = $apiAccessor->postRequest($apiAccessor->host . '/videos/' . $id . '/showtime');
+    $request = $apiAccessor->postRequest('videos/' . $id . '/showtime');
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
@@ -157,6 +158,13 @@ function apiGetVideos($details='true') {
 function apiDeleteVideo($hostId) {
     $apiAccessor = getApi();
     $request = $apiAccessor->deleteRequest('videos/' . $hostId);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
+function apiDeleteFromShowtime($id, $stid ) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->deleteRequest('videos/' . $id . '/showtime/' . $stid);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }

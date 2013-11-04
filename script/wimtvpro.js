@@ -121,7 +121,7 @@ jQuery(document).ready(function(){
                 });
                 jQuery("span.wimtv-thumbnail").click(function(){viewVideo(this);});
                 
-				jQuery(".icon_Putshowtime,.icon_AcquiPutshowtime").click(function(){
+				jQuery(".icon_Putshowtime,.icon_AcquPutshowtime").click(function(){
 					callViewForm(jQuery(this));					
 				});
 			
@@ -412,7 +412,7 @@ jQuery(document).ready(function(){
 						namefunction = "putST";
 						changeClass = "icon_Removeshowtime";	
 					}						 	 
-					else if (nomeclass == "add icon_AcquiPutshowtime") {	 	
+					else if (nomeclass == "add icon_AcquPutshowtime") {	 	
 						namefunction = "putAcqST";
 						changeClass = "icon_AcqRemoveshowtime";
 						coId = "&acquiredId=" + element.attr("id");
@@ -441,7 +441,7 @@ jQuery(document).ready(function(){
 		coId = "";
 		if (nomeclass == "icon_AcqRemoveshowtime") {	 	
 			namefunction = "removeST";
-			changeClass = "icon_AcquiPutshowtime";
+			changeClass = "icon_AcquPutshowtime";
 			coId = "&showtimeId=" + element.attr("id");
 		} else {
 			namefunction = "removeST";

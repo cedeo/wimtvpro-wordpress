@@ -43,18 +43,37 @@
   //trigger_error($function, E_USER_NOTICE);
   switch ($function) {
     case "putST":
+    
     //TODO: deprecated API call. 
     	//API  http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
         //curl -u {username}:{password} -d "license_type=TEMPLATE_LICENSE&paymentMode=PAYPERVIEW&pricePerView=50.00&pricePerViewCurrency=EUR" http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
      
-      $param=array( 'licenseType'=>$_GET['licenseType'],
-      				'paymentMode'=>$_GET['paymentMode'],
-      				'ccType'=>$_GET['ccType'],
-      				'pricePerView'=>$_GET['pricePerView'],
-      				'pricePerViewCurrency'=>$_GET['pricePerViewCurrency']
-      				);
-      $response = apiPublishOnShowtime($id, $param);
-
+ 
+    $licenseType= "";
+    $paymentMode= "";
+    $ccType= "";
+    $pricePerView= "";
+    $pricePerViewCurrency= "";
+     
+    if (isset($_GET['licenseType']))
+    	$licenseType = $_GET['licenseType'];
+    if (isset($_GET['paymentMode']))
+    	$paymentMode = $_GET['paymentMode'];
+    if (isset($_GET['ccType']))
+    	$ccType = $_GET['ccType'];
+    if (isset($_GET['pricePerView']))
+    	$pricePerView = $_GET['pricePerView'];
+    if (isset($_GET['pricePerViewCurrency']))
+    	$pricePerViewCurrency = $_GET['pricePerViewCurrency'];
+     
+    $param=array('licenseType'=>$licenseType,
+      			 'paymentMode'=>$paymentMode,
+      			 'ccType'=>$ccType,
+      			 'pricePerView'=>$pricePerView,
+      			 'pricePerViewCurrency'=>$pricePerViewCurrency
+      			);
+      			
+    $response = apiPublishOnShowtime($id, $param);
       
       if ($response)
       $state = "showtime";
@@ -64,82 +83,59 @@
 	      $wpdb->query($sql);
 	  }
 	  
-	 
-      curl_close($ch);
-      
+	      
       echo $response;
    
       die();
     break;
     case "putAcqST":
-      $license_type = "";
-      if ($_GET['license_type']!="")
-        $license_type = "license_type=" . $_GET['licenseType'];
-      $payment_mode = "";
-      if ($_GET['paymentMode']!="")
-        $payment_mode = "&paymentMode=" . $_GET['paymentMode'];
-      $cc_type = "";
-      if ($_GET['ccType']!="")
-        $cc_type= "&ccType=" . $_GET['ccType'];
-      $price_per_view  = "";
-      if ($_GET['pricePerView']!="")
-        $price_per_view  = "&pricePerView=" . $_GET['pricePerView'];
-      $price_per_view_currency = "";
-      if ($_GET['pricePerViewCurrency']!="")
-        $price_per_view_currency = "&pricePerViewCurrency=" . $_GET['pricePerViewCurrency'];
-      
-      $post_field = $license_type . $payment_mode . $cc_type . $price_per_view . $price_per_view_currency;
+    
+    $licenseType = "";
+    $paymentMode = "";
+    $ccType = "";
+    $pricePerView  = "";
+    $pricePerViewCurrency = "";
+    
+    if (isset($_GET['licenseType']))
+    	$licenseType = $_GET['licenseType'];
+    if (isset($_GET['paymentMode']))
+    	$paymentMode = $_GET['paymentMode'];
+    if (isset($_GET['ccType']))
+    	$ccType = $_GET['ccType'];
+    if (isset($_GET['pricePerView']))
+    	$pricePerView = $_GET['pricePerView'];
+    if (isset($_GET['pricePerViewCurrency']))
+    	$pricePerViewCurrency = $_GET['pricePerViewCurrency'];
+    
+    $params=array('licenseType'=>$licenseType,
+      			 'paymentMode'=>$paymentMode,
+      			 'ccType'=>$ccType,
+      			 'pricePerView'=>$pricePerView,
+      			 'pricePerViewCurrency'=>$pricePerViewCurrency
+      			);
+    
       $state="showtime";
       $sql = "UPDATE " . $table_name  . " SET state='" . $state . "' WHERE contentidentifier='" . $id . "'";
       $wpdb->query($sql);
+      
       //Richiamo API  http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
-      //curl -u {username}:{password} -d "license_type=TEMPLATE_LICENSE&paymentMode=PAYPERVIEW&pricePerView=50.00&pricePerViewCurrency=EUR" http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
-      $url_post_public_wimtv = str_replace(get_option('wp_replaceacquiredIdentifier'), $acid, get_option('wp_urlPostPublicAcquiWimtv')); 
-      $url_post_public_wimtv = str_replace(get_option('wp_replaceContentWimtv'), $id, $ur_post_public_wimtv);
-      $url_post_public_wimtv = get_option('wp_basePathWimtv') . $url_post_public_wimtv;
-
-      //This API allows posting an ACQUIRED video on the my streaming for public streaming.
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, $ur_post_public_wimtv);
-      curl_setopt($ch, CURLOPT_VERBOSE, 0);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-      curl_setopt($ch, CURLOPT_USERPWD, $credential);
-      curl_setopt($ch, CURLOPT_POST, TRUE);
-      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: ' . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
-
-      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $post_field);
-      $response = curl_exec($ch);
-      echo $response;   
-      curl_close($ch);
-      die();
+      //curl -u {username}:{password} -d "licens e_type=TEMPLATE_LICENSE&paymentMode=PAYPERVIEW&pricePerView=50.00&pricePerViewCurrency=EUR" http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
+    
+      
+      $response =apiPublishOnShowtime($id, $params);
+      
+	echo $response;   
+	die();
     break;
     case "removeST";
+    
       $state="";
       $sql = "UPDATE " . $table_name  . " SET position='0',state='',showtimeIdentifier='' WHERE contentidentifier='" . $id . "'";
 	  $wpdb->query($sql);
-      //Richiamo API 
-      //https://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime/{showtimeIdentifier}
-      //curl -u {username}:{password} -X DELETE https://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime/{showtimeIdentifier}
-      $url_remove_public_wimtv = str_replace(get_option('wp_replaceshowtimeIdentifier'), $stid, get_option('wp_urlSTWimtv'));
-      $url_remove_public_wimtv = str_replace(get_option('wp_replaceContentWimtv'), $id, $url_remove_public_wimtv);
-      $url_remove_public_wimtv = get_option('wp_basePathWimtv') . $url_remove_public_wimtv;
-      //This API allows posting an ACQUIRED video on the Web my streaming for public streaming.
-      $ch = curl_init();
-   
-      curl_setopt($ch, CURLOPT_URL, $url_remove_public_wimtv);
-      curl_setopt($ch, CURLOPT_VERBOSE, 0);
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-	  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-      curl_setopt($ch, CURLOPT_USERPWD, $credential);
-      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: ' . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
-
-      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-      $response = curl_exec($ch);
+ 
+      $response = apiDeleteFromShowtime($id, $stid);
+ 
       echo $response;
-      curl_close($ch);
       die();
     break;
     case "StateViewThumbs":

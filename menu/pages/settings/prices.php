@@ -83,28 +83,10 @@ function settings_prices() {
     if (isset($_GET['success'])) {
 
         //controlla stato pagamento
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, get_option("wp_basePathWimtv") . "userpacket/payment/check");
-        curl_setopt($ch, CURLOPT_VERBOSE, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language:' . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($ch, CURLOPT_USERPWD, $credential);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
         $fileCookie = "cookies_" . get_option("wp_userWimtv") . "_" . $_GET['success'] . ".txt";
-
-        // Recupera cookie sessione
-        curl_setopt($ch, CURLOPT_COOKIEFILE,  $directoryCookie . "/" . $fileCookie);
-
-        $result = curl_exec($ch);
-        curl_close($ch);
+        $cookie = $directoryCookie . "/" . $fileCookie;
+        $result = apiCheckPayment($cookie);
         $arrayjsonst = json_decode($result);
-
-
-
-
 
     }
 
@@ -160,105 +142,94 @@ function settings_prices() {
     //var_dump ($packet_json);
     curl_close($ch2);
     //var_dump ($response2);
-    echo "<div class='empty'></div>";
-    echo "<h4>"  . __("Use of WimTV requires subscription to a monthly storage and bandwidth package","wimtvpro") . "</h4>";
+    ?>
 
-    echo "<table class='wp-list-table widefat fixed pages'>";
-    echo "<thead><tr><th></th>";
-    foreach ($packet_json -> items as $a) {
+    <div class='empty'></div>
+    <h4><?php echo __("Use of WimTV requires subscription to a monthly storage and bandwidth package","wimtvpro") ?></h4>
 
-        echo "<th><b>" . $a->name . "</b></th>";
+    <table class='wp-list-table widefat fixed pages'>
+        <thead>
+            <tr>
+                <th></th>
+                <?php foreach ($packet_json -> items as $a) {
+                          echo "<th><b>" . $a->name . "</b></th>";
 
-    }
+                      }
+                ?>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class='alternate'>
+                <td><?php echo __("Bandwidth","wimtvpro") ?></td>
+                <?php foreach ($packet_json -> items as $a) {
+                          echo "<td>" . $a->band . " GB</td>";
+                      }
+                ?>
+            </tr>
+            <tr>
+                <td><?php echo __("Storage","wimtvpro") ?></td>
+                <?php foreach ($packet_json -> items as $a) {
+                          echo "<td>" . $a->storage . " GB</td>";
+                      }
+                ?>
+            </tr>
+            <tr class='alternate'>
+                <td><?php echo __("Support","wimtvpro") ?></td>
+                <?php foreach ($packet_json -> items as $a) {
+                          echo "<td>" . $a->support . "</td>";
+                      }
+                ?>
+            </tr>
+            <tr>
+                <td><?php echo __("Hours of Transmission","wimtvpro") ?>(*)</td>
+                <?php foreach ($packet_json -> items as $a) {
+                          echo "<td>" . $a->streamingAmount . "</td>";
+                      }
+                ?>
+            </tr>
+            <tr>
+                <td><?php printf(__( 'Price/mo. for %d Mo', 'wimtvpro' ), "1" ) ?> (**)</td>
+                <?php foreach ($packet_json -> items as $a) {
+                          echo "<td>" . number_format($a->price,2) . " &euro; / " . __("m","wimtvpro") . "</td>";
+                      }
+                ?>
+            </tr>
+            <tr class='alternate'>
+                <td></td>
+                <?php foreach ($packet_json -> items as $a) {
+                    //echo "<td>" . $a->dayDuration . " - " . $a->id . "</td>";
+                    echo "<td>";
+                    if ($id_packet_user==$a->id) {
 
-    echo "</thead>";
-    echo "<tbody>";
-    echo "<tr class='alternate'>";
-    echo "<td>" . __("Bandwidth","wimtvpro") . "</td>";
-    foreach ($packet_json -> items as $a) {
-        echo "<td>" . $a->band . " GB</td>";
-    }
-
-    echo "</tr>";
-
-    echo "<tr>";
-    echo "<td>" . __("Storage","wimtvpro") . "</td>";
-    foreach ($packet_json -> items as $a) {
-        echo "<td>" . $a->storage . " GB</td>";
-    }
-
-    echo "</tr>";
-
-    echo "<tr class='alternate'>";
-    echo "<td>" . __("Support","wimtvpro") . "</td>";
-    foreach ($packet_json -> items as $a) {
-        echo "<td>" . $a->support . "</td>";
-    }
-
-    echo "</tr>";
-
-    echo "<tr>";
-    echo "<td>" . __("Hours of Transmission","wimtvpro") . "(*)</td>";
-    foreach ($packet_json -> items as $a) {
-        echo "<td>" . $a->streamingAmount . "</td>";
-    }
-
-    echo "</tr>";
-    echo "<tr>";
-    echo "<td>";
-    printf( __( 'Price/mo. for %d Mo', 'wimtvpro' ), "1" );
-    echo " (**)</td>";
-    foreach ($packet_json -> items as $a) {
-        echo "<td>" . number_format($a->price,2) . " &euro; / " . __("m","wimtvpro") . "</td>";
-    }
-
-    echo "</tr>";
-
-    echo "<tr class='alternate'>";
-    echo "<td></td>";
-    foreach ($packet_json -> items as $a) {
-        //echo "<td>" . $a->dayDuration . " - " . $a->id . "</td>";
-        echo "<td>";
-        if ($id_packet_user==$a->id) {
-
-            echo "<img  src='" . plugins_url('../../../images/check.png', __FILE__) . "' title='Checked'><br/>";
-            if ($a->name!="Free")
-                echo $count_date . " " . __("day left","wimtvpro");
-        }
-        else {
-            echo "<a href='?page=WimTvPro&pack=1";
-            if (isset($_GET['return'])) echo "&return=true";
-            echo "&upgrade=" . $a->name;
-            echo "'><img class='icon_upgrade' src='" . plugins_url('../../../images/uncheck.png', __FILE__) . "' title='Upgrade'>";
-            echo "</a>";
-        }
-        echo "</td>";
-    }
-
-    echo "</tr>";
-
-
-
-    echo "</tbody>";
-    echo "</table>";
-    echo "<h4>(*) " . __("Assuming video+audio encoded at 1 Mbps","wimtvpro") . "</h4>";
-    echo "<h4>(**) " . __("VAT to be added","wimtvpro") . "</h4>";
-
-    echo "<p>" .
-        __("If, before the end of the month, you","wimtvpro") .
-        "<ol><li>" .
-        __("reach 80% level you will be notified","wimtvpro") .  "</li><li>" .
-        __("exceed 100% level you will be asked to upgrade to another package.","wimtvpro")
-        . "</li></ol></p>";
-
-    echo "<h3>" . __("Note that, if you stay within the usage limits of the Free Package, use of WimTV is free","wimtvpro") . "</h3>";
-
-
-    echo "<h3>" . __("If you license content and/or provide services in WimTV, revenue sharing will apply","wimtvpro") . "</h3>";
-
-    echo "<h3>" . __("Enjoy your WimTVPro video plugin!","wimtvpro") . "</h3>";
-
-
-
-    echo "</div>";
+                        echo "<img  src='" . plugins_url('../../../images/check.png', __FILE__) . "' title='Checked'><br/>";
+                        if ($a->name!="Free")
+                            echo $count_date . " " . __("day left","wimtvpro");
+                    }
+                    else {
+                        echo "<a href='?page=WimTvPro&pack=1";
+                        if (isset($_GET['return'])) echo "&return=true";
+                        echo "&upgrade=" . $a->name;
+                        echo "'><img class='icon_upgrade' src='" . plugins_url('../../../images/uncheck.png', __FILE__) . "' title='Upgrade'>";
+                        echo "</a>";
+                    }
+                    echo "</td>";
+                } ?>
+            </tr>
+        </tbody>
+    </table>
+    <h4>(*) <?php echo __("Assuming video+audio encoded at 1 Mbps","wimtvpro") ?></h4>
+    <h4>(**) <?php echo __("VAT to be added","wimtvpro") ?></h4>
+    <p>
+        <?php echo __("If, before the end of the month, you","wimtvpro") ?>
+        <ol>
+            <li><?php echo __("reach 80% level you will be notified","wimtvpro") ?></li>
+            <li><?php echo __("exceed 100% level you will be asked to upgrade to another package.","wimtvpro")?></li>
+        </ol>
+    </p>
+    <h3><?php echo __("Note that, if you stay within the usage limits of the Free Package, use of WimTV is free","wimtvpro") ?></h3>
+    <h3><?php echo __("If you license content and/or provide services in WimTV, revenue sharing will apply","wimtvpro") ?></h3>
+    <h3><?php echo __("Enjoy your WimTVPro video plugin!","wimtvpro") ?></h3>
+ </div>
+<?php
 }
+?>

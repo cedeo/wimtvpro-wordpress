@@ -169,5 +169,11 @@ function apiRegistration($params) {
     return $apiAccessor->execute($request);
 }
 
+function apiCheckPayment($cookie) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->getRequest('userpacket/payment/check');
+    $request->setCookieFile($cookie);
+    return $apiAccessor->execute($request);
+}
 
 ?>

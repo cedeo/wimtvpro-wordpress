@@ -46,7 +46,8 @@ class Request
            $error_callback,
            $follow_redirects        = false,
            $max_redirects           = self::MAX_REDIRECTS_DEFAULT,
-           $payload_serializers     = array();
+           $payload_serializers     = array(),
+           $cookiefile              = '';
 
     // Options
     // private $_options = array(
@@ -410,6 +411,19 @@ class Request
     public function sendsType($mime)
     {
         return $this->contentType($mime);
+    }
+
+    /**
+     * Set a cookie file to the request
+     * @return Request this
+     * @param string $file
+     */
+    public function setCookieFile($file)
+    {
+        if (!empty($file)) {
+            $this->cookiefile = $file;
+        }
+        return $this;
     }
 
     /**
@@ -804,6 +818,10 @@ class Request
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->strict_ssl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        if (!empty($this->cookiefile)) {
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookiefile);
+        }
 
         // https://github.com/nategood/httpful/issues/84
         // set Content-Length to the size of the payload if present

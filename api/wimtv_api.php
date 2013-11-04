@@ -110,6 +110,35 @@ function apiPublishOnShowtime($id, $parameters) {
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
+	
+}
+
+function apiGetThumbsVideo($contentId) {
+   	$apiAccessor = getApi();
+    $request = $apiAccessor->getRequest('videos/' . $contentId . '/thumbnail');
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request, 'text/xml, application/xml');
+}
+
+function apiGetDetailsVideo($contentId) {
+   	$apiAccessor = getApi();
+    $request = $apiAccessor->getRequest('videos/' . $contentId . '?details=true');
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request, "application/json");
+}
+
+function apiGetDetailsShowtime($id) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->getRequest('users/' . $apiAccessor->username. '/showtime/' . $id . '/details');
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request, "application/json");
+}
+
+function apiGetPlayerShowtime($id,$parameters) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->getRequest('videos/'. $id . "/embeddedPlayers?" . $parameters);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
 }
 
 function apiDeleteLive($host_id) {

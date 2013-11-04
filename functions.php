@@ -55,7 +55,8 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
   if ((!$private && $viewPublicVideo) || (($userRole=="administrator") || (in_array($idUser,$typeUser["U"])) || (in_array($userRole,$typeUser["R"])) || (array_key_exists("All",$typeUser)) || (array_key_exists ("",$typeUser)))){
   
    
-    $param_thumb = get_option("wp_basePathWimtv") . str_replace(get_option("wp_replaceContentWimtv"), 		$content_item_new, get_option("wp_urlThumbsWimtv"));
+  /*  $param_thumb = get_option("wp_basePathWimtv") . str_replace(get_option("wp_replaceContentWimtv"), 		$content_item_new, get_option("wp_urlThumbsWimtv"));
+	echo $param_thumb;  
     $credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
     $ch_thumb = curl_init();
     curl_setopt($ch_thumb, CURLOPT_URL, $param_thumb);
@@ -64,7 +65,9 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     curl_setopt($ch_thumb, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_setopt($ch_thumb, CURLOPT_USERPWD, $credential);
     curl_setopt($ch_thumb, CURLOPT_SSL_VERIFYPEER, FALSE);
-    $replace_video  =curl_exec($ch_thumb);
+    $replace_video  =curl_exec($ch_thumb);*/
+	
+	$replace_video = apiGetThumbsVideo($content_item_new);
 
     $licenseType = "";
 	if ( $showtime_identifier!=""){	
@@ -123,20 +126,8 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
    
   
    if ($private) {
-   
-   	$url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosWimtv") . "/" . $content_item_new . "?details=true";
-	$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-		    
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL,  $url_video);
-	//curl_setopt($ch, CURLOPT_USERAGENT,$userAgent);
-    curl_setopt($ch, CURLOPT_VERBOSE, 0);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch, CURLOPT_USERPWD, $credential);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 
-    $response = curl_exec($ch);
+	$response = apiGetDetailsVideo($content_item_new);
 	$arrayjson   = json_decode($response);
     $action = "";
    if ((!$showtime) || (trim($showtime)=="FALSE")) {
@@ -271,20 +262,8 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
 function wimtvpro_readOptionCategory(){
 	$category="";
-	$url_categories = get_option("wp_basePathWimtv") . "videoCategories";
-	
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url_categories);
-
-	curl_setopt($ch, CURLOPT_VERBOSE, 0);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept-Language: " . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-	$response = curl_exec($ch);
+	$response = apiGetVideoCategories();
 	$category_json = json_decode($response);
-	$category = "";
 
 	foreach ($category_json as $cat) {
 	  foreach ($cat as $sub) {
@@ -295,14 +274,13 @@ function wimtvpro_readOptionCategory(){
 		$category .= '</optgroup>';
 	  }
 	}
-	curl_close($ch);
 	return  $category;
 }
 
 //MY STREAMING: This API allows to list videos in my streaming public area. Even details may be returned
 function wimtvpro_detail_showtime($single, $st_id) {
   if (!$single) {
-    $url_detail =  get_option("wp_basePathWimtv") . str_replace(get_option("wp_replaceUserWimtv"), get_option("wp_userWimtv"), get_option("wp_urlShowTimeDetailWimtv")) ;
+	$array_detail = apiGetVideos();
   } 
   else {
     $showtime_item = $st_id;
@@ -311,17 +289,11 @@ function wimtvpro_detail_showtime($single, $st_id) {
     $url_detail = str_replace(get_option("wp_replaceshowtimeIdentifier"), $showtime_item , $url_embedded);
     $url_detail = str_replace(get_option("wp_replaceUserWimtv"), get_option("wp_userWimtv"), $url_detail);
     $url_detail = get_option("wp_basePathWimtv") . $url_detail;
+
+	$array_detail = apiGetDetailsShowtime($st_id);
+
   }
-  $st = curl_init();
-  //echo $url_detail;
-  curl_setopt($st, CURLOPT_URL, $url_detail);
-  curl_setopt($st, CURLOPT_VERBOSE, 0);
-  curl_setopt($st, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($st, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-  curl_setopt($st, CURLOPT_SSL_VERIFYPEER, FALSE);
-  $array_detail = curl_exec($st);
-  curl_close($st);
-  //var_dump ($array_detail );
+
   return $array_detail;
 }
 
@@ -443,21 +415,11 @@ function wimtvpro_viever_jwplayer($userAgent,$contentId,$video,$dirJwPlayer) {
     $urlPlay = explode("$$",$video[0]->urlPlay);
     $isiPhone = (bool) strpos($userAgent,'iPhone');
     $isAndroid = (bool) strpos($userAgent,'Android');
+	
     if ($isiPad  || $isiPhone || $isAndroid) {
 
         $contentId = $video[0]->contentidentifier;
-        $url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosWimtv") . "/" . $contentId . "?details=true";
-        $credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,  $url_video);
-        curl_setopt($ch, CURLOPT_USERAGENT,$userAgent);
-        curl_setopt($ch, CURLOPT_VERBOSE, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($ch, CURLOPT_USERPWD, $credential);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-        $response = curl_exec($ch);
+        $response = apiGetDetailsVideo($contentId);
         $arrayjson   = json_decode($response);
 
     }

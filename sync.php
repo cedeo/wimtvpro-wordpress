@@ -17,7 +17,7 @@ if (!isset($upload))
 	$response= apiGetVideos();
 
   	$array_json_videos = json_decode($response);
-	
+
   if ($array_json_videos==NULL) {
     _e("Can not establish a connection with Wim.tv. Contact the administrator.", "wimtvpro");
   } 

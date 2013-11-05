@@ -177,7 +177,12 @@ function apiDownload($hostId) {
     return $apiAccessor->execute($request, "");
 }
 
-function apiGetVideos($details='true') {
+function apiGetVideos($details=true) {
+    if ($details) {
+        $details = 'true';
+    } else {
+        $details = 'false';
+    }
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('videos?details=' . $details );
     $request = $apiAccessor->authenticate($request);

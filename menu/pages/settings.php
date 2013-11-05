@@ -96,6 +96,11 @@ function wimtvpro_configure(){
                         update_option( 'wp_basePathWimtv','http://peer.wim.tv/wimtv-webapp/rest/');
                     }
 
+                    update_option('wp_userwimtv', $_POST['userWimtv']);
+                    update_option('wp_passwimtv', $_POST['passWimtv']);
+                    initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
+                    initAnalytics(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), null);
+
                     if (($_POST['sandbox']!=get_option('wp_sandbox')) && (($_POST['userWimtv']=="username") && ($_POST['passWimtv']=="password"))){
                         update_option('wp_registration', 'FALSE');
                         update_option('wp_userwimtv', 'username');
@@ -107,9 +112,6 @@ function wimtvpro_configure(){
                         $arrayjsonst = json_decode($response);
 
                         if (count($arrayjsonst)> 0){
-
-                            update_option('wp_userwimtv', $_POST['userWimtv']);
-                            update_option('wp_passwimtv', $_POST['passWimtv']);
                             echo '<div class="updated"><p><strong>';
                             _e('Update successful' ,"wimtvpro");
                             echo '</strong></p></div>';

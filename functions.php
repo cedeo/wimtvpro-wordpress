@@ -280,7 +280,7 @@ function wimtvpro_readOptionCategory(){
 //MY STREAMING: This API allows to list videos in my streaming public area. Even details may be returned
 function wimtvpro_detail_showtime($single, $st_id) {
   if (!$single) {
-	$array_detail = apiGetVideos();
+	$array_detail = apiGetVideos(true);
   } 
   else {
     $showtime_item = $st_id;

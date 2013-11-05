@@ -357,7 +357,7 @@
 
 			$category_tmp = array();
 			$subcategory_tmp = array();    
-			$post= array("file" => "@" . $unique_temp_filename ,
+			$post= array("file" => $unique_temp_filename,
                          "title" => $titlefile,
                          "description" => $descriptionfile);
 			

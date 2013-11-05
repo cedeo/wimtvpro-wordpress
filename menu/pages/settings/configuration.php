@@ -114,15 +114,15 @@ function settings_configuration($directory) {
 				</tr-->
 
                 <!--tr>
-								<th><label for="edit-publicPage"><?php _e('Would you like to add the "Share" button in the video player?',"wimtvpro");?></label></th>
-								<td>
-									<select id="edit-publicPage" name="publicPage" class="form-select">
-										<option value="No" <?php if (get_option("wp_shareVideo")=="No") echo "selected='selected'" ?>>No</option>
-										<option value="Yes" <?php if (get_option("wp_shareVideo")=="Yes") echo "selected='selected'" ?>><?php _e("Yes"); ?></option>
-									</select>
+                    <th><label for="edit-publicPage"><?php _e('Would you like to add the "Share" button in the video player?',"wimtvpro");?></label></th>
+                    <td>
+                        <select id="edit-publicPage" name="publicPage" class="form-select">
+                            <option value="No" <?php if (get_option("wp_shareVideo")=="No") echo "selected='selected'" ?>>No</option>
+                            <option value="Yes" <?php if (get_option("wp_shareVideo")=="Yes") echo "selected='selected'" ?>><?php _e("Yes"); ?></option>
+                        </select>
 
-								</td>
-							</tr-->
+                    </td>
+                </tr-->
 
                 <tr>
                     <th><label for="edit-publicPage"><?php _e("Would you like to add a public WimVod Page to your site?","wimtvpro");?></label></th>

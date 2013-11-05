@@ -11,6 +11,11 @@ function wimtvpro_mystreaming() {
     if ($user->roles[0] == "administrator"){
       $title .= "<span class='icon_save' id='save'>" . __("Save") . "</span>";
     }*/
+	
+	$view_page = wimtvpro_alert_reg();
+    if (!$view_page){
+        die();
+    }
 
     ?>
     <script type="text/javascript">

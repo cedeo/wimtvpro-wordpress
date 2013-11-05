@@ -277,7 +277,8 @@ function wimtvpro_menu(){
       add_submenu_page('WimTvPro', __('Settings',"wimtvpro"),  __('Settings',"wimtvpro"), 'administrator', 'WimTvPro', 'wimtvpro_configure');
       
       if ((get_option("wp_registration")==FALSE) || ((get_option("wp_userwimtv")=="username") && get_option("wp_passwimtv")=="password")){
-      	add_submenu_page('WimTvPro', __('WimTV Registration',"wimtvpro"), __('WimTV Registration',"wimtvpro"), 'administrator', 'WimTvPro_Registration', 'wimtvpro_registration');
+		  $registrationHidden = "";
+      	add_submenu_page($registrationHidden, __('WimTV Registration',"wimtvpro"), __('WimTV Registration',"wimtvpro"), 'administrator', 'WimTvPro_Registration', 'wimtvpro_registration');
       }
 
       add_submenu_page('WimTvPro', 'WimBox', 'WimBox', 'administrator', 'WimBox', 'wimtvpro_wimbox');

@@ -280,16 +280,10 @@ function wimtvpro_readOptionCategory(){
 //MY STREAMING: This API allows to list videos in my streaming public area. Even details may be returned
 function wimtvpro_detail_showtime($single, $st_id) {
   if (!$single) {
-	$array_detail = apiGetVideos();
+	$array_detail = apiGetShowtimes();
   }
   else {
-    $showtime_item = $st_id;
-    $url_embedded =  get_option("wp_urlShowTimeWimtv") . "/" . get_option("wp_replaceshowtimeIdentifier") . "/details";
-    $replace_content = get_option("wp_replaceContent");
-    $url_detail = str_replace(get_option("wp_replaceshowtimeIdentifier"), $showtime_item , $url_embedded);
-    $url_detail = str_replace(get_option("wp_replaceUserWimtv"), get_option("wp_userWimtv"), $url_detail);
-    $url_detail = get_option("wp_basePathWimtv") . $url_detail;
-
+    
 	$array_detail = apiGetDetailsShowtime($st_id);
 
   }

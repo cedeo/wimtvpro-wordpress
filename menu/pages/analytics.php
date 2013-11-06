@@ -170,21 +170,23 @@ function wimtvpro_report (){
                 <tr class='alternate'>
                     <td class='image'><?php echo $stream->thumb ?></td>
                     <td>
-                        <b><?php echo  __("Total","wimtvpro") . ": " . $stream->views . " " . __("viewers","wimtvpro") ?></b><br/>
-                        <table class='wp-list-table'>
-                            <tr>
-                                <th class='manage-column column-title' style='font-size:10px;'><?php echo __("Date","wimtvpro") ?></th>
-                                <th class='manage-column column-title' style='font-size:10px;'><?php echo __("Duration","wimtvpro") ?></th>
-                                <th class='manage-column column-title' style='font-size:10px;'><?php echo __("Traffic","wimtvpro") ?></th>
-                            </tr>
-                            <?php foreach($stream->views_list as $value) { ?>
+                        <b><?php echo  __("Total","wimtvpro") . ": " . $stream->views . " " . __("Viewers","wimtvpro") ?></b>
+                        <div class="wp-list-table">
+                            <table class='wp-list-table'>
                                 <tr>
-                                   <td style='font-size:10px;'><?php echo $value->date_human ?></td>
-                                   <td style='font-size:10px;'><?php echo $value->duration ?>s</td>
-                                   <td style='font-size:10px;'><?php echo $value->traffic  ?></td>
+                                    <th class='manage-column column-title' style='font-size:10px;'><?php echo __("Date","wimtvpro") ?></th>
+                                    <th class='manage-column column-title' style='font-size:10px;'><?php echo __("Duration","wimtvpro") ?></th>
+                                    <th class='manage-column column-title' style='font-size:10px;'><?php echo __("Traffic","wimtvpro") ?></th>
                                 </tr>
-                            <?php } ?>
-                        </table>
+                                <?php foreach($stream->views_list as $value) { ?>
+                                    <tr>
+                                       <td style='font-size:10px;'><?php echo $value->date_human ?></td>
+                                       <td style='font-size:10px;'><?php echo $value->duration ?>s</td>
+                                       <td style='font-size:10px;'><?php echo $value->traffic  ?></td>
+                                    </tr>
+                                <?php } ?>
+                            </table>
+                           </div>
                     </td>
                     <td><?php echo $stream->viewers ?></td>
                     <td><?php echo $stream->max_viewers ?></td>

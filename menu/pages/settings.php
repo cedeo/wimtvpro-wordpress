@@ -112,8 +112,6 @@ function wimtvpro_configure(){
                         $arrayjsonst = json_decode($response);
 
                         if (count($arrayjsonst)> 0){
-                            d(remove_submenu_page('WimTvPro', 'WimTvPro_Registration'));
-                            d(wp_nav_menu_update_menu_items($nav_menu_selected_id, $nav_menu_selected_title));
                             echo '<div class="updated"><p><strong>';
                             _e('Update successful' ,"wimtvpro");
                             echo '</strong></p></div>';

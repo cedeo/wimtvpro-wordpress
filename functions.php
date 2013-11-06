@@ -188,8 +188,10 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     }
    }
  
-  if ($isfound) 
-  	$action .= "<td><span class='icon_download' id='" . $content_item_new . "|" . $status_array[0] . "' title='Download'></span></td>";
+  if ($isfound) {
+    $urlVideo = downloadVideo($content_item_new,$status_array[0]);
+  	$action .= "<td><a class='icon_download' href='" . $urlVideo . "' title='Download'></a></td>";
+  }
   else
   	$action .= "<td><span class='icon_downloadNone' title='Download'></span></td>";
 	
@@ -472,4 +474,30 @@ function return_bytes($val) {
     }
 
     return $val;
+}
+
+
+function downloadVideo($id,$infofile) {
+	$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
+	$filename = "";
+	$ext = "";
+	if ($infofileName!=""){
+		$infoFile = explode (".",$infofileName);
+		$numeroCount = count($infoFile); // se ci fosse un file che ha più di un punto
+		$ext = $infoFile[$numeroCount-1];
+		$filename = $infoFile[0];
+		for ($i=1;$i<$numeroCount-1;$i++){
+			$filename .= "." . $infoFile[$i];
+		}
+	}
+	$url_download = get_option("wp_basePathWimtv") . "videos/" . $id . "/download";
+	if ($filename!=""){
+		$url_download .= "?filename=" . $filename . "&ext=" . $ext;
+	}
+	
+	$url_info = parse_url($url_download);
+	$url_path_info = pathinfo($url_info['path']);
+	$url = $url_info['scheme'] . '://' . $credential . '@' .
+	$url_info['host']  . $url_path_info['dirname'] .'/'. rawurlencode($url_path_info['basename']);  
+	return $url;
 }

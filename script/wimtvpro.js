@@ -831,21 +831,6 @@ jQuery(".ppvNoActive").click(function(){
 		alert (nonePayment);				
 	});
 
-jQuery(".icon_download").click(function() {
-	
-	if( jQuery(this).parent().parent("tr").children("td").children("a.viewThumb").length  ) {
-
-		var id = jQuery(this).attr("id").split("|");
-		var contentid = id[0];
-		var infoFile = id[1];
-		var uri =  url_pathPlugin + "scripts.php?namefunction=downloadVideo&id=" + contentid + "&infofile=" + infoFile;
-		jQuery("body").append("<iframe src=\"" + uri + "\" style=\"display:none;\" />");
-	
-	}else{
-		alert (videoproblem);	
-	}
- 
-});
 jQuery(".icon_downloadNone").click(function() {
 	alert(videoproblem);
 });

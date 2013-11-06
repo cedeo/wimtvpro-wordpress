@@ -14,8 +14,6 @@
   $uploadMaxFile_mb =  number_format($uploadMaxFile / 1048576, 2) . 'MB';
   $postmaxsize_mb = number_format($postmaxsize / 1048576, 2) . 'MB';
 
-  initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
-
   $function = "";
   $id="";
   $acid="";
@@ -144,7 +142,7 @@
 	  $wpdb->query($sql);
 
 	  //UPDATE PAGE MY STREAMING
-	  update_page_mystreaming();
+	  update_page_wimvod();
 
       echo $state;
       die();
@@ -158,7 +156,7 @@
       }
       
       //UPDATE PAGE MY STREAMING
-	  update_page_mystreaming();
+        update_page_wimvod();
 
       
       die();
@@ -379,5 +377,7 @@
       //echo "Non entro";
       die();
   }
-    
+
+
+
 ?>

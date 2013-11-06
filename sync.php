@@ -146,7 +146,7 @@ if (!isset($upload))
     }
     
     //UPDATE PAGE MY STREAMING
-	update_page_mystreaming();    
+	update_page_wimvod();
   }
   else {
     _e("You aren't videos","wimtvpro");

@@ -10,8 +10,6 @@ function ProgressLoop(contentId) {
                 console.log("stopped");
                 clearInterval(interval);
             } else {
-                console.log(loop);
-
                 jQuery.ajax({
                     url:  url_pathPlugin + "rest/uploadProgress.php?contentIdentifier=" + loop.contentIdentifier,
                     type: "GET",

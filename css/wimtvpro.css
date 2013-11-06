@@ -136,6 +136,7 @@ table.items .icon_moveThumbs {
 
 table.items  .icon_download {
 	background: transparent url('../images/download.png') no-repeat center center;
+	display:block; width:32px; height:43px;
 }
 table.items  .icon_downloadNone {
 	background: transparent url('../images/downloadNone.png') no-repeat center center;

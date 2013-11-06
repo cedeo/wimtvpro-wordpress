@@ -11,7 +11,7 @@ function ProgressLoop(contentId) {
                 clearInterval(interval);
             } else {
                 jQuery.ajax({
-                    url:  url_pathPlugin + "rest/uploadProgress.php?contentIdentifier=" + loop.contentIdentifier,
+                    url:  url_pathPlugin + "functions/uploadProgress.php?contentIdentifier=" + loop.contentIdentifier,
                     type: "GET",
 
                     success: function(response) {

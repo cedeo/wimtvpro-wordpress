@@ -104,7 +104,6 @@ function apiModifyLive($host_id, $parameters) {
 }
 
 function apiPublishOnShowtime($id, $parameters) {
-    d('ho chiamato api!');
     $apiAccessor = getApi();
     $request = $apiAccessor->postRequest('videos/' . $id . '/showtime');
     $request->body($parameters);

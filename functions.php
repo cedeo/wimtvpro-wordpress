@@ -293,7 +293,7 @@ function wimtvpro_detail_showtime($single, $st_id) {
   return $array_detail;
 }
 
-function wimtvpro_elencoLive($type, $identifier,$onlyActive=true){
+function wimtvpro_elencoLive($type, $identifier, $onlyActive=true){
     echo '
         <script type="text/javascript">
 

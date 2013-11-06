@@ -90,41 +90,44 @@ else {
 
 
 <script type="text/javascript">
-jQuery(document).ready(function(){ 
+    function initSwf() {
+        console.log("Ci sono!");
+        var url_pathPlugin ="<?php echo plugin_dir_url(dirname(__FILE__));?>";
+        var xiSwfUrlStr = url_pathPlugin  + "script/swfObject/playerProductInstall.swf";
+        console.log(xiSwfUrlStr );
+        var flashvars = {};
+        var params = {};
+        params.quality = "high";
+        params.bgcolor = "#ffffff";
+        params.allowscriptaccess = "sameDomain";
+        params.allowfullscreen = "true";
+        var attributes = {};
+        attributes.align = "left";
 
-	var url_pathPlugin ="<?php echo plugin_dir_url(dirname(__FILE__));?>";
-	var xiSwfUrlStr = url_pathPlugin  + "script/swfObject/playerProductInstall.swf";
-	console.log(xiSwfUrlStr );
-	var flashvars = {};
-    var params = {};
-    params.quality = "high";
-    params.bgcolor = "#ffffff";
-    params.allowscriptaccess = "sameDomain";
-    params.allowfullscreen = "true";
-    var attributes = {};
-    attributes.align = "left";
+        swfobject.embedSWF(url_pathPlugin  + "script/swfObject/producer.swf", "producer", "640", "480", "11.4.0",xiSwfUrlStr, flashvars, params, attributes );
+        setTimeout(function () {
+            console.log("Ci sono anche qui!");
+            producer = jQuery('#producer')[0];
+            console.log(producer);
 
-	swfobject.embedSWF(url_pathPlugin  + "script/swfObject/producer.swf", "producer", "640", "480", "11.4.0",xiSwfUrlStr, flashvars, params, attributes );
-	    setTimeout(function () {
-		producer = jQuery('#producer')[0];
-	    console.log(producer);
-	    
-	    producer.setCredentials('<?php echo get_option("wp_userWimtv"); ?>', '<?php echo $passwordLive; ?>');
-	    producer.setUrl(decodeURIComponent('<?php echo $url;?>'));
-	    producer.setStreamName('<?php echo $stream_name;?>');
-	    producer.setStreamWidth(640);
-	    producer.setStreamHeight(480);
-	    producer.connect();
-	}, 1000);
-    
-});
+            producer.setCredentials('<?php echo get_option("wp_userWimtv"); ?>', '<?php echo $passwordLive; ?>');
+            producer.setUrl(decodeURIComponent('<?php echo $url;?>'));
+            producer.setStreamName('<?php echo $stream_name;?>');
+            producer.setStreamWidth(640);
+            producer.setStreamHeight(480);
+            producer.connect();
+        }, 1000);
+
+    }
+    initSwf();
 </script>
+
+
+</div>
+
+</body>
 
 <?php
 }
 
 ?>
-
-</div>
-
-</body>

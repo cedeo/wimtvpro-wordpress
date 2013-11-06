@@ -3,7 +3,7 @@ include("../../../../wp-load.php");
 include_once("../api/api.php");
 
 $userpeer = get_option("wp_userWimtv");
-$timezone = isset($_POST['timezone']) ? $_POST['timezone'] : "";
+$timezone = isset($_POST['timezone_']) ? $_POST['timezone_'] : "";
 $type = $_POST['type'];
 $id =  $_POST['id'];
 $onlyActive = $_POST['onlyActive'];

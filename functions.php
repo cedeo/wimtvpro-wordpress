@@ -130,25 +130,25 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 	$response = apiGetDetailsVideo($content_item_new);
 	$arrayjson   = json_decode($response);
     $action = "";
-   if ((!$showtime) || (trim($showtime)=="FALSE")) {
-    $id  = "";
-    $title_add = __("Add to WimVod","wimtvpro") ;
-    $title_remove = __("Remove from WimVod","wimtvpro");
-    if ($state!="") {
-      //The video is into My Streaming
-      $id= "id='" . $showtime_identifier . "'";
-      if ($status=="ACQUIRED") {
-        $class_r = "AcqRemoveshowtime";
-        $class_a = "AcquPutshowtime";
-      }
-      else{ 
-        $class_r = "Removeshowtime";
-        $class_a = "Putshowtime";
-      }
-      if ($user->roles[0] == "administrator"){
-        $action  .= "<td><span title='" . $title_remove . "' class='icon_" . $class_r . "' " . $id . "></span>";
-        $action  .= "<span title='" . $title_add . "' class='add icon_" . $class_a . "' " . $id . " style='display:none;'></span></td>";
-      }
+    if ((!$showtime) || (trim($showtime)=="FALSE")) {
+        $id  = "";
+        $title_add = __("Add to WimVod","wimtvpro") ;
+        $title_remove = __("Remove from WimVod","wimtvpro");
+        if ($state!="") {
+            //The video is into My Streaming
+            $id= "id='" . $showtime_identifier . "'";
+            if ($status=="ACQUIRED") {
+            $class_r = "AcqRemoveshowtime";
+            $class_a = "AcquPutshowtime";
+            }
+            else{
+            $class_r = "Removeshowtime";
+            $class_a = "Putshowtime";
+            }
+            if ($user->roles[0] == "administrator"){
+            $action  .= "<td><span title='" . $title_remove . "' class='icon_" . $class_r . "' " . $id . "></span>";
+            $action  .= "<span title='" . $title_add . "' class='add icon_" . $class_a . "' " . $id . " style='display:none;'></span></td>";
+        }
     } 
     else {
       //The video isn't into showtime	
@@ -214,10 +214,10 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     else $play=FALSE;
     $title_view = __("Preview Video","wimtvpro");
   }
- 
+   $linkView = "";
+
    if($play==TRUE){
      $action .= "<td><a class='viewThumb' " . $style_view . " title='" .  $title_view . "' href='#' id='" . $href_view . "'><span class='icon_view'></span></a></td>";
-	 $linkView = "";
 	 if ($playlist)
 	 	$linkView= "<a class='viewThumb' " . $style_view . " title='" .  $title_view . "' href='#' id='" . $href_view . "'><span class='icon_view'></span></a>";
    }else
@@ -477,7 +477,7 @@ function return_bytes($val) {
 }
 
 
-function downloadVideo($id,$infofile) {
+function downloadVideo($id, $infofileName) {
 	$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
 	$filename = "";
 	$ext = "";

@@ -39,3 +39,11 @@ function analyticsGetPacket() {
     $request = $apiAccessor->getRequest("users/" . $apiAccessor->username . "/commercialPacket/usage");
     return $apiAccessor->execute($request);
 }
+
+if (get_option("wp_sandbox") == "No") {
+    initAnalytics("http://www.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
+} else {
+    initAnalytics("http://peer.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
+}
+
+?>

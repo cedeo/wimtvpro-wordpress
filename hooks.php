@@ -7,13 +7,6 @@ include_once("menu/pages/settings/configuration.php");
 
 header('Content-type: application/json');
 
-initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
-if (get_option("wp_sandbox") == "No") {
-    initAnalytics("http://www.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
-} else {
-    initAnalytics("http://peer.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
-}
-
 
 define('BASE_URL', get_bloginfo('url'));
 

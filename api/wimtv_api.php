@@ -217,4 +217,13 @@ function apiCheckPayment($cookie) {
     return $apiAccessor->execute($request);
 }
 
+function apiGetUploadProgress($contentIdentifier) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->getRequest('uploadProgress/' . $contentIdentifier);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
+initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
+
 ?>

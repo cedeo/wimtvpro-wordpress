@@ -262,6 +262,7 @@
 		$titlefile = $_POST['titlefile'];
 		$descriptionfile = $_POST['descriptionfile'];
 		$video_category = $_POST['videoCategory'];
+        $contentIdentifier = $_POST['uploadIdentifier'];
 	
 		// Required
 		if (strlen(trim($titlefile))==0) {  
@@ -284,7 +285,8 @@
 			$subcategory_tmp = array();    
 			$post= array("file" => $unique_temp_filename,
                          "title" => $titlefile,
-                         "description" => $descriptionfile);
+                         "description" => $descriptionfile,
+                         'uploadIdentifier' => $contentIdentifier);
 			
 			if (count($video_category)>0) {
 			  $id=0;

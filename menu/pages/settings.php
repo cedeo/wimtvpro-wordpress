@@ -149,7 +149,7 @@ function wimtvpro_configure(){
                     update_option( 'wp_replaceshowtimeIdentifier','{showtimeIdentifier}');
                     update_option( 'wp_publicPage', $_POST['publicPage']);
 
-                    update_page_mystreaming();
+                    update_page_wimvod();
                 }
             }
             settings_configuration($directory);

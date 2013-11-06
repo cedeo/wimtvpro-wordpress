@@ -31,7 +31,8 @@ License: GPLv2 or later
 
 include ("log/log.php");
 include ("hooks.php");
-include("functions.php");
+include("utils.php");
+include("functions/functions.php");
 include("menu/pages/registration.php");
 include("menu/pages/analytics.php");
 include("menu/pages/playlist.php");
@@ -40,7 +41,9 @@ include("menu/pages/upload_video.php");
 include("menu/pages/wimbox.php");
 include("menu/pages/wimlive.php");
 include("menu/pages/wimvod.php");
-
+include("functions/registrationAlert.php");
+include("functions/jwPlayer.php");
+include("functions/updateWimVod.php");
 
 load_plugin_textdomain( 'wimtvpro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 

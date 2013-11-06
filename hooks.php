@@ -84,6 +84,7 @@ function media_wimtvpro_process() {
 function wimtvpro_media_menu_handle() {
     return wp_iframe( 'media_wimtvpro_process');
 }
+
 add_action('media_upload_wimtvpro', 'wimtvpro_media_menu_handle');
 
 

@@ -31,7 +31,10 @@ License: GPLv2 or later
 
 include ("log/log.php");
 include ("hooks.php");
-include("functions.php");
+include("functions/functions.php");
+include("functions/list_download.php");
+include("functions/optioncat.php");
+include("functions/detail_showtime.php");
 include("menu/pages/registration.php");
 include("menu/pages/analytics.php");
 include("menu/pages/playlist.php");

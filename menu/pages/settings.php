@@ -99,7 +99,11 @@ function wimtvpro_configure(){
                     update_option('wp_userwimtv', $_POST['userWimtv']);
                     update_option('wp_passwimtv', $_POST['passWimtv']);
                     initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
-                    initAnalytics(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), null);
+                    if (get_option("wp_sandbox") == "No") {
+                        initAnalytics("http://www.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
+                    } else {
+                        initAnalytics("http://peer.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
+                    }
 
                     if (($_POST['sandbox']!=get_option('wp_sandbox')) && (($_POST['userWimtv']=="username") && ($_POST['passWimtv']=="password"))){
                         update_option('wp_registration', 'FALSE');

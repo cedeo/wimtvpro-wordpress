@@ -21,9 +21,9 @@ function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
         $traffic_view_max = max($single_traffic_media);
         $single_traffic_percent = (100/$traffic_view_max);
     }
-    else
+    else {
         $traffic_view_max = 0;
-
+    }
 
 
     echo "<div id='view_graph' class='view'>";
@@ -63,7 +63,8 @@ function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
 }
 
 function serializeStatistics($arrayStreams, $table_name) {
-    $array = array();
+    global $wpdb;
+    $streams = array();
     $megabyte = 1024*1024;
     foreach ($arrayStreams as $index=>$stream) {
         $arrayPlay = $wpdb->get_results("SELECT * FROM {$table_name} WHERE contentidentifier='" . $stream->contentId . "'");
@@ -83,21 +84,10 @@ function serializeStatistics($arrayStreams, $table_name) {
             $value->traffic =  round($value->traffic / $megabyte, 2) . " MB";
             $value->date_human =  date('d/m/Y', ($value->end_time/1000));
 
-
-            if (isset($dateNumber[$value->date_human]))
-                $dateNumber[$value->date_human] = $dateNumber[$value->date_human] + 1;
-            else
-                $dateNumber[$value->date_human] = 1;
-
-            if (isset($dateTraffic[$value->date_human]))
-                array_push($dateTraffic[$value->date_human], $value->traffic);
-            else
-                $dateTraffic[$value->date_human] = array($value->traffic);
-
             array_push($stream->views_list, $value);
 
         }
         $streams[$index] = $stream;
     }
-    return $array;
+    return $streams;
 }

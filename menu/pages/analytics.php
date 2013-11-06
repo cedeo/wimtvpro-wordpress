@@ -92,7 +92,22 @@ function wimtvpro_report (){
 
     $response = analyticsGetStreams($from_tm, $to_tm);
     $arrayStreams = json_decode($response);
+
     $streams = serializeStatistics($arrayStreams, $table_name);
+
+    foreach($streams as $stream) {
+        foreach ($stream->views_expanded as $value) {
+            if (isset($dateNumber[$value->date_human]))
+                $dateNumber[$value->date_human] = $dateNumber[$value->date_human] + 1;
+            else
+                $dateNumber[$value->date_human] = 1;
+
+            if (isset($dateTraffic[$value->date_human]))
+                array_push($dateTraffic[$value->date_human], $value->traffic);
+            else
+                $dateTraffic[$value->date_human] = array($value->traffic);
+        }
+    }
 
 ?>
 

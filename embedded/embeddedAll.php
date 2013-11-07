@@ -34,9 +34,7 @@
 			$directory =  $uploads_info["baseurl"] .  "/skinWim"; 
 			$skin = "'skin':'" . $directory  . "/" . get_option('wp_nameSkin') . "/" . $nomeFilexml . "',";
 		}
-		
-		
-		
+
 		echo $skin . $dimensions . $configFile . " image: '" . $thumbs[1] . "',
 		});</script>";
 	 

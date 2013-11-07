@@ -3,7 +3,6 @@
  * Written by walter at 06/11/13
  */
 function wimtvpro_viever_jwplayer($userAgent, $contentId, $video, $dirJwPlayer) {
-
     $isiPad = (bool) strpos($userAgent,'iPad');
     $urlPlay = explode("$$",$video[0]->urlPlay);
     $isiPhone = (bool) strpos($userAgent,'iPhone');

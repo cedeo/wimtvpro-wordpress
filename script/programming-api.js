@@ -66,9 +66,7 @@ ProgUtils.api.addItem = function(progId) {
  * JQUERY BUG in DELETE
  * non appende i parametri in data su query string
  */
-ProgUtils.api.deleteItems = function(progId) {
-	return url_pathPlugin + 'rest/deleteItems.php?progId=' + progId + '&';
-};
+ProgUtils.api.deleteItems = ProgUtils.api.removeItem;
 
 /**
  * Elimina Item dal palinsesto
@@ -77,5 +75,5 @@ ProgUtils.api.deleteItems = function(progId) {
  * @param: itemId	ref. a item da eliminare
  */
 ProgUtils.api.removeItem = function(progId, itemId) {
-	return url_pathPlugin + 'rest/removeItem.php?progId=' + progId + '&item='+ itemId;
+	return url_pathPlugin + 'rest/deleteItems.php?progId=' + progId + '&item='+ itemId;
 };

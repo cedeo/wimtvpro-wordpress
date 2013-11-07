@@ -56,9 +56,46 @@ function apiChangePassword($password) {
     return $apiAccessor->execute($request);
 }
 
+function apiProgrammingPool() {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->getRequest('programmingPool');
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
+function apiGetCurrentProgrammings($qs) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->getRequest('currentProgramming?' . $qs);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
+function apiGetProgrammings($params) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->postRequest('programmings');
+    $request->body($params);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
+function apiAddItem($progId, $params) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->postRequest('programming/' . $progId .'/items');
+    $request->body($params);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
 function apiGetShowtimes() {
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('users/' . $apiAccessor->username . '/showtime?details=true');
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
+function apiGetCalendar($progId, $qs) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->getRequest("programming/" . $progId . "/calendar?" . $qs);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
@@ -150,6 +187,13 @@ function apiGetPlayerShowtime($id,$parameters) {
 function apiDeleteLive($host_id) {
     $apiAccessor = getApi();
     $request = $apiAccessor->deleteRequest($apiAccessor->liveHostsUrl . '/' . $host_id);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
+function apiDeleteItems($progId, $itemId, $qs) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->deleteRequest("programming/" . $progId . "/items" . $itemId . "?" . $qs);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }

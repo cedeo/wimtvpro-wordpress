@@ -298,8 +298,7 @@
 			  }
 			  
 			}
-			/*curl_setopt($ch, CURLOPT_POSTFIELDS, $post);*/
- 
+
 			$response = apiUpload($post);
 			$arrayjsonst = json_decode($response);
 			

@@ -441,46 +441,39 @@ parent::__construct( false, 'Wimtv:' . __("Profile") );
 }
 
 function widget( $args, $instance ) {
-extract($args);
-	$title = apply_filters( 'WimTV' . __("Profile"), $instance['title'] );
-echo $before_widget;
-if ( ! empty( $title ) )
-		echo $before_title . $title . $after_title;
-// This example is adapted from node.module.
-$urlprofile = get_option("wp_basePathWimtv") . str_replace( get_option("wp_replaceUserWimtv"), get_option("wp_userWimtv"), get_option("wp_urlUserProfileWimtv"));
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $urlprofile);
-curl_setopt($ch, CURLOPT_VERBOSE, 0);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-$response = curl_exec($ch);
-curl_close($ch);
-$arrayjsuser = json_decode($response);
-$profileuser= "";
-$namepage = "";
-if (get_option("wp_logo")=="si")  
-  $profileuser .= "<img src='" . $arrayjsuser ->imageLogoPath . "'>";
-if (get_option("wp_name")=="si"){
-  if (isset($arrayjsuser->pageName)) $namepage .= "<p><b>" . $arrayjsuser->pageName . "</b><br/>" . $arrayjsuser->pageDescription . "</p>";
-  else $namepage .= "<p><b>" . $arrayjsuser->username . "</b></p>";
-}
-$profileuser .= $namepage;
-if (get_option("wp_date")=="si")
-  $profileuser .= "<p><br/>" . $arrayjsuser->name . " " . $arrayjsuser->surname . "<br/>" . $arrayjsuser->dateOfBirth . "<br/>" . $arrayjsuser->sex . "<br/>" . "</p>"; 
-if (get_option("wp_email")=="si")
-  $profileuser .= "<p><b>" . __("Contact") . "</b><br/>" . $arrayjsuser->email . "<br/>";
-if (get_option("wp_social")=="si") {
-  if (isset($arrayjsuser->linkedinURI))
-    $profileuser .= "<a target='_new' href='" . $arrayjsuser->linkedinURI . "'><img src='" . plugins_url('images/linkedin.png', __FILE__) . "'></a>";
-  if (isset($arrayjsuser->twitterURI))
-    $profileuser .= "<a target='_new' href='" . $arrayjsuser->twitterURI . "'><img src='" . plugins_url('images/twitter.png', __FILE__) . "'></a>";
-  if (isset($arrayjsuser->facebookURI))
-    $profileuser .= "<a target='_new' href='" . $arrayjsuser->facebookURI . "'><img src='" . plugins_url('images/facebook.png', __FILE__) . "'></a>";
-  $profileuser .= "</p>";
-}
-echo $profileuser;
-echo $after_widget;
+    extract($args);
+        $title = apply_filters( 'WimTV' . __("Profile"), $instance['title'] );
+    echo $before_widget;
+    if ( ! empty( $title ) )
+        echo $before_title . $title . $after_title;
+    // This example is adapted from node.module.
+
+    $response = apiGetProfile();
+    $arrayjsuser = json_decode($response);
+    $profileuser= "";
+    $namepage = "";
+    if (get_option("wp_logo")=="si")
+      $profileuser .= "<img src='" . $arrayjsuser ->imageLogoPath . "'>";
+    if (get_option("wp_name")=="si"){
+      if (isset($arrayjsuser->pageName)) $namepage .= "<p><b>" . $arrayjsuser->pageName . "</b><br/>" . $arrayjsuser->pageDescription . "</p>";
+      else $namepage .= "<p><b>" . $arrayjsuser->username . "</b></p>";
+    }
+    $profileuser .= $namepage;
+    if (get_option("wp_date")=="si")
+      $profileuser .= "<p><br/>" . $arrayjsuser->name . " " . $arrayjsuser->surname . "<br/>" . $arrayjsuser->dateOfBirth . "<br/>" . $arrayjsuser->sex . "<br/>" . "</p>";
+    if (get_option("wp_email")=="si")
+      $profileuser .= "<p><b>" . __("Contact") . "</b><br/>" . $arrayjsuser->email . "<br/>";
+    if (get_option("wp_social")=="si") {
+      if (isset($arrayjsuser->linkedinURI))
+        $profileuser .= "<a target='_new' href='" . $arrayjsuser->linkedinURI . "'><img src='" . plugins_url('images/linkedin.png', __FILE__) . "'></a>";
+      if (isset($arrayjsuser->twitterURI))
+        $profileuser .= "<a target='_new' href='" . $arrayjsuser->twitterURI . "'><img src='" . plugins_url('images/twitter.png', __FILE__) . "'></a>";
+      if (isset($arrayjsuser->facebookURI))
+        $profileuser .= "<a target='_new' href='" . $arrayjsuser->facebookURI . "'><img src='" . plugins_url('images/facebook.png', __FILE__) . "'></a>";
+      $profileuser .= "</p>";
+    }
+    echo $profileuser;
+    echo $after_widget;
 }
 function update( $new_instance, $old_instance ) {
 var_dump($old_instance);
@@ -492,6 +485,7 @@ update_option('wp_logo', $_POST['ImageLogoProfile']);
   update_option('wp_social', $_POST['SocialProfile']);
 return $new_instance;
 }
+
 function form( $instance ) {
 
 _e("Title");
@@ -571,17 +565,9 @@ function wimtvpro_shortcode_streaming($atts) {
       else
 	$skin = "";
 
-      $url = get_option("wp_basePathWimtv") . get_option("wp_urlVideosWimtv") . "/" . $id . '/embeddedPlayers';
-      $url .= "?get=1&width=" . $width . "&height=" . $height . $skin;
+      $params = "get=1&width=" . $width . "&height=" . $height . $skin;
 
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL,  $url);
-      curl_setopt($ch, CURLOPT_VERBOSE, 0);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-      curl_setopt($ch, CURLOPT_USERPWD, $credential);
-      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-      $response = curl_exec($ch);
+      $response = apiGetPlayerShowtime($id, $params);
 	  
 	  return $response;
   } else {

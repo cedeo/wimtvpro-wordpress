@@ -52,16 +52,7 @@ function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $inse
 	}
 
 	//Select Showtime
-	$param_st = get_option("wp_basePathWimtv") . "users/" . get_option("wp_userWimtv") . 	"/showtime?details=true";
-	$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-	$ch_st = curl_init();
-	curl_setopt($ch_st, CURLOPT_URL, $param_st);
-	curl_setopt($ch_st, CURLOPT_VERBOSE, 0);
-	curl_setopt($ch_st, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch_st, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-	curl_setopt($ch_st, CURLOPT_USERPWD, $credential);
-	curl_setopt($ch_st, CURLOPT_SSL_VERIFYPEER, FALSE);
-	$details_st  =curl_exec($ch_st);
+	$details_st  = apiGetShowtimes();
 	$arrayjson_st = json_decode( $details_st);
 	$st_license = array();
 	foreach ($arrayjson_st->items as $st){

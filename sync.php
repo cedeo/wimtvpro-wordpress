@@ -90,7 +90,6 @@ if (!isset($upload))
 	          else {
 	            $pos_wimtv="";
 	          }
-	          
 	          if (!$trovato) {
 	            $wpdb->insert( $table_name, 
 	            	array (

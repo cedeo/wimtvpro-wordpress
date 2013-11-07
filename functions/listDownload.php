@@ -46,19 +46,6 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
   //Video is visible only a user
 
   if ((!$private && $viewPublicVideo) || (($userRole=="administrator") || (in_array($idUser,$typeUser["U"])) || (in_array($userRole,$typeUser["R"])) || (array_key_exists("All",$typeUser)) || (array_key_exists ("",$typeUser)))){
-  
-   
-  /*  $param_thumb = get_option("wp_basePathWimtv") . str_replace(get_option("wp_replaceContentWimtv"), 		$content_item_new, get_option("wp_urlThumbsWimtv"));
-	echo $param_thumb;  
-    $credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-    $ch_thumb = curl_init();
-    curl_setopt($ch_thumb, CURLOPT_URL, $param_thumb);
-    curl_setopt($ch_thumb, CURLOPT_VERBOSE, 0);
-    curl_setopt($ch_thumb, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch_thumb, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch_thumb, CURLOPT_USERPWD, $credential);
-    curl_setopt($ch_thumb, CURLOPT_SSL_VERIFYPEER, FALSE);
-    $replace_video  =curl_exec($ch_thumb);*/
 	
 	$replace_video = apiGetThumbsVideo($content_item_new);
 

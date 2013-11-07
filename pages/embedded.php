@@ -48,10 +48,9 @@
     
     $output .= "<h3>" . $arrayST["title"] . "</h3>";
 
-    $output .= "<p>" . $arrayST["description"] . "</p>";
-    $output .= "<p>Duration: <b>" . $arrayST["duration"] . "</b>";
+    $output .= "<p>[" . $arrayST["duration"] . "]" . $arrayST["description"] . "</p>";
     if (count($arrayST["categories"])>0){
-      $output .= "<br/>Categories<br/>";
+      $output .= "<br/>" . __("Categories","wimtvpro") . "<br/>";
       foreach ($arrayST["categories"] as $key => $value) {
         $valuescCatST = "<i>" . $value->categoryName . ":</i> ";
         $output .= $valuescCatST;

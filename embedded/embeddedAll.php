@@ -34,14 +34,16 @@
 			$directory =  $uploads_info["baseurl"] .  "/skinWim"; 
 			$skin = "'skin':'" . $directory  . "/" . get_option('wp_nameSkin') . "/" . $nomeFilexml . "',";
 		}
-
+		
+		
+		
 		echo $skin . $dimensions . $configFile . " image: '" . $thumbs[1] . "',
 		});</script>";
 	 
 		$output .= "<h3>" . $arrayPlay[0]->title . " (Preview)</h3>";
-		$output .= "<p>Duration: <b>" . $arrayPlay[0]->duration . "</b>";
+		$output .= "[<b>" . $arrayPlay[0]->duration . "</b>]";
 		if (count($arrayPlay[0]->categories)>0){
-		  $output .= "<br/>Categories<br/>";
+		  $output .= "<p>" . __("Categories","wimtvpro") . "<br/>";
 		  foreach ($arrayPlay[0]->categories as $key => $value) {
 			$valuescCatST = "<i>" . $value->categoryName . ":</i> ";
 			$output .= $valuescCatST;

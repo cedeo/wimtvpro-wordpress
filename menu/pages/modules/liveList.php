@@ -1,6 +1,6 @@
 <?php
-include("../../../../wp-load.php");
-include_once("../api/api.php");
+include("../../../../../../wp-load.php");
+//include_once("../api/api.php");
 
 $userpeer = get_option("wp_userWimtv");
 $timezone = isset($_POST['timezone_']) ? $_POST['timezone_'] : "";
@@ -88,16 +88,27 @@ header('Content-type: text/html');
 	  if ($identifier==get_option("wp_liveNow"))  $file= "live_rec.gif";
 	  else $file= "webcam.png";
 	  
-      if ($liveIsNow)  $output .= "<td><a  target='page_newTab' href='" .  plugin_dir_url(dirname(__FILE__))  . "pages/live_webproducer.php?id=" . $identifier . "' class='clickWebProducer' id='" . $identifier . "'><img  onClick='clickImg(this)' src='" . plugins_url('images/' . $file, dirname(__FILE__)) . "' /></a></td>";
-      else $output .="<td></td>";
+      if ($liveIsNow)  {
+          $output .= "<td><a  target='page_newTab' href='" .  get_option('wp_wimtvPluginPath')
+                  . "embedded/live_webproducer.php?id=" . $identifier . "' class='clickWebProducer' id='"
+                  . $identifier . "'><img  onClick='clickImg(this)' src='"
+                  . get_option('wp_wimtvPluginPath') . "images/" . $file . "' /></a></td>";
+      } else {
+          $output .="<td></td>";
+      }
       
       $output .=  "<td>" . $payment_mode . "</td>
       <td>" . $url . "</td>
       <td>"  . $data . " " . $oraMin . "<br/>" . $durata . "</td>
       <td>" . $embedded_code . "</td>
       <td> 
-      <a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "' alt='" . __("Remove") . "'   title='" . __("Modify","wimtvpro") . "'><img src='" . plugins_url('images/mod.png',dirname(__FILE__)) . "'  alt='" . __("Modify","wimtvpro") . "'></a>
-       <a href='?page=WimLive&namefunction=deleteLive&id=" . $identifier . "' title='" . __("Remove") . "'><img src='" . plugins_url('images/remove.png',dirname(__FILE__)) . "' alt='" . __("Remove") . "'></a></td>
+      <a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "' alt='" . __("Remove")
+          . "'   title='" . __("Modify","wimtvpro") . "'><img src='" . get_option('wp_wimtvPluginPath') . "images/mod.png"
+          . "'  alt='" . __("Modify","wimtvpro") . "'></a>
+
+       <a href='?page=WimLive&namefunction=deleteLive&id=" . $identifier . "' title='" . __("Remove")
+          . "'><img src='" . get_option('wp_wimtvPluginPath') ."images/remove.png" . "' alt='" . __("Remove") . "'></a></td>
+
       </tr>";
     }
     elseif ($type=="list") {

@@ -109,17 +109,14 @@
 	echo $code;
 	
 	//echo htmlspecialchars($code);
-	
-	if (!isset($itShortcode)){
-		
-		if (!isset($page))	{
-			echo "<div style='float:left; width:50%;'>
-			Embedded:<textarea style='resize: none; width:90%;height:70px;font-size:10px' readonly='readonly' onclick='this.focus(); this.select();'>" . htmlentities($code) . "</textarea></div>";
-			
-			echo "<div style='float:left; width:50%;'>Shortcode:<textarea style='resize: none; width:90%;height:70px;font-size:20px' readonly='readonly' onclick='this.focus(); this.select();'>[playlistWimtv id='" . $idPlayList . "']</textarea></div>";
-			
-		}
-	}
+
+    if (!isset($page) && !isset($itShortcode))	{
+        echo "<div style='float:left; width:50%;'>
+                Embedded:<textarea style='resize: none; width:90%;height:70px;font-size:10px' readonly='readonly' onclick='this.focus(); this.select();'>" . htmlentities($code) . "</textarea></div>";
+
+        echo "<div style='float:left; width:50%;'>Shortcode:<textarea style='resize: none; width:90%;height:70px;font-size:20px' readonly='readonly' onclick='this.focus(); this.select();'>[playlistWimtv id='" . $idPlayList . "']</textarea></div>";
+
+    }
 	echo "</div>";
 
 ?>

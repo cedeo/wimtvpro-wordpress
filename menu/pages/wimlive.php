@@ -86,8 +86,8 @@ function wimtvpro_live() {
     ?>
     <script type="text/javascript">
 		function clickImg(obj){
-			jQuery("a.clickWebProducer img").attr("src", "<?php echo plugins_url('images/webcam.png', __FILE__) ?>");
-			jQuery(obj).attr("src", "<?php echo plugins_url('images/live_rec.gif', __FILE__) ?>");
+			jQuery("a.clickWebProducer img").attr("src", "<?php echo get_option('wp_wimtvPluginPath') . 'images/webcam.png' ?>");
+			jQuery(obj).attr("src", "<?php echo get_option('wp_wimtvPluginPath') . 'images/live_rec.gif' ?>");
 
 		}
 	</script>

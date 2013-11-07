@@ -73,7 +73,7 @@ function wimtvpro_playlist() {
             <input type="submit" class="icon_sync0 button-primary" value="<?php echo __("Update","wimtvpro") ?>" />
 
             <input type="hidden" class="list" name="listVideo" value="<?php echo $playlist[0]->listVideo ?>" />
-            <input type="hidden" name="modPlaylist" value="true" />
+            <input type="hidden"isset($_GET['page']) name="modPlaylist" value="true" />
             <input type="hidden" name="idPlaylist" value="<?php echo $_GET["id"] ?>" />
             <div id='post-body' class='metabox-holder columns-2'>
                 <div id='post-body-content'>

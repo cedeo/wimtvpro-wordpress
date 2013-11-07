@@ -191,9 +191,9 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
   if ($showtime_identifier!="") {
     $style_view = "";
 	if (($private) && ($licenseType=="PAYPERVIEW"))
-		$href_view = wimtvpro_checkCleanUrl("pages", "embeddedAll.php?c=" . $content_item_new. "&s=" . $showtime_identifier);
+		$href_view = wimtvpro_checkCleanUrl("embedded", "embeddedAll.php?c=" . $content_item_new. "&s=" . $showtime_identifier);
 	else
-    	$href_view = wimtvpro_checkCleanUrl("pages", "embedded.php?c=" . $content_item_new . "&s=" . $showtime_identifier);
+    	$href_view = wimtvpro_checkCleanUrl("embedded", "embedded.php?c=" . $content_item_new . "&s=" . $showtime_identifier);
     $title_view = __("View Video","wimtvpro");
     $play=TRUE;
     
@@ -201,7 +201,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
   else {
     $style_view = "";
     if ($urlPlay!="") {
-      $href_view = wimtvpro_checkCleanUrl("pages", "embeddedAll.php?c=" . $content_item_new);
+      $href_view = wimtvpro_checkCleanUrl("embedded", "embeddedAll.php?c=" . $content_item_new);
       $play=TRUE;
     }
     else $play=FALSE;
@@ -227,7 +227,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
   } else {
     $style_view = "";
     $title_view = "";
-	$href_view = wimtvpro_checkCleanUrl("pages", "embedded.php?c=" . $content_item_new . "&s=" . $showtime_identifier);
+	$href_view = wimtvpro_checkCleanUrl("embedded", "embedded.php?c=" . $content_item_new . "&s=" . $showtime_identifier);
 	$action = "<td style='display:none;'><a class='viewThumb' " . $style_view . " title='" .  $title_view . "' href='#' id='" . $href_view . "'><span class='icon_view'></span></a></td>";
 	  
   }
@@ -279,4 +279,5 @@ function downloadVideo($id, $infofileName) {
 	$url_info['host']  . $url_path_info['dirname'] .'/'. rawurlencode($url_path_info['basename']);  
 	return $url;
 }
+
 ?>

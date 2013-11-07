@@ -33,7 +33,7 @@
 			echo "This video exist into " . $name . " playlist.";
 	        die ();
 		
-		}else {
+		} else {
 		
 	    	// UPDATE into DB (campo listVideo)
 	    	if ($listVideo=="")

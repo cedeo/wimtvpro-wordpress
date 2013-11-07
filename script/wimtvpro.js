@@ -761,7 +761,7 @@ jQuery(document).ready(function() {
 	
 	jQuery(".icon_viewPlay").click(function () {
 		var id= jQuery(this).attr("id");
-		jQuery(this).colorbox({href:  url_pathPlugin + "pages/embeddedPlayList.php?id=" + id});
+		jQuery(this).colorbox({href:  url_pathPlugin + "embedded/embeddedPlayList.php?id=" + id});
 	});
 	
 	  jQuery('.icon_createPlay').click(function() {

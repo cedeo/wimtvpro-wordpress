@@ -16,37 +16,11 @@ else {
   $id =  $_GET['id'];
 	update_option('wp_liveNow', $id);
 
-	$urlUpdate = get_option("wp_basePathWimtv") . "profile";
-	$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-	
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $urlUpdate);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-	curl_setopt($ch, CURLOPT_USERPWD, $credential);
-	$response = curl_exec($ch);
+	$response = apiGetProfile();
 	$dati = json_decode($response, true);
-	//var_dump ($dati);
-	curl_close($ch);
 	$passwordLive = $dati['liveStreamPwd'];
 
-	
-
-	$userpeer = get_option("wp_userWimtv");
-	$url_live_embedded = get_option("wp_basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts/" . $id;
-
-   	$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-  	$ch_embedded= curl_init();
-
-    curl_setopt($ch_embedded, CURLOPT_URL, $url_live_embedded);
-    curl_setopt($ch_embedded, CURLOPT_VERBOSE, 0);
-
-    curl_setopt($ch_embedded, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch_embedded, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch_embedded, CURLOPT_USERPWD, $credential);
-    curl_setopt($ch_embedded, CURLOPT_SSL_VERIFYPEER, FALSE);
-    $embedded= curl_exec($ch_embedded);
+    $embedded = apiEmbeddedLive($id);
 	$arrayjson_live = json_decode($embedded);
 	$url =  $arrayjson_live->url;
 	$title = $arrayjson_live->name;
@@ -91,7 +65,6 @@ else {
 
 <script type="text/javascript">
     function initSwf() {
-        console.log("Ci sono!");
         var url_pathPlugin ="<?php echo plugin_dir_url(dirname(__FILE__));?>";
         var xiSwfUrlStr = url_pathPlugin  + "script/swfObject/playerProductInstall.swf";
         console.log(xiSwfUrlStr );
@@ -106,7 +79,6 @@ else {
 
         swfobject.embedSWF(url_pathPlugin  + "script/swfObject/producer.swf", "producer", "640", "480", "11.4.0",xiSwfUrlStr, flashvars, params, attributes );
         setTimeout(function () {
-            console.log("Ci sono anche qui!");
             producer = jQuery('#producer')[0];
             console.log(producer);
 

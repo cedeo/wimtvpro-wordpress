@@ -24,6 +24,13 @@ function apiCreateUrl($name) {
     return $apiAccessor->execute($request);
 }
 
+function apiEmbeddedLive($hostId) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->getRequest('liveStream/' . $apiAccessor->username . '/' . $apiAccessor->username . '/hosts/' . $hostId);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request, Mime::JSON);
+}
+
 function apiGetProfile() {
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('profile');
@@ -223,6 +230,30 @@ function apiGetUploadProgress($contentIdentifier) {
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
+
+function apiUpgradePacket($redirect_url, $cookie, $params) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->postRequest('userpacket/payment/pay?externalRedirect=true&success=' . $redirect_url);
+    $request = $apiAccessor->authenticate($request);
+    $request->setCookieJar($cookie);
+    $request->sends(Mime::JSON);
+    $request->body($params);
+    $request->addHeader('Content-Lenght', strlen($params));
+    return $apiAccessor->execute($request);
+}
+
+function apiGetPacket() {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->getRequest('userpacket/' . $apiAccessor->username);
+    return $apiAccessor->execute($request, Mime::JSON);
+}
+
+function apiCommercialPacket() {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->getRequest('commercialpacket');
+    return $apiAccessor->execute($request, Mime::JSON);
+}
+
 
 initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
 

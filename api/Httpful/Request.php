@@ -47,7 +47,8 @@ class Request
            $follow_redirects        = false,
            $max_redirects           = self::MAX_REDIRECTS_DEFAULT,
            $payload_serializers     = array(),
-           $cookiefile              = '';
+           $cookiefile              = '',
+           $cookiejar               = '';
 
     // Options
     // private $_options = array(
@@ -426,6 +427,18 @@ class Request
         return $this;
     }
 
+    /**
+     * Set a cookie file to the request
+     * @return Request this
+     * @param string $file
+     */
+    public function setCookieJar($file)
+    {
+        if (!empty($file)) {
+            $this->cookiejar = $file;
+        }
+        return $this;
+    }
     /**
      * Do we strictly enforce SSL verification?
      * @return Request this
@@ -821,6 +834,10 @@ class Request
 
         if (!empty($this->cookiefile)) {
             curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookiefile);
+        }
+
+        if (!empty($this->cookiejar)) {
+            curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookiejar);
         }
 
         // https://github.com/nategood/httpful/issues/84

@@ -81,7 +81,7 @@ function wimtvpro_install() {
   
   //$embeddedLive = wimtvpro_elencoLive("video", "0") . "<br/>UPCOMING EVENT<br/>" . wimtvpro_elencoLive("list", "0");
   
-  $embeddedLive =  plugins_url('pages/embeddedLive.php', __FILE__);
+  $embeddedLive =  plugins_url('embedded/embeddedLive.php', __FILE__);
   // Create page Event Live 
   $my_wimlive_page = array(
     'post_title'    => 'Live',
@@ -140,6 +140,7 @@ function wimtvpro_setting() {
   register_setting('profilewimtvpro-group', 'wp_date');
   register_setting('profilewimtvpro-group', 'wp_email');
   register_setting('profilewimtvpro-group', 'wp_social');
+  register_setting('configwimtvpro-group', 'wp_wimtvPluginPath');
 
   add_option( 'wp_registration','FALSE');
   add_option( 'wp_userwimtv','username');
@@ -155,10 +156,10 @@ function wimtvpro_setting() {
   add_option( 'wp_social','si');
   add_option( 'wp_sandbox','No');
   add_option( 'wp_publicPage','No');
-  add_option( 'wp_shareVideo','No');  
-  
+  add_option( 'wp_shareVideo','No');
   add_option( 'wp_activePayment','false');
   add_option( 'wp_activeLive','false');
+  add_option( 'wp_wimtvPluginPath', plugin_dir_url(__FILE__));
   
 } 
 add_action( 'admin_init', 'wimtvpro_setting');
@@ -588,11 +589,11 @@ function wimtvpro_shortcode_streaming($atts) {
   }  
 }
 function wimtvpro_shortcode_playlist($atts) {
-  extract( shortcode_atts( array('id'=>$id,'width'=>$width,'height'=>$height), $atts ) );
+  extract( shortcode_atts( array('id'=>0), $atts ) );
   $_GET['id'] = $id;
   $itShortcode = true;
   $page = true;
-  include ("pages/embeddedPlaylist.php");
+  include("embedded/embeddedPlayList.php");
 }
 
 

@@ -24,14 +24,14 @@ function wimtvpro_getVideos($showtime=FALSE, $private=TRUE, $insert_into_page=FA
     $resultCount = $wpdb->get_results("SELECT count(*) as count FROM " . $table_name  . " WHERE uid='" . get_option("wp_userwimtv") . "' " . $sql_where);
     $array_count  = $resultCount[0]->count;
 
-    $rows_per_page = 10 ;
+    $rows_per_page = 10;
     $current_page = isset($_GET['paged']) ? $_GET['paged'] : "";
     $current = (intval($current_page)) ? intval($current_page) : 1;
     $number_page = ceil($array_count/$rows_per_page);
     $offset = ( $current  * $rows_per_page ) - $rows_per_page;
     $sqllimit = "  LIMIT ${offset}, ${rows_per_page}" ;
 
-    $array_videos_new_wp = $wpdb->get_results("SELECT * FROM {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "' " . $sql_where . " ORDER BY Title ASC" . $sqllimit);
+    $array_videos_new_wp = $wpdb->get_results("SELECT * FROM {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "' " . $sql_where . " ORDER BY mytimestamp DESC " . $sqllimit);
 
     /* $array_videos_new_wp0 = $wpdb->get_results("SELECT * FROM  {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "' AND  position=0 " . $sql_where . " ORDER BY " . $sql_order);*/
 

@@ -8,24 +8,22 @@ function wimtvpro_viever_jwplayer($userAgent, $contentId, $video, $dirJwPlayer) 
     $isiPhone = (bool) strpos($userAgent,'iPhone');
     $isAndroid = (bool) strpos($userAgent,'Android');
 
-    if ($isiPad  || $isiPhone || $isAndroid) {
+    $contentId = $video[0]->contentidentifier;
+	$response = apiGetDetailsVideo($contentId);
+	$arrayjson   = json_decode($response);
 
-        $contentId = $video[0]->contentidentifier;
-        $response = apiGetDetailsVideo($contentId);
-        $arrayjson   = json_decode($response);
-
-    }
+    $streamer = $arrayjson->streamingUrl->streamer;
+	$file = $arrayjson->streamingUrl->file;
+	$url = $arrayjson->url;
 
     if ($isiPad  || $isiPhone) {
         $urlPlayIPadIphone = "";
         $urlPlayIPadIphone = $arrayjson->streamingUrl->streamer;
-        $configFile = "'file': '" . $urlPlayIPadIphone . "',";
+        $configFile = "'file': '" .  $streamer . "',";
     } else if ($isAndroid) {
-        $urlPlayAndroid =$arrayjson->streamingUrl->streamer;
-        $filePlayAndroid =$arrayjson->streamingUrl->file;
-        $configFile = "file: '" . $arrayjson->url . "',";
+        $configFile = "file: '" . $url . "',";
     } else {
-        $configFile = "'flashplayer':'" . $dirJwPlayer . "','file': '" . $urlPlay[1] . "','streamer':'" . $urlPlay[0] . "',";
+        $configFile = "'flashplayer':'" . $dirJwPlayer . "','file': '" . $url . "','streamer':'" . $$streamer . "',";
     }
     return $configFile;
 }

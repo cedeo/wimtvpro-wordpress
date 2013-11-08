@@ -577,8 +577,6 @@ function wimtvpro_shortcode_streaming($atts) {
 function wimtvpro_shortcode_playlist($atts) {
   extract( shortcode_atts( array('id'=>0), $atts ) );
   $_GET['id'] = $id;
-  $itShortcode = true;
-  $page = true;
   include("embedded/embeddedPlayList.php");
 }
 

@@ -1,6 +1,11 @@
 <?php
   global $user;
-  include("../../../../wp-load.php");
+  $parse_uri = explode( 'wp-content', $_SERVER['SCRIPT_FILENAME'] );
+  $url_include = $parse_uri[0] . 'wp-load.php';
+
+  if(@file_get_contents($url_include)){
+	require_once($url_include);
+  }
 
   $url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosDetailWimtv");
   $credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");

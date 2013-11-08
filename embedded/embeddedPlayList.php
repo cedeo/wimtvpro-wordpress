@@ -64,7 +64,7 @@ foreach ($array_videos_new_drupal as $videoT){
 	$videoArr[0] = $videoT;
 	$dirJwPlayer = plugin_dir_url(dirname(__FILE__)) . "script/jwplayer/player.swf";
 
-	$configFile  = wimtvpro_viever_jwplayer($user_agent,$videoT->contentidentifier,$videoArr,$dirJwPlayer);
+	$configFile  = wimtvpro_viever_jwplayer($user_agent,$videoT->contentidentifier,$dirJwPlayer);
 	if (!isset($videoT->urlThumbs)) {
 		$thumbs[1] = "";
 	}

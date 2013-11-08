@@ -24,7 +24,7 @@
 		else $thumbs = explode ('"',$arrayPlay[0]->urlThumbs);
 		$thumbs = str_replace('\\','',$thumbs);
 		$dirJwPlayer = plugin_dir_url(dirname(__FILE__)) . "script/jwplayer/player.swf";
-		$configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$contentItem,$arrayPlay,$dirJwPlayer);
+		$configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$contentItem,$dirJwPlayer);
 		
 		//Ricerca NomeFilexml
 		$uploads_info = wp_upload_dir();

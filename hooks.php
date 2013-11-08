@@ -59,7 +59,7 @@ function media_wimtvpro_process() {
 			$videoArr[0] = $videoT;
 			$dirJwPlayer = plugin_dir_url(dirname(__FILE__)) . "script/jwplayer/player.swf";
 			
-			$configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$videoT->contentidentifier,$videoArr,$dirJwPlayer);
+			$configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$videoT->contentidentifier,$dirJwPlayer);
 			if (!isset($videoT->urlThumbs)) $thumbs[1] = "";
 			else $thumbs = explode ('"',$videoT->urlThumbs);
 			

@@ -44,40 +44,6 @@
 	        $wpdb->query($sql);
 	
 	    	
-	    	// MODIFY XML playlist_## chiama function apiGetVideos()
-	    	
-	    	$response=apiGetVideos();
-	    	
-		    $array_detail = json_decode($response);
-		    
-			$uploads_info = wp_upload_dir();
-	        $directory = $uploads_info["basedir"] .  "/playlistWim";
-		   
-			$nameFile = "/playlist_" .  $idPlayList . ".xml";
-			$doc = simplexml_load_file($directory . $nameFile);
-			$sxe = new SimpleXMLElement($doc->asXML());
-			
-			$channel = $sxe->channel;
-			foreach ($channel->item as $items) {
-			   $position = count($items); // $items->count(); is not supported in PHP prior to 5.3.0
-			}
-			$urlVideo= $array_detail->streamingUrl->streamer . "$$" . $array_detail->streamingUrl->file . "$$" . $array_detail->streamingUrl->auth_token;
-			
-			$item = $channel->addChild('item');
-			$item->addChild('title',$array_detail->title);	
-			$item->addChild('image', $array_detail->thumbnailUrl);
-			$item->addChild('file',$urlVideo);	
-			$item->addChild('description',$array_detail->description);	
-			$item->addChild('position',$position+1);	
-			
-			$fh = fopen($directory . $nameFile, "w");
-		    if($fh==false) {
-	          echo "unable to create file";
-	          die();
-	        }
-	        fputs ($fh,$sxe->asXML());
-	        fclose ($fh);
-	        echo "";
 	        die ();
 		}
 		
@@ -97,12 +63,6 @@
 	            	)
 	           	);
 	           	
-	  $fh = fopen($directory  . "/playlist_" .  $wpdb->insert_id . ".xml", "w");
-	  if($fh==false)
-        die("unable to create file");
-      fputs ($fh, '<rss><channel><title>' . $name . '</title></channel></rss>');
-      fclose ($fh);
-	  //echo $wpdb->insert_id;
       die();
     
     break;
@@ -111,28 +71,6 @@
 
 	  $sql = "UPDATE " . $table_name  . " SET name='" . $name . "' WHERE id='" . $idPlayList . "'";
       $wpdb->query($sql);
-      
-      $uploads_info = wp_upload_dir();
-	   $directory = $uploads_info["basedir"] .  "/playlistWim";
-	   
-		$nameFile = "/playlist_" .  $idPlayList . ".xml";
-		$doc = simplexml_load_file($directory . $nameFile);
-		$sxe = new SimpleXMLElement($doc->asXML());
-		$sxe->channel->title = $name; 
-		
-		$directory = $uploads_info["basedir"] .  "/playlistWim";
-		$nameFile = "/playlist_" .  $idPlayList . ".xml";
-
-		$fh = fopen($directory . $nameFile, "w");
-	    if($fh==false) {
-          echo "unable to create file";
-          die();
-        }
-        fputs ($fh,$sxe->asXML());
-        fclose ($fh);
-
-      
-	  echo "OK";
       die();
     
     break;
@@ -140,12 +78,8 @@
 	case "removePlaylist":
 	  
 	  $uploads_info = wp_upload_dir();
-	  $directory = $uploads_info["basedir"] .  "/playlistWim";
 	  $sql = "DELETE FROM " . $table_name  . " WHERE id='" . $idPlayList . "'";
       $wpdb->query($sql);
-      //remove File
-      unlink ($directory . "/playlist_" . $idPlayList . ".xml");
-	  echo "OK";
       die();
     
     break;

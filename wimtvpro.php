@@ -29,9 +29,10 @@ License: GPLv2 or later
 
 
 
-include ("log/log.php");
-include ("hooks.php");
+include("log/log.php");
+include("hooks.php");
 include("utils.php");
+include("database/db.php");
 include("menu/pages/registration.php");
 include("menu/pages/analytics.php");
 include("menu/pages/playlist.php");
@@ -165,12 +166,7 @@ function wimtvpro_setting() {
 add_action( 'admin_init', 'wimtvpro_setting');
 
 function wimtvpro_remove() {
-  global $wpdb;
-  $table_name = $wpdb->prefix . 'wimtvpro_video';
-  $wpdb->query("DROP TABLE  {$table_name}");
-  
-  $table_name2 = $wpdb->prefix . 'wimtvpro_playlist';
-  $wpdb->query("DROP TABLE {$table_name2}");
+  dropTables();
 
   delete_option('wp_registration');
   delete_option('wp_userwimtv');
@@ -200,8 +196,8 @@ function wimtvpro_remove() {
   delete_option( 'wp_email');
   delete_option( 'wp_social');
   delete_option( 'wp_publicPage');
-  
-  $wpdb->query("DELETE FROM " .  $wpdb->posts . " WHERE post_name LIKE '%my_streaming_wimtv%' OR post_name LIKE '%wimlive_wimtv%'");
+
+  deleteWimTVPosts();
 }
 
 
@@ -210,14 +206,10 @@ function wimtvpro_create_metadata_table($table_name) {
   global $wpdb;
   require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
   $table_name = $wpdb->prefix . 'wimtvpro_video';
-  if (!empty ($wpdb->charset))
-      $charset_collate = "DEFAULT CHARACTER SET {$wpdb->charset}";
-  if (!empty ($wpdb->collate))
-      $charset_collate .= " COLLATE {$wpdb->collate}";
    
   if ( $wp_db_version == $wp_current_db_version ) {
 
-	       
+	  $charset = getCharset();
 	  $sql = "  CREATE TABLE {$table_name} (
 	            uid varchar(100) NOT NULL COMMENT 'User identifier',
 	            contentidentifier varchar(100) NOT NULL COMMENT 'Contentidentifier Video',
@@ -236,7 +228,7 @@ function wimtvpro_create_metadata_table($table_name) {
 	            showtimeIdentifier varchar(100) NOT NULL COMMENT 'showtimeIdentifier videos',
 	            PRIMARY KEY (contentidentifier),
 	            UNIQUE KEY mycolumn1 (contentidentifier)
-	  ) {$charset_collate};";
+	  ) {$charset};";
 	  
 	  require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	  dbDelta($sql);
@@ -261,8 +253,7 @@ function wimtvpro_create_metadata_table($table_name) {
             listVideo varchar(1000) COMMENT 'List video contentidentifier',
             PRIMARY KEY (id),
             UNIQUE KEY mycolumn2 (id)
-            
-  ) {$charset_collate};";
+  ) {$charset};";
 
   require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
   dbDelta($sql2);

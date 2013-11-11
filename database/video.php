@@ -6,7 +6,7 @@
 function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categories, $urlPlay, $title, $duration, $showtimeId) {
     global $wpdb;
     $video = array("uid" => $user,
-                   "contentdentifier" => $contentId,
+                   "contentidentifier" => $contentId,
                    "mytimestamp" => time(),
                    "position" => '0',
                    "state" => $state,

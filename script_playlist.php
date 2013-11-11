@@ -1,8 +1,6 @@
 <?php
   global $user,$wpdb;
   include("../../../wp-blog-header.php");
-  $table_name = $wpdb->prefix . 'wimtvpro_playlist';
-
 
   if (isset($_GET['namefunction']))
     $function= $_GET["namefunction"];
@@ -21,8 +19,11 @@
   
     case "AddVideoToPlaylist":
     	$listVideo = "";
-    	$playlist = $wpdb->get_results("SELECT listVideo,name FROM {$table_name} WHERE id='" . $idPlayList . "'");
-		foreach ($playlist as $record) {
+
+
+    	$playlist = dbExtractSpecificPlayist($idPlayList);
+
+        foreach ($playlist as $record) {
 			$listVideo = $record->listVideo;
 			$name = $record->name;
 		}
@@ -40,9 +41,8 @@
 	    		$listVideo = $id;
 	    	else
 	    		$listVideo = $listVideo . "," . $id;
-	    	$sql = "UPDATE " . $table_name  . " SET listVideo='" . $listVideo . "' WHERE id='" . $idPlayList . "'";
-	        $wpdb->query($sql);
-	
+
+            dbUpdatePlaylist($idPlayList, $listVideo);
 	    	
 	        die ();
 		}
@@ -55,13 +55,8 @@
 		   if (!is_dir($directory)) {
 			  $directory = mkdir($uploads_info["basedir"] . "/playlistWim");
 			}
-      $wpdb->insert( $table_name, 
-	  array (
-	  				'uid' => get_option("wp_userwimtv"),
-	            	'listVideo' => '',
-	            	'name' =>  $name,
-	            	)
-	           	);
+
+        dbInsertPlayist(get_option('wp_userwimtv'), $name);
 	           	
       die();
     
@@ -69,8 +64,8 @@
     
     case "modTitlePlaylist":
 
-	  $sql = "UPDATE " . $table_name  . " SET name='" . $name . "' WHERE id='" . $idPlayList . "'";
-      $wpdb->query($sql);
+      dbUpdatePlaylist($idPlayList, $name);
+
       die();
     
     break;
@@ -78,8 +73,9 @@
 	case "removePlaylist":
 	  
 	  $uploads_info = wp_upload_dir();
-	  $sql = "DELETE FROM " . $table_name  . " WHERE id='" . $idPlayList . "'";
-      $wpdb->query($sql);
+
+      dbDeletePlayist($idPlayList);
+
       die();
     
     break;

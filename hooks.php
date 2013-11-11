@@ -30,9 +30,7 @@ function media_wimtvpro_process() {
   
   $videos .= "<h3 class='media-title'>WimVod</h3><table class='itemsInsert'>" . wimtvpro_getVideos(TRUE, FALSE, TRUE) . "</table><div class='empty'></div>";
   
-  global $wpdb; 
-  $table_name = $wpdb->prefix . 'wimtvpro_playlist';
-  $array_playlist = $wpdb->get_results("SELECT * FROM {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "'  ORDER BY name ASC");
+  $array_playlist = dbExtractPlayList(get_option('wp_userwimtv'));
   $numberPlaylist=count($array_playlist);
   if ($numberPlaylist>0) {
     $videos .= "<h3 class='media-title'>PlayList</h3><ul class='itemsInsert'>";

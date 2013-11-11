@@ -16,8 +16,8 @@ $user_agent = $_SERVER['HTTP_USER_AGENT'];
 $idPlayList=$_GET['id'];
 
 //Read Playlist's Videos into DB
-$table_name = $wpdb->prefix . 'wimtvpro_playlist';
-$record = $wpdb->get_results("SELECT listVideo,name FROM {$table_name} WHERE id='" . $idPlayList . "'");
+
+$record= dbExtractSpecificPlayist($idPlayList);
 
 $listVideo = $record[0]->listVideo;
 $title = $record[0]->name;

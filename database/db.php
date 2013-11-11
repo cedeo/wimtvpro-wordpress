@@ -3,6 +3,8 @@
  * Written by walter at 11/11/13
  */
 require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
+include_once('playlist.php');
+include_once('video.php');
 
 
 function getCharset() {

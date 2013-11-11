@@ -6,6 +6,9 @@ require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
 include_once('playlist.php');
 include_once('video.php');
 
+global $wpdb;
+define("PLAYLIST_TABLE_NAME", $wpdb->prefix . 'wimtvpro_playlist');
+define("VIDEO_TABLE_NAME", $wpdb->prefix . 'wimtvpro_video');
 
 function getCharset() {
     global $wpdb;
@@ -20,10 +23,10 @@ function getCharset() {
 function dropTables() {
     global $wpdb;
 
-    $table_name = $wpdb->prefix . 'wimtvpro_video';
+    $table_name = VIDEO_TABLE_NAME;
     $wpdb->query("DROP TABLE  {$table_name}");
 
-    $table_name2 = $wpdb->prefix . 'wimtvpro_playlist';
+    $table_name2 = PLAYLIST_TABLE_NAME;
     $wpdb->query("DROP TABLE {$table_name2}");
 }
 
@@ -36,7 +39,7 @@ function deleteWimTVPosts() {
 function createTables() {
     global $wpdb;
 
-    $table_name = $wpdb->prefix . 'wimtvpro_video';
+    $table_name = VIDEO_TABLE_NAME;
     $charset= getCharset();
     if ( $wp_db_version == $wp_current_db_version ) {
         $query1 = "CREATE TABLE {$table_name}
@@ -68,7 +71,7 @@ function createTables() {
     }
     dbDelta($query1);
 
-    $table_name2 = $wpdb->prefix . 'wimtvpro_playlist';
+    $table_name2 = PLAYLIST_TABLE_NAME;
     $query2 = "CREATE TABLE {$table_name2}
                 (
                     id INT NOT NULL AUTO_INCREMENT COMMENT 'Id',

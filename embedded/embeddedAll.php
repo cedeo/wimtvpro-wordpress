@@ -11,7 +11,7 @@
     $arrayPlay = $wpdb->get_results("SELECT * FROM {$table_name} WHERE contentidentifier='" . $contentItem . "'");
     $heightDiv = get_option("wp_heightPreview") +150;
 	$widthDiv = get_option("wp_widthPreview") +280;
-	echo "<div style='text-align:center; height: " . $heightDiv . "px; width: " . $widthDiv . "px' class='responsiveVideo'>";
+	echo "<div class='responsiveVideo'>";
 	echo "<div id='container'> </div>";
 	
 	if ($arrayPlay[0]->urlPlay!=""){

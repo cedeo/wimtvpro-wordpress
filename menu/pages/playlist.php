@@ -24,7 +24,7 @@ function wimtvpro_playlist() {
             $wpdb->query($sql);
             $updated = true;
         }
-		$playlist = $wpdb->get_results("SELECT * FROM {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "' AND id=" . $_GET["id"]);
+		$playlist = $wpdb->get_results("SELECT * FROM {$table_name} WHERE id=" . $_GET["id"]);
 			
         if (count($playlist)>0) {
           $option = $playlist[0]->option;

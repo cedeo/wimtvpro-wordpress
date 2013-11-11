@@ -24,16 +24,21 @@ function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categori
 function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration, $showtimeId, $categories, $contentId) {
     global $wpdb;
 
+    $title = mysql_real_escape_string($title);
+    $urlThumbs = mysql_real_escape_string($urlThumbs);
+    $urlPlay = mysql_real_escape_string($urlPlay);
+    $contentId = mysql_real_escape_string($contentId);
+
     $table = VIDEO_TABLE_NAME;
-    return $wpdb->query("UPDATE {$table} SET state={$state},
-                                             status={$status},
-                                             title={mysql_real_escape_string($title)},
-                                             urlThumbs={mysql_real_escape_string($urlThumbs)},
-                                             urlPlay={mysql_real_escape_string($urlPlay)},
-                                             duration={$duration},
-                                             showtimeidentifier={$showtimeId},
-                                             category={$categories},
-                                         WHERE contentidentifier={$contentId}");
+    return $wpdb->query("UPDATE {$table} SET state='{$state}',
+                                             status='{$status}',
+                                             title='{$title}',
+                                             urlThumbs='{$urlThumbs}',
+                                             urlPlay='{$urlPlay}',
+                                             duration='{$duration}',
+                                             showtimeidentifier='{$showtimeId}',
+                                             category='{$categories}'
+                                         WHERE contentidentifier='{$contentId}'");
 }
 
 function dbDeleteVideo($contentIdentifier) {
@@ -52,7 +57,7 @@ function dbGetVideo($contentIdentifier) {
 function dbGetUserVideosId($user) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
-    return $wpdb->get_results("SELECT contentidentifier FROM {$table} WHERE uid={$user}");
+    return $wpdb->get_results("SELECT contentidentifier FROM {$table} WHERE uid='{$user}'");
 }
 
 function dbBuildGetVideosWhere($showtime, $public) {

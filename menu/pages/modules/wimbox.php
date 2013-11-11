@@ -8,34 +8,33 @@ function wimtvpro_getVideos($showtime=FALSE, $private=TRUE, $insert_into_page=FA
 
     $replace_content = get_option("wp_replaceContentWimtv");
 
-    $table_name = $wpdb->prefix . 'wimtvpro_video';
     $my_media= "";
     $response_st = "";
-    if (($showtime) && ($showtime=="TRUE")) $sql_where .= " AND state='showtime'";
+    if (($showtime) && ($showtime=="TRUE")) {
+        $showtime_only = true;
+    } else {
+        $showtime_only = false;
+    }
+    $public = 0;
     if (!$private) {
         if ($type_public == "block") {
-            $sql_where .= " AND ((viewVideoModule like '1%') OR (viewVideoModule like '3%')) ";
+            $public = 1;
         }
         if ($type_public == "page") {
-            $sql_where .= " AND ((viewVideoModule like '2%') OR (viewVideoModule like '3%')) ";
+            $public = 2;
         }
     }
 
-    $resultCount = $wpdb->get_results("SELECT count(*) as count FROM " . $table_name  . " WHERE uid='" . get_option("wp_userwimtv") . "' " . $sql_where);
+    $resultCount = dbGetVideosCount(get_option("wp_userwimtv"), $showtime_only, $public);
     $array_count  = $resultCount[0]->count;
 
-    $rows_per_page = 10;
+    $rows = 10;
     $current_page = isset($_GET['paged']) ? $_GET['paged'] : "";
     $current = (intval($current_page)) ? intval($current_page) : 1;
-    $number_page = ceil($array_count/$rows_per_page);
-    $offset = ( $current  * $rows_per_page ) - $rows_per_page;
-    $sqllimit = "  LIMIT ${offset}, ${rows_per_page}" ;
+    $number_page = ceil($array_count/$rows);
+    $offset = ( $current  * $rows ) - $rows;
 
-    $array_videos_new_wp = $wpdb->get_results("SELECT * FROM {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "' " . $sql_where . " ORDER BY mytimestamp DESC " . $sqllimit);
-
-    /* $array_videos_new_wp0 = $wpdb->get_results("SELECT * FROM  {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "' AND  position=0 " . $sql_where . " ORDER BY " . $sql_order);*/
-
-    //Select Showtime
+    $array_videos_new_wp = dbGetUserVideos(get_option("wp_userwimtv"), $showtime_only, $public, $offset, $rows);
 
     $details_st  = apiGetShowtimes();
     $arrayjSonST = json_decode($details_st);

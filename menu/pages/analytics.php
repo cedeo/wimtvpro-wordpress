@@ -8,7 +8,7 @@ include_once("modules/graph.php");
 
 function wimtvpro_report (){
 
-    global $user,$wpdb;
+    global $user;
     $view_page = wimtvpro_alert_reg();
     $megabyte = 1024*1024;
 
@@ -19,8 +19,6 @@ function wimtvpro_report (){
 
     $from = isset($_POST['from']) ? $_POST['from'] : "";
     $to = isset($_POST['to']) ? $_POST['to'] : "";
-
-    $table_name = $wpdb->prefix . 'wimtvpro_video';
 
     $dateNumber = array();
     $dateTraffic = array();
@@ -93,7 +91,7 @@ function wimtvpro_report (){
     $response = analyticsGetStreams($from_tm, $to_tm);
     $arrayStreams = json_decode($response);
 
-    $streams = serializeStatistics($arrayStreams, $table_name);
+    $streams = serializeStatistics($arrayStreams);
 
     foreach($streams as $stream) {
         foreach ($stream->views_expanded as $value) {

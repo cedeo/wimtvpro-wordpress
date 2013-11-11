@@ -84,4 +84,5 @@ function createTables() {
                     {$charset};";
 
     dbDelta($query2);
-} 
+}
+

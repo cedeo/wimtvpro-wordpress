@@ -13,7 +13,6 @@ if (!isset($upload))
 
   global $user,$wpdb;
 	
-	$table_name = $wpdb->prefix . 'wimtvpro_video';
 	$response= apiGetVideos();
 
   	$array_json_videos = json_decode($response);
@@ -34,13 +33,13 @@ if (!isset($upload))
     if ($num > 0 ) {
       $elenco_video_wimtv = array();
       $elenco_video_wp = array();
-      $array_videos_new_wp = $wpdb->get_results("SELECT contentidentifier FROM " . $table_name . " WHERE uid = '" . get_option("wp_userwimtv") . "'");
+      $array_videos_new_wp = dbGetUserVideosId(get_option("wp_userwimtv"));
       foreach ($array_videos_new_wp as $record) {
         array_push($elenco_video_wp, $record -> contentidentifier);
       }
       /* Information detail videos into Showtime */
-      $json_st   = wimtvpro_detail_showtime(FALSE, 0);
-      $arrayjson_st   = json_decode($json_st);
+      $json_st = wimtvpro_detail_showtime(FALSE, 0);
+      $arrayjson_st = json_decode($json_st);
       $values_st = $arrayjson_st->items;
       foreach ($values_st as $key => $value) {
         $array_st[$value -> {"contentId"}]["showtimeIdentifier"] = $value-> {"showtimeIdentifier"};
@@ -91,53 +90,23 @@ if (!isset($upload))
 	            $pos_wimtv="";
 	          }
 	          if (!$trovato) {
-	            $wpdb->insert( $table_name, 
-	            	array (
-	            	'uid' => get_option("wp_userwimtv"),
-	            	'contentidentifier' => $content_item,
-	            	'mytimestamp' => time(),
-	            	'position' => '0',
-	            	'state' => $pos_wimtv,
-	            	'viewVideoModule' => '3',
-	            	'status' => $status,
-	            	//'acquiredIdentifier' => $acquired_identifier,
-	            	'urlThumbs' => mysql_real_escape_string($url_thumbs),
-	            	'category' =>  $categories,
-	            	'urlPlay' =>  mysql_real_escape_string($urlVideo),
-	            	'title' =>  mysql_real_escape_string($title),
-	            	'duration' => $duration,
-	            	'showtimeidentifier' => $showtime_identifier
-	            	)
-	           	);
-	            
+                dbInsertVideo(get_option("wp_userwimtv"), $content_item, $pos_wimtv, $status,
+                              $url_thumbs, $categories, $urlVideo, $title, $duration, $showtime_identifier);
 	          } 
 	          else {
-	          	$query = "UPDATE " . $table_name . 
-	            " SET state = '" . $pos_wimtv . "'," . 
-	            " status = '" . $status . "'," . 
-	            " title = '" . mysql_real_escape_string($title) . "'," .             
-	            " urlThumbs = '" . mysql_real_escape_string($url_thumbs) . "'," .
-	            " urlPlay = '" . mysql_real_escape_string($urlVideo) . "'," .
-	            " duration = '" . $duration . "'," .
-	            " showtimeidentifier = '" . $showtime_identifier . "'," .
-	            " category = '" . $categories . "'" .
-	            " WHERE contentidentifier = '"  . $content_item . "' ";
-	            $wpdb->query($query);
+                dbUpdateVideo($pos_wimtv, $status, $title, $url_thumbs, $urlVideo,
+                              $duration, $showtime_identifier, $categories, $content_item);
 	          }
 	      }
 		}
 	} else {
-		
-	_e("You aren't videos","wimtvpro");
-		
+	    _e("You aren't videos","wimtvpro");
 	}
 
     //var_dump(array_diff($elenco_video_wp ,$elenco_video_wimtv ));
     $delete_into_wp = array_diff($elenco_video_wp, $elenco_video_wimtv);
     foreach ($delete_into_wp as  $value) {
-      $wpdb->query( 
-		  "DELETE FROM " . $table_name . " WHERE contentidentifier ='"  . $value . "'"
-      );
+        dbDeleteVideo($value);
     }
 	
     if ((isset($_GET['sync']))) {

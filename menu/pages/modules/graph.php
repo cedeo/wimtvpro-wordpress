@@ -62,12 +62,11 @@ function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
           </div>";
 }
 
-function serializeStatistics($arrayStreams, $table_name) {
-    global $wpdb;
+function serializeStatistics($arrayStreams) {
     $streams = array();
     $megabyte = 1024*1024;
     foreach ($arrayStreams as $index=>$stream) {
-        $arrayPlay = $wpdb->get_results("SELECT * FROM {$table_name} WHERE contentidentifier='" . $stream->contentId . "'");
+        $arrayPlay = dbGetVideo($stream->contentId);
         $thumbs = "";
         if (count($arrayPlay)) {
             $thumbs = $arrayPlay[0]->urlThumbs;

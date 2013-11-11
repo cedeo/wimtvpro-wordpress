@@ -450,14 +450,13 @@ add_action( 'widgets_init', 'my_register_widgets2' );
 function wimtvpro_shortcode_streaming($atts) {
 
   global $wpdb,$user;
-  $table_name = $wpdb->prefix . 'wimtvpro_video';
   $user = wp_get_current_user();
   $idUser = $user->ID;
   $userRole = $user->roles[0];
 
   extract( shortcode_atts( array('id'=>$id,'width'=>$width,'height'=>$height), $atts ) );
 
-  $arrayPlay = $wpdb->get_results("SELECT * FROM {$table_name} WHERE contentidentifier='" . $id . "'");
+  $arrayPlay = dbGetVideo($id);
 
   $view_video_state = $arrayPlay[0]->viewVideoModule;
   $stateView = explode ("|",$view_video_state);

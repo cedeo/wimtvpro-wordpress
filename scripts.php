@@ -178,10 +178,7 @@
 		$response = apiDeleteVideo($id);
 		$arrayjsonst = json_decode($response);
 		if ($arrayjsonst->result=="SUCCESS")
-			$wpdb->query( 
-		  		"DELETE FROM " . $table_name . " WHERE contentidentifier ='"  . $id . "'"
-      		);
-
+			dbDeleteVideo($id);
 		echo $response;
     break;
     
@@ -273,7 +270,6 @@
 	     if ((strlen(trim($urlfile))>0) && ($error==0)) {
 			global $user,$wpdb;  
 	
-			$credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
 			$table_name = $wpdb->prefix . 'wimtvpro_video';
 	
 			//UPLOAD VIDEO INTO WIMTV
@@ -311,24 +307,8 @@
 				}
 				closedir($handle);
 				echo  '</strong></p></div>';
-				$wpdb->insert( $table_name, 
-				array (
-				  'uid' => get_option("wp_userwimtv"),
-				  'contentidentifier' => $arrayjsonst->contentIdentifier,
-				  'mytimestamp' => time(),
-				  'position' => '0',
-				  'state' => '',
-				  'viewVideoModule' => '3',
-				  'status' => 'OWNED|'  . $_FILES['videoFile']['name'],
-				  'acquiredIdentifier' => '',
-				  'urlThumbs' => $arrayjsonst->urlThumbs,
-				  'urlPlay' => '',
-				  'category' =>  '',
-				  'title' => $titlefile ,
-				  'duration' => '',
-				  'showtimeidentifier' => ''
-				 )
-				);
+                $status = 'OWNED|'  . $_FILES['videoFile']['name'];
+                dbInsertVideo(get_option("wp_userwimtv"), $arrayjsonst->contentIdentifier, "", $status, $arrayjsonst->urlThumbs, "", "", $titlefile, "", "");
 	 		 }
 	         else{
 	             $error ++;

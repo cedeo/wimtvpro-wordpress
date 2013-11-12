@@ -77,8 +77,7 @@
       $state = "showtime";
       $array_response = json_decode($response);
       if ($array_response->result=="SUCCESS"){
-	      $sql = "UPDATE " . $table_name  . " SET state='" . $state . "' ,showtimeIdentifier='" . $array_response -> showtimeIdentifier . "' WHERE contentidentifier='" . $id . "'";
-	      $wpdb->query($sql);
+          dbUpdateVideoState($id, $state, $array_response->showtimeIdentifier);
 	  }
 	  
 	      
@@ -113,8 +112,8 @@
       			);
     
       $state="showtime";
-      $sql = "UPDATE " . $table_name  . " SET state='" . $state . "' WHERE contentidentifier='" . $id . "'";
-      $wpdb->query($sql);
+
+      dbUpdateVideoState($id, $state);
       
       //Richiamo API  http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
       //curl -u {username}:{password} -d "licens e_type=TEMPLATE_LICENSE&paymentMode=PAYPERVIEW&pricePerView=50.00&pricePerViewCurrency=EUR" http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime

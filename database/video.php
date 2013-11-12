@@ -41,6 +41,15 @@ function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration,
                                          WHERE contentidentifier='{$contentId}'");
 }
 
+function dbUpdateVideoState($contentId, $state, $showtimeId=null) {
+    global $wpdb;
+    $table = VIDEO_TABLE_NAME;
+    $set = "SET state='{$state}'";
+    if ($showtimeId)
+        $set.append(", showtimeidentifier='{$showtimeId}'");
+    return $wpdb->query("UPDATE {$table} {$set} WHERE contentidentifier='{$contentId}'");
+}
+
 function dbDeleteVideo($contentIdentifier) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;

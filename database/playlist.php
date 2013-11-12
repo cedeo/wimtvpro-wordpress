@@ -5,12 +5,11 @@
  
  
 function dbExtractPlayList($username){
-$table_name= PLAYLIST_TABLE_NAME;
-global $wpdb;
-return $wpdb->get_results("SELECT * FROM {$table_name}
-		WHERE uid='" . $username . "'  
-		ORDER BY name ASC");
-
+    $table_name= PLAYLIST_TABLE_NAME;
+    global $wpdb;
+    return $wpdb->get_results("SELECT * FROM {$table_name}
+            WHERE uid='" . $username . "'
+            ORDER BY name ASC");
 }
 
 function dbDeletePlayist($idPlayList){
@@ -28,7 +27,6 @@ function dbExtractSpecificPlayist($idPlayList){
 			name FROM {$table_name}
 			WHERE id='" . $idPlayList . "'";
 	return $wpdb->get_results($query);
-
 }
 
 function dbUpdatePlaylist($id, $listVideo=null, $namePlaylist=null){
@@ -54,7 +52,6 @@ function dbUpdatePlaylist($id, $listVideo=null, $namePlaylist=null){
 
 
 function dbInsertPlayist($username, $name){
-
     global $wpdb;
     $playlist=array('uid' =>$username,
                     'listVideo' => '',

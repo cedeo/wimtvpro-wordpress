@@ -20,8 +20,7 @@ function wimtvpro_playlist() {
         $linkReturn =  "<a href='" . $_SERVER['REQUEST_URI'] . "&namefunction=listPlaylist' class='add-new-h2'>" . __( 'Return to list', 'wimtvpro') . "</a> ";
         $table_name = PLAYLIST_TABLE_NAME;
         if (isset($_POST["modPlaylist"]) && $_POST["modPlaylist"] =="true"){
-            $sql = "UPDATE " . $table_name  . " SET name='" . $_POST["namePlaylist"] . "' ,listvideo='" . $_POST["listVideo"] . "' WHERE id='" . $_GET["id"] . "'";
-            $wpdb->query($sql);
+            dbUpdatePlaylist($_GET["id"], $_POST["listVideo"], $_POST["namePlaylist"]);
             $updated = true;
         }
 		$playlist = $wpdb->get_results("SELECT * FROM {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "' AND id=" . $_GET["id"]);
@@ -41,8 +40,7 @@ function wimtvpro_playlist() {
         }
     } else {
         //Count playlist saved in DB
-        $table_name = PLAYLIST_TABLE_NAME;
-        $array_playlist = $wpdb->get_results("SELECT * FROM {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "'  ORDER BY name ASC");
+        $array_playlist = dbExtractPlayList(get_option("wp_userwimtv"));
         $numberPlaylist=count($array_playlist);
         $playlists = array();
         if ($numberPlaylist>0) {

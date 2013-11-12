@@ -1,14 +1,13 @@
 <?php
   global $user;
   include("../../../../wp-load.php");
-  $table_name = $wpdb->prefix . 'wimtvpro_video';
   $contentItem = $_GET['c'];
   $directory = isset($uploads_info) ? $uploads_info["baseurl"] .  "/skinWim" : "";
   $streamItem = isset($_GET['s']) ? $_GET['s'] : "";
 
   if (strlen($contentItem)>0) {
 
-    $arrayPlay = $wpdb->get_results("SELECT * FROM {$table_name} WHERE contentidentifier='" . $contentItem . "'");
+    $arrayPlay = dbGetVideo($contentItem);
     $heightDiv = get_option("wp_heightPreview") +150;
 	$widthDiv = get_option("wp_widthPreview") +280;
 	echo "<div style='text-align:center; height: " . $heightDiv . "px; width: " . $widthDiv . "px' class='responsiveVideo'>";

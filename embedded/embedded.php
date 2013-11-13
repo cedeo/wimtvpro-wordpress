@@ -68,7 +68,7 @@
     }
     
 
-    
+    wp_reset_query();
     //echo "<p class='icon_downloadVideo' id='" . $arrayST["contentId"] . "'>Download</p>";   
     echo $output;
  }   

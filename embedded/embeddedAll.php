@@ -61,7 +61,7 @@
 			//Video is PAYPERVIEW
 			$output .= "<p><b>Video PAY PER VIEW</b></p>";
 		}
-	
+
 		echo $output . "</div>";
 	
 	} else {

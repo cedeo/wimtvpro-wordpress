@@ -15,7 +15,6 @@ if (!isset($upload))
 	
 	$table_name = $wpdb->prefix . 'wimtvpro_video';
 	$response= apiGetVideos();
-
   	$array_json_videos = json_decode($response);
 
   if ($array_json_videos==NULL) {
@@ -47,10 +46,9 @@ if (!isset($upload))
       }
       if ($array_all_videos) {
 	      foreach ($array_all_videos as $video) {
-            //echo json_encode($video);
 	        $url_video = $video["actionUrl"];
 	        $status = $video["status"];
-	        //$acquired_identifier = $video["acquired_identifier"];
+	        $acquired_identifier = $video["acquiredIdentifier"];
 	        $title= $video["title"];
             if (isset($video["streamingUrl"])) {
                 $urlVideo = $video["streamingUrl"]->streamer . "$$";
@@ -100,7 +98,7 @@ if (!isset($upload))
 	            	'state' => $pos_wimtv,
 	            	'viewVideoModule' => '3',
 	            	'status' => $status,
-	            	//'acquiredIdentifier' => $acquired_identifier,
+	            	'acquiredIdentifier' => $acquired_identifier,
 	            	'urlThumbs' => mysql_real_escape_string($url_thumbs),
 	            	'category' =>  $categories,
 	            	'urlPlay' =>  mysql_real_escape_string($urlVideo),
@@ -120,6 +118,7 @@ if (!isset($upload))
 	            " urlPlay = '" . mysql_real_escape_string($urlVideo) . "'," .
 	            " duration = '" . $duration . "'," .
 	            " showtimeidentifier = '" . $showtime_identifier . "'," .
+				" acquiredIdentifier = '" . $acquired_identifier. "'," .
 	            " category = '" . $categories . "'" .
 	            " WHERE contentidentifier = '"  . $content_item . "' ";
 	            $wpdb->query($query);

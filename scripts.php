@@ -119,16 +119,18 @@
       //curl -u {username}:{password} -d "licens e_type=TEMPLATE_LICENSE&paymentMode=PAYPERVIEW&pricePerView=50.00&pricePerViewCurrency=EUR" http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
     
       
-      $response =apiPublishOnShowtime($id, $params);
+      $response = apiPublishOnShowtime($id, $params);
       
 	echo $response;   
 	die();
     break;
     case "removeST";
     
-      $state="";
+      /*$state="";
       $sql = "UPDATE " . $table_name  . " SET position='0',state='',showtimeIdentifier='' WHERE contentidentifier='" . $id . "'";
-	  $wpdb->query($sql);
+	  $wpdb->query($sql);*/
+
+      dbSetVideoPosition($id, "0", "");
  
       $response = apiDeleteFromShowtime($id, $stid);
  
@@ -137,8 +139,9 @@
     break;
     case "StateViewThumbs":
       $state = $_GET['state'];
-      $sql = "UPDATE " . $table_name  . " SET viewVideoModule='" . $state . "' WHERE contentidentifier='" . $id . "'";
-	  $wpdb->query($sql);
+      dbSetViewVideoModule($id, $state);
+      //$sql = "UPDATE " . $table_name  . " SET viewVideoModule='" . $state . "' WHERE contentidentifier='" . $id . "'";
+	  //$wpdb->query($sql);
 
 	  //UPDATE PAGE MY STREAMING
 	  update_page_wimvod();
@@ -150,8 +153,9 @@
       $list_video = explode(",", $ordina);
       foreach ($list_video as $position => $item) {
         $position = $position + 1;
-        $sql = "UPDATE " . $table_name  . " SET position ='" . $position . "' WHERE contentidentifier='" . $item . "'";
-	    $wpdb->query($sql);
+        dbSetVideoPosition($item, $position);
+        /*$sql = "UPDATE " . $table_name  . " SET position ='" . $position . "' WHERE contentidentifier='" . $item . "'";
+	    $wpdb->query($sql);*/
       }
       
       //UPDATE PAGE MY STREAMING
@@ -182,7 +186,7 @@
     break;
     
     case "getUsers":
-      $sqlVideos = $wpdb->get_results("SELECT viewVideoModule FROM " . $table_name  . " WHERE contentidentifier = '" .  $id . "'");
+      $sqlVideos = dbGetViewVideoModule($id); //$wpdb->get_results("SELECT viewVideoModule FROM " . $table_name  . " WHERE contentidentifier = '" .  $id . "'");
       //$sqlVideos = mysql_query("SELECT viewVideoModule FROM " . $table_name  . " WHERE contentidentifier = '" .  $id . "'");
       $stateView = explode ("|",$sqlVideos[0]->viewVideoModule);
       $arrayUsers = explode (",",$stateView[1]);
@@ -200,7 +204,7 @@
     break;
     
     case "getRoles":
-      $sqlVideos = $wpdb->get_results("SELECT viewVideoModule FROM " . $table_name  . " WHERE contentidentifier = '" .  $id . "'");
+      $sqlVideos = dbGetViewVideoModule($id); //$wpdb->get_results("SELECT viewVideoModule FROM " . $table_name  . " WHERE contentidentifier = '" .  $id . "'");
       $stateView = explode ("|",$sqlVideos[0]->viewVideoModule);
       $arrayRoles = explode (",",$stateView[1]);
     
@@ -218,7 +222,7 @@
     break;
 	
 	case "getAlls":
-      $sqlVideos = $wpdb->get_results("SELECT viewVideoModule FROM " . $table_name  . " WHERE contentidentifier = '" .  $id . "'");
+      $sqlVideos = dbGetViewVideoModule($id); //$wpdb->get_results("SELECT viewVideoModule FROM " . $table_name  . " WHERE contentidentifier = '" .  $id . "'");
 	  $stateView = explode ("|",$sqlVideos[0]->viewVideoModule);
       echo "<option value='All'";   
       if (($stateView[1] == "") || ($stateView[1] == "All")) echo " selected='selected' ";

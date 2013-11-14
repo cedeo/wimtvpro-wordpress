@@ -62,6 +62,27 @@ function dbGetVideo($contentIdentifier) {
     return $wpdb->get_results("SELECT * FROM {$table} WHERE contentidentifier={$contentIdentifier}");
 }
 
+function dbGetViewVideoModule($contentIdentifier) {
+    global $wpdb;
+    $table = VIDEO_TABLE_NAME;
+    return $wpdb->get_results("SELECT viewVideoModule FROM {$table} WHERE contentidentifier={$contentIdentifier}");
+}
+
+function dbSetViewVideoModule($contentId, $state) {
+    global $wpdb;
+    $table = VIDEO_TABLE_NAME;
+    $set = "SET viewVideoModule='{$state}'";
+    return $wpdb->query("UPDATE {$table} {$set} WHERE contentidentifier='{$contentId}'");
+}
+
+function dbSetVideoPosition($contentId, $position, $state=null) {
+    global $wpdb;
+    $table = VIDEO_TABLE_NAME;
+    $set = "SET position='{$position}'";
+    if ($state)
+        $set.append(", state='{$state}'");
+    return $wpdb->query("UPDATE {$table} {$set} WHERE contentidentifier='{$contentId}'");
+}
 
 function dbGetUserVideosId($user) {
     global $wpdb;

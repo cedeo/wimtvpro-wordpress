@@ -237,10 +237,10 @@ jQuery(document).ready(function(){
 				
 				text += '<select onChange="viewWho(this);" id="users" multiple="multiple" style="height:100px;width:270px">';
 				text += alls;
-				text += '<optgroup label="' + videoPrivacy[8] + '" id="optUsers">';
+				text += '<optgroup label="' + videoPrivacy[9] + '" id="optUsers">';
 				text += users;
 				text += '</optgroup>';
-				text += '<optgroup label="' + videoPrivacy[9] + '" id="optRoles">';
+				text += '<optgroup label="' + videoPrivacy[8] + '" id="optRoles">';
 				text += roles;
 				text += '</optgroup>';
 				text += '</select>';

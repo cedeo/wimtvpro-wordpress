@@ -5,7 +5,7 @@
 	global $user,$wpdb;
 	$parse_uri = explode( 'wp-content', $_SERVER['SCRIPT_FILENAME'] );
 	$url_include = $parse_uri[0] . 'wp-load.php';
-	$output ="";
+	$output_playlist ="";
 	if(@file_get_contents($url_include)){
 		require_once($url_include);
 	}
@@ -28,15 +28,12 @@
 		
 		$height = get_option("wp_heightPreview") +190;
 		$width = get_option("wp_widthPreview") +280;
-		$output .= "<div style='text-align:center;height:" . $height . "px;width:" . $width . "px;'>";
-		$output .= "<h3>" . $title . "</h3>";
+		$output_playlist .= "<div style='text-align:center;height:" . $height . "px;width:" . $width . "px;'>";
+		$output_playlist .= "<h3>" . $title . "</h3>";
 	} else {
 		$height = get_option("wp_heightPreview") + 50;
-		$output .= "<div style='text-align:center;width:100%;height:" . $height . "px;'>";
+		$output_playlist .= "<div style='text-align:center;width:100%;height:" . $height . "px;'>";
 	}
-		
-		
-	
 	$playlistSize = "30%";
 	$dimensions = "width: '100%',";
 	$code = "<div id='container-" . $idPlayList . "' style='margin:0;padding:0 10px;'></div>";
@@ -111,19 +108,18 @@
 	$code .= $skin . $dimensions . "'fallback':'false',";
 	$code .= "playlist: [" . $playlist . "],";
 	$code .= "'playlist.position': 'right',	'playlist.size': '" . $playlistSize  . "'});</script>";
-	$output .= $code;
-	
-	//$output .= htmlspecialchars($code);
+	$output_playlist .= $code;
+
 	if ($is_admin){
-		$output .= "<div style='float:left; width:50%;'>
+		$output_playlist .= "<div style='float:left; width:50%;'>
 	Embedded:<textarea style='resize: none; width:90%;height:70px;font-size:10px' readonly='readonly' onclick='this.focus(); this.select();'>" . htmlentities($code) . "</textarea></div>";
 	
-		$output .= "<div style='float:left; width:50%;'>Shortcode:<textarea style='resize: none; width:90%;height:70px;font-size:20px' readonly='readonly' onclick='this.focus(); this.select();'>[playlistWimtv id='" . $idPlayList . "']</textarea></div>";
+		$output_playlist .= "<div style='float:left; width:50%;'>Shortcode:<textarea style='resize: none; width:90%;height:70px;font-size:20px' readonly='readonly' onclick='this.focus(); this.select();'>[playlistWimtv id='" . $idPlayList . "']</textarea></div>";
 	}
 	
-	$output .= "</div>";
+	$output_playlist .= "</div>";
 	wp_reset_query();
-	echo $output;	
+	echo $output_playlist;	
 	
 
 ?>

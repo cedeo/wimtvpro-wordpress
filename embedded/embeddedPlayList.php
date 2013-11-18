@@ -43,13 +43,8 @@ $code = "<div id='container-" . $idPlayList . "' style='margin:0;padding:0 10px;
 //Read Data videos
 
 $videoList = explode (",",$listVideo);
-$sql_where  = " 1=2 ";
-for ($i=0;$i<count($videoList);$i++){
-	$sql_where .= "  OR contentidentifier='" . $videoList[$i] . "' ";
-}
-$sql_where = "AND (" . $sql_where . ")"; 
-$array_videos = $wpdb->get_results("SELECT * FROM " .  $wpdb->prefix . "wimtvpro_video WHERE uid='" . get_option("wp_userWimtv") . "' " . $sql_where);
 
+$array_videos = dbGetUserVideosIn(get_option("wp_userWimtv"), $videoList);
 $array_videos_new_drupal = array();
 for ($i=0;$i<count($videoList);$i++){
 	foreach ($array_videos as $record_new) {

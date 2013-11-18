@@ -59,13 +59,13 @@ function dbDeleteVideo($contentIdentifier) {
 function dbGetVideo($contentIdentifier) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
-    return $wpdb->get_results("SELECT * FROM {$table} WHERE contentidentifier={$contentIdentifier}");
+    return $wpdb->get_results("SELECT * FROM {$table} WHERE contentidentifier='{$contentIdentifier}'");
 }
 
 function dbGetViewVideoModule($contentIdentifier) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
-    return $wpdb->get_results("SELECT viewVideoModule FROM {$table} WHERE contentidentifier={$contentIdentifier}");
+    return $wpdb->get_results("SELECT viewVideoModule FROM {$table} WHERE contentidentifier='{$contentIdentifier}'");
 }
 
 function dbSetViewVideoModule($contentId, $state) {
@@ -113,5 +113,34 @@ function dbGetUserVideos($user, $showtime, $public, $offset, $rows) {
     $table = VIDEO_TABLE_NAME;
     $where = dbBuildGetVideosWhere($showtime, $public);
     $query = "SELECT * FROM {$table} WHERE uid='{$user}' {$where} ORDER BY mytimestamp DESC LIMIT {$offset}, ${rows}";
+    return $wpdb->get_results($query);
+}
+
+function dbBuildVideosIn($listVideos, $in=true) {
+    if (count($listVideos)) {
+        $where = " AND contentidentifier ";
+        if (!$in)
+            $where .= "NOT";
+        $where .= " IN (";
+        foreach ($listVideos as $index=>$video) {
+            $where .= "'" . $video . "'";
+            if ($index < count($listVideos)-1)
+                $where .= ", ";
+        }
+        $where .= ")";
+        return $where;
+    }
+    return "";
+}
+
+function dbGetUserVideosIn($user, $listVideos, $showtime=false, $playlist=true) {
+    global $wpdb;
+    $and_showtime = "";
+    if ($showtime) {
+        $and_showtime .= "AND state='showtime'";
+    }
+    $table = VIDEO_TABLE_NAME;
+    $where = dbBuildVideosIn($listVideos, $playlist);
+    $query = "SELECT * FROM {$table} WHERE uid='{$user}' {$and_showtime} {$where}";
     return $wpdb->get_results($query);
 }

@@ -29,6 +29,14 @@ function dbExtractSpecificPlayist($idPlayList){
 	return $wpdb->get_results($query);
 }
 
+function dbGetUSerPlaylist($username, $id) {
+    $table_name= PLAYLIST_TABLE_NAME;
+    global $wpdb;
+    return $wpdb->get_results("SELECT * FROM {$table_name}
+            WHERE uid='" . $username . "'
+            AND id='" .  $id . "'");
+}
+
 function dbUpdatePlaylist($id, $listVideo=null, $namePlaylist=null){
     $table_name= PLAYLIST_TABLE_NAME;
     global $wpdb;

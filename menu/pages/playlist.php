@@ -18,12 +18,11 @@ function wimtvpro_playlist() {
 
 	if ($nameFunction=="modPlaylist"){
         $linkReturn =  "<a href='" . $_SERVER['REQUEST_URI'] . "&namefunction=listPlaylist' class='add-new-h2'>" . __( 'Return to list', 'wimtvpro') . "</a> ";
-        $table_name = PLAYLIST_TABLE_NAME;
         if (isset($_POST["modPlaylist"]) && $_POST["modPlaylist"] =="true"){
             dbUpdatePlaylist($_GET["id"], $_POST["listVideo"], $_POST["namePlaylist"]);
             $updated = true;
         }
-		$playlist = $wpdb->get_results("SELECT * FROM {$table_name} WHERE uid='" . get_option("wp_userwimtv") . "' AND id=" . $_GET["id"]);
+		$playlist = dbGetUserPlaylist(get_option("wp_userwimtv"), $_GET['id']);
 			
         if (count($playlist)>0) {
           $option = $playlist[0]->option;

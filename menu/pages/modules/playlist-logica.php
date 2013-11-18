@@ -4,36 +4,11 @@
  */
 function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="",$playlist=FALSE) {
 	global $wpdb;
-	$table_name = $wpdb->prefix . 'wimtvpro_video';
 	$replace_content = get_option("wp_replaceContentWimtv");
 	$my_media= "";
-	$response_st = "";
-	$sql_where  = "  ";
 	$videoList = explode (",",$list);
-	if ($showtime)
-		$sql_where  = "  state='showtime'";
-	else
-		if ($playlist)
-			$sql_where  = "  1=2";
-		else
-			$sql_where  = "  1=1";
-	if ($playlist) {
-		for ($i=0;$i<count($videoList);$i++){
-			if ($videoList[$i]!="")
-				$sql_where .= "  OR contentidentifier='" . $videoList[$i] . "' ";
-		}
-		$sql_where = "AND (" . $sql_where . ")";  
-	} 
-	else {
-		for ($i=0;$i<count($videoList);$i++){
-			if ($videoList[$i]!="")
-				$sql_where .= "  AND contentidentifier!='" . $videoList[$i] . "' ";
-		}
-		$sql_where = "AND (" . $sql_where . ")"; 
-	}
 
-
- 	$array_videos  = $wpdb->get_results("SELECT * FROM " . $table_name . " WHERE uid='" .  get_option("wp_userWimtv") . "' " . $sql_where);
+ 	$array_videos  = dbGetUserVideosIn(get_option("wp_userWimtv"), $videoList, $showtime, $playlist); //$wpdb->get_results("SELECT * FROM " . $table_name . " WHERE uid='" .  get_option("wp_userWimtv") . "' " . $sql_where);
 
 	$array_videos_new_drupal = array();
 
@@ -45,7 +20,6 @@ function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $inse
 					array_push($array_videos_new_drupal, $record_new);	
 				}
 			}
-
 		}
 	} else {
 		$array_videos_new_drupal = $array_videos;

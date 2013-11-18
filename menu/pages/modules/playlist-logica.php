@@ -3,13 +3,11 @@
  * Written by walter at 24/10/13
  */
 function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="",$playlist=FALSE) {
-	global $wpdb;
 	$replace_content = get_option("wp_replaceContentWimtv");
 	$my_media= "";
 	$videoList = explode (",",$list);
 
- 	$array_videos  = dbGetUserVideosIn(get_option("wp_userWimtv"), $videoList, $showtime, $playlist); //$wpdb->get_results("SELECT * FROM " . $table_name . " WHERE uid='" .  get_option("wp_userWimtv") . "' " . $sql_where);
-
+ 	$array_videos  = dbGetUserVideosIn(get_option("wp_userWimtv"), $videoList, $showtime, $playlist);
 	$array_videos_new_drupal = array();
 
 	if ($playlist==TRUE) {

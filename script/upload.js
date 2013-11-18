@@ -15,7 +15,8 @@ function ProgressLoop(contentId) {
                     type: "GET",
 
                     success: function(response) {
-                        loop.progress = response;
+                        var json = jQuery.parseJSON(response);
+                        loop.progress = json['percentage'];
                         console.log(loop.progress);
                         jQuery('.progress-bar span').css("width", loop.progress + "%");
                         jQuery (".progress-bar span").html(loop.progress + "%");

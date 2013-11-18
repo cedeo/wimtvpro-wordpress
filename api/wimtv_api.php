@@ -212,7 +212,7 @@ function apiGetUUID() {
 
 function apiUpload($parameters) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->postRequest('videos');
+    $request = $apiAccessor->postRequest('videos?uploadIdentifier=' . $parameters['uploadIdentifier']);
     $request->body($parameters);
     $request->sends(Mime::UPLOAD);
     $request->attach(array('file' => $parameters['file']));

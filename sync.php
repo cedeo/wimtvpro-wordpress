@@ -48,7 +48,7 @@ if (!isset($upload))
 	      foreach ($array_all_videos as $video) {
 	        $url_video = $video["actionUrl"];
 	        $status = $video["status"];
-	        $acquired_identifier = $video["acquiredIdentifier"];
+	        $acquired_identifier = $video["relationId"];
 	        $title= $video["title"];
             if (isset($video["streamingUrl"])) {
                 $urlVideo = $video["streamingUrl"]->streamer . "$$";

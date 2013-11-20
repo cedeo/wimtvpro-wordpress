@@ -46,7 +46,7 @@ function dbUpdateVideoState($contentId, $state, $showtimeId=null) {
     $table = VIDEO_TABLE_NAME;
     $set = "SET state='{$state}'";
     if ($showtimeId)
-        $set.append(", showtimeidentifier='{$showtimeId}'");
+        $set .= ", showtimeidentifier='{$showtimeId}'";
     return $wpdb->query("UPDATE {$table} {$set} WHERE contentidentifier='{$contentId}'");
 }
 
@@ -80,7 +80,7 @@ function dbSetVideoPosition($contentId, $position, $state=null) {
     $table = VIDEO_TABLE_NAME;
     $set = "SET position='{$position}'";
     if ($state)
-        $set.append(", state='{$state}'");
+        $set .= ", state='{$state}'";
     return $wpdb->query("UPDATE {$table} {$set} WHERE contentidentifier='{$contentId}'");
 }
 

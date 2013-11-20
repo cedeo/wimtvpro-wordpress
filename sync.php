@@ -89,11 +89,11 @@ if (!isset($upload))
 	          }
 	          if (!$trovato) {
                 dbInsertVideo(get_option("wp_userwimtv"), $content_item, $pos_wimtv, $status,
-                              $url_thumbs, $categories, $urlVideo, $title, $duration, $showtime_identifier);
+                              $url_thumbs, $categories, $urlVideo, $title, $duration, $showtime_identifier,$acquired_identifier);
 	          } 
 	          else {
                 dbUpdateVideo($pos_wimtv, $status, $title, $url_thumbs, $urlVideo,
-                              $duration, $showtime_identifier, $categories, $content_item);
+                              $duration, $showtime_identifier, $categories, $content_item,$acquired_identifier);
 	          }
 	      }
 		}

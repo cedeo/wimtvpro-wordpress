@@ -3,7 +3,7 @@
  * Written by walter at 11/11/13
  */
 
-function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categories, $urlPlay, $title, $duration, $showtimeId) {
+function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categories, $urlPlay, $title, $duration, $showtimeId,$acquired_identifier) {
     global $wpdb;
     $video = array("uid" => $user,
                    "contentidentifier" => $contentId,
@@ -11,6 +11,7 @@ function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categori
                    "position" => '0',
                    "state" => $state,
                    "viewVideoModule" => '3',
+				   "acquired_identifier " => $acquired_identifier,
                    "status" => $status,
                    "urlThumbs" => mysql_real_escape_string($urlThumbs),
                    "category" => $categories,
@@ -21,7 +22,7 @@ function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categori
     return $wpdb->insert(VIDEO_TABLE_NAME, $video);
 }
 
-function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration, $showtimeId, $categories, $contentId) {
+function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration, $showtimeId, $categories, $contentId,$acquired_identifier) {
     global $wpdb;
 
     $title = mysql_real_escape_string($title);
@@ -35,6 +36,7 @@ function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration,
                                              title='{$title}',
                                              urlThumbs='{$urlThumbs}',
                                              urlPlay='{$urlPlay}',
+											 acquired_identifier => '{$acquired_identifier}',
                                              duration='{$duration}',
                                              showtimeidentifier='{$showtimeId}',
                                              category='{$categories}'

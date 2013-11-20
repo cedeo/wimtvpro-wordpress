@@ -16,13 +16,14 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
   $title = $record_new -> title;
   $showtime_identifier = $record_new -> showtimeIdentifier;
   $stateView = explode ("|",$view_video_state);
-  $array =  explode (",",$stateView[0]);
+  $array =  explode (",",$stateView[1]);
   $typeUser["U"] = array();
   $typeUser["R"] = array();
   $viewPublicVideo = FALSE;
   $status = $status_array[0];
   foreach ($array as $key=>$value) {
   	$var = explode ("-",$value);
+	
   	if ($var[0]=="U") {
   		array_push($typeUser["U"], $var[1]);
   	}

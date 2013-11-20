@@ -14,7 +14,6 @@ if (!isset($upload))
   global $user,$wpdb;
 	
 	$response= apiGetVideos();
-
   	$array_json_videos = json_decode($response);
 
   if ($array_json_videos==NULL) {
@@ -46,10 +45,9 @@ if (!isset($upload))
       }
       if ($array_all_videos) {
 	      foreach ($array_all_videos as $video) {
-            //echo json_encode($video);
 	        $url_video = $video["actionUrl"];
 	        $status = $video["status"];
-	        //$acquired_identifier = $video["acquired_identifier"];
+	        $acquired_identifier = $video["relationId"];
 	        $title= $video["title"];
             if (isset($video["streamingUrl"])) {
                 $urlVideo = $video["streamingUrl"]->streamer . "$$";

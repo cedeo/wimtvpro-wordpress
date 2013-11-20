@@ -10,7 +10,7 @@
     $arrayPlay = dbGetVideo($contentItem);
     $heightDiv = get_option("wp_heightPreview") +150;
 	$widthDiv = get_option("wp_widthPreview") +280;
-	echo "<div style='text-align:center; height: " . $heightDiv . "px; width: " . $widthDiv . "px' class='responsiveVideo'>";
+	echo "<div class='responsiveVideo'>";
 	echo "<div id='container'> </div>";
 	
 	if ($arrayPlay[0]->urlPlay!=""){
@@ -60,7 +60,7 @@
 			//Video is PAYPERVIEW
 			$output .= "<p><b>Video PAY PER VIEW</b></p>";
 		}
-	
+
 		echo $output . "</div>";
 	
 	} else {

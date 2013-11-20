@@ -237,10 +237,10 @@ jQuery(document).ready(function(){
 				
 				text += '<select onChange="viewWho(this);" id="users" multiple="multiple" style="height:100px;width:270px">';
 				text += alls;
-				text += '<optgroup label="' + videoPrivacy[8] + '" id="optUsers">';
+				text += '<optgroup label="' + videoPrivacy[9] + '" id="optUsers">';
 				text += users;
 				text += '</optgroup>';
-				text += '<optgroup label="' + videoPrivacy[9] + '" id="optRoles">';
+				text += '<optgroup label="' + videoPrivacy[8] + '" id="optRoles">';
 				text += roles;
 				text += '</optgroup>';
 				text += '</select>';
@@ -405,6 +405,7 @@ jQuery(document).ready(function(){
 				jQuery(".form_save").click(function(){
 					var namefunction,licenseType,paymentMode,ccType,pricePerView,pricePerViewCurrency,changeClass,coId,id ="";
 					var id = element.parent().parent().parent("tr").attr("id");
+					
 					var icon = element.parent().parent().parent("tr").children(".icon");
 					var nomeclass = element.parent().parent().parent("tr").children(".icon").children("span.add").attr("class");		
 					var thisclass = element.attr("class");
@@ -485,7 +486,7 @@ jQuery(document).ready(function(){
 	});
 	
 		
-	jQuery(".icon_Putshowtime,.icon_AcquiPutshowtime").click(function(){
+	jQuery(".icon_Putshowtime,.icon_AcquPutshowtime").click(function(){
 		callViewForm(jQuery(this));
 	});
 	jQuery(".icon_AcqRemoveshowtime,.icon_Removeshowtime,.icon_RemoveshowtimeInto").click(function(){

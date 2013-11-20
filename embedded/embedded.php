@@ -47,7 +47,6 @@
 
     $parametersGet = "get=1&width=" . get_option("wp_widthPreview") . "&height=" . get_option("wp_heightPreview") . $skin;
 	$response = apiGetPlayerShowtime($arrayST["contentId"],$parametersGet);
- 	echo "<div style='text-align:center;height:" . $height . "px;width:" . $width . "px;'>";
 	$output .= $response;
 
     
@@ -69,9 +68,9 @@
     }
     
 
-    
+    wp_reset_query();
     //echo "<p class='icon_downloadVideo' id='" . $arrayST["contentId"] . "'>Download</p>";   
-    echo $output . "</div>";
+    echo $output;
  }   
 ?>
 

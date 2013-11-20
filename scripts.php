@@ -86,44 +86,43 @@
       die();
     break;
     case "putAcqST":
-    
-    $licenseType = "";
-    $paymentMode = "";
-    $ccType = "";
-    $pricePerView  = "";
-    $pricePerViewCurrency = "";
-    
-    if (isset($_GET['licenseType']))
-    	$licenseType = $_GET['licenseType'];
-    if (isset($_GET['paymentMode']))
-    	$paymentMode = $_GET['paymentMode'];
-    if (isset($_GET['ccType']))
-    	$ccType = $_GET['ccType'];
-    if (isset($_GET['pricePerView']))
-    	$pricePerView = $_GET['pricePerView'];
-    if (isset($_GET['pricePerViewCurrency']))
-    	$pricePerViewCurrency = $_GET['pricePerViewCurrency'];
-    
-    $params=array('licenseType'=>$licenseType,
-      			 'paymentMode'=>$paymentMode,
-      			 'ccType'=>$ccType,
-      			 'pricePerView'=>$pricePerView,
-      			 'pricePerViewCurrency'=>$pricePerViewCurrency
-      			);
-    
-      $state="showtime";
+        $licenseType = "";
+        $paymentMode = "";
+        $ccType = "";
+        $pricePerView  = "";
+        $pricePerViewCurrency = "";
 
-      dbUpdateVideoState($id, $state);
-      
-      //Richiamo API  http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
-      //curl -u {username}:{password} -d "licens e_type=TEMPLATE_LICENSE&paymentMode=PAYPERVIEW&pricePerView=50.00&pricePerViewCurrency=EUR" http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
-    
-      
-      $response = apiPublishOnShowtime($id, $params);
-      
-	echo $response;   
-	die();
-    break;
+        if (isset($_GET['licenseType']))
+            $licenseType = $_GET['licenseType'];
+        if (isset($_GET['paymentMode']))
+            $paymentMode = $_GET['paymentMode'];
+        if (isset($_GET['ccType']))
+            $ccType = $_GET['ccType'];
+        if (isset($_GET['pricePerView']))
+            $pricePerView = $_GET['pricePerView'];
+        if (isset($_GET['pricePerViewCurrency']))
+            $pricePerViewCurrency = $_GET['pricePerViewCurrency'];
+
+        $params=array('licenseType'=>$licenseType,
+                     'paymentMode'=>$paymentMode,
+                     'ccType'=>$ccType,
+                     'pricePerView'=>$pricePerView,
+                     'pricePerViewCurrency'=>$pricePerViewCurrency
+                    );
+
+          $state="showtime";
+
+          dbUpdateVideoState($id, $state);
+
+          //Richiamo API  http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
+          //curl -u {username}:{password} -d "licens e_type=TEMPLATE_LICENSE&paymentMode=PAYPERVIEW&pricePerView=50.00&pricePerViewCurrency=EUR" http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
+
+
+          $response = apiPublishOnShowtime($id, $params);
+
+        echo $response;
+        die();
+        break;
     case "removeST";
 
       dbSetVideoPosition($id, "0", "");

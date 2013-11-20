@@ -48,6 +48,7 @@ include("functions/listDownload.php");
 include("functions/optionCategories.php");
 include("functions/detailShowtime.php");
 
+
 load_plugin_textdomain( 'wimtvpro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 add_shortcode( 'streamingWimtv', 'wimtvpro_shortcode_streaming' );
@@ -454,7 +455,7 @@ function wimtvpro_shortcode_streaming($atts) {
   $idUser = $user->ID;
   $userRole = $user->roles[0];
 
-  extract( shortcode_atts( array('id'=>$id,'width'=>$width,'height'=>$height), $atts ) );
+  extract( shortcode_atts( array('id','width','height'), $atts ) );
 
   $arrayPlay = dbGetVideo($id);
 
@@ -498,7 +499,7 @@ function wimtvpro_shortcode_streaming($atts) {
       $params = "get=1&width=" . $width . "&height=" . $height . $skin;
 
       $response = apiGetPlayerShowtime($id, $params);
-	  
+	  wp_reset_query();
 	  return $response;
   } else {
 	return "<p>You don't have permission to see the video</p>";
@@ -507,6 +508,7 @@ function wimtvpro_shortcode_streaming($atts) {
 function wimtvpro_shortcode_playlist($atts) {
   extract( shortcode_atts( array('id'=>0), $atts ) );
   $_GET['id'] = $id;
+  wp_reset_query();
   include("embedded/embeddedPlayList.php");
 }
 

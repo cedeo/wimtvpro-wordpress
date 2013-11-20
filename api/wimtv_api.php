@@ -155,7 +155,14 @@ function apiPublishOnShowtime($id, $parameters) {
     return $apiAccessor->execute($request);
 	
 }
-
+function apiPublishAcquiredOnShowtime($id,  $acquiredId,$parameters) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->postRequest('videos/' . $id . '/acquired/' . $acquiredId . '/showtime');
+    $request->body($parameters);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+	
+}
 function apiGetThumbsVideo($contentId) {
    	$apiAccessor = getApi();
     $request = $apiAccessor->getRequest('videos/' . $contentId . '/thumbnail');

@@ -55,7 +55,7 @@ function dbUpdateVideoState($contentId, $state, $showtimeId=null) {
 function dbDeleteVideo($contentIdentifier) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
-    return $wpdb->query("DELETE FROM {$table} WHERE contentidentifier={$contentIdentifier}");
+    return $wpdb->query("DELETE FROM {$table} WHERE contentidentifier='{$contentIdentifier}'");
 }
 
 function dbGetVideo($contentIdentifier) {

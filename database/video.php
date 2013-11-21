@@ -11,7 +11,7 @@ function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categori
                    "position" => '0',
                    "state" => $state,
                    "viewVideoModule" => '3',
-				   "acquiredIdentifier " => $acquired_identifier,
+				   "acquiredIdentifier" => $acquired_identifier,
                    "status" => $status,
                    "urlThumbs" => mysql_real_escape_string($urlThumbs),
                    "category" => $categories,

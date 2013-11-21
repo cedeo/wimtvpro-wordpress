@@ -23,7 +23,7 @@ function wimtvpro_viever_jwplayer($userAgent, $contentId,  $dirJwPlayer) {
     } else if ($isAndroid) {
         $configFile = "file: '" . $url . "',";
     } else {
-        $configFile = "'flashplayer':'" . $dirJwPlayer . "','file': '" . $url . "','streamer':'" . $$streamer . "',";
+        $configFile = "'flashplayer':'" . $dirJwPlayer . "','file': '" . $url . "','streamer':'" . $streamer . "',";
     }
     return $configFile;
 }

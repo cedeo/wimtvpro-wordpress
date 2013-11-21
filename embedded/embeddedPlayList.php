@@ -1,5 +1,5 @@
 <?php
-
+//TODO: Riscrivere da capo questo file, dividendo HTML da PHP!
 
 $user_agent = $_SERVER['HTTP_USER_AGENT'];
 $idPlayList=$_GET['id'];
@@ -54,7 +54,8 @@ foreach ($array_videos_new_drupal as $videoT){
     else {
         $thumbs = explode ('"',$videoT->urlThumbs);
     }
-    $playlist .= "{" . $configFile . " 'image':'" . $thumbs[1]  . "','title':'" . str_replace ("+"," ",urlencode($videoT->title)) . "'},";
+    $thumb_url = str_replace("\\", "", $thumbs[1]);
+    $playlist .= "{" . $configFile . " 'image':'" . $thumb_url . "','title':'" . str_replace ("+"," ",urlencode($videoT->title)) . "'},";
 
 }
 

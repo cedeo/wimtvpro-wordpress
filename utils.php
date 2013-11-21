@@ -74,3 +74,8 @@ function getDateRange($startDate, $endDate, $format="d/m/Y") {
 function wimtvpro_checkCleanUrl($base, $url) {
     return plugins_url($base . "/" . $url, __FILE__);
 }
+
+function lastURLComponent($string) {
+    $parts = explode("/", $string);
+    return $parts[count($parts) - 1];
+}

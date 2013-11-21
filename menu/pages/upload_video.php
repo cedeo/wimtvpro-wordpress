@@ -39,14 +39,14 @@ function wimtvpro_upload() {
                     <input type="text" id="edit-titlefile" name="titlefile" value="" size="100" maxlength="200" class="form-text required" />
                 </p>
                 <p>
-                    <label for="edit-descriptionfile"><?php _e("Description"); ?> </label>
+                    <label for="edit-descriptionfile"><?php _e("Description","wimtvpro"); ?> </label>
                     <br/>
                     <textarea id="edit-descriptionfile" name="descriptionfile" cols="150" rows="5"></textarea>
                 </p>
 
                 <p>
                     <label for="edit-videocategory">
-                        <?php _e("Category");?> - <?php _e("Subcategory","wimtvpro");?>
+                        <?php _e("Category","wimtvpro");?> - <?php _e("Subcategory","wimtvpro");?>
                     </label>
                     <br/>
                     <select onchange="viewCategories(this);" multiple="multiple"

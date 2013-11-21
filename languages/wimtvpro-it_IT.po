@@ -248,13 +248,13 @@ msgstr "Errore interno. Contatta l'assistenza di wimTV"
 
 #: 
 #, fuzzy
-msgid "You did not compile all requested fields"
+msgid "You did not  compile all requested fields"
 msgstr "Non hai compilato tutti i campi obbligatori"
 
 #: 
 #, fuzzy
 msgid "WimTV Registration"
-msgstr "Registrazione WimTV"
+msgstr "Registratione WimTV"
 
 #: 
 msgid "Login Credentials"
@@ -322,7 +322,7 @@ msgstr "Codice fiscale"
 
 #: 
 msgid "Vat Code"
-msgstr "Partita IVA"
+msgstr "Partita Iva"
 
 #: 
 msgid "Street"
@@ -1047,4 +1047,16 @@ msgstr "Ragione Sociale"
 #: 
 msgid "Have you the legal right of acting as an affiliate to the preceeding company?"
 msgstr "Hai i diritti legali per operare come affiliato dell’azienza precedente?"
+
+#: 
+msgid "Category"
+msgstr "Categoria"
+
+#: 
+msgid "Description"
+msgstr "Descrizione"
+
+#: 
+msgid "VAT Code"
+msgstr "Partita IVA"
 

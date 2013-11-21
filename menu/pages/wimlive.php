@@ -106,12 +106,10 @@ function wimtvpro_live() {
             <?php echo _e("This service can be used in one of these two modalities:","wimtvpro") ?>
             <ol>
                 <li>
-                <?php echo _e("Install a third party video encoding software (e.g. Adobe Flash Media Live Encoder, Wirecast etc.)
-                          on your pc: this solution is recommended if you want to connect an external video camera to your pc","wimtvpro") ?>
+                <?php echo _e("Install a third party video encoding software (e.g. Adobe Flash Media Live Encoder, Wirecast etc.) on your pc: this solution is recommended if you want to connect an external video camera to your pc","wimtvpro") ?>
                 </li>
                 <li>
-                <?php echo _e('Use WimTV encoding software. Broadcast directly from your webcam, by simply clicking the icon "Live now".
-                               By clicking “Live now” icon, the producer will open in a new browser tab. Keep it open during the whole transmission.',"wimtvpro") ?>
+                <?php echo _e('Use WimTV encoding software. Broadcast directly from your webcam, by simply clicking the icon "Live now". By clicking “Live now” icon, the producer will open in a new browser tab. Keep it open during the whole transmission.',"wimtvpro") ?>
                 </li>
             </ol>
         </p>

@@ -4,21 +4,16 @@
  */
 function wimtvpro_viever_jwplayer($userAgent, $contentId,  $dirJwPlayer) {
     $isiPad = (bool) strpos($userAgent,'iPad');
-
     $isiPhone = (bool) strpos($userAgent,'iPhone');
     $isAndroid = (bool) strpos($userAgent,'Android');
-
 
 	$response = apiGetDetailsVideo($contentId);
 	$arrayjson   = json_decode($response);
 
     $streamer = $arrayjson->streamingUrl->streamer;
-	$file = $arrayjson->streamingUrl->file;
 	$url = $arrayjson->url;
 
     if ($isiPad  || $isiPhone) {
-        $urlPlayIPadIphone = "";
-        $urlPlayIPadIphone = $arrayjson->streamingUrl->streamer;
         $configFile = "'file': '" .  $streamer . "',";
     } else if ($isAndroid) {
         $configFile = "file: '" . $url . "',";

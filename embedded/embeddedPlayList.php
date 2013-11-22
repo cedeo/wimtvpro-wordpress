@@ -4,7 +4,7 @@
 $user_agent = $_SERVER['HTTP_USER_AGENT'];
 $idPlayList=$_GET['id'];
 
-//Read Playlist's Videos into DB
+include("../../../../wp-load.php");
 
 $record= dbExtractSpecificPlayist($idPlayList);
 

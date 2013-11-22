@@ -298,7 +298,7 @@
 				closedir($handle);
 				echo  '</strong></p></div>';
                 $status = 'OWNED|'  . $_FILES['videoFile']['name'];
-                dbInsertVideo(get_option("wp_userwimtv"), $arrayjsonst->contentIdentifier, "", $status, $arrayjsonst->urlThumbs, "", "", $titlefile, "", "");
+                dbInsertVideo(get_option("wp_userwimtv"), $arrayjsonst->contentIdentifier, "", $status, $arrayjsonst->urlThumbs, "", "", $titlefile, "", "", "");
 	 		 }
 	         else{
 	             $error ++;

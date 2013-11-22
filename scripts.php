@@ -25,8 +25,6 @@
     $function= $_POST["namefunction"];
   if (isset($_GET['id']))
     $id = $_GET['id'];
-  if (isset($_GET['acquiredId']))
-    $acid = $_GET['acquiredId'];
   if (isset($_GET['showtimeId']))
     $stid = $_GET['showtimeId'];
   if (isset($_GET['ordina']))
@@ -92,6 +90,8 @@
         $pricePerView  = "";
         $pricePerViewCurrency = "";
 
+		if (isset($_GET['coId']))
+			$acid = $_GET['coId'];
         if (isset($_GET['licenseType']))
             $licenseType = $_GET['licenseType'];
         if (isset($_GET['paymentMode']))
@@ -116,11 +116,8 @@
 
           //Richiamo API  http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
           //curl -u {username}:{password} -d "licens e_type=TEMPLATE_LICENSE&paymentMode=PAYPERVIEW&pricePerView=50.00&pricePerViewCurrency=EUR" http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
-
-
-          $response = apiPublishOnShowtime($id, $params);
-
-        echo $response;
+        $response = apiPublishAcquiredOnShowtime($id, $acid ,$params);
+		echo $response;
         die();
         break;
     case "removeST";

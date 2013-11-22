@@ -113,7 +113,7 @@ function wimtvpro_playlist() {
 
             <tr class="playlist" id="playlist_<?php echo $index ?>" rel="<?php echo $record->id ?>">
 
-                <td><?php echo $record->name ?></td>
+                <td><span class="icon_viewPlay_title" id="<?php echo $record->id ?>"><?php echo $record->name ?></span></td>
                 <td><?php echo $record->countVideo ?></td>
                 <td>
                     <span class="icon_viewPlay" id="<?php echo $record->id ?>"></span>

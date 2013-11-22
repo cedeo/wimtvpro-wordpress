@@ -247,9 +247,6 @@ function wimtvpro_media_menu($tabs) {
   					//'wimtvproLive' => __('Live', 'wimtvpro_insertLive')
 				);
   return array_merge($tabs, $newtab);
-  
-  //VEDERE http://axcoto.com/blog/article/307
-  
 }
 add_filter('media_upload_tabs', 'wimtvpro_media_menu');
 // End attach video into post
@@ -500,7 +497,7 @@ function wimtvpro_shortcode_streaming($atts) {
 
       $response = apiGetPlayerShowtime($id, $params);
 	  wp_reset_query();
-	  return $response;
+	  return "<div style='text-align:center'>" . $response . "</div>";
   } else {
 	return "<p>You don't have permission to see the video</p>";
   }  

@@ -21,15 +21,11 @@ if (!isset($upload))
   } 
   else {
   //$num = (array)simplexml_load_string($response);
-    $i=0;
-    foreach ($array_json_videos -> items as $a) {
-      foreach ($a as $key => $value) {
-        $array_all_videos[$i][$key] = $value;
+    foreach ($array_json_videos -> items as $index => $video) {
+      foreach ($video as $key => $value) {
+        $array_all_videos[$index][$key] = $value;
       }
-      $i++;
     }
-    $num = count($array_json_videos);
-    if ($num > 0 ) {
       $elenco_video_wimtv = array();
       $elenco_video_wp = array();
       $array_videos_new_wp = dbGetUserVideosId(get_option("wp_userwimtv"));
@@ -69,9 +65,8 @@ if (!isset($upload))
 	        }
 	        array_push($elenco_video_wimtv, $content_item);
 	        if (trim($content_item)!="") {
-	          //controllo se il video esiste
 	          $trovato = FALSE;
-	          //controllo se il video eiste in DRUPAL ma non pi&#65533; in WIMTV
+	          //controllo se il video esiste in DRUPAL ma non più in WIMTV
 	          foreach ($array_videos_new_wp as $record) {
 	            $content_itemAll = $record -> contentidentifier;
 	            if ($content_itemAll == $content_item) {
@@ -103,7 +98,7 @@ if (!isset($upload))
 
     //var_dump(array_diff($elenco_video_wp ,$elenco_video_wimtv ));
     $delete_into_wp = array_diff($elenco_video_wp, $elenco_video_wimtv);
-    foreach ($delete_into_wp as  $value) {
+    foreach ($delete_into_wp as $value) {
         dbDeleteVideo($value);
     }
 	
@@ -113,10 +108,6 @@ if (!isset($upload))
     
     //UPDATE PAGE MY STREAMING
 	update_page_wimvod();
-  }
-  else {
-    _e("You aren't videos","wimtvpro");
-  }
 }
 
 if (!isset($upload))

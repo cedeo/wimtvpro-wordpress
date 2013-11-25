@@ -3,7 +3,10 @@
 
 $user_agent = $_SERVER['HTTP_USER_AGENT'];
 $idPlayList=$_GET['id'];
-
+if (isset($_GET["isAdmin"])){
+	$is_admin=true;
+}
+	
 include("../../../../wp-load.php");
 
 $record= dbExtractSpecificPlayist($idPlayList);
@@ -16,7 +19,7 @@ if ($is_admin){
 	$width = get_option("wp_widthPreview") +280;
 	$widthP = get_option("wp_widthPreview") +250; 	
 
-	echo "<div style='text-align:center;height:" . $height . "px;width:" . $width . "px;'><h3>" . $title . "</h3>";
+	echo "<div style='text-align:center;'><h3>" . $title . "</h3>";
 
 
 } else {
@@ -83,7 +86,7 @@ if (!$mobile) {
     $code .=  "modes: [{type: 'html5'}],";
 }
 $code .="'repeat':'always',";
-$skin = "";
+$skin = "'skin':'https://www.wim.tv:443/wimtv-webappscript/player/wimtv/wimtv.xml',";
 
 $uploads_info = wp_upload_dir();
 $nomeFilexml  = wimtvpro_searchFile($uploads_info["basedir"] .  "/skinWim/" . get_option('wp_nameSkin'),"xml");

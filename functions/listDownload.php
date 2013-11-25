@@ -55,9 +55,9 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 		$licenseType = isset($stLicense[$showtime_identifier]) ? $stLicense[$showtime_identifier] : "";
 	}
 
-	
-
-	
+   }
+   
+   
 	$isfound = false;
 	if ((!strstr($replace_video, 'Not Found')) || (!isset($replace_video)) || ($replace_video==""))
 	  $isfound = true; 
@@ -65,11 +65,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     if ($isfound!="") {
       $replace_video = '<img src="' . $replace_video . '" title="' . $title . '" class="" />';
       if ($licenseType!="") $replace_video .= '<div class="icon_licence ' . $licenseType . '"></div>';
-	} else {
-		
 	}
-
-   }
    
    $wimtvpro_url = "";
    //For Admin

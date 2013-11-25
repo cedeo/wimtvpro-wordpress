@@ -76,25 +76,25 @@ table.items  div.thumb {
 	position: relative;
 }
 
-table.items .icon_licence  {
+.icon_licence  {
 	width:30px; height:30px; position: absolute;
 	 z-index: 10;  top:0 \;
 }
-*+html table.items .icon_licence  { top:0; }
+.icon_licence  { top:0; }
 @media screen and (-webkit-min-device-pixel-ratio:0) {
-    table.items .icon_licence {top:0;}
+   .icon_licence {top:0;}
 }
 
 table.items tr.streams {background-color:#CFC;}
 
-table.items div.PAYPERVIEW  {
+div.PAYPERVIEW  {
 	background: transparent url("https://www.wim.tv/wimtv-webapp/images/licenseConditions/pay.png") no-repeat center center;
 }
-table.items  div.CREATIVE_COMMONS{
+div.CREATIVE_COMMONS{
 	background: transparent url("https://www.wim.tv/wimtv-webapp/images/licenseConditions/cc.png") no-repeat center center;
 }
 
-table.items  div.FREEOFCHARGE{
+div.FREEOFCHARGE{
 	background: transparent url("https://www.wim.tv/wimtv-webapp/images/licenseConditions/play.png") no-repeat center center;
 }
 
@@ -327,6 +327,9 @@ height: 45px;background-color:#fff!important; border:1px solid #666!important;
 
 .playlist .icon_viewPlay{
 	background: transparent url('../images/view.png') no-repeat center center; width:32px; height:32px;display:block; cursor:pointer; 
+}
+.icon_viewPlay_title{
+	display:block; cursor:pointer;  width:100%!important;
 }
 
 

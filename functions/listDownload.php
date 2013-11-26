@@ -160,6 +160,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
       $action .= "<td class='icon'><span class='icon_RemoveshowtimeInto' title='Remove to My Streaming' id='" . $showtime_identifier . "'></span></td>";
       $action .= "<td><span class='icon_moveThumbs' title='" . __("Drag","wimtvpro") . "'></span></td>";
       $action .= "<td><span class='icon_viewVideo' rel='" . $view_video_state . "' title='Video Privacy'></span></td>";
+	  $action .= "<td><textarea style='resize: none; width:90%;height:100%; readonly='readonly' onclick='this.focus(); this.select();'>[streamingWimtv  id='" . $content_item_new . "' width='" . get_option("wp_heightPreview") . "' height='" . get_option("wp_widthPreview")  . "']</textarea></td>";
       
       /*if ($licenseType!="PAYPERVIEW") $action  .= "<td><span class='icon_playlist' rel='" . $showtime_identifier . "' title='Add to Playlist selected'></span></td>";*/
     }

@@ -74,6 +74,7 @@ function wimtvpro_mystreaming() {
                         <th style='width:15%'><?php echo __("Posted","wimtvpro") ?></th>
                         <th style='width:20%'><?php echo __("Change position","wimtvpro") ?></th>
                         <th style='width:20%'>Privacy</th>
+                         <th style='width:20%'>Shortcode</th>
                         <th style='width:20%'>Download</th>
                         <th style='width:15%'><?php echo __("Preview") ?></th>
                         <th></th>

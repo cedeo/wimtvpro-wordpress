@@ -1,6 +1,6 @@
 === WIMTVPRO ===
 Contributors: wimtv
-Tags: wim, wimtvpro, video, plugin, admin, media, live, on demand, streaming, playlist, web, tv, webtv, insert, manage, player
+Tags: video, plugin, admin, media, live, on demand, streaming, playlist, web, tv, webtv, gallery, embed, channel, broadcast, stream, manage, wimtv, wimtvpro, player
 Requires at least: 3.4
 Tested up to: 3.4
 License: GPLv2 or later
@@ -13,17 +13,16 @@ WimTVPro is the video plugin that adds several features to manage and publish vi
 
 With WimTVPro you can extend WordPress with a powerful plugin that allows you to organize, store, publish and stream video in posts, pages or widgets to any location within your website/blog.
 
-Storage and bandwidth used for the video is provided by WimTV, the innovative platform for live and on demand video streaming. To use the plugin, you must have a Web TV account on WimTV. Registration is free of charge. You can easily sign up directly from the plugin.
+Storage and bandwidth used for the video is provided by WimTV, the innovative platform for live and on demand video streaming. To use the plugin, you must have a Web TV account on WimTV. Registration is free of charge. You can easily sign up directly from the plugin. 
 
 WimTVPro allows its users to:
 <ol>
 <li> Upload new videos, describe and publish</li>
 
 <li> For each video published, set of access conditions (free, creative commons, pay per view)</li>
+<li>Set a price for the visualisation of your video content. Just connect your Web TV to your PayPal account</li>
 
 <li> Given a list of videos, publish those of choice on your website</li>
-
-<li> Change with drag-and-drop the order of presentation of videos on a web page</li>
 
 <li> Insert videos anywhere on the page (e.g. in posts, pages or widgets)</li>
 
@@ -35,25 +34,27 @@ WimTVPro allows its users to:
 
 <li> Create live streaming events to be published on the pages of your site</li>
 
+<li>Recording video of live events that have been already broadcasted</li>
+<li> Change with drag-and-drop the order of presentation of videos on a web page</li>
+
 <li> Control and monitor access analytics for your content</li>
 
 <li> Embed your live and on demand videos on any site</li>
 
-<li> Synchronize videos with your WimTV account </li>
+<li> Synchronize videos with your WimTV account </li><li>Create a video channel on WimTV, becoming part of the community</li>
 </ol>
 
-The plugin is integrated into the menu and is divided into five section, to always have an ordered control of content.
-For more details about WimTVPro's functionalities visit http://wimtvpro.tv/functionalities.html
+The plugin is integrated into the menu and is divided into six section, to always have an ordered control of content.
+ For more details about WimTVPro's functionalities visit http://wimtvpro.tv/functionalities.html
 
-Demo user is http://research.cedeo.net/wordpress
-For request a demo user, please send an email to info@wimlabs.com
+ 
 
 == Installation ==
 
-1. Upload "wimTVpro" to the "/wp-content/plugins/" directory
+1. Upload "WimTVPro" to the "/wp-content/plugins/" directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 
-3. IMPORTANT - First go to WimTVPro --> WimTV configuration to set up all the configuration options and your WimTV's credentials.
+3. IMPORTANT - First go to WimTVPro --> WimTV configuration to set up all the configuration options and your WimTV's credentials. 
 For sign up on WimTV http://www.wim.tv/wimtv-webapp/userRegistration.do?execution=e1s1
 
 That's it! Enjoy your WimTVPro plugin.
@@ -99,6 +100,8 @@ For install "sudo apt-get install php5-curl"
 * Fixed Bug Video
 == 2.5.1 =
 * Version Stable
+== 3.0.0 =
+* Restyling code and graphic
 
 == Upgrade Notice ==
 Into version 2.0 added Playlist videos and Report. When you update insert newly user and password wimtv.

@@ -103,6 +103,7 @@ function wimtvpro_playlist() {
                 <th  style='width:30%'><?php echo __("Title") ?></th>
                 <th style='width:30%'>N. Video</th>
                 <th style='width:20%'><?php echo __("Preview") ?></th>
+                <th style='width:20%'><?php echo __("Shortcode") ?></th>
                 <th style='width:20%'><?php echo __("Modify","wimtvpro") ?></th>
                 <th style='width:20%'><?php echo __("Remove") ?></th>
             </tr>
@@ -118,6 +119,11 @@ function wimtvpro_playlist() {
                 <td>
                     <span class="icon_viewPlay" id="<?php echo $record->id ?>"></span>
                 </td>
+                
+                <td>
+                    <textarea style='resize: none; width:90%;height:70px;' readonly='readonly' onclick='this.focus(); this.select();'>[playlistWimtv id="<?php echo $record->id;?>"]</textarea>
+                </td>
+                
                 <td>
                     <a href="?page=WimTV_Playlist&namefunction=modPlaylist&id=<?php echo $record->id ?>">
                         <span class="icon_modPlay"></span>

@@ -5,9 +5,9 @@ $user_agent = $_SERVER['HTTP_USER_AGENT'];
 $idPlayList=$_GET['id'];
 if (isset($_GET["isAdmin"])){
 	$is_admin=true;
+	include("../../../../wp-load.php");
 }
-	
-include("../../../../wp-load.php");
+
 
 $record= dbExtractSpecificPlayist($idPlayList);
 
@@ -86,7 +86,7 @@ if (!$mobile) {
     $code .=  "modes: [{type: 'html5'}],";
 }
 $code .="'repeat':'always',";
-$skin = "'skin':'https://www.wim.tv:443/wimtv-webappscript/player/wimtv/wimtv.xml',";
+$skin = "'skin':'https://www.wim.tv/wimtv-webapp/script/player/wimtv/wimtv.xml',";
 
 $uploads_info = wp_upload_dir();
 $nomeFilexml  = wimtvpro_searchFile($uploads_info["basedir"] .  "/skinWim/" . get_option('wp_nameSkin'),"xml");

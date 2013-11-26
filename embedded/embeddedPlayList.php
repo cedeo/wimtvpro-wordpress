@@ -88,7 +88,7 @@ if (!$mobile) {
     $code .=  "modes: [{type: 'html5'}],";
 }
 $code .="'repeat':'always',";
-$skin = "'skin': url_pathPlugin + 'script/skinDefault/wimtv/wimtv.xml',";
+$skin = "'skin':'" .  plugin_dir_url(dirname(__FILE__))  . "/script/skinDefault/wimtv/wimtv.xml',";
 
 $uploads_info = wp_upload_dir();
 $nomeFilexml  = wimtvpro_searchFile($uploads_info["basedir"] .  "/skinWim/" . get_option('wp_nameSkin'),"xml");

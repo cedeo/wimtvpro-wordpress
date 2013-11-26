@@ -348,7 +348,7 @@ height: 45px;background-color:#fff!important; border:1px solid #666!important;
 }
 table td.image{position:relative;}
 table td.image img,table td.image span{
-	width:160px; height:100px;
+	width:160px; height:100px; position: relative;
 }
 
 div.registration{
@@ -596,3 +596,6 @@ div.wp-list-table{
 		height:200px; 
 		overflow:auto;
 }
+
+
+.media-frame .media-iframe iframe{overflow:auto!important;}

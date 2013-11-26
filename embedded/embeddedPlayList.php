@@ -3,9 +3,11 @@
 
 $user_agent = $_SERVER['HTTP_USER_AGENT'];
 $idPlayList=$_GET['id'];
+$parse_uri = explode( 'wp-content', $_SERVER['SCRIPT_FILENAME'] );
+$url_include = $parse_uri[0] . 'wp-load.php';
 if (isset($_GET["isAdmin"])){
 	$is_admin=true;
-	include("../../../../wp-load.php");
+	include($url_include);
 }
 
 
@@ -86,7 +88,7 @@ if (!$mobile) {
     $code .=  "modes: [{type: 'html5'}],";
 }
 $code .="'repeat':'always',";
-$skin = "'skin':'https://www.wim.tv/wimtv-webapp/script/player/wimtv/wimtv.xml',";
+$skin = "'skin': url_pathPlugin + 'script/skinDefault/wimtv/wimtv.xml',";
 
 $uploads_info = wp_upload_dir();
 $nomeFilexml  = wimtvpro_searchFile($uploads_info["basedir"] .  "/skinWim/" . get_option('wp_nameSkin'),"xml");

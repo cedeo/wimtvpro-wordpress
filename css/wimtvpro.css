@@ -80,7 +80,7 @@ table.items  div.thumb {
 	width:30px; height:30px; position: absolute;
 	 z-index: 10;  top:0 \;
 }
-.icon_licence  { top:0; }
+
 @media screen and (-webkit-min-device-pixel-ratio:0) {
    .icon_licence {top:0;}
 }

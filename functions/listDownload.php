@@ -61,10 +61,10 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 	$isfound = false;
 	if ((!strstr($replace_video, 'Not Found')) || (!isset($replace_video)) || ($replace_video==""))
 	  $isfound = true; 
-	
+	 $licenze_video="";
     if ($isfound!="") {
       $replace_video = '<img src="' . $replace_video . '" title="' . $title . '" class="" />';
-      if ($licenseType!="") $replace_video .= '<div class="icon_licence ' . $licenseType . '"></div>';
+      if ($licenseType!="") $licenze_video = '<div class="icon_licence ' . $licenseType . '"></div>';
 	}
    
    $wimtvpro_url = "";
@@ -224,7 +224,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 		//<div class='icon'><a class='addThumb' href='#' id='" . $showtime_identifier . "'>" . __("Add") . "</a>  <a class='removeThumb' href='#' id='" . $showtime_identifier . "'>" . __("Remove") . "</a></div>";
     }
 	if ($playlist) $action = "";
-    $my_media .= "<td class='image'>" . $video . "<br/><b>" . $title . "</b>" . $linkView . "</td>" . $action ;
+    $my_media .= "<td class='image'>" .  $licenze_video  . $video . "<br/><b>" . $title . "</b>" . $linkView . "</td>" . $action ;
     $send = "";
     if ($insert_into_page) {
       $my_media .= '<td><input type="hidden" value="' . $_GET['post_id'] . '" name="post_id">';

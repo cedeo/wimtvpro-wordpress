@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<skin version="1.1" name="wimtv" author="Cedeo-Wimlabs">
+
+	<settings>
+		<setting name="backcolor" value="0xFFFFFF" />
+		<setting name="frontcolor" value="0xffffff" />
+	</settings>
+
+	<components>
+		<component name="controlbar">
+			<settings>
+				<setting name="margin" value="5" />
+				<setting name="fontcolor" value="0xFFFFFF"/>
+				<setting name="buttoncolor" value="0xFFFFFF"/>
+			</settings>
+
+			<layout>
+				<group position="left">
+					<button name="play" />
+					<button name="stop" />
+					<text name="elapsed" />
+				</group>
+				<group position="center">
+					<slider name="time" />
+					
+				</group>
+				<group position="right">
+				    <text name="duration" />
+					<button name="fullscreen" />
+					<button name="volume" />
+				</group>
+			</layout>
+
+			<elements>
+				
+				<element name="capRight" src="cap.png" />
+				<element name="background" src="back.png" />
+				
+				<element name="playButton" src="play.png" />
+				<element name="playButtonOver" src="playHover.png" />
+				
+				<element name="pauseButton" src="pause.png" />
+				<element name="pauseButtonOver" src="pauseHover.png" />
+				
+				<element name="stopButton" src="stopButton.png" />
+				<element name="stopButtonOver" src="stopButtonHover.png" />
+				
+				<element name="timeSliderRail" src="timeRail.png" />
+				<element name="timeSliderBuffer" src="timeBuffer.png" />
+				<element name="timeSliderProgress" src="timeProgress.png" />
+				<element name="timeSliderThumb" src="timeThumb.png" />
+				<element name="timeSliderCapLeft" src="divider2.png" />
+				<element name="timeSliderCapRight" src="divider3.png" />
+
+				
+				<element name="volumeSliderRail" src="volumeSliderRail.png" />
+				<element name="volumeSliderBuffer" src="volumeSliderBuffer.png" />
+				<element name="volumeSliderProgress" src="volumeSliderProgress.png" />
+				
+								
+				<element name="fullscreenButton" src="fullscreenButton.png" />
+				<element name="fullscreenButtonOver" src="fullscreenButtonOver.png" />
+				
+			</elements>
+		</component>
+
+		<component name="display">
+			<settings>
+				<setting name="bufferinterval" value="100" />
+				<setting name="bufferrotation" value="90" />
+			</settings>
+			<elements>
+				<element name="background" src="back.png" />
+				<element name="playIcon" src="play.png" />
+				<element name="muteIcon" src="mute.png" />
+				<element name="errorIcon" src="error.png" />
+				<element name="bufferIcon" src="buffer.png" />
+			</elements>
+		</component>
+
+		<component name="dock">
+			<settings>
+				<setting name="fontcolor" value="0xffffff" />
+			</settings>
+			<elements>
+				<element name="button" src="button.png" />
+			</elements>
+		</component>
+
+
+		<component name="playlist">
+			<settings>
+				<setting name="fontcolor" value="0x000000" />
+				<setting name="overcolor" value="0x000000" />
+				<setting name="backgroundcolor" value="0xFFFFFF" />
+			</settings>
+			<elements>
+				<element name="item" src="item.png" />
+				<element name="itemActive" src="itemActive.png" />
+				<element name="itemOver" src="itemActive.png" />
+				<element name="sliderCapBottom" src="sliderCap.png" />
+				<element name="sliderCapTop" src="sliderCap.png" />
+				<element name="sliderRail" src="sliderRail.png" />
+				<element name="sliderThumb" src="sliderThumb.png" />
+			</elements>
+		</component>
+
+	</components>
+
+</skin>

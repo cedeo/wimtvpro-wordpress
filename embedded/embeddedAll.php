@@ -29,6 +29,7 @@
 		$uploads_info = wp_upload_dir();
 		$nomeFilexml  = wimtvpro_searchFile($uploads_info["basedir"] .  "/skinWim/" . get_option('wp_nameSkin'),"xml");
 		echo "<script type='text/javascript'>jwplayer('container').setup({";
+		$skin = "'skin':'" .  plugin_dir_url(dirname(__FILE__))  . "/script/skinDefault/wimtv/wimtv.xml',";
 		if (get_option('wp_nameSkin')!="") {
 			$directory =  $uploads_info["baseurl"] .  "/skinWim"; 
 			$skin = "'skin':'" . $directory  . "/" . get_option('wp_nameSkin') . "/" . $nomeFilexml . "',";

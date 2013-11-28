@@ -47,7 +47,10 @@ header('Content-type: text/html');
     $details_live = apiGetLive($identifier, $timezone);
 
     $livedate = json_decode($details_live);
-	$data = $livedate->eventDate;
+    if (isset($livedate->eventDateOffset))
+        $data = $livedate->eventDateOffset;
+	else
+        $data = $livedate->eventDate;
 	if (intval($livedate->eventMinute)<10) $livedate->eventMinute = "0" .  $livedate->eventMinute;
 	$oraMin = $livedate->eventHour . ":" . $livedate->eventMinute;
 	$timeToStart= $livedate->timeToStart;

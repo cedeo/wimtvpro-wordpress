@@ -10,8 +10,6 @@ $onlyActive = $_POST['onlyActive'];
 header('Content-type: text/html');
   $json = apiGetLiveEvents($timezone, $onlyActive);
   $arrayjson_live = json_decode($json);
-  //var_dump ($json);
-  //$arrayST["showtimeIdentifier"] = $arrayjson_live->{"showtimeIdentifier"};
   $count = -1;
   $output = "";
   if ($arrayjson_live ){
@@ -43,16 +41,20 @@ header('Content-type: text/html');
     $identifier = $value -> identifier;
 
     $embedded_iframe = apiGetLiveIframe($identifier, $timezone);
-
     $details_live = apiGetLive($identifier, $timezone);
 
     $livedate = json_decode($details_live);
-    if (isset($livedate->eventDateOffset))
-        $data = $livedate->eventDateOffset;
-	else
-        $data = $livedate->eventDate;
-	if (intval($livedate->eventMinute)<10) $livedate->eventMinute = "0" .  $livedate->eventMinute;
-	$oraMin = $livedate->eventHour . ":" . $livedate->eventMinute;
+
+    $data = $livedate->eventDateMillisec;
+    $timezoneOffset = intval($livedate->timezoneOffset)/1000;
+    $timestamp = intval($data)/1000;
+    $start = new DateTime("@$timestamp");
+    $timezoneName = timezone_name_from_abbr("", $timezoneOffset, false);
+    $offsetHours = $timezoneOffset/3600;
+    $offsetHours = $offsetHours>0 ? "+" . $offsetHours : $offsetHours;
+    $real_timezone = new DateTimeZone($timezoneName);
+    $start->setTimezone($real_timezone);
+	$oraMin = $start->format('H') . ":" . $start->format('i');
 	$timeToStart= $livedate->timeToStart;
 	$timeLeft = $livedate->timeLeft;
 
@@ -62,27 +64,11 @@ header('Content-type: text/html');
     
     $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();">' . $embedded_iframe . '</textarea>'; 
     if ($type=="table") {
-      
       //Check Live is now
-      $dataNow = date("d/m/Y"); 
-      $arrayData = explode ("/",$data);
-	  $arrayOra = explode (":",$oraMin);
-     
-      $timeStampInizio =  mktime($livedate->eventHour,$livedate->eventMinute,0,$arrayData[1],$arrayData[0],$arrayData[2]);
-      
-      $secondiDurata = 60 * $durata;
-      $ora= date("H:i:s", $secondiDurata);
-      $arrayDurata = explode (":",$ora);
-      $startSeconds = isset($arrayOra[2]) ? $arrayOra[2] : 0;
-      $timeStampFine =  mktime($arrayOra[0]+$arrayDurata[0],$arrayOra[1]+$arrayDurata[1],$startSeconds+$arrayDurata[2],$arrayData[1],$arrayData[0],$arrayData[2]);
-
-      $timeStampNow =  mktime(date("H"),date("i"),date("s"));
 		
       $liveIsNow = false;
-      if ($dataNow == $data){
-      	//if (($timeStampNow>=$timeStampInizio) && ($timeStampNow<$timeStampFine )) {
-			 $liveIsNow = true;
-		//}
+      if (intval($timeToStart) < 0 && intval($timeLeft) > 0){
+         $liveIsNow = true;
       }
      
       $output .="<tr>
@@ -102,7 +88,7 @@ header('Content-type: text/html');
       
       $output .=  "<td>" . $payment_mode . "</td>
       <td>" . $url . "</td>
-      <td>"  . $data . " " . $oraMin . "<br/>" . $durata . "</td>
+      <td>"  . $start->format('d/m/Y H:i') . " GMT " . $offsetHours . "<br/>" . $durata . "</td>
       <td>" . $embedded_code . "</td>
       <td> 
       <a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "' alt='" . __("Remove")
@@ -116,8 +102,8 @@ header('Content-type: text/html');
     }
     elseif ($type=="list") {
       if ($count==0) $output .= "";
-      elseif ($count>0) $output .="<li><b>" . $name . "</b> " . $payment_mode . " - " . $data . " " . $oraMin . " - " . $durata . "</li>";
-      else $output .="<li><b>" . $name . "</b> " . $payment_mode . " - " . $data . " " . $oraMin   . " - " . $durata . "</li>";
+      elseif ($count>0) $output .="<li><b>" . $name . "</b> " . $payment_mode . " - " . $start->format('d/m/Y H:i') . " - " . $durata . "</li>";
+      else $output .="<li><b>" . $name . "</b> " . $payment_mode . " - " . $start->format('d/m/Y H:i')   . " - " . $durata . "</li>";
     }
     else {
       if ($count==0) {
@@ -134,7 +120,6 @@ header('Content-type: text/html');
     $output = __("There are no live events","wimtvpro");
 
 echo $output;
-die();
 
 ?>
 

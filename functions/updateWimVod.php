@@ -4,7 +4,7 @@
  */
 function update_page_wimvod(){
     if (get_option("wp_publicPage")=="Yes"){
-        global $user,$wpdb;
+        global $wpdb;
         $post_id  = $wpdb->get_var("SELECT max(ID) FROM $wpdb->posts WHERE post_name LIKE 'my_streaming_wimtv%'");
         $my_streaming_wimtv= array();
         $my_streaming_wimtv['ID'] = $post_id;
@@ -16,10 +16,7 @@ function update_page_wimvod(){
         } else {
             change_post_status($post_id,'private');
         }
-
-
     }
-
 }
 
 function change_post_status($post_id,$status){

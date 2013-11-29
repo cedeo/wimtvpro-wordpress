@@ -10,7 +10,6 @@
   $url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosDetailWimtv");
   $credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
 
-  $output = "";
   $urlEmbedded = get_option("wp_urlEmbeddedPlayerWimtv");
   $replaceContent = get_option("wp_replaceContentWimtv");
   $code = $_GET['c'];
@@ -19,58 +18,38 @@
 
     $contentItem = $_GET['c'];
     $streamItem = $_GET['s'];
-    $jSonST =wimtvpro_detail_showtime(true, $streamItem);
-	
-    $arrayjSonST = json_decode($jSonST);
-    $arrayST["showtimeIdentifier"] = $arrayjSonST->{"showtimeIdentifier"};
-    $arrayST["title"] = $arrayjSonST->{"title"};
-    $arrayST["duration"] = $arrayjSonST->{"duration"};
-    $arrayST["categories"] = $arrayjSonST->{"categories"};
-    $arrayST["description"] = $arrayjSonST->{"description"};
-    $arrayST["thumbnailUrl"] = $arrayjSonST->{"thumbnailUrl"};
-    $arrayST["contentId"] = $arrayjSonST->{"contentId"};
-    $arrayST["url"] = $arrayjSonST->{"url"};
-    $ch = curl_init();
+    $showtime = json_decode(wimtvpro_detail_showtime(true, $streamItem));
     if (get_option('wp_nameSkin')!="") {
         $uploads_info = wp_upload_dir();
         $directory =  $uploads_info["baseurl"] .  "/skinWim/" . get_option('wp_nameSkin') . "/";
-	    $nomeFilexml  = wimtvpro_searchFile($uploads_info["basedir"] .  "/skinWim/" . get_option('wp_nameSkin'),"xml");
-	
-      $skin =  "&skin=" . $directory  . "/" . $nomeFilexml;
+        $nomeFilexml  = wimtvpro_searchFile($uploads_info["basedir"] .  "/skinWim/" . get_option('wp_nameSkin'),"xml");
+        $skin =  "&skin=" . $directory  . "/" . $nomeFilexml;
+    } else {
+        $skin = "";
     }
-    else
-      $skin = "";
 
-    $height = get_option("wp_heightPreview") +150;
-	$width = get_option("wp_widthPreview") +280;
-	$widthP = get_option("wp_widthPreview") +250;
+    $height = get_option("wp_heightPreview");
+	$width = get_option("wp_widthPreview");
 
-    $parametersGet = "get=1&width=" . get_option("wp_widthPreview") . "&height=" . get_option("wp_heightPreview") . $skin;
-	$response = apiGetPlayerShowtime($arrayST["contentId"],$parametersGet);
-	$output .= $response;
+    $parametersGet = "get=1&width=" . $width . "&height=" . $height . $skin;
+	$response = apiGetPlayerShowtime($showtime->{"contentId"}, $parametersGet);
+?>
 
-    
-    $output .= "<h3>" . $arrayST["title"] . "</h3>";
-
-    $output .= "<p>[" . $arrayST["duration"] . "]" . $arrayST["description"] . "</p>";
-    if (count($arrayST["categories"])>0){
-      $output .= "<br/>" . __("Categories","wimtvpro") . "<br/>";
-      foreach ($arrayST["categories"] as $key => $value) {
-        $valuescCatST = "<i>" . $value->categoryName . ":</i> ";
-        $output .= $valuescCatST;
-        foreach ($value->subCategories as $key => $value) {
-          $output .= $value->categoryName . ", ";
-        }
-        $output = substr($output, 0, -2); 
-        $output .= "<br/>";
-      }
-      $output .= "</p>";
+<?php echo $response ?>
+<h3><?php echo $showtime->{"title"}?></h3>
+<p>[<?php echo $showtime->{"duration"} ?>] <?php echo $showtime->{"description"} ?></p>
+<?php if (count($showtime->{"categories"})) { ?>
+    <br/><?php echo _("Categories", "wimtvpro") ?><br/>
+    <?php foreach ($showtime->{"categories"} as $index => $category) { ?>
+        <i><?php echo $category->categoryName?>:</i>
+        <?php foreach ($category->subCategories as $key=>$subCategory) {
+              echo $subCategory->categoryName . ", ";
+          } ?>
+        <br/>
+    <?php } ?>
+  </p>
+<?php
     }
-    
-
-    wp_reset_query();
-    //echo "<p class='icon_downloadVideo' id='" . $arrayST["contentId"] . "'>Download</p>";   
-    echo $output;
- }   
+}
 ?>
 

@@ -29,24 +29,25 @@ License: GPLv2 or later
 
 
 
-include("database/db.php");
-include("log/log.php");
-include("hooks.php");
-include("utils.php");
-include("menu/pages/registration.php");
-include("menu/pages/analytics.php");
-include("menu/pages/playlist.php");
-include("menu/pages/settings.php");
-include("menu/pages/upload_video.php");
-include("menu/pages/wimbox.php");
-include("menu/pages/wimlive.php");
-include("menu/pages/wimvod.php");
-include("functions/registrationAlert.php");
-include("functions/jwPlayer.php");
-include("functions/updateWimVod.php");
-include("functions/listDownload.php");
-include("functions/optionCategories.php");
-include("functions/detailShowtime.php");
+include_once("database/db.php");
+include_once("log/log.php");
+include_once("hooks.php");
+include_once("utils.php");
+include_once("menu/pages/registration.php");
+include_once("menu/pages/analytics.php");
+include_once("menu/pages/playlist.php");
+include_once("menu/pages/settings.php");
+include_once("menu/pages/upload_video.php");
+include_once("menu/pages/wimbox.php");
+include_once("menu/pages/wimlive.php");
+include_once("menu/pages/wimvod.php");
+include_once("functions/registrationAlert.php");
+include_once("functions/jwPlayer.php");
+include_once("functions/updateWimVod.php");
+include_once("functions/listDownload.php");
+include_once("functions/optionCategories.php");
+include_once("functions/detailShowtime.php");
+include_once("embedded/embeddedPlayList.php");
 
 
 load_plugin_textdomain( 'wimtvpro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -503,10 +504,8 @@ function wimtvpro_shortcode_streaming($atts) {
   }  
 }
 function wimtvpro_shortcode_playlist($atts) {
-  extract( shortcode_atts( array('id'=>0), $atts ) );
-  $_GET['id'] = $id;
-  wp_reset_query();
-  include("embedded/embeddedPlayList.php");
+  $id = shortcode_atts( array('id'=>0), $atts )['id'];
+  return includePlaylist($id);
 }
 
 

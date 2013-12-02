@@ -50,15 +50,16 @@ function includePlaylist($playlist_id) {
     $uploads_info = wp_upload_dir();
 
     //Check if browser is mobile
+    $isApple = (bool) strpos($user_agent, 'Macintosh');
     $isiPad = (bool) strpos($user_agent,'iPad');
     $isiPhone = (bool) strpos($user_agent,'iPhone');
     $isAndroid = (bool) strpos($user_agent,'Android');
-    $mobile = false;
-    if ($isiPad  || $isiPhone || $isAndroid) {
-        $mobile = true;
+    $html5 = false;
+    if ($isiPad  || $isiPhone || $isAndroid || $isApple) {
+        $html5 = true;
     }
 
-    if (!$mobile)
+    if (!$html5)
         $mode_type = "'flash',src:'" . $dirJwPlayer . "'";
     else
         $mode_type = "'html5'";

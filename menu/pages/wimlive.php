@@ -61,8 +61,15 @@ function wimtvpro_live() {
             $giorno = $arraydati->eventDate;
             //d($arraydati);
             $timezone = $arraydati->timeZone;
-            if (intval($arraydati->eventMinute)<10) $arraydati->eventMinute = "0" .  $arraydati->eventMinute;
-            $ora = $arraydati->eventHour . ":" . $arraydati->eventMinute;
+            $data = $arraydati->eventDateMillisec;
+            $timezoneOffset = intval($arraydati->timezoneOffset)/1000;
+            $timestamp = intval($data)/1000;
+            $start = new DateTime("@$timestamp");
+            $timezoneName = timezone_name_from_abbr("", $timezoneOffset, false);
+            //TODO: remove this ugly fix when Sergio fixes the API!
+            $real_timezone = new DateTimeZone($timezoneName);
+            $start->setTimezone($real_timezone);
+            $ora = $start->format('H') . ":" . $start->format('i');
             $tempo = $arraydati->duration;
             $ore = floor($tempo / 60);
             $minuti = $tempo % 60;

@@ -50,7 +50,6 @@ header('Content-type: text/html');
     $timestamp = intval($data)/1000;
     $start = new DateTime("@$timestamp");
     $timezoneName = timezone_name_from_abbr("", $timezoneOffset, false);
-    //TODO: remove this ugly fix when Sergio fixes the API!
     $real_timezone = new DateTimeZone($timezoneName);
     $start->setTimezone($real_timezone);
 	$oraMin = $start->format('H') . ":" . $start->format('i');

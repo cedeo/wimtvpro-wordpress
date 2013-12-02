@@ -152,12 +152,12 @@ function wimtvpro_savelive($function) {
             if ($_POST['eventTimeZone']!="")
                 $parameters['eventTimeZone'] = $_POST['eventTimeZone'];
             else
-                $parameters['timezone'] = $_POST['timelivejs'];
+                $timezone = $_POST['timelivejs'];
 
             if ($function=="modify") {
-                $response = apiModifyLive($_GET['id'], $parameters);
+                $response = apiModifyLive($_GET['id'], $parameters, $timezone);
             } else {
-                $response = apiAddLive($parameters);
+                $response = apiAddLive($parameters, $timezone);
             }
             if ($response!="") {
                 $message = json_decode($response);

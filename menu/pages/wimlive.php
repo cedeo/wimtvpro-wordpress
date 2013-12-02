@@ -113,7 +113,7 @@ function wimtvpro_live() {
                 </li>
             </ol>
         </p>
-
+        <span><strong>* <?php echo __("Time is shown according to timezone of your device", "wimtvpro") ?></strong></span>
         <table id='tableLive' class='wp-list-table widefat fixed pages'>
         <thead>
         <tr>
@@ -121,7 +121,7 @@ function wimtvpro_live() {
             <th>Live Now</th>
             <th>Pay-Per-View</th>
             <th>URL</th>
-            <th><?php echo __("Schedule") ?></th>
+            <th>* <?php echo __("Schedule") ?></th>
             <th><?php echo __("Embed Code","wimtvpro") ?></th>
             <th><?php echo __("Tools") ?></th>
         </tr>

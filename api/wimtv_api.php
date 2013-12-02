@@ -131,17 +131,23 @@ function apiGetLiveIframe($host_id, $timezone="") {
     return $apiAccessor->execute($request, 'text/xml, application/xml');
 }
 
-function apiAddLive($parameters) {
+function apiAddLive($parameters, $timezone=null) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->postRequest($apiAccessor->liveHostsUrl);
+    $url = $apiAccessor->liveHostsUrl;
+    if ($timezone)
+        $url .= '?timezone=' . $timezone;
+    $request = $apiAccessor->postRequest($url);
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
 
-function apiModifyLive($host_id, $parameters) {
+function apiModifyLive($host_id, $parameters, $timezone=null) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->postRequest($apiAccessor->liveHostsUrl . '/' . $host_id);
+    $url = $apiAccessor->liveHostsUrl . '/' . $host_id;
+    if ($timezone)
+        $url .= '?timezone=' . $timezone;
+    $request = $apiAccessor->postRequest($url);
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);

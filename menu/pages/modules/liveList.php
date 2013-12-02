@@ -44,14 +44,13 @@ header('Content-type: text/html');
     $details_live = apiGetLive($identifier, $timezone);
 
     $livedate = json_decode($details_live);
-
+    //d($livedate);
     $data = $livedate->eventDateMillisec;
     $timezoneOffset = intval($livedate->timezoneOffset)/1000;
     $timestamp = intval($data)/1000;
     $start = new DateTime("@$timestamp");
     $timezoneName = timezone_name_from_abbr("", $timezoneOffset, false);
-    $offsetHours = $timezoneOffset/3600;
-    $offsetHours = $offsetHours>0 ? "+" . $offsetHours : $offsetHours;
+    //TODO: remove this ugly fix when Sergio fixes the API!
     $real_timezone = new DateTimeZone($timezoneName);
     $start->setTimezone($real_timezone);
 	$oraMin = $start->format('H') . ":" . $start->format('i');
@@ -88,7 +87,7 @@ header('Content-type: text/html');
       
       $output .=  "<td>" . $payment_mode . "</td>
       <td>" . $url . "</td>
-      <td>"  . $start->format('d/m/Y H:i') . " GMT " . $offsetHours . "<br/>" . $durata . "</td>
+      <td>"  . $start->format('d/m/Y H:i') . "<br/>" . $durata . "</td>
       <td>" . $embedded_code . "</td>
       <td> 
       <a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "' alt='" . __("Remove")

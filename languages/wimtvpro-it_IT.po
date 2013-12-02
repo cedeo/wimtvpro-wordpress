@@ -1060,3 +1060,6 @@ msgstr "Descrizione"
 msgid "VAT Code"
 msgstr "Partita IVA"
 
+#:
+msgid "Time is shown according to timezone of your device"
+msgstr "Gli orari sono mostrati nell'ora corrispondente al tuo fuso orario."

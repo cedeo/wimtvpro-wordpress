@@ -47,7 +47,7 @@ jQuery(document).ready(function(){
 				jQuery(".icon_AcqRemoveshowtime,.icon_Removeshowtime,.icon_RemoveshowtimeInto").click(function(){
 					callRemoveShowtime(jQuery(this));
 				});
-				jQuery(".free,.cc,.pay").click(function(){
+				jQuery(".free,.cc,.ppv").click(function(){
 					callPutShowtime(jQuery(this));					
 				});
 				jQuery(".icon_remove").click(function(){

@@ -503,8 +503,10 @@ function wimtvpro_shortcode_streaming($atts) {
 	return "<p>You don't have permission to see the video</p>";
   }  
 }
+
 function wimtvpro_shortcode_playlist($atts) {
-  $id = shortcode_atts( array('id'=>0), $atts )['id'];
+  $id = shortcode_atts(array('id'=>0), $atts);
+  $id = $id['id'];
   return includePlaylist($id);
 }
 

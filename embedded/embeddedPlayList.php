@@ -11,7 +11,8 @@ function includePlaylist($playlist_id) {
         $is_admin = false;
     }
 
-    $playlist = dbExtractSpecificPlayist($playlist_id)[0];
+    $playlist = dbExtractSpecificPlayist($playlist_id);
+    $playlist = $playlist[0];
 
     $listVideo = $playlist->listVideo;
     $title = $playlist->name;

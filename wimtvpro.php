@@ -219,10 +219,10 @@ function wimtvpro_menu(){
 		  $registrationHidden = "";
       	add_submenu_page($registrationHidden, __('WimTV Registration',"wimtvpro"), __('WimTV Registration',"wimtvpro"), 'administrator', 'WimTvPro_Registration', 'wimtvpro_registration');
       }
-
+	add_submenu_page('WimTvPro', __('Upload Video',"wimtvpro"), __('Upload Video',"wimtvpro"), 'administrator', 'WimTV_Upload', 'wimtvpro_upload');
       add_submenu_page('WimTvPro', 'WimBox', 'WimBox', 'administrator', 'WimBox', 'wimtvpro_wimbox');
       add_submenu_page('WimTvPro', 'WimVod', 'WimVod', 'administrator', 'WimVod', 'wimtvpro_mystreaming');
-      add_submenu_page('WimTvPro', __('Upload Video',"wimtvpro"), __('Upload Video',"wimtvpro"), 'administrator', 'WimTV_Upload', 'wimtvpro_upload');
+      
       add_submenu_page('WimTvPro', __('Playlist',"wimtvpro"), __('Playlist',"wimtvpro"), 'administrator', 'WimTV_Playlist', 'wimtvpro_playlist');
 	  add_submenu_page('WimTvPro', 'WimLive', 'WimLive', 'administrator', 'WimLive', 'wimtvpro_live');
       add_submenu_page('WimTvPro', __('Analytics'), __('Analytics'), 'administrator', 'WimTVPro_Report', 'wimtvpro_Report');

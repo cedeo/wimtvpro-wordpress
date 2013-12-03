@@ -65,7 +65,7 @@ function settings_configuration($directory) {
                 </tr>
             </table>
 
-            <h4><?php _e("Upload and/or choose the skin for your player","wimtvpro");?>
+            <h4><?php _e("Upload and/or choose a skin for your player","wimtvpro");?>
                 . <?php _e("Download it from","wimtvpro")?> <a target='new' href='http://www.longtailvideo.com/addons/skins'>Jwplayer skin</a></h4>
 
             <table class="form-table">
@@ -76,7 +76,7 @@ function settings_configuration($directory) {
                 <tr>
                     <th><label for="edit-uploadskin"><?php _e("upload a new skin for your player","wimtvpro");?></label></th>
                     <td><input type="file" id="edit-uploadskin" name="files[uploadSkin]" size="100" class="form-file" />
-                        <div class="description"><?php echo __("Only .zip files are supported Save to a public URL","wimtvpro") .  " wp-content/uploads/skinWim <br/>" .
+                        <div class="description"><?php echo __("Only .zip files are supported Save wp-content/uploads/skinWim to a public URL","wimtvpro") . "<br/>" .
                                 __("To use the skin of your choice, copy the","wimtvpro") .  " <a href='http://plugins.longtailvideo.com/crossdomain.xml' target='_new'>crossdomain.xml</a> " . __("file to the root directory (e.g. http://www.mysite.com). You can do it all via FTP  (e.g. FileZilla, Classic FTP, etc). Open your FTP client and identify the root directory of your site. This is the folder titled or beginning with www - and this is where you need to move the crossdomain.xml file","wimtvpro") . ".<br/><a href='http://www.adobe.com/devnet/adobe-media-server/articles/cross-domain-xml-for-streaming.html'>" . __("More mation","wimtvpro") . "</a>"; ?>
                         </div>
                     </td>
@@ -103,17 +103,17 @@ function settings_configuration($directory) {
 
             <input type="hidden" value="No" name="sandbox">
             <table class="form-table">
-                <!--tr>
-					<th><label for="edit-sandbox">Please select "no" to use the plugin on the WimTV server. Select "yes" to try the service only on test server</label></th>
+                <tr>
+					<!--th><label for="edit-sandbox">Please select "no" to use the plugin on the WimTV server. Select "yes" to try the service only on test server</label></th>
 					<td>
 						<select id="edit-sandbox" name="sandbox" class="form-select">
 						<option value="No" <?php if (get_option("wp_sandbox")=="No") echo "selected='selected'" ?>>No</option>
 						<option value="Yes" <?php if (get_option("wp_sandbox")=="Yes") echo "selected='selected'" ?>>Yes, for Developer or Test</option>
 						</select>
-					</td>
+					</td-->
 				</tr>
 
-                <tr>
+                <!--tr>
                     <th><label for="edit-publicPage"><?php _e('Would you like to add the "Share" button in the video player?',"wimtvpro");?></label></th>
                     <td>
                         <select id="edit-publicPage" name="publicPage" class="form-select">

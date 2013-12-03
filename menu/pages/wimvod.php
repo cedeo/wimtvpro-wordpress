@@ -62,6 +62,7 @@ function wimtvpro_mystreaming() {
     <div class='wrap'>
         <h2>WimVod</h2>
         <p><?php echo __("Here you can","wimtvpro") . " " . __("Manage the videos you want to publish, both in posts and widgets","wimtvpro") ?></p>
+        
         <div class='action'>
             <span class='icon_sync0 button-primary' title='Synchronize'><?php echo __("Synchronize","wimtvpro") ?></span>
         </div>

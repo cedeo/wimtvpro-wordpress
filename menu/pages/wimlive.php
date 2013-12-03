@@ -120,7 +120,7 @@ function wimtvpro_live() {
                 </li>
             </ol>
         </p>
-        <span><strong>* <?php echo __("Time is shown according to timezone of your device", "wimtvpro") ?></strong></span>
+        <span><strong>* <?php _e("Time is shown according to timezone of your device", "wimtvpro") ?></strong></span>
         <table id='tableLive' class='wp-list-table widefat fixed pages'>
         <thead>
         <tr>

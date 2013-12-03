@@ -39,9 +39,11 @@ function wimtvpro_getVideos($showtime=FALSE, $private=TRUE, $insert_into_page=FA
     $details_st  = apiGetShowtimes();
     $arrayjSonST = json_decode($details_st);
     $stLicense = array();
-    foreach ($arrayjSonST->items as $st){
-        $stLicense[$st->showtimeIdentifier] = $st->licenseType;
-    }
+	if (isset($arrayjSonST)) {
+		foreach ($arrayjSonST->items as $st){
+			$stLicense[$st->showtimeIdentifier] = $st->licenseType;
+		}
+	}
     $position_new=1;
     //Con posizione
     if (count($array_videos_new_wp  )>0) {

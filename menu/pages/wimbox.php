@@ -39,10 +39,9 @@ function wimtvpro_wimbox () {
     <div class='wrap'>
         <h2>WimBox</h2>
         <p>
-            <?php echo __("Here you find all videos you have uploaded. If you wish to post one of these videos on your site, move it to WimVod by clicking the corresponding icon",
-                "wimtvpro") ?>
+            <?php _e("Here you find all videos you have uploaded. If you wish to post one of these videos on your site, move it to WimVod by clicking the corresponding icon", "wimtvpro"); ?>
         </p>
-        <div class='action'><span class='icon_sync0 button-primary' title='Synchronize'><?php echo __("Synchronize","wimtvpro") ?></span></div>
+        <div class='action'><span class='icon_sync0 button-primary' title='Synchronize'><?php _e("Synchronize","wimtvpro"); ?></span></div>
 
         <?php if ($videos != "") { ?>
             <form method="post" action="#">

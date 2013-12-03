@@ -104,6 +104,14 @@ function wimtvpro_configure(){
                     } else {
                         initAnalytics("http://peer.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
                     }
+					
+					$response = apiGetProfile();
+					$arrayjsonst = json_decode($response);
+					if ($arrayjsonst->paypalEmail!="")
+						update_option('wp_activePayment', "true");
+					else
+                    	update_option('wp_activePayment', "false");
+					
 
                     if (($_POST['sandbox']!=get_option('wp_sandbox')) && (($_POST['userWimtv']=="username") && ($_POST['passWimtv']=="password"))){
                         update_option('wp_registration', 'FALSE');
@@ -112,9 +120,7 @@ function wimtvpro_configure(){
 
                     } else {
 
-                        $response = apiGetProfile();
-                        $arrayjsonst = json_decode($response);
-
+                        
                         if (count($arrayjsonst)> 0){
                             echo '<div class="updated"><p><strong>';
                             _e('Update successful' ,"wimtvpro");

@@ -320,8 +320,15 @@ function my_custom_js() {
 	 var erroreFile = new Array();
 	 erroreFile[0] = "' . __('Please only upload files that end in types:',"wimtvpro") . '";
 	 erroreFile[1] = "' . __('Please select a new file and try again.',"wimtvpro") . '";
-	 var point = "' . __('.',"wimtvpro") . '";
+	';
 	 
+	 $language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+	 if (substr($language, 0, 2) == 'it') {
+	   echo "var point =','";
+	 } else {
+	   echo "var point ='.'";
+	 }
+	 echo '
 	</script>';
     /*echo '<script type="text/javascript">
     ProgUtils.endpoint="' . plugin_dir_url(__FILE__) . 'rest";

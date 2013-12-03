@@ -51,7 +51,7 @@ function includePlaylist($playlist_id) {
     $uploads_info = wp_upload_dir();
 
     //Check if browser is mobile
-    $isApple = (bool) strpos($user_agent, 'Macintosh');
+    $isApple = (bool) strpos($user_agent, 'Safari');
     $isiPad = (bool) strpos($user_agent,'iPad');
     $isiPhone = (bool) strpos($user_agent,'iPhone');
     $isAndroid = (bool) strpos($user_agent,'Android');

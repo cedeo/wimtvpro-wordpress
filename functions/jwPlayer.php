@@ -3,6 +3,7 @@
  * Written by walter at 06/11/13
  */
 function wimtvpro_viever_jwplayer($userAgent, $contentId,  $dirJwPlayer) {
+    $isApple = (bool) strpos($userAgent, 'Safari');
     $isiPad = (bool) strpos($userAgent,'iPad');
     $isiPhone = (bool) strpos($userAgent,'iPhone');
     $isAndroid = (bool) strpos($userAgent,'Android');
@@ -13,7 +14,7 @@ function wimtvpro_viever_jwplayer($userAgent, $contentId,  $dirJwPlayer) {
     $streamer = $arrayjson->streamingUrl->streamer;
 	$url = $arrayjson->url;
 
-    if ($isiPad  || $isiPhone) {
+    if ($isiPad  || $isiPhone || $isApple) {
         $configFile = "'file': '" .  $streamer . "',";
     } else if ($isAndroid) {
         $configFile = "file: '" . $url . "',";

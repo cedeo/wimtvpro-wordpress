@@ -103,7 +103,7 @@ function settings_configuration($directory) {
 
             <input type="hidden" value="No" name="sandbox">
             <table class="form-table">
-                <tr>
+                <!--tr>
 					<th><label for="edit-sandbox">Please select "no" to use the plugin on the WimTV server. Select "yes" to try the service only on test server</label></th>
 					<td>
 						<select id="edit-sandbox" name="sandbox" class="form-select">
@@ -113,7 +113,7 @@ function settings_configuration($directory) {
 					</td>
 				</tr>
 
-                <!--tr>
+                <tr>
                     <th><label for="edit-publicPage"><?php _e('Would you like to add the "Share" button in the video player?',"wimtvpro");?></label></th>
                     <td>
                         <select id="edit-publicPage" name="publicPage" class="form-select">

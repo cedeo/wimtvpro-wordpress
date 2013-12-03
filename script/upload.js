@@ -17,9 +17,10 @@ function ProgressLoop(contentId) {
                     success: function(response) {
                         var json = jQuery.parseJSON(response);
                         loop.progress = json['percentage'];
-                        console.log(loop.progress);
-                        jQuery('.progress-bar span').css("width", loop.progress + "%");
-                        jQuery (".progress-bar span").html(loop.progress + "%");
+                        var progress = 50 + loop.progress/2;
+                        console.log(progress);
+                        jQuery('.progress-bar span').css("width", progress + "%");
+                        jQuery (".progress-bar span").html(progress + "%");
                     },
 
                     error: function(request,error) {
@@ -47,8 +48,9 @@ jQuery(document).ready(function(){
 	jQuery("#wimtvpro-upload").submit(function(event){
 		
 		event.preventDefault();
-		jQuery (".progress-bar span").css("width","0");
-		jQuery (".progress-bar span").html("0%");
+        var progress = jQuery(".progress-bar span");
+		jQuery(progress).css("width","0");
+		jQuery(progress).html("0%");
 		var $form = jQuery(this);
 		var $inputs = $form.find("input, select, button, textarea");
 		$inputs.prop("disabled", true);
@@ -73,12 +75,32 @@ jQuery(document).ready(function(){
 			async:true,
         	processData: false,
 			enctype: 'multipart/form-data',
-			
-			beforeSend: function(){ 
+			xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", this.progress, false);
+                return xhr;
+            },
+			beforeSend: function() {
 				jQuery (".progress-bar").show();
-                progressLoop.start();
+                //progressLoop.start();
 			},
-
+            progress: function(e) {
+                if(e.lengthComputable) {
+                    //calculate the percentage loaded on plugin host server
+                    var pct = ((e.loaded / e.total) * 100/2);
+                    console.log(pct);
+                    if (pct == 50) {
+                        //when upload on host server is done, start progressloop to get upload percentage on wimtv servers
+                        progressLoop.start();
+                    }
+                    jQuery(progress).css("width",Math.round(pct) + "%");
+                    jQuery(progress).html(Math.round(pct) + "%");
+                }
+                //this usually happens when Content-Length isn't set
+                else {
+                    console.warn('Content Length not reported!');
+                }
+            },
             success: function(response) {
                 jQuery (".progress-bar").hide();
                 jQuery("#message").html (response);

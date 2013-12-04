@@ -493,7 +493,7 @@ function wimtvpro_shortcode_wimlive($atts) {
 	$pageLive = "<script>jQuery(document).ready(function(){
     jQuery.ajax({
 				context: this,
-				url:  '" . $embeddedLive . "',                       
+				url:  '" . $embeddedLive . "',
 				type: 'GET',
 				dataType: 'html',
 				async: false,

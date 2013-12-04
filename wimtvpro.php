@@ -54,7 +54,7 @@ load_plugin_textdomain( 'wimtvpro', false, dirname( plugin_basename( __FILE__ ) 
 
 add_shortcode( 'streamingWimtv', 'wimtvpro_shortcode_streaming' );
 add_shortcode( 'playlistWimtv', 'wimtvpro_shortcode_playlist' );
-add_shortcode( 'wimVod', 'wimtvpro_shortcode_wimvod' );
+add_shortcode( 'wimvod', 'wimtvpro_shortcode_wimvod' );
 add_shortcode( 'wimlive', 'wimtvpro_shortcode_wimlive' );
 /* What to do when the plugin is activated? */
 register_activation_hook(__FILE__,'wimtvpro_install');
@@ -549,4 +549,3 @@ function wimtvpro_uploadScript() {
 
 
 }
-

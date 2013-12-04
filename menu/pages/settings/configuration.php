@@ -99,8 +99,6 @@ function settings_configuration($directory) {
 
             <h4><?php _e("Other information" ,"wimtvpro"); ?></h4>
 
-
-
             <input type="hidden" value="No" name="sandbox">
             <table class="form-table">
                 <!--tr>

@@ -163,6 +163,8 @@ function wimtvpro_setting() {
   add_option( 'wp_activePayment','false');
   add_option( 'wp_activeLive','false');
   add_option( 'wp_wimtvPluginPath', plugin_dir_url(__FILE__));
+  add_option( 'wp_supportLink', 'http://support.wim.tv/?cat=5');
+  add_option( 'wp_supportPage', 'http://support.wim.tv/?p=');
   
 } 
 add_action( 'admin_init', 'wimtvpro_setting');
@@ -198,12 +200,17 @@ function wimtvpro_remove() {
   delete_option( 'wp_email');
   delete_option( 'wp_social');
   delete_option( 'wp_publicPage');
-
+  delete_option( 'wp_supportLink');
+  delete_option( 'wp_supportPage');
   deleteWimTVPosts();
 }
 
 // End table for wimvideo pro
 
+function redirect_to_help() {
+    echo "<script>window.location.href='" . get_option("wp_supportLink") . "'</script>";
+    exit;
+}
 
 //menu admin
 function wimtvpro_menu(){
@@ -226,9 +233,8 @@ function wimtvpro_menu(){
       add_submenu_page('WimTvPro', __('Playlist',"wimtvpro"), __('Playlist',"wimtvpro"), 'administrator', 'WimTV_Playlist', 'wimtvpro_playlist');
 	  add_submenu_page('WimTvPro', 'WimLive', 'WimLive', 'administrator', 'WimLive', 'wimtvpro_live');
       add_submenu_page('WimTvPro', __('Analytics'), __('Analytics'), 'administrator', 'WimTVPro_Report', 'wimtvpro_Report');
-
+      add_submenu_page('WimTvPro', __('Help'), __('Help'), 'administrator', null, 'redirect_to_help');
       //TODO: add_submenu_page('WimTvPro', 'Programming', 'Programming', 'administrator', 'WimVideoPro_Programming', 'wimtvpro_programming');
-    
     }
     
     if ($user->roles[0]=="author") {

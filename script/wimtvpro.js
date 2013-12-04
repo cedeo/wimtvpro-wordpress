@@ -6,7 +6,7 @@ jQuery(document).ready(function(){
 	function viewVideo(elem){
 		if( jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").length  ) {
 			var url = jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").attr("id");
-			jQuery(elem).colorbox({href:url});
+			jQuery(elem).colorbox({href:url, width:'50%', height:'80%'});
 		}else{
 			alert (videoproblem);	
 		}

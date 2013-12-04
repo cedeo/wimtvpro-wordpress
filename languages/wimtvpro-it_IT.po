@@ -124,7 +124,7 @@ msgstr "Questo file non ha il formato corretto per la skin di JVPlayer"
 
 #: 
 #, fuzzy
-msgid "Upload and/or choose the skin for your player"
+msgid "Upload and/or choose a skin for your player"
 msgstr "Carica e/o scegli la skin del tuo player"
 
 #: 
@@ -139,7 +139,7 @@ msgstr "Per usare la skin selezionata, copia"
 
 #: 
 #, fuzzy
-msgid "Only .zip files are supported Save to a public URL"
+msgid "Only .zip files are supported Save wp-content/uploads/skinWim to a public URL"
 msgstr "Solo file .zip. Salva la skin nella cartella pubblica"
 
 #: 

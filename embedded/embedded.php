@@ -35,6 +35,7 @@
 	$response = apiGetPlayerShowtime($showtime->{"contentId"}, $parametersGet);
 ?>
 
+<div style='text-align:center;'>
 <?php echo $response ?>
 <h3><?php echo $showtime->{"title"}?></h3>
 <p>[<?php echo $showtime->{"duration"} ?>] <?php echo $showtime->{"description"} ?></p>
@@ -48,6 +49,7 @@
         <br/>
     <?php } ?>
   </p>
+</div>
 <?php
     }
 }

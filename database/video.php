@@ -110,11 +110,15 @@ function dbGetVideosCount($user, $showtime, $public) {
     return $wpdb->get_results($query);
 }
 
-function dbGetUserVideos($user, $showtime, $public, $offset, $rows) {
+function dbGetUserVideos($user, $showtime, $public, $offset=0, $rows=0) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
     $where = dbBuildGetVideosWhere($showtime, $public);
-    $query = "SELECT * FROM {$table} WHERE uid='{$user}' {$where} ORDER BY mytimestamp DESC LIMIT {$offset}, ${rows}";
+	if (!$showtime){
+		$query = "SELECT * FROM {$table} WHERE uid='{$user}' {$where} ORDER BY mytimestamp DESC LIMIT {$offset}, ${rows}";
+	} else {
+		    $query = "SELECT * FROM {$table} WHERE uid='{$user}' {$where} ORDER BY position ASC LIMIT {$offset}, ${rows}";
+	}
     return $wpdb->get_results($query);
 }
 

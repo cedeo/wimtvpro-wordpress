@@ -54,6 +54,8 @@ load_plugin_textdomain( 'wimtvpro', false, dirname( plugin_basename( __FILE__ ) 
 
 add_shortcode( 'streamingWimtv', 'wimtvpro_shortcode_streaming' );
 add_shortcode( 'playlistWimtv', 'wimtvpro_shortcode_playlist' );
+add_shortcode( 'wimVod', 'wimtvpro_shortcode_wimvod' );
+add_shortcode( 'wimlive', 'wimtvpro_shortcode_wimlive' );
 /* What to do when the plugin is activated? */
 register_activation_hook(__FILE__,'wimtvpro_install');
 /* What to do when the plugin is deactivated? */
@@ -68,49 +70,8 @@ function wimtvpro_install() {
   } 
 	
 	createTables();
-  
-	  // Create page MyWimTv Streaming
-	  $my_streaming_page = array(
-	    'post_title'    => 'WimVod',
-	    'post_content'  => '',
-	    'post_status'   => 'future',
-	    'post_author'   => 1,
-	    'post_type'   => 'page',
-	    'post_name' => 'wimvod_wimtv',
-	  );
-	
-	  // Insert the post into the database
-	  wp_insert_post($my_streaming_page);
-  
-  //$embeddedLive = wimtvpro_elencoLive("video", "0") . "<br/>UPCOMING EVENT<br/>" . wimtvpro_elencoLive("list", "0");
-  
-  $embeddedLive =  plugins_url('embedded/embeddedLive.php', __FILE__);
-  // Create page Event Live 
-  $my_wimlive_page = array(
-    'post_title'    => 'Live',
-    'post_content'  => '<script>jQuery(document).ready(function(){
-    jQuery.ajax({
-			context: this,
-			url:  "'. $embeddedLive . '", 		      
-			type: "GET",
-			dataType: "html",
-			async: false,
-			success: function(response) {
-				jQuery(".entry-content").append(response);
-			},
-		});
-    });</script>',
-    'post_status'   => 'private',
-    'post_author'   => 1,
-    'post_type'   => 'page',
-    'post_name' => 'wimlive_wimtv',
-  );
-
-  // Insert the post into the database
-  wp_insert_post($my_wimlive_page);
-  
-  
 }
+
 function wimtvpro_setting() {
   register_setting('configwimtvpro-group', 'wp_registration');
   register_setting('configwimtvpro-group', 'wp_userwimtv');
@@ -226,10 +187,10 @@ function wimtvpro_menu(){
 		  $registrationHidden = "";
       	add_submenu_page($registrationHidden, __('WimTV Registration',"wimtvpro"), __('WimTV Registration',"wimtvpro"), 'administrator', 'WimTvPro_Registration', 'wimtvpro_registration');
       }
-
+	add_submenu_page('WimTvPro', __('Upload Video',"wimtvpro"), __('Upload Video',"wimtvpro"), 'administrator', 'WimTV_Upload', 'wimtvpro_upload');
       add_submenu_page('WimTvPro', 'WimBox', 'WimBox', 'administrator', 'WimBox', 'wimtvpro_wimbox');
       add_submenu_page('WimTvPro', 'WimVod', 'WimVod', 'administrator', 'WimVod', 'wimtvpro_mystreaming');
-      add_submenu_page('WimTvPro', __('Upload Video',"wimtvpro"), __('Upload Video',"wimtvpro"), 'administrator', 'WimTV_Upload', 'wimtvpro_upload');
+      
       add_submenu_page('WimTvPro', __('Playlist',"wimtvpro"), __('Playlist',"wimtvpro"), 'administrator', 'WimTV_Playlist', 'wimtvpro_playlist');
 	  add_submenu_page('WimTvPro', 'WimLive', 'WimLive', 'administrator', 'WimLive', 'wimtvpro_live');
       add_submenu_page('WimTvPro', __('Analytics'), __('Analytics'), 'administrator', 'WimTVPro_Report', 'wimtvpro_Report');
@@ -518,9 +479,31 @@ function wimtvpro_shortcode_streaming($atts) {
 }
 
 function wimtvpro_shortcode_playlist($atts) {
-  $id = shortcode_atts(array('id'=>0), $atts);
+  $id = shortcode_atts(array('id'=>'all'), $atts);
   $id = $id['id'];
   return includePlaylist($id);
+}
+
+function wimtvpro_shortcode_wimvod($atts) {
+	return "<table class='itemsPublic'>" . wimtvpro_getVideos(TRUE, FALSE, FALSE) . "</table>";
+}
+
+function wimtvpro_shortcode_wimlive($atts) {
+	$embeddedLive =  plugins_url('embedded/embeddedLive.php', __FILE__);
+	$pageLive = "<script>jQuery(document).ready(function(){
+    jQuery.ajax({
+				context: this,
+				url:  '" . $embeddedLive . "',                       
+				type: 'GET',
+				dataType: 'html',
+				async: false,
+				success: function(response) {
+						jQuery('.entry-content').append(response);
+				},
+                });
+    });
+	</script>";
+	return $pageLive;
 }
 
 

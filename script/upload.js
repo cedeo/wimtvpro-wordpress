@@ -44,7 +44,6 @@ function createContentId() {
 
 jQuery(document).ready(function(){ 
 
-
 	jQuery("#wimtvpro-upload").submit(function(event){
 		
 		event.preventDefault();
@@ -103,7 +102,7 @@ jQuery(document).ready(function(){
             },
             success: function(response) {
                 jQuery (".progress-bar").hide();
-                jQuery("#message").html (response);
+                jQuery("#message").html (response);	
                 $inputs.prop("disabled", false);
                 jQuery("#addCategories").html("");
                 $inputs.each(function(index, element) {
@@ -119,7 +118,7 @@ jQuery(document).ready(function(){
 			error: function(request,error) {
                 progressLoop.stop();
                 jQuery (".progress-bar").hide();
-                jQuery("#message").html (request.responseText);
+                jQuery("#message").html (request.responseText);	
                 $inputs.prop("disabled", false);
 			}
 		});	

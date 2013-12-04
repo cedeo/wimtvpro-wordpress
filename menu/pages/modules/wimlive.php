@@ -12,14 +12,15 @@ function wimtvpro_elencoLive($type, $identifier, $onlyActive=true){
 
     if ($type!="table")
         echo 'var url_pathPlugin ="' . plugin_dir_url(__FILE__) . '";';
-
+    else
+		echo 'var url_pathPlugin =""';
     echo '
     var timezone = -(new Date().getTimezoneOffset())*60*1000;
 	//window.location.assign(window.location + "&timezone="+timezone);
 
 	jQuery.ajax({
 			context: this,
-			url:  url_pathPlugin + "menu/pages/modules/liveList.php",
+			url:  url_pathPlugin + "liveList.php",
 			type: "POST",
 			dataType: "html",
 			async: false,

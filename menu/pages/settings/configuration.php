@@ -124,7 +124,7 @@ function settings_configuration($directory) {
                     </td>
                 </tr-->
 
-                <tr>
+                <!--tr>
                     <th><label for="edit-publicPage"><?php _e("Would you like to add a public WimVod Page to your site?","wimtvpro");?></label></th>
                     <td>
                         <select id="edit-publicPage" name="publicPage" class="form-select">
@@ -133,7 +133,7 @@ function settings_configuration($directory) {
                         </select>
 
                     </td>
-                </tr>
+                </tr-->
 
             </table>
 

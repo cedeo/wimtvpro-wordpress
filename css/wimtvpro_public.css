@@ -2,12 +2,12 @@
 	list-style: none;
 	display: block; padding: 0!important;
 	height: 100%;
-	width: 100%;
+	width: 100%; border:0!important;
 }
 table.itemsPublic tr {
 	list-style: none;
 	display: block; margin: 0;
-	float: left; width:185px; 
+	float: left; padding:5px;
 	position: relative;
 	text-align: center;
 	font-size: 10px;
@@ -17,19 +17,21 @@ width: 100%;
 	margin: 0;
 }
 .sidebar table.itemsPublic tr span {
-	width:80%;
+
 }
 
-table.itemsPublic    tr td{padding:0 0 10px 0;}
+table.itemsPublic    tr td{padding:0 0 10px 0; height: 10em;}
 table.itemsPublic    tr span, 
 table.itemsPublic  tr img {
-	margin: 0 auto; width: 180px!important;
+	margin: 0 auto; height:100%;
 	padding: 0; font-size:80%; cursor: pointer;
 }
 
 table.itemsPublic .icon_licence  {
-	width:30px; height:30px; position:absolute; bottom:25px; left:10px;
-	 z-index: 10; 
+	width:30px; height:30px; position:absolute;right:10px;
+	 z-index: 10; zoom: 1;
+	filter: alpha(opacity=50);
+	opacity: 0.5;
 }
 table.itemsPublic div.PAYPERVIEW  {
 	background: transparent url("https://www.wim.tv/wimtv-webapp/images/licenseConditions/pay.png") no-repeat center center;

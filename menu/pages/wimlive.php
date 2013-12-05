@@ -124,6 +124,9 @@ function wimtvpro_live() {
                 </li>
             </ol>
         </p>
+        
+        <p><?php _e("Shortcode to post Lives:","wimtvpro");?> <b>[wimlive]<b></p>
+        
         <span><strong>* <?php echo __("Time is shown according to timezone of your device", "wimtvpro") ?></strong></span>
         <table id='tableLive' class='wp-list-table widefat fixed pages'>
         <thead>

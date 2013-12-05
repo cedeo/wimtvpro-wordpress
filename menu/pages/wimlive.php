@@ -205,7 +205,7 @@ function wimtvpro_live() {
                 <?php _e("Private","wimtvpro"); ?> <input type="radio" name="Public" value="false"/>
                 <div class="description">
                     <?php
-                    sprintf(_e('If you want to index your event on %d, and in WimView app, select "Public"','wimtvpro'),'<a target="_blank" href="http://wimlive.wim.tv">wimlive.wim.tv</a>')
+                    echo str_replace ("%d",'<a target="_blank" href="http://wimlive.wim.tv">wimlive.wim.tv</a>',__('If you want to index your event on %d, and in WimView app, select "Public"','wimtvpro'));
                     ?>
                 </div>
             </p>

@@ -481,7 +481,7 @@ function wimtvpro_shortcode_playlist($atts) {
 }
 
 function wimtvpro_shortcode_wimvod($atts) {
-	return "<table class='itemsPublic'>" . wimtvpro_getVideos(TRUE, FALSE, FALSE) . "</table>";
+	return "<table class='itemsPublic'>" . wimtvpro_getVideos(TRUE, FALSE, FALSE) . "</table><div class='clear'></div>";
 }
 
 function wimtvpro_shortcode_wimlive($atts) {

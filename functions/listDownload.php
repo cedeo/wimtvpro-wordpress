@@ -216,15 +216,12 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 	$action = "<td style='display:none;'><a class='viewThumb' " . $style_view . " title='" .  $title_view . "' href='#' id='" . $href_view . "'><span class='icon_view'></span></a></td>";
 	  
   }
- 
-    if ($insert_into_page) {
-      //if ($showtime_identifier!="")
-        //$replace_video = str_replace('#thumbnail-' . $content_item_new. '"' , 'embedded/
-        //$my_media .= "<div class='headerBox'>";
-		//<div class='icon'><a class='addThumb' href='#' id='" . $showtime_identifier . "'>" . __("Add") . "</a>  <a class='removeThumb' href='#' id='" . $showtime_identifier . "'>" . __("Remove") . "</a></div>";
-    }
+
 	if ($playlist) $action = "";
-    $my_media .= "<td class='image'>" .  $licenze_video  . $video . "<br/><b>" . $title . "</b>" . $linkView . "</td>" . $action ;
+    $my_media .= "<td class='image'>" .  $licenze_video  . $video . "<br/>";
+	if ($private)
+		$my_media .="<b>" . $title . "</b>";
+	$my_media .= $linkView . "</td>" . $action ;
     $send = "";
     if ($insert_into_page) {
       $my_media .= '<td><input type="hidden" value="' . $_GET['post_id'] . '" name="post_id">';

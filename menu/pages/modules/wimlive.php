@@ -151,7 +151,7 @@ function wimtvpro_savelive($function) {
             if ($_POST['eventTimeZone']!="")
                 $parameters['eventTimeZone'] = $_POST['eventTimeZone'];
             else
-                $timezone = $_POST['timelivejs'];
+                $parameters['eventTimeZone'] = $_POST['timelivejs'];
 
             if ($function=="modify") {
                 $response = apiModifyLive($_GET['id'], $parameters, $timezone);

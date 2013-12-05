@@ -4,6 +4,7 @@
  */
 include_once('modules/wimlive.php');
 
+
 function wimtvpro_live() {
     $view_page = wimtvpro_alert_reg();
     if (!$view_page){
@@ -51,6 +52,9 @@ function wimtvpro_live() {
             $dati = apiGetLive($_GET['id']);
 
             $arraydati = json_decode($dati);
+			d($arraydati);
+
+			
             $name = $arraydati->name;
             if ($arraydati->paymentMode=="FREEOFCHARGE")
                 $payperview = "0";
@@ -61,14 +65,16 @@ function wimtvpro_live() {
             //d($arraydati);
             $timezone = $arraydati->timeZone;
             $data = $arraydati->eventDateMillisec;
-            $timezoneOffset = intval($arraydati->timezoneOffset)/1000;
-            $timestamp = intval($data)/1000;
+            $timezoneOffset = floor($arraydati->timezoneOffset)/1000;
+            $timestamp = floor($data)/1000;
             $start = new DateTime("@$timestamp");
             $timezoneName = timezone_name_from_abbr("", $timezoneOffset, false);
             //TODO: remove this ugly fix when Sergio fixes the API!
             $real_timezone = new DateTimeZone($timezoneName);
+	
             $start->setTimezone($real_timezone);
             $ora = $start->format('H') . ":" . $start->format('i');
+
             $tempo = $arraydati->duration;
             $ore = floor($tempo / 60);
             $minuti = $tempo % 60;
@@ -79,7 +85,7 @@ function wimtvpro_live() {
             $durata .= $minuti;
 
 
-            break;
+        break;
 
         case "deleteLive":
             $response = apiDeleteLive($_GET['id']);
@@ -119,9 +125,6 @@ function wimtvpro_live() {
                 </li>
             </ol>
         </p>
-        
-        <p><?php _e("Shortcode to post Lives:","wimtvpro");?> [wimlive]</p>
-        
         <span><strong>* <?php echo __("Time is shown according to timezone of your device", "wimtvpro") ?></strong></span>
         <table id='tableLive' class='wp-list-table widefat fixed pages'>
         <thead>
@@ -205,7 +208,7 @@ function wimtvpro_live() {
                 <?php _e("Private","wimtvpro"); ?> <input type="radio" name="Public" value="false"/>
                 <div class="description">
                     <?php
-                    echo str_replace ("%d",'<a target="_blank" href="http://wimlive.wim.tv">wimlive.wim.tv</a>',__('If you want to index your event on %d, and in WimView app, select "Public"','wimtvpro'));
+                    echo str_replace ('%d','<a target="_blank" href="http://wimlive.wim.tv">wimlive.wim.tv</a>',__('If you want to index your event on %d, and in WimView app, select "Public"','wimtvpro'));
                     ?>
                 </div>
             </p>
@@ -227,39 +230,17 @@ function wimtvpro_live() {
                 <input class="pickatime" type="text" id="edit-ora" name="Ora" value="<?php echo $ora;?>" size="10" maxlength="10">
                 <label for="edit-eventTimeZone"><?php _e("Time zone","wimtvpro");?></label>
                 <select id="edit-eventTimeZone" name="eventTimeZone">
+					<option value="">----------------------------------</option>
+					<?php 
+					
+						foreach ( timezoneList() as $value=>$string){
+							echo '<option value="' .$value . '"';
+							if ($value==$timezoneName) echo "selected='selected'";
+							echo '>' . $string . '</option>';
+						}
+					
+					?>
 
-                    <option value="">----------------------------------</option>
-                    <option value="Kwajalein">(GMT -12:00) Eniwetok, Kwajalein</option>
-                    <option value="Pacific/Pago_Pago">(GMT -11:00) Midway Island, Samoa</option>
-                    <option value="US/Hawaii">(GMT -10:00) Hawaii</option>
-                    <option value="US/Alaska">(GMT -9:00) Alaska</option>
-                    <option value="America/Los_Angeles">(GMT -8:00) Pacific Time (US &amp; Canada)</option>
-                    <option value="America/Denver">(GMT -7:00) Mountain Time (US &amp; Canada)</option>
-                    <option value="America/Chicago">(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>
-                    <option value="America/New_York">(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>
-                    <option value="America/Halifax">(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
-                    <option value="Canada/Newfoundlan">(GMT -3:30) Newfoundland</option>
-                    <option value="America/Sao_Paulo">(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
-                    <option value="Atlantic/South_Georgia">(GMT -2:00) Mid-Atlantic</option>
-                    <option value="Atlantic/Cape_Verde">(GMT -1:00 hour) Azores, Cape Verde Islands</option>
-                    <option value="Europe/London">(GMT) Western Europe Time, London, Lisbon, Casablanca</option>
-                    <option value="Europe/Rome">(GMT +1:00 hour) Rome, Madrid, Paris, Copenhagen</option>
-                    <option value="Europe/Istanbul">(GMT +2:00) Helsinki, Istanbul, Kaliningrad, South Africa</option>
-                    <option value="Europe/Moscow">(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
-                    <option value="Asia/Tehran">(GMT +3:30) Tehran</option>
-                    <option value="Asia/Dubai">(GMT +4:00) Abu Dhabi, Dubai, Muscat, Baku, Tbilisi</option>
-                    <option value="Asia/Kabul">(GMT +4:30) Kabul</option>
-                    <option value="Indian/Maldives">(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
-                    <option value="Asia/Calcutta">(GMT +5:30) Bombay, Calcutta, Madras, New Delhi</option>
-                    <option value="Asia/Katmandu">(GMT +5:45) Kathmandu</option>
-                    <option value="Asia/Dacca">(GMT +6:00) Almaty, Dhaka, Colombo</option>
-                    <option value="Asia/Bangkok">(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
-                    <option value="Asia/Hong_Kong">(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
-                    <option value="Asia/Tokyo">(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
-                    <option value="Australia/Adelaide">(GMT +9:30) Adelaide, Darwin</option>
-                    <option value="Australia/Sydney">(GMT +10:00) Sydney, Melbourne, Brisbane, Vladivostok</option>
-                    <option value="Asia/Magadan">(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
-                    <option value="Australia/Auckland">(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
                 </select>
             </p>
 

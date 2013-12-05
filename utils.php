@@ -79,3 +79,8 @@ function lastURLComponent($string) {
     $parts = explode("/", $string);
     return $parts[count($parts) - 1];
 }
+
+
+function wimtvpro_link_help() {
+ return '<div class="help" style="float:right"><a href="' .  get_option("wp_supportLink") . '" target="_new">' . __("Help") . '</a></div>';
+}

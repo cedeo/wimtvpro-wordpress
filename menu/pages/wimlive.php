@@ -104,6 +104,7 @@ function wimtvpro_live() {
             $screen = get_current_screen();
     ?>
         <div class='wrap'>
+        <?php  echo  wimtvpro_link_help();?>
         <h2>WimLive
         <a href='<?php echo $_SERVER['REQUEST_URI'] . "&namefunction=addLive" ?>' class='add-new-h2'><?php echo __( 'New','wimtvpro' ) ?></a>
         </h2>
@@ -120,7 +121,7 @@ function wimtvpro_live() {
                 </li>
             </ol>
         </p>
-        <p>Shortcode: <b>[wimlive]<b></p>
+        <p><?php _e("Shortcode to post Lives","wimtvpro");?>: <b>[wimlive]<b></p>
         <span><strong>* <?php _e("Time is shown according to timezone of your device", "wimtvpro") ?></strong></span>
         <table id='tableLive' class='wp-list-table widefat fixed pages'>
         <thead>

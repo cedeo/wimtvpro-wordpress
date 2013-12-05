@@ -36,10 +36,12 @@ function settings_configuration($directory) {
     $uploads_info = wp_upload_dir();
 ?>
 <div class="wrap">
+    <?php  echo  wimtvpro_link_help();?>
+    
     <h2><?php _e("Configuration","wimtvpro");?></h2>
-
+	
     <?php
-    $view_page = wimtvpro_alert_reg();
+	$view_page = wimtvpro_alert_reg();
     $submenu = wimtvpro_submenu($view_page);
 
     ?>
@@ -97,7 +99,7 @@ function settings_configuration($directory) {
 
             </table>
 
-            <h4><?php _e("Other information" ,"wimtvpro"); ?></h4>
+            <!--h4><?php _e("Other information" ,"wimtvpro"); ?></h4-->
 
             <input type="hidden" value="No" name="sandbox">
             <table class="form-table">

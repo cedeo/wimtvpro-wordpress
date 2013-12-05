@@ -60,9 +60,10 @@ function wimtvpro_mystreaming() {
     </script>
 
     <div class='wrap'>
+    	<?php  echo  wimtvpro_link_help();?>
         <h2>WimVod</h2>
         <p><?php echo __("Here you can","wimtvpro") . " " . __("Manage the videos you want to publish, both in posts and widgets","wimtvpro") ?></p>
-        <p>Shortcode: <b>[wimvod]<b></p>
+        <p><?php _e("Shortcode to post all videos: ","wimtvpro");?><b>[wimvod]<b></p>
         
         <div class='action'>
             <span class='icon_sync0 button-primary' title='Synchronize'><?php echo __("Synchronize","wimtvpro") ?></span>

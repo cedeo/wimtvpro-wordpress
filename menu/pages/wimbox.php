@@ -37,6 +37,7 @@ function wimtvpro_wimbox () {
 
     <!----- HTML ----->
     <div class='wrap'>
+    <?php  echo  wimtvpro_link_help();?>
         <h2>WimBox <a href='admin.php?page=WimTV_Upload' class="add-new-h2"><?php _e('Upload Video',"wimtvpro");?></a></h2>
         <p>
             <?php _e("Here you find all videos you have uploaded. If you wish to post one of these videos on your site, move it to WimVod by clicking the corresponding icon", "wimtvpro"); ?>

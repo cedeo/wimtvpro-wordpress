@@ -17,7 +17,7 @@ function settings_personal($dati) {
       });
     });
     </script>
-
+	<?php  echo  wimtvpro_link_help();?>
     <h2><?php __("Personal Info","wimtvpro") ?></h2>
 
     <?php echo str_replace("user","current",$submenu) ?>

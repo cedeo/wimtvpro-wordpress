@@ -52,7 +52,6 @@ function wimtvpro_live() {
             $dati = apiGetLive($_GET['id']);
 
             $arraydati = json_decode($dati);
-			d($arraydati);
 
 			
             $name = $arraydati->name;

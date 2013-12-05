@@ -66,9 +66,8 @@ msgid "Please, set the duration of your event"
 msgstr "Devi impostare la durata dell'evento"
 
 #: 
-#, fuzzy
 msgid "If you want to index your event on %d, and in WimView app, select \"Public\""
-msgstr "Se vuoi far rendere visibile l'evento sul sito %d, e nell'app WimView, seleziona l'opzione \"Pubblico\"."
+msgstr "Se vuoi rendere visibile l'evento sul sito %d, e nell'app WimView, seleziona l'opzione \"Pubblico\"."
 
 #: 
 #, fuzzy
@@ -91,9 +90,8 @@ msgid "SIGN IT"
 msgstr "LOGIN"
 
 #: 
-#, fuzzy
 msgid "Analytics"
-msgstr "Analytics"
+msgstr "Reportistica"
 
 #: 
 msgid "Pricing"
@@ -115,7 +113,7 @@ msgstr "Salva modifiche"
 
 #: 
 msgid "Features"
-msgstr "Funzioni"
+msgstr "Funzionalità"
 
 #: 
 #, fuzzy
@@ -138,14 +136,13 @@ msgid "To use the skin of your choice, copy the"
 msgstr "Per usare la skin selezionata, copia"
 
 #: 
-#, fuzzy
 msgid "Only .zip files are supported Save wp-content/uploads/skinWim to a public URL"
-msgstr "Solo file .zip. Salva la skin nella cartella pubblica"
+msgstr "Solo file .zip."
 
 #: 
 #, fuzzy
 msgid "file to the root directory (e.g. http://www.mysite.com). You can do it all via FTP  (e.g. FileZilla, Classic FTP, etc). Open your FTP client and identify the root directory of your site. This is the folder titled or beginning with www - and this is where you need to move the crossdomain.xml file"
-msgstr "nella root del tuo sito (esempio http://www.miosito.it). Puoi farlo via FTP. Identifica la root principale: è la cartella dove devi inserire il file crossdomain.xml."
+msgstr "Il file nella cartella della root del tuo sito (esempio http://www.miosito.it). Puoi farlo via FTP (e.g. FileZilla, Classic FTP, etc). Apri il tuo client FTP ed identifica la cartella di root del tuo sito. Questa e' la cartella che si chiama o inizia per “www -”. Questa è la cartella in cui devi spostare il file crossdomain.xml."
 
 #: 
 msgid "More information"
@@ -165,14 +162,12 @@ msgid "Width"
 msgstr "Larghezza"
 
 #: 
-#, fuzzy
 msgid "Please complete the following fields if you wish to make financial transactions on Wim.tv (e.g. buy or sell videos, post pay per view videos or bundles). You may wish to fill your data now or do it later by returning in this section of your Settings."
-msgstr "Completa i seguenti campi se vuoi fare transazioni economiche all'interno di WimTV (e.g. comprare o vendere video, pubblicare video in modalità pay-per-view, ecc ecc...). Puoi fornire questi dati in un secondo tempo, ritornando alla sezione “Monetizzazione” nei tuoi Settings."
+msgstr "Completa i seguenti campi se vuoi fare o ricevere pagamenti all'interno di WimTV (e.g. comprare o vendere video, pubblicare video in modalità pay-per-view, ecc ecc...). Puoi fornire questi dati in un secondo tempo, ritornando alla sezione “Monetizzazione” nei tuoi Settings."
 
 #: 
-#, fuzzy
 msgid "this section you can enable live streaming settings to better match your specific needs. Choose between \"Live streaming\" to stream your own events, or use the features reserved for Event Organisers and Event Resellers to play the role of organiser or distributor (on behalf of Event Organiser) of live events."
-msgstr "In questa sezione è possibile attivare le impostazioni di live streaming per servire al meglio le tue esigenze specifiche. Scegliere tra \"live streaming\" per trasmettere i propri eventi, oppure utilizzare le funzioni riservate agli Organizzatori di Eventi e Rivenditori di Eventi per svolgere il ruolo di organizzatore o il distributore (per conto di Organizzatore eventi) di eventi live."
+msgstr "In questa sezione è possibile attivare le impostazioni di live streaming per servire al meglio le tue esigenze. Scegliere tra \"live streaming\" per trasmettere i propri eventi, oppure utilizzare le funzioni riservate agli Organizzatori di Eventi e Rivenditori di Eventi per svolgere il ruolo di organizzatore oppure di distributore di eventi live (per conto di Organizzatori di eventi)"
 
 #: 
 #, fuzzy
@@ -190,18 +185,16 @@ msgid "Live stream events resale"
 msgstr "Rivendita di Eventi"
 
 #: 
-#, fuzzy
 msgid "Enables you to distribute live events organised by other parties (Event Organisers)."
-msgstr "Abilita alla distribuzione di Eventi organizzati da altri (Organizzatori di Eventi)"
+msgstr "Scegli di diventare un distributore di Eventi organizzati da altri (Organizzatori di Eventi)"
 
 #: 
 msgid "Live stream event organisation"
-msgstr "Organizzazione di Eventi"
+msgstr "Organizzazione di eventi"
 
 #: 
-#, fuzzy
 msgid "Select if you want to organise live evants and collaborate with an Event Reseller for their distribution"
-msgstr "Abilita all'organizzazione di Eventi, che verranno distribuiti da un Rivenditore di Eventi"
+msgstr "Scegli di diventare un organizzatore di Eventi, che verranno distribuiti da un Rivenditore di Eventi"
 
 #: 
 msgid "Personal Info"
@@ -318,11 +311,11 @@ msgstr "Informazioni fiscali"
 
 #: 
 msgid "Tax Code"
-msgstr "Codice fiscale"
+msgstr "Partita Iva"
 
 #: 
 msgid "Vat Code"
-msgstr "Partita Iva"
+msgstr "Codice fiscale"
 
 #: 
 msgid "Street"
@@ -342,13 +335,12 @@ msgid "Zip/Postal Code"
 msgstr "CAP"
 
 #: 
-#, fuzzy
 msgid "Here you find all videos you have uploaded. If you wish to post one of these videos on your site, move it to WimVod by clicking the corresponding icon"
-msgstr "Qui trovi tutti i video che hai caricato. Se vuoi pubblicare un video sul tuo sito, spostalo in WimVod cliccando l'icona corrispondente"
+msgstr "In questa pagina trovi tutti i video che hai caricato. Se vuoi pubblicare un video sul tuo sito, spostalo in WimVod cliccando l'icona corrispondente"
 
 #: 
 msgid "Here you can"
-msgstr "Qui puoi"
+msgstr "In questa pagina puoi"
 
 #: 
 msgid "Manage the videos you want to publish, both in posts and widgets"
@@ -360,7 +352,7 @@ msgstr "Creare playlist"
 
 #: 
 msgid "Create a playlist of videos (ONLY FREE videos are possible) to be posted to your website"
-msgstr "Crea una playlist (è possibile solo per i video GRATUITI) e pubblicala sul sito"
+msgstr "Crea una playlist (ad oggi si possono inserire solo video GRATUITI) e pubblicala sul sito"
 
 #: 
 #, fuzzy
@@ -400,22 +392,20 @@ msgid "Do not leave this page until the upload is complete"
 msgstr "Non chiudere/ri-caricare la pagina fin quando il caricamento non è stato completato"
 
 #: 
-#, fuzzy
 msgid "Here you can create and post live streaming events to your website."
-msgstr "Qui puoi creare e pubblicare eventi live streaming sul tuo sito"
+msgstr "In questa pagina puoi creare e pubblicare eventi live sul tuo sito"
 
 #: 
 msgid "This service can be used in one of these two modalities:"
-msgstr "WimLive può essere usato in una di queste modalità:"
+msgstr "Devi avere un encoder audio video (producer) per mandare in streaming un evento ripreso da una videoamera. Puoi scegliere di"
 
 #: 
-#, fuzzy
 msgid "Install a third party video encoding software (e.g. Adobe Flash Media Live Encoder, Wirecast etc.) on your pc: this solution is recommended if you want to connect an external video camera to your pc"
-msgstr "Installa sul tuo PC un software esterno per fare video encoding (ad es. Adobe Flash Media Live Encoder, Wirecast ecc...): si raccomanda questa soluzione se vuoi connettere una videocamera esterna al tuo PC"
+msgstr "Se hai una videocamera esterna connessa al tuo PC installa un software di codifica audio video (e.g. Adobe Flash Media Live Encoder, Wirecast etc.). "
 
 #: 
 msgid "By clicking the icon, the producer will open in a new browser tab. Keep it open during the whole transmission"
-msgstr "Usa il software di WimTV per fare l'encoding. Per trasmettere la tua webcam, clicca l'icona \"Live now\". Cliccando “Live now”, il producer si aprirà in una nuova scheda del tuo browser. Non chiuderla fino alla fine della trasmissione, se la chiudi interrompi la trasmissione"
+msgstr "Cliccando l'icona il producer si apre in una nuova scheda del browser. Tienila aperta durante tutta la trasmissione."
 
 #: 
 #, fuzzy
@@ -453,9 +443,8 @@ msgid "WimLive password  is missing, please insert it in Live Configuration, in 
 msgstr "La password del live non è stata trovata, inseriscine una nella sezione Configurazione Live nei tuoi Settings"
 
 #: 
-#, fuzzy
 msgid "If you want to index your event on wimlive.wim.tv"
-msgstr "Se vuoi far rendere visibile l'evento sul sito wimlive.wim.tv"
+msgstr "Se vuoi rendere visibile l'evento sul sito wimlive.wim.tv"
 
 #: 
 msgid "select the \"Public\" option."
@@ -489,9 +478,8 @@ msgid "Event duration"
 msgstr "Durata dell'evento"
 
 #: 
-#, fuzzy
 msgid "To use WimLive, you need to enable live streaming in Live Configuration in your Settings"
-msgstr "Per usare questa sezione abilitare il live streaming nella sezione Configurazione Live nei tuoi Settings"
+msgstr "Per usare questa sezione abilita il live streaming nella sezione Configurazione Live nei tuoi Settings"
 
 #: 
 msgid "Current month"
@@ -503,7 +491,7 @@ msgstr "Cambia data"
 
 #: 
 msgid "You commercial packet"
-msgstr "Il tuo pacchetto commerciale"
+msgstr "Il pacchetto di storage e banda che hai scelto"
 
 #: 
 #, fuzzy
@@ -550,9 +538,8 @@ msgid "Average Traffic"
 msgstr "Traffico medio"
 
 #: 
-#, fuzzy
 msgid "Viewer"
-msgstr "visualizzatore"
+msgstr "Visualizzatore"
 
 #: 
 #, fuzzy
@@ -560,9 +547,8 @@ msgid "In this page you can view the video you're live streaming. Keep this page
 msgstr "In questa pagina è possibile visualizzare il video che si sta trasmettendo in diretta. Tenerlo aperto durante tutta la trasmissione."
 
 #: 
-#, fuzzy
 msgid "First, select a playlist"
-msgstr "Prima scegliere la playlist."
+msgstr "Prima scegli la playlist."
 
 #: 
 #, fuzzy
@@ -570,9 +556,8 @@ msgid "The video was inserted in the selected playlist!"
 msgstr "Il video è stato inserito nella playlist selezionata!"
 
 #: 
-#, fuzzy
 msgid "Cannot establish a connection with WimTV. Please contact the customer support"
-msgstr "Non si riesce a stabilire una connessione con Wimtv. Contatta l'assistenza di WimTV"
+msgstr "Non si riesce a stabilire una connessione con Wimtv. Nome utente e/o password non sono corretti."
 
 #: 
 #, fuzzy
@@ -612,9 +597,8 @@ msgid "Price/mo."
 msgstr "Prezzo/mese"
 
 #: 
-#, fuzzy
 msgid "Days left"
-msgstr "Giorni rimanenti"
+msgstr "Giorni rimanenti allo scadere dell'abbonamento"
 
 #: 
 #, fuzzy
@@ -641,7 +625,7 @@ msgstr "Palinsesti"
 
 #: 
 msgid "Connect to your account on WimTV"
-msgstr "Collegati al tuo  account su WimTV"
+msgstr "Collegati al tuo account su WimTV"
 
 #: 
 #, fuzzy
@@ -669,9 +653,8 @@ msgid "Live stream events organisation"
 msgstr "Organizzazione di Eventi"
 
 #: 
-#, fuzzy
 msgid "Select if you want to organise live evants and collaborate with an Event Reseller for their distribution."
-msgstr "Abilita all'organizzazione di Eventi, che verranno distribuiti da un Rivenditore di Eventi."
+msgstr "Diventa un organizzatore di eventi, che verranno distribuiti da un Rivenditore di eventi."
 
 #: 
 #, fuzzy
@@ -692,7 +675,7 @@ msgstr "Hai scelto"
 
 #: 
 msgid "Use WimTV encoding software. Broadcast directly from your webcam, by simply clicking the icon \"Live now\". By clicking “Live now” icon, the producer will open in a new browser tab. Keep it open during the whole transmission."
-msgstr "Usa il software di WimTV per fare l'encoding. Per trasmettere la tua webcam, clicca l'icona \"Live now\". Cliccando “Live now”, il producer si aprirà in una nuova scheda del tuo browser. Non chiuderla fino alla fine della trasmissione, se la chiudi interrompi la trasmissione"
+msgstr "Se trasmetti direttamente dalla tua webcam, clicca l'icona \"Live now\" per aprire il producer WimTV. Il producer si aprira' in una nuova scheda del browser. Ricordati di non chiudere questa scheda fino alla fine della trasmissione."
 
 #: 
 msgid "Schedule"
@@ -712,7 +695,7 @@ msgstr "Compila tutti i campi contrassegnati da *"
 
 #: 
 msgid "Set the price to access the event"
-msgstr "Imposta il prezzo per guardare l'evento live"
+msgstr "Imposta il prezzo che gli utenti pagheranno per guardare l'evento live"
 
 #: 
 msgid "Event status"
@@ -720,7 +703,7 @@ msgstr "Status dell'evento"
 
 #: 
 msgid "Select “Yes” if you want to record your event. The recorded video will be listed among your videos in WimBox"
-msgstr "Seleziona “Si” se vuoi registrare la trasmissione dell'Evento. Al termine della trasmissione il video sara' listato tra i tuoi video in WimBox"
+msgstr "Seleziona “Si” se vuoi registrare la trasmissione dell'evento. Al termine della trasmissione il video sara' listato tra i tuoi video in WimBox"
 
 #: 
 msgid "Public"
@@ -748,15 +731,15 @@ msgstr "Altre informazioni"
 
 #: 
 msgid "If, before the end of the month, you"
-msgstr "Se, prima della fine del mese,"
+msgstr "Se, prima della fine del mese, il tuo consumo raggiunge"
 
 #: 
 msgid "reach 80% level you will be notified"
-msgstr "Raggiungi l'80% riceverai una notifica"
+msgstr "l'80% riceverai una notifica via mail"
 
 #: 
 msgid "exceed 100% level you will be asked to upgrade to another package."
-msgstr "superi il 100% ti sarà richiesto l'upgrade a un pacchetto più grande."
+msgstr "il 100% ti sarà richiesto l'upgrade a un pacchetto più grande."
 
 #. Da mettere sotto First Name in Personal Info
 #: 
@@ -829,7 +812,7 @@ msgstr "Rimuovi da WimVod"
 
 #: 
 msgid "You need compile fiscal information for your account, for enabling pay per view posting. Please provide it in Monetisation section of your Settings"
-msgstr "Devi compilare le informazioni fiscali del tuo account per consentire la pubblicazione a pagamento del video. Si prega di fornire le informazioni necessareie nella sezione Monetizzazione dei Settings"
+msgstr "Devi compilare le informazioni fiscali del tuo account per consentire la pubblicazione a pagamento del video. Si prega di fornire le informazioni necessarie nella sezione Monetizzazione dei Settings"
 
 #: 
 msgid "Return to list"
@@ -972,7 +955,7 @@ msgstr "Non si riesce a stabilire una connessione con WimTV. Nome utente e/o pas
 
 #: 
 msgid "Can not establish a connection with Wim.tv. Contact the administrator."
-msgstr "Non si riesce a stabilire una connessione con WimTV. Contatta l'amministratore."
+msgstr "Non si riesce a stabilire una connessione con WimTV. Contatta il servizio di supporto di WimTV."
 
 #: 
 msgid "Would you like to add the \"Share\" button in the video player?"
@@ -991,16 +974,12 @@ msgid "You must upload a file"
 msgstr "Devi caricare un file"
 
 #: 
-#, fuzzy
 msgid "The server where your Wordpress is installed does not support upload of files exceeding %d. If you want to upload videos larger than %d, please modify your server settings. WimTV supports up to 2GB file size per upload."
-msgstr "Il server su cui e' installato il tuo Wordpress non \n"
-"supporta upload di file di dimensioni superiori a %d. Se vuoi caricare \n"
-"video di dimensioni superiori, modifica le impostazioni del tuo server. \n"
-"La dimensione massima di file upload supportata da WimTV e' 2GB."
+msgstr "Il server su cui e' installato il tuo Wordpress non supporta upload di file di dimensioni superiori a %d. Se vuoi caricare video di dimensioni superiori, modifica le impostazioni del tuo server. La dimensione massima di file upload supportata da WimTV e' di 2GB."
 
 #: 
 msgid "This video has not yet been processed, wait a few minutes and try to synchronize"
-msgstr "Questo video non è stato ancora processato, attendere qualche minuto e riprovare a sincronizzare"
+msgstr "Questo video non è stato ancora processato. Attendi qualche minuto e riprova a sincronizzare"
 
 #: 
 msgid "Playlist's Video"
@@ -1012,7 +991,7 @@ msgstr "Tutti i video"
 
 #: 
 msgid "Move videos from left to right"
-msgstr "Muovi i video da sinistra a destra"
+msgstr "Per creare una playlist, trascina i video dall'area Tutti i Video all'area Playlist. Per cambiare l'ordine dei video, trascina le thumbnail nella posizione desiderata nell'area Playlist."
 
 #: 
 msgid "Please only upload files that end in types:"
@@ -1063,4 +1042,12 @@ msgstr "Partita IVA"
 #: 
 msgid "Time is shown according to timezone of your device"
 msgstr "Gli orari sono mostrati nell'ora corrispondente al tuo fuso orario"
+
+#: 
+msgid "Shortcode to post all videos:"
+msgstr "Shortcode per pubblicare tutti i video:"
+
+#: 
+msgid "Shortcode to post Lives:"
+msgstr "Shortcode per pubblicare i Live:"
 

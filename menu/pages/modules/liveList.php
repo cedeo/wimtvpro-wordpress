@@ -41,7 +41,7 @@ header('Content-type: text/html');
     $identifier = $value -> identifier;
 
     $embedded_iframe = apiGetLiveIframe($identifier, $timezone);
-    $details_live = apiGetLive($identifier, $timezone);
+    $details_live = apiGetLive($identifier);
 
     $livedate = json_decode($details_live);
     //d($livedate);
@@ -120,5 +120,3 @@ header('Content-type: text/html');
 echo $output;
 
 ?>
-
-

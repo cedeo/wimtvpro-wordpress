@@ -4,7 +4,6 @@
  */
 include_once('modules/wimlive.php');
 
-
 function wimtvpro_live() {
     $view_page = wimtvpro_alert_reg();
     if (!$view_page){
@@ -92,19 +91,18 @@ function wimtvpro_live() {
 
     ?>
     <script type="text/javascript">
-		function clickImg(obj){
-			jQuery("a.clickWebProducer img").attr("src", "<?php echo get_option('wp_wimtvPluginPath') . 'images/webcam.png' ?>");
-			jQuery(obj).attr("src", "<?php echo get_option('wp_wimtvPluginPath') . 'images/live_rec.gif' ?>");
+                function clickImg(obj){
+                        jQuery("a.clickWebProducer img").attr("src", "<?php echo get_option('wp_wimtvPluginPath') . 'images/webcam.png' ?>");
+                        jQuery(obj).attr("src", "<?php echo get_option('wp_wimtvPluginPath') . 'images/live_rec.gif' ?>");
 
-		}
-	</script>
+                }
+        </script>
     <?php
         if (!$noneElenco) {
             global $post_type_object;
             $screen = get_current_screen();
     ?>
         <div class='wrap'>
-        <?php  echo  wimtvpro_link_help();?>
         <h2>WimLive
         <a href='<?php echo $_SERVER['REQUEST_URI'] . "&namefunction=addLive" ?>' class='add-new-h2'><?php echo __( 'New','wimtvpro' ) ?></a>
         </h2>
@@ -121,8 +119,10 @@ function wimtvpro_live() {
                 </li>
             </ol>
         </p>
-        <p><?php _e("Shortcode to post Lives","wimtvpro");?>: <b>[wimlive]<b></p>
-        <span><strong>* <?php _e("Time is shown according to timezone of your device", "wimtvpro") ?></strong></span>
+        
+        <p><?php _e("Shortcode to post Lives:","wimtvpro");?> [wimlive]</p>
+        
+        <span><strong>* <?php echo __("Time is shown according to timezone of your device", "wimtvpro") ?></strong></span>
         <table id='tableLive' class='wp-list-table widefat fixed pages'>
         <thead>
         <tr>

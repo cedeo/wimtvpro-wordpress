@@ -49,7 +49,7 @@ function wimtvpro_live() {
                 wimtvpro_savelive("modify");
             }
 
-            $dati = apiGetLive($_GET['id']);
+            $dati = apiGetLive($_GET['id'], $_GET['timezone']);
 
             $arraydati = json_decode($dati);
             $name = $arraydati->name;
@@ -59,14 +59,12 @@ function wimtvpro_live() {
                 $payperview =  $arraydati->pricePerView;
             $url = $arraydati->url;
             $giorno = $arraydati->eventDate;
-            //d($arraydati);
             $timezone = $arraydati->timeZone;
             $data = $arraydati->eventDateMillisec;
-            $timezoneOffset = intval($arraydati->timezoneOffset)/1000;
+            $timezoneOffset = intval($arraydati->timezoneOffset);
             $timestamp = intval($data)/1000;
             $start = new DateTime("@$timestamp");
             $timezoneName = timezone_name_from_abbr("", $timezoneOffset, false);
-            //TODO: remove this ugly fix when Sergio fixes the API!
             $real_timezone = new DateTimeZone($timezoneName);
             $start->setTimezone($real_timezone);
             $ora = $start->format('H') . ":" . $start->format('i');
@@ -120,7 +118,7 @@ function wimtvpro_live() {
                 </li>
             </ol>
         </p>
-        <p>Shortcode: <b>[wimlive]<b></p>
+        <p>Shortcode: <b>[wimlive]</b></p>
         <span><strong>* <?php _e("Time is shown according to timezone of your device", "wimtvpro") ?></strong></span>
         <table id='tableLive' class='wp-list-table widefat fixed pages'>
         <thead>

@@ -89,7 +89,7 @@ header('Content-type: text/html');
       <td>"  . $start->format('d/m/Y H:i') . "<br/>" . $durata . "</td>
       <td>" . $embedded_code . "</td>
       <td> 
-      <a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "' alt='" . __("Remove")
+      <a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "&timezone=" . $timezoneOffset . "' alt='" . __("Remove")
           . "'   title='" . __("Modify","wimtvpro") . "'><img src='" . get_option('wp_wimtvPluginPath') . "images/mod.png"
           . "'  alt='" . __("Modify","wimtvpro") . "'></a>
 

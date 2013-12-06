@@ -60,10 +60,12 @@ function wimtvpro_live() {
             else
                 $payperview =  $arraydati->pricePerView;
             $url = $arraydati->url;
+			$recordEvent = $arraydati->recordEvent;
+			$publicEvent = $arraydati->publicEvent;
             $giorno = $arraydati->eventDate;
-            //d($arraydati);
             $timezone = $arraydati->timeZone;
             $data = $arraydati->eventDateMillisec;
+
             $timezoneOffset = floor($arraydati->timezoneOffset)/1000;
             $timestamp = floor($data)/1000;
             $start = new DateTime("@$timestamp");
@@ -71,7 +73,7 @@ function wimtvpro_live() {
             //TODO: remove this ugly fix when Sergio fixes the API!
             $real_timezone = new DateTimeZone($timezoneName);
 	
-            $start->setTimezone($real_timezone);
+            //$start->setTimezone($real_timezone);
             $ora = $start->format('H') . ":" . $start->format('i');
 
             $tempo = $arraydati->duration;
@@ -170,8 +172,6 @@ function wimtvpro_live() {
                       });
               });
 
-              jQuery(".edit-eventTimeZone[value=\"<?php echo $timezone ?>\"]").attr("selected", "selected");
-
         </script>
         <div class='wrap'><h2>WimLive
         <a href='<?php echo $_SERVER['REQUEST_URI'] . "&namefunction=listLive" ?>' class='add-new-h2'><?php echo __( 'Return to list', 'wimtvpro') ?></a>
@@ -206,8 +206,14 @@ function wimtvpro_live() {
 
             <p>
                 <label for="edit-url"><?php _e("Event status","wimtvpro"); ?> * </label><br/>
-                <?php _e("Public","wimtvpro"); ?> <input type="radio" name="Public" value="true" checked="checked"/> |
-                <?php _e("Private","wimtvpro"); ?> <input type="radio" name="Public" value="false"/>
+                <?php _e("Public","wimtvpro"); ?> <input type="radio" name="Public" value="true" 
+                <?php if ($publicEvent || ($page=="AddLive"))   echo 'checked="checked"'; ?>
+                /> |
+                <?php _e("Private","wimtvpro"); ?> <input type="radio" name="Public" value="false"
+                
+                <?php if (!$publicEvent)   echo 'checked="checked"'; ?>
+                
+                />
                 <div class="description">
                     <?php
                     echo str_replace ('%d','<a target="_blank" href="http://wimlive.wim.tv">wimlive.wim.tv</a>',__('If you want to index your event on %d, and in WimView app, select "Public"','wimtvpro'));
@@ -217,8 +223,12 @@ function wimtvpro_live() {
 
             <p>
                 <label for="edit-record"><?php _e("Record event","wimtvpro"); ?></label><br/>
-                <?php _e("Yes");?> <input type="radio" name="Record" value="true" checked="checked"/> |
-                <?php _e("No","wimtvpro");?> <input type="radio" name="Record" value="false"/>
+                <?php _e("Yes");?> <input type="radio" name="Record" value="true"
+                <?php if ($recordEvent || ($page=="AddLive"))   echo 'checked="checked"'; ?>
+                /> |
+                <?php _e("No","wimtvpro");?> <input type="radio" name="Record" value="false"
+                <?php if (!$recordEvent)   echo 'checked="checked"'; ?>
+                />
                 <div class="description"><?php _e("Select “Yes” if you want to record your event. The recorded video will be listed among your videos in WimBox","wimtvpro"); ?></div>
 
             </p>
@@ -237,7 +247,7 @@ function wimtvpro_live() {
 					
 						foreach ( timezoneList() as $value=>$string){
 							echo '<option value="' .$value . '"';
-							if ($value==$timezoneName) echo "selected='selected'";
+							if ($value==$currentTimeZone) echo "selected='selected'";
 							echo '>' . $string . '</option>';
 						}
 					
@@ -253,7 +263,12 @@ function wimtvpro_live() {
             </p>
             <input type="hidden" name="wimtvpro_live" value="Y" />
             <input type="hidden" id="timelivejs" name="timelivejs" value="" />
-            <?php submit_button(__("Create","wimtvpro")); ?>
+            <?php 
+				if ($page=="AddLive")
+					submit_button(__("Create","wimtvpro")); 
+				else
+					submit_button(__("Update","wimtvpro")); 
+			?>
 
         </form>
         </div>

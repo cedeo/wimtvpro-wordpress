@@ -34,7 +34,7 @@ function settings_monetization($dati) {
     */
 
     ?>
-
+	<?php  echo  wimtvpro_link_help();?>
     <h2><?php echo __("Monetisation","wimtvpro")  ?></h2>
     <?php echo str_replace("payment","current",$submenu) ?>
     <div class="clear"></div>

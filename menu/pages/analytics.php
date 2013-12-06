@@ -129,7 +129,10 @@ function wimtvpro_report (){
 
         });
     </script>
-    <div class='wrap'><h1>Report user Wimtv <?php echo $user ?></h1>
+    
+    <div class='wrap'>
+    <?php  echo  wimtvpro_link_help();?>
+    <h2>Report user Wimtv <?php echo $user ?></h2>
     <h3 id='changeTitle'><?php echo $title_user ?></h3>
 
     <div class="registration" id="fr_custom_date" style="<?php echo $style_date ?>">

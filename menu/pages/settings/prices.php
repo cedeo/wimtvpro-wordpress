@@ -5,6 +5,7 @@
 function settings_prices() {
 
     echo "<div class='wrap'>";
+	echo  wimtvpro_link_help();
     echo "<h2>" . __("Pricing","wimtvpro");
     if (isset($_GET['return']))  echo "<a href='?page=WimTVPro_Report' class='add-new-h2'>" . __("Back") . "</a>";
     echo "</h2>";

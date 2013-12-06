@@ -357,7 +357,7 @@ msgstr "You need an audio video encoder (producer) to stream an event captured b
 
 #: 
 msgid "Install a third party video encoding software (e.g. Adobe Flash Media Live Encoder, Wirecast etc.) on your pc: this solution is recommended if you want to connect an external video camera to your pc"
-msgstr "1. If you have an external video camera connected to your PC, install a video encoding software (e.g. Adobe Flash Media Live Encoder, Wirecast etc.). **********"
+msgstr "If you have an external video camera connected to your PC, install a video encoding software (e.g. Adobe Flash Media Live Encoder, Wirecast etc.)."
 
 #: 
 msgid "By clicking the icon, the producer will open in a new browser tab. Keep it open during the whole transmission"
@@ -959,4 +959,12 @@ msgstr "VAT Code"
 #: 
 msgid "Time is shown according to timezone of your device"
 msgstr "Time is shown according to timezone of your device"
+
+#: 
+msgid "Shortcode to post all videos:"
+msgstr ""
+
+#: 
+msgid "Shortcode to post Lives:"
+msgstr ""
 

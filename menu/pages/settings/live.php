@@ -16,7 +16,9 @@ function settings_live($dati) {
 
     ?>
 
-    <h2><?php echo __('Live configuration',"wimtvpro") ?></h2>
+    <h2>
+	<?php  echo  wimtvpro_link_help();?>
+	<?php echo __('Live configuration',"wimtvpro") ?></h2>
 
     <?php echo str_replace("live","current",$submenu) ?>
 

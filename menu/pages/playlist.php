@@ -57,6 +57,7 @@ function wimtvpro_playlist() {
 
 ?>
     <div class='wrap'>
+    <?php  echo  wimtvpro_link_help();?>
     <h2>Playlist <?php echo $linkReturn ?></h2>
     <p><?php echo __("Create a playlist of videos (ONLY FREE videos are possible) to be posted to your website","wimtvpro") ?></p>
     <p><?php echo __("Move videos from left to right","wimtvpro") ?></p>

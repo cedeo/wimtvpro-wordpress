@@ -18,6 +18,16 @@ div.action span {
 }
 
 
+div.help {
+	float:left;  font-size:14px;
+	background: transparent url('../images/help.png') no-repeat center left;
+	position:relative;padding:10px 0 10px 0;
+}
+div.help a{
+	width:100%; height:100%; padding:10px 0 10px 35px; 
+}
+
+
 
 .icon_sync0 {
 	 cursor:pointer; display:none;

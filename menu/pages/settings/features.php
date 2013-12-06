@@ -35,6 +35,7 @@ function settings_features($dati) {
 
         });
     </script>
+    <?php  echo  wimtvpro_link_help();?>
     <h2><?php echo __("Features","wimtvpro") ?></h2>
     <?php echo str_replace("other","current",$submenu) ?>
     <div class="clear"></div>

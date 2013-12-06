@@ -168,10 +168,6 @@ function wimtvpro_remove() {
 
 // End table for wimvideo pro
 
-function redirect_to_help() {
-    echo "<script>window.location.href='" . get_option("wp_supportLink") . "'</script>";
-    exit;
-}
 
 //menu admin
 function wimtvpro_menu(){
@@ -194,7 +190,7 @@ function wimtvpro_menu(){
       add_submenu_page('WimTvPro', __('Playlist',"wimtvpro"), __('Playlist',"wimtvpro"), 'administrator', 'WimTV_Playlist', 'wimtvpro_playlist');
 	  add_submenu_page('WimTvPro', 'WimLive', 'WimLive', 'administrator', 'WimLive', 'wimtvpro_live');
       add_submenu_page('WimTvPro', __('Analytics'), __('Analytics'), 'administrator', 'WimTVPro_Report', 'wimtvpro_Report');
-      add_submenu_page('WimTvPro', __('Help'), __('Help'), 'administrator', null, 'redirect_to_help');
+
       //TODO: add_submenu_page('WimTvPro', 'Programming', 'Programming', 'administrator', 'WimVideoPro_Programming', 'wimtvpro_programming');
     }
     
@@ -485,7 +481,7 @@ function wimtvpro_shortcode_playlist($atts) {
 }
 
 function wimtvpro_shortcode_wimvod($atts) {
-	return "<table class='itemsPublic'>" . wimtvpro_getVideos(TRUE, FALSE, FALSE) . "</table>";
+	return "<table class='itemsPublic'>" . wimtvpro_getVideos(TRUE, FALSE, FALSE) . "</table><div class='clear'></div>";
 }
 
 function wimtvpro_shortcode_wimlive($atts) {

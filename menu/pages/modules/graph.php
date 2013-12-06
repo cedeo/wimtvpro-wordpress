@@ -19,8 +19,11 @@ function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
     }
     if (count($single_traffic_media)>0) {
         $traffic_view_max = max($single_traffic_media);
-        $single_traffic_percent = (100/$traffic_view_max);
-    }
+		if ($traffic_view_max!=0)
+        	$single_traffic_percent = (100/$traffic_view_max);
+    	else
+			$single_traffic_percent = 0;
+	}
     else {
         $traffic_view_max = 0;
     }

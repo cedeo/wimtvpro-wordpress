@@ -5,7 +5,7 @@
 	width: 100%; border:0!important;
 }
 table.itemsPublic tr {
-	list-style: none;
+	list-style: none; with
 	display: block; margin: 0;
 	float: left; padding:5px;
 	position: relative;
@@ -13,14 +13,13 @@ table.itemsPublic tr {
 	font-size: 10px;
 }
 .sidebar table.itemsPublic tr {
-width: 100%;
 	margin: 0;
 }
 .sidebar table.itemsPublic tr span {
 
 }
 
-table.itemsPublic    tr td{padding:0 0 10px 0; height: 10em;}
+table.itemsPublic    tr td{padding:0 0 10px 0; height: 10em;word-wrap:break-word; width: 110px;}
 table.itemsPublic    tr span, 
 table.itemsPublic  tr img {
 	margin: 0 auto; height:100%;

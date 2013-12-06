@@ -16,7 +16,7 @@ function wimtvpro_elencoLive($type, $identifier, $onlyActive=true){
     echo '
     var timezone = -(new Date().getTimezoneOffset())*60*1000;
 	//window.location.assign(window.location + "&timezone="+timezone);
-
+console.log(url_pathPlugin + "liveList.php");
 	jQuery.ajax({
 			context: this,
 			url:  url_pathPlugin + "liveList.php",

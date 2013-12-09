@@ -139,7 +139,7 @@ function apiAddLive($parameters, $timezone=null) {
     $request = $apiAccessor->postRequest($url);
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request);
+    return $apiAccessor->execute($request, 'application/json', false);
 }
 
 function apiModifyLive($host_id, $parameters, $timezone=null) {
@@ -150,7 +150,7 @@ function apiModifyLive($host_id, $parameters, $timezone=null) {
     $request = $apiAccessor->postRequest($url);
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request);
+    return $apiAccessor->execute($request,  'application/json', false);
 }
 
 function apiPublishOnShowtime($id, $parameters) {

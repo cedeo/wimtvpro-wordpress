@@ -681,6 +681,7 @@ jQuery(document).ready(function() {
 	
 	jQuery(".icon_viewPlay,.icon_viewPlay_title").click(function () {
 		var id= jQuery(this).attr("id");
+        console.log(url_pathPlugin + "embedded/embeddedPlayList.php?isAdmin=true&id=" + id);
 		jQuery(this).colorbox({width:'80%', height:'80%', href:  url_pathPlugin + "embedded/embeddedPlayList.php?isAdmin=true&id=" + id});
 	});
 	

@@ -149,7 +149,7 @@ function wimtvpro_savelive($function) {
                 'recordEvent' => $record);
 
             if ($_POST['eventTimeZone']!="")
-                $parameters['eventTimeZone'] = $_POST['eventTimeZone'];
+                $timezone = $_POST['eventTimeZone'];
             else
                 $timezone = $_POST['timelivejs'];
 

@@ -52,8 +52,6 @@ function wimtvpro_live() {
             $dati = apiGetLive($_GET['id'], $_GET['timezone']);
 
             $arraydati = json_decode($dati);
-
-			
             $name = $arraydati->name;
             if ($arraydati->paymentMode=="FREEOFCHARGE")
                 $payperview = "0";
@@ -70,10 +68,8 @@ function wimtvpro_live() {
             $start = new DateTime("@$timestamp");
             $timezoneName = timezone_name_from_abbr("", $timezoneOffset, false);
             $real_timezone = new DateTimeZone($timezoneName);
-	
-            //$start->setTimezone($real_timezone);
+            $start->setTimezone($real_timezone);
             $ora = $start->format('H') . ":" . $start->format('i');
-
             $tempo = $arraydati->duration;
             $ore = floor($tempo / 60);
             $minuti = $tempo % 60;
@@ -82,9 +78,7 @@ function wimtvpro_live() {
             if ($minuti<10)
                 $durata .= "0";
             $durata .= $minuti;
-
-
-        break;
+            break;
 
         case "deleteLive":
             $response = apiDeleteLive($_GET['id']);
@@ -125,7 +119,7 @@ function wimtvpro_live() {
             </ol>
         </p>
 
-        <p><?php _e("Shortcode to post Lives:","wimtvpro");?> <b>[wimlive]<b></p>
+        <p><?php _e("Shortcode to post Lives:","wimtvpro");?> <b>[wimlive]</b></p>
         <span><strong>* <?php echo __("Time is shown according to timezone of your device", "wimtvpro") ?></strong></span>
         <table id='tableLive' class='wp-list-table widefat fixed pages'>
         <thead>

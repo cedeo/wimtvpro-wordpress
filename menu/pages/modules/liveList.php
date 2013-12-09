@@ -41,8 +41,8 @@ header('Content-type: text/html');
     $identifier = $value -> identifier;
 
     $embedded_iframe = apiGetLiveIframe($identifier, $timezone);
-    $details_live = apiGetLive($identifier);
-
+    $details_live = apiGetLive($identifier, $timezone);
+    //d($livedate);
     $livedate = json_decode($details_live);
 
     $data = $livedate->eventDateMillisec;
@@ -53,11 +53,10 @@ header('Content-type: text/html');
     $start = new DateTime("@$timestamp");
     $timezoneName = timezone_name_from_abbr("", $timezoneOffset, false);
     $real_timezone = new DateTimeZone($timezoneName);
-    //$start->setTimezone($real_timezone);
+    $start->setTimezone($real_timezone);
 	$oraMin = $start->format('H') . ":" . $start->format('i');
 	$timeToStart= $livedate->timeToStart;
 	$timeLeft = $livedate->timeLeft;
-	echo date('h:i', $timeToStart);
    // $urlPeer = "http://peer.wim.tv:8080/wimtv-webapp/rest";
     //$embedded_code = htmlentities(curl_exec($ch_embedded));
     //$embedded_iframe = '<iframe id="com-wimlabs-player" name="com-wimlabs-player" src="' . $urlPeer . '/liveStreamEmbed/' . $identifier . '/player?width=692&height=440" style="min-width: 692px; min-height: 440px;"></iframe>';

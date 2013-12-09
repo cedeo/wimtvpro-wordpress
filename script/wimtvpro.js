@@ -4,8 +4,10 @@ jQuery(document).ready(function(){
 	jQuery("span.wimtv-thumbnail").click(function(){viewVideo(this);});
 	
 	function viewVideo(elem){
+		console.log('seiqui');
 		if( jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").length  ) {
 			var url = jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").attr("id");
+			console.log(url);
 			jQuery(elem).colorbox({href:url, width:'50%', height:'80%'});
 		}else{
 			alert (videoproblem);	

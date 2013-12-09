@@ -1,12 +1,19 @@
 <?php
+$parse_uri = explode( 'wp-content', $_SERVER['SCRIPT_FILENAME'] );
+$url_include = $parse_uri[0] . 'wp-load.php';
+
+if (isset($_GET["isAdmin"])){
+    $is_admin = true;
+    require_once($url_include);
+} else {
+    $is_admin = false;
+}
 
 function includePlaylist($playlist_id) {
     $user_agent = $_SERVER['HTTP_USER_AGENT'];
-    $parse_uri = explode( 'wp-content', $_SERVER['SCRIPT_FILENAME'] );
-    $url_include = $parse_uri[0] . 'wp-load.php';
+
     if (isset($_GET["isAdmin"])){
         $is_admin = true;
-        require_once($url_include);
     } else {
         $is_admin = false;
     }
@@ -16,7 +23,6 @@ function includePlaylist($playlist_id) {
 
     $listVideo = $playlist->listVideo;
     $title = $playlist->name;
-
     //Read Data videos
 
     $videoList = explode (",",$listVideo);
@@ -113,4 +119,10 @@ function includePlaylist($playlist_id) {
 <?php
     return ob_get_clean();
 }
+
+if ($is_admin) {
+    $id = $_GET['id'];
+    echo includePlaylist($id);
+}
+
 ?>

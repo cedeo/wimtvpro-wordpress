@@ -856,8 +856,9 @@ msgid "Time zone"
 msgstr "Fuso orario"
 
 #: 
-msgid "View Streams"
-msgstr "Stream"
+#, fuzzy
+msgid "Streams"
+msgstr "Streaming"
 
 #: 
 msgid "View graphic"

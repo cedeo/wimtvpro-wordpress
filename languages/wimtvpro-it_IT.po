@@ -991,7 +991,7 @@ msgstr "Tutti i video"
 
 #: 
 msgid "Move videos from left to right"
-msgstr "Per creare una playlist, trascina i video dall'area Tutti i Video all'area Playlist. Per cambiare l'ordine dei video, trascina le thumbnail nella posizione desiderata nell'area Playlist."
+msgstr "Per creare una playlist clicca + e poi la matita sotto Modifica. Appariranno le thumbnail dei video di WimBox and l’area Playlist. Trascina le thumbnail dall’area Tutti i video all’area Playlist. Per cambiare l’ordine, trascina le thumbnail alla position desiderata nell’area Playlist."
 
 #: 
 msgid "Please only upload files that end in types:"

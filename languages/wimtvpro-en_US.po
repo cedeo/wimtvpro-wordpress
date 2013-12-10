@@ -910,7 +910,7 @@ msgstr "All videos"
 
 #: 
 msgid "Move videos from left to right"
-msgstr "To create a playlist, drag and drop videos from All Videos area to Playlist area.  To change the order, drag and drop thumbnails to the desired position in the Playlist area."
+msgstr "To create a playlist click + and then the pencil under Modify. The video thumbnails of WimBox and the Playlist area will appear. Drag and drop the video thumbnails from the All videos to the Playlist area. To change the order, drag and drop thumbnails to the desired position in the Playlist area."
 
 #: 
 msgid "Please only upload files that end in types:"

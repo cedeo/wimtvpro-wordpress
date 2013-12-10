@@ -141,8 +141,8 @@ msgstr "Solo file .zip."
 
 #: 
 #, fuzzy
-msgid "file to the root directory (e.g. http://www.mysite.com). You can do it all via FTP  (e.g. FileZilla, Classic FTP, etc). Open your FTP client and identify the root directory of your site. This is the folder titled or beginning with www - and this is where you need to move the crossdomain.xml file"
-msgstr "Il file nella cartella della root del tuo sito (esempio http://www.miosito.it). Puoi farlo via FTP (e.g. FileZilla, Classic FTP, etc). Apri il tuo client FTP ed identifica la cartella di root del tuo sito. Questa e' la cartella che si chiama o inizia per “www -”. Questa è la cartella in cui devi spostare il file crossdomain.xml."
+msgid "file to the root directory (e.g. http://www.mysite.com). You can do it all via FTP  (e.g. FileZilla, Classic FTP, etc)."
+msgstr "Il file nella cartella della root del tuo sito (esempio http://www.miosito.it). Puoi farlo via FTP (e.g. FileZilla, Classic FTP, etc)."
 
 #: 
 msgid "More information"
@@ -203,7 +203,7 @@ msgstr "Informazioni personali"
 #: 
 #, fuzzy
 msgid "First Name"
-msgstr "Cognome"
+msgstr "Nome"
 
 #: 
 #, fuzzy
@@ -227,7 +227,7 @@ msgstr "Facebook http://"
 #: 
 #, fuzzy
 msgid "Index and show public videos on WimTV"
-msgstr "Indicizza e mostra il tuoi video pubblici sul sito WimTV"
+msgstr "Indicizza e mostra i tuoi video pubblici sul sito WimTV"
 
 #: 
 #, fuzzy
@@ -344,7 +344,7 @@ msgstr "In questa pagina puoi"
 
 #: 
 msgid "Manage the videos you want to publish, both in posts and widgets"
-msgstr "Pubblicare i tuoi video, sia negli articoli che nei widget"
+msgstr "pubblicare i tuoi video, sia negli articoli che nei widget"
 
 #: 
 msgid "Create playlists"
@@ -393,11 +393,11 @@ msgstr "Non chiudere/ri-caricare la pagina fin quando il caricamento non è stat
 
 #: 
 msgid "Here you can create and post live streaming events to your website."
-msgstr "In questa pagina puoi creare e pubblicare eventi live sul tuo sito"
+msgstr "In questa pagina puoi creare e pubblicare eventi live sul tuo sito."
 
 #: 
 msgid "This service can be used in one of these two modalities:"
-msgstr "Devi avere un encoder audio video (producer) per mandare in streaming un evento ripreso da una videoamera. Puoi scegliere di"
+msgstr "Devi avere un encoder audio video (producer) per mandare in streaming un evento ripreso da una videocamera. Puoi scegliere:"
 
 #: 
 msgid "Install a third party video encoding software (e.g. Adobe Flash Media Live Encoder, Wirecast etc.) on your pc: this solution is recommended if you want to connect an external video camera to your pc"
@@ -991,7 +991,7 @@ msgstr "Tutti i video"
 
 #: 
 msgid "Move videos from left to right"
-msgstr "Per creare una playlist clicca + e poi la matita sotto Modifica. Appariranno le thumbnail dei video di WimBox and l’area Playlist. Trascina le thumbnail dall’area Tutti i video all’area Playlist. Per cambiare l’ordine, trascina le thumbnail alla position desiderata nell’area Playlist."
+msgstr "Per creare una playlist clicca + e poi la matita sotto Modifica. Appariranno le thumbnail dei video di WimBox e l’area Playlist. Trascina le thumbnail dall’area Tutti i video all’area Playlist. Per cambiare l’ordine, trascina le thumbnail alla posizione desiderata nell’area Playlist."
 
 #: 
 msgid "Please only upload files that end in types:"
@@ -1050,4 +1050,8 @@ msgstr "Shortcode per pubblicare tutti i video:"
 #: 
 msgid "Shortcode to post Lives:"
 msgstr "Shortcode per pubblicare i Live:"
+
+#: 
+msgid "Change"
+msgstr "Cambia"
 

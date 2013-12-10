@@ -147,7 +147,7 @@ function wimtvpro_report (){
         </form>
     </div>
     <p><?php echo __("You commercial packet","wimtvpro") ?>:
-        <b><?php echo $namePacket ?></b> - <a href='?page=WimTvPro&pack=1&return=WimTVPro_Report'><?php echo __("Change") ?></a>
+        <b><?php echo $namePacket ?></b> - <a href='?page=WimTvPro&pack=1&return=WimTVPro_Report'><?php echo __("Change","wimtvpro") ?></a>
     </p>
     <?php if ($traffic == "") { ?>
         <p><?php echo __("You did not generate any traffic in this period","wimtvpro") ?></p>

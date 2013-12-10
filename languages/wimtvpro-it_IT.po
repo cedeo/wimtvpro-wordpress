@@ -133,7 +133,7 @@ msgstr "o caricane una nuova"
 #: 
 #, fuzzy
 msgid "To use the skin of your choice, copy the"
-msgstr "Per usare la skin selezionata, copia"
+msgstr "Per usare la skin selezionata, copia il file"
 
 #: 
 msgid "Only .zip files are supported Save wp-content/uploads/skinWim to a public URL"
@@ -142,7 +142,7 @@ msgstr "Solo file .zip."
 #: 
 #, fuzzy
 msgid "file to the root directory (e.g. http://www.mysite.com). You can do it all via FTP  (e.g. FileZilla, Classic FTP, etc)."
-msgstr "Il file nella cartella della root del tuo sito (esempio http://www.miosito.it). Puoi farlo via FTP (e.g. FileZilla, Classic FTP, etc)."
+msgstr "nella cartella della root del tuo sito (esempio http://www.miosito.it). Puoi farlo via FTP (e.g. FileZilla, Classic FTP, etc)."
 
 #: 
 msgid "More information"
@@ -608,7 +608,7 @@ msgstr "Da notare che, se resti al di sotto dei limiti di utilizzo del pacchetto
 #: 
 #, fuzzy
 msgid "If you license content and/or provide services in WimTV, revenue sharing will apply"
-msgstr "Se dai in licenza contenuti o fornisci servizi all'interno di WimTV, si applicherà il revenue sharing."
+msgstr "Se dai in licenza contenuti in pay per view all'interno di WimTVPro, si applicherà il revenue sharing."
 
 #: 
 msgid "Enjoy your WimTVPro video plugin!"

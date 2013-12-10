@@ -24,7 +24,7 @@ function settings_live($dati) {
 
 
     <div class="clear"></div>
-    <p>In <?php echo __('this section you can enable live streaming settings to better match your specific needs. Choose between "Live streaming" to stream your own events, or use the features reserved for Event Organisers and Event Resellers to play the role of organiser or distributor (on behalf of Event Organiser) of live events.',"wimtvpro")?></p>
+    <p><?php echo __('this section you can enable live streaming settings to better match your specific needs. Choose between "Live streaming" to stream your own events, or use the features reserved for Event Organisers and Event Resellers to play the role of organiser or distributor (on behalf of Event Organiser) of live events.',"wimtvpro")?></p>
     <script>
         jQuery(document).ready(function() {
             jQuery("#edit-liveStreamEnabled,#edit-eventResellerEnabled,#edit-eventOrganizerEnabled").click(

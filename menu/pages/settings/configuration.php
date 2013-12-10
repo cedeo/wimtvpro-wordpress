@@ -67,8 +67,7 @@ function settings_configuration($directory) {
                 </tr>
             </table>
 
-            <h4><?php _e("Upload and/or choose a skin for your player","wimtvpro");?>
-                . <?php _e("Download it from","wimtvpro")?> <a target='new' href='http://www.longtailvideo.com/addons/skins'>Jwplayer skin</a></h4>
+            <h4><?php _e("Upload and/or choose a skin for your player","wimtvpro");?>. <?php _e("Download it from","wimtvpro")?> <a target='new' href='http://www.longtailvideo.com/addons/skins'>Jwplayer skin</a></h4>
 
             <table class="form-table">
                 <tr>

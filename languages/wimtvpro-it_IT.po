@@ -136,12 +136,13 @@ msgid "To use the skin of your choice, copy the"
 msgstr "Per usare la skin selezionata, copia il file"
 
 #: 
-msgid "Only .zip files are supported Save wp-content/uploads/skinWim to a public URL"
+#, fuzzy
+msgid "Only .zip files are supported."
 msgstr "Solo file .zip."
 
 #: 
 #, fuzzy
-msgid "file to the root directory (e.g. http://www.mysite.com). You can do it all via FTP  (e.g. FileZilla, Classic FTP, etc)."
+msgid "file to the root directory (e.g. http://www.mysite.com). You can do it via FTP (e.g. FileZilla, Classic FTP, etc). "
 msgstr "nella cartella della root del tuo sito (esempio http://www.miosito.it). Puoi farlo via FTP (e.g. FileZilla, Classic FTP, etc)."
 
 #: 
@@ -848,7 +849,7 @@ msgstr "Non voglio registrare"
 
 #: 
 msgid "Start date"
-msgstr "Ora di inizio"
+msgstr "Data di inizio"
 
 #: 
 msgid "Time zone"
@@ -1017,7 +1018,7 @@ msgstr "Affiliazione"
 
 #: 
 msgid "Are you affiliate to the following company?"
-msgstr "Sei affiliato alla seguente azienda?"
+msgstr "Sei affiliato ad una azienda?"
 
 #: 
 msgid "Company Name"
@@ -1025,7 +1026,7 @@ msgstr "Ragione Sociale"
 
 #: 
 msgid "Have you the legal right of acting as an affiliate to the preceeding company?"
-msgstr "Hai i diritti legali per operare come affiliato dell’azienza precedente?"
+msgstr "Hai i diritti per operare come affiliato dell’azienza all'interno di WimTV?"
 
 #: 
 msgid "Category"

@@ -156,7 +156,7 @@ function wimtvpro_report (){
         <p><?php echo __("Storage space","wimtvpro") . ": " . $byteToMbS ?></p>
         <div class="summary"><div class="tabs">
             <span id="stream" class="active"><?php echo  __("View Streams","wimtvpro") ?></span>
-            <span id="graph"><?php echo __("View graphic","wimtvpro") ?></span>
+            <span id="graph"><?php _e("Chart","wimtvpro") ?></span>
         </div>
         <div id="view_stream" class="view">
             <h3><?php echo $title_streams ?></h3>

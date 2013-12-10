@@ -130,7 +130,7 @@ function wimtvpro_live() {
             <th>URL</th>
             <th>* <?php echo __("Schedule") ?></th>
             <th><?php echo __("Embed Code","wimtvpro") ?></th>
-            <th><?php echo __("Tools") ?></th>
+            <th><?php echo __("Remove") ?></th>
         </tr>
         </thead>
         <tbody>

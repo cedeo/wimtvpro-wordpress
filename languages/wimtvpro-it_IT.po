@@ -1056,3 +1056,11 @@ msgstr "Shortcode per pubblicare i Live:"
 msgid "Change"
 msgstr "Cambia"
 
+#: 
+msgid "Chart"
+msgstr "Grafico"
+
+#: 
+msgid "You aren't videos"
+msgstr "Non hai video"
+

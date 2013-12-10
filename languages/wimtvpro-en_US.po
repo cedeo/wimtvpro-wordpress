@@ -116,11 +116,13 @@ msgid "To use the skin of your choice, copy the"
 msgstr "To use a skin of your choice, copy the"
 
 #: 
-msgid "Only .zip files are supported Save wp-content/uploads/skinWim to a public URL"
+#, fuzzy
+msgid "Only .zip files are supported."
 msgstr "Only .zip files are supported."
 
 #: 
-msgid "file to the root directory (e.g. http://www.mysite.com). You can do it all via FTP  (e.g. FileZilla, Classic FTP, etc). Open your FTP client and identify the root directory of your site. This is the folder titled or beginning with www - and this is where you need to move the crossdomain.xml file"
+#, fuzzy
+msgid "file to the root directory (e.g. http://www.mysite.com). You can do it via FTP (e.g. FileZilla, Classic FTP, etc). "
 msgstr "file to the root directory (e.g. http://www.mysite.com). You can do it  via FTP (e.g. FileZilla, Classic FTP, etc). Open your FTP client and identify the root directory of your site. This is the folder titled or beginning with www - and this is where you need to move the crossdomain.xml file"
 
 #: 
@@ -966,5 +968,17 @@ msgstr ""
 
 #: 
 msgid "Shortcode to post Lives:"
+msgstr ""
+
+#: 
+msgid "Change"
+msgstr ""
+
+#: 
+msgid "Chart"
+msgstr ""
+
+#: 
+msgid "You aren't videos"
 msgstr ""
 

@@ -34,7 +34,7 @@ function wimtvpro_report (){
         $from_dmy =$month_from . "/" . $day_from . "/" . $year_from;
         $to_dmy= $month_to . "/" . $day_to . "/" . $year_to;
 
-        $title_streams = "Streams (" . __("From","wimtvpro") . " " . $from . " " . __("To","wimtvpro") . " "  . $to . ")";
+        $title_streams = __("Streams","wimtvpro") . " (" . __("From","wimtvpro") . " " . $from . " " . __("To","wimtvpro") . " "  . $to . ")";
         $title_user = "<a href='?page=WimTVPro_Report'>" . __("Current month","wimtvpro") . "</a> " . __("Change Date","wimtvpro");
         $style_date = "";
         $user_response = analyticsGetUser($from_tm, $to_tm);
@@ -61,7 +61,7 @@ function wimtvpro_report (){
         $from_tm = "";
         $to_tm = "";
 
-        $title_streams = "Streams (" . __("Current month","wimtvpro") . ")";
+        $title_streams =  __("Streams","wimtvpro") . " (" . __("Current month","wimtvpro") . ")";
         $title_user = __("Current month","wimtvpro")  . " <a href='#' id='customReport'>" . __("Change Date","wimtvpro") . "</a> ";
         $style_date = "display:none;";
 
@@ -159,7 +159,7 @@ function wimtvpro_report (){
             <span id="graph"><?php _e("Chart","wimtvpro") ?></span>
         </div>
         <div id="view_stream" class="view">
-            <h3><?php echo $title_streams ?></h3>
+            <h3><?php echo $title_streams; ?></h3>
             <table class="wp-list-table widefat fixed posts" style="text-align:center;">
               <tr>
                 <th class="manage-column column-title">Video</th>

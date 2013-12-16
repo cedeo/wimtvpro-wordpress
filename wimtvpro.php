@@ -123,11 +123,11 @@ function wimtvpro_setting() {
   add_option( 'wp_shareVideo','No');
   add_option( 'wp_activePayment','false');
   add_option( 'wp_activeLive','false');
-  add_option( 'wp_wimtvPluginPath', plugin_dir_url(__FILE__));
+  add_option( 'wp_wimtvPluginPath', plugin_dir_url( __FILE__ ));
   add_option( 'wp_supportLink', 'http://support.wim.tv/?cat=5');
   add_option( 'wp_supportPage', 'http://support.wim.tv/?p=');
-  
-} 
+}
+
 add_action( 'admin_init', 'wimtvpro_setting');
 
 function wimtvpro_remove() {
@@ -163,6 +163,7 @@ function wimtvpro_remove() {
   delete_option( 'wp_publicPage');
   delete_option( 'wp_supportLink');
   delete_option( 'wp_supportPage');
+  delete_option( 'wp_wimtvPluginPath');
   deleteWimTVPosts();
 }
 

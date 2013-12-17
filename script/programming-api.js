@@ -17,7 +17,7 @@ ProgUtils.api.getBaseUrl = function (){
  * @param: progId	il programming identifier di riferimento
  */
 ProgUtils.api.calendar = function(progId) {
-	return  url_pathPlugin + 'rest/calendar.php?progId='+progId;
+	return  url_pathPlugin + 'functions/programming/calendar.php?progId='+progId;
 };
 
 /**
@@ -25,7 +25,7 @@ ProgUtils.api.calendar = function(progId) {
  * per i vari “giorni” del calendario in cui si crea una programmazione
  */
 ProgUtils.api.pool = function() {
-	return  url_pathPlugin + 'rest/pool.php';
+	return  url_pathPlugin + 'functions/programming/pool.php';
 };
 
 /**
@@ -33,7 +33,7 @@ ProgUtils.api.pool = function() {
  * per i vari “giorni” del calendario in cui si crea una programmazione
  */
 ProgUtils.api.itemsAt = function() {
-	return  url_pathPlugin + 'rest/currentProgramming.php';
+	return  url_pathPlugin + 'functions/programming/currentProgramming.php';
 };
 
 /*** POST ***/
@@ -42,7 +42,7 @@ ProgUtils.api.itemsAt = function() {
  * Aggiunge/modifica informazioni generali palinsesto (es.nome)
  */
 ProgUtils.api.programmingInfo = function() {
-	return url_pathPlugin + 'rest/programmings.php';
+	return url_pathPlugin + 'functions/programming/programmings.php';
 };
 
 /**
@@ -51,7 +51,7 @@ ProgUtils.api.programmingInfo = function() {
  * @param: progId	il programming identifier di riferimento
  */
 ProgUtils.api.addItem = function(progId) {
-	return url_pathPlugin + 'rest/addItem.php?progId=' + progId;
+	return url_pathPlugin + 'functions/programming/addItem.php?progId=' + progId;
 };
 
 
@@ -66,7 +66,9 @@ ProgUtils.api.addItem = function(progId) {
  * JQUERY BUG in DELETE
  * non appende i parametri in data su query string
  */
-ProgUtils.api.deleteItems = ProgUtils.api.removeItem;
+ProgUtils.api.deleteItems = function(progId,itemId) {
+	return url_pathPlugin + 'functions/programming/removeItem.php?progId=' + progId + '&itemId='+ itemId + "&";
+};
 
 /**
  * Elimina Item dal palinsesto
@@ -75,5 +77,5 @@ ProgUtils.api.deleteItems = ProgUtils.api.removeItem;
  * @param: itemId	ref. a item da eliminare
  */
 ProgUtils.api.removeItem = function(progId, itemId) {
-	return url_pathPlugin + 'rest/deleteItems.php?progId=' + progId + '&item='+ itemId;
+	return url_pathPlugin + 'functions/programming/deleteItems.php?progId=' + progId + '&itemId='+ itemId;
 };

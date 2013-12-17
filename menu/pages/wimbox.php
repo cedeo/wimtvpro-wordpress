@@ -79,7 +79,7 @@ function wimtvpro_wimbox () {
                     <th  style='width:30%'>Video</th>
                     <th style='width:30%'><?php echo __("Posted","wimtvpro") ?></th>
                     <th style='width:30%'>Download</th>
-                    <th style='width:20%'>Preview</th>
+                    <th style='width:20%'><?php echo __("Preview") ?></th>
                     <th style='width:20%'><?php echo __("Remove") ?></th>
                 </tr>
             </thead>

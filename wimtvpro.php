@@ -41,6 +41,7 @@ include_once("menu/pages/upload_video.php");
 include_once("menu/pages/wimbox.php");
 include_once("menu/pages/wimlive.php");
 include_once("menu/pages/wimvod.php");
+include_once("menu/pages/programming.php");
 include_once("functions/registrationAlert.php");
 include_once("functions/jwPlayer.php");
 include_once("functions/updateWimVod.php");
@@ -48,7 +49,7 @@ include_once("functions/listDownload.php");
 include_once("functions/optionCategories.php");
 include_once("functions/detailShowtime.php");
 include_once("embedded/embeddedPlayList.php");
-
+include_once("embedded/embeddedProgramming.php");
 
 load_plugin_textdomain( 'wimtvpro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
@@ -56,6 +57,7 @@ add_shortcode( 'streamingWimtv', 'wimtvpro_shortcode_streaming' );
 add_shortcode( 'playlistWimtv', 'wimtvpro_shortcode_playlist' );
 add_shortcode( 'wimvod', 'wimtvpro_shortcode_wimvod' );
 add_shortcode( 'wimlive', 'wimtvpro_shortcode_wimlive' );
+add_shortcode( 'wimprog', 'wimtvpro_shortcode_programming' );
 /* What to do when the plugin is activated? */
 register_activation_hook(__FILE__,'wimtvpro_install');
 /* What to do when the plugin is deactivated? */
@@ -123,11 +125,11 @@ function wimtvpro_setting() {
   add_option( 'wp_shareVideo','No');
   add_option( 'wp_activePayment','false');
   add_option( 'wp_activeLive','false');
-  add_option( 'wp_wimtvPluginPath', plugin_dir_url( __FILE__ ));
+  add_option( 'wp_wimtvPluginPath', plugin_dir_url(__FILE__));
   add_option( 'wp_supportLink', 'http://support.wim.tv/?cat=5');
   add_option( 'wp_supportPage', 'http://support.wim.tv/?p=');
-}
-
+  
+} 
 add_action( 'admin_init', 'wimtvpro_setting');
 
 function wimtvpro_remove() {
@@ -163,7 +165,6 @@ function wimtvpro_remove() {
   delete_option( 'wp_publicPage');
   delete_option( 'wp_supportLink');
   delete_option( 'wp_supportPage');
-  delete_option( 'wp_wimtvPluginPath');
   deleteWimTVPosts();
 }
 
@@ -192,7 +193,7 @@ function wimtvpro_menu(){
 	  add_submenu_page('WimTvPro', 'WimLive', 'WimLive', 'administrator', 'WimLive', 'wimtvpro_live');
       add_submenu_page('WimTvPro', __('Analytics'), __('Analytics'), 'administrator', 'WimTVPro_Report', 'wimtvpro_Report');
 
-      //TODO: add_submenu_page('WimTvPro', 'Programming', 'Programming', 'administrator', 'WimVideoPro_Programming', 'wimtvpro_programming');
+      add_submenu_page('WimTvPro', __('Programmings',"wimtvpro"), __('Programmings',"wimtvpro"), 'administrator', 'WimVideoPro_Programming', 'wimtvpro_programming');
     }
     
     if ($user->roles[0]=="author") {
@@ -248,7 +249,11 @@ function wimtvpro_install_jquery() {
     wp_enqueue_style('wimtvproCssCore');
  }
 
-	wp_enqueue_script('wimtvproScript',plugins_url('script/wimtvpro.js', __FILE__));
+
+ if (isset($_GET['page']) && $_GET['page']!="WimVideoPro_Programming"){
+ 		wp_enqueue_script('wimtvproScript',plugins_url('script/wimtvpro.js', __FILE__));
+ }
+
  if (isset($_GET['page']) && $_GET['page']=="WimTV_Upload"){
  	wp_enqueue_script('wimtvproScriptUpload',plugins_url('script/upload.js', __FILE__));
  }
@@ -484,7 +489,6 @@ function wimtvpro_shortcode_playlist($atts) {
 function wimtvpro_shortcode_wimvod($atts) {
 	return "<table class='itemsPublic'>" . wimtvpro_getVideos(TRUE, FALSE, FALSE) . "</table><div class='clear'></div>";
 }
-
 function wimtvpro_shortcode_wimlive($atts) {
 	$embeddedLive =  plugins_url('embedded/embeddedLive.php', __FILE__);
 	$pageLive = "<script>jQuery(document).ready(function(){
@@ -502,32 +506,31 @@ function wimtvpro_shortcode_wimlive($atts) {
 	</script>";
 	return $pageLive;
 }
+function wimtvpro_shortcode_programming($atts) {
+	$id = shortcode_atts(array('id'=>0), $atts);
+  	$progId = $id['id'];
+	return wimtvpro_programming_embedded($progId);
+}
 
 
 function wimtvpro_registration_script() {
-//PROGRAMMING SCRIPT
-//TODO : in produzione usare la stringa commentata
-//$basePath = get_option("wp_basePathWimtv");
-$basePath ="http://peer.wim.tv/wimtv-webapp/rest/";
-$baseRoot = str_replace("rest/","",$basePath);
-
-wp_enqueue_style( 'calendarWimtv', $baseRoot . 'css/fullcalendar.css' );
-wp_enqueue_style( 'programmingWimtv', $baseRoot . 'css/programming.css' );
-wp_enqueue_style( 'jQueryWimtv', $baseRoot . 'css/jquery-ui/jquery-ui.custom.min.css' );
-wp_enqueue_style( 'fancyboxWimtv', $baseRoot . 'css/jquery.fancybox.css' );
-
-wp_enqueue_script('jquery.minWimtv', 'https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
-wp_enqueue_script('jquery.customWimtv', $baseRoot . 'script/jquery-ui.custom.min.js');
-wp_enqueue_script('jquery.fancyboxWimtv', $baseRoot . 'script/jquery.fancybox.min.js');
-wp_enqueue_script('jquery.mousewheelWimtv', $baseRoot . 'script/jquery.mousewheel.min.js');
-wp_enqueue_script('fullcalendarWimtv', $baseRoot . 'script/fullcalendar/fullcalendar.min.js');
-wp_enqueue_script('utilsWimtv', $baseRoot . 'script/utils.js');
-wp_enqueue_script('programmingWimtv', $baseRoot . 'script/programming/programming.js');
-wp_enqueue_script('programmingApi', plugins_url('script/programming-api.js', __FILE__));
-wp_enqueue_script('calendarWimtv', $baseRoot . 'script/programming/calendar.js');
-
- 
-
+	//PROGRAMMING SCRIPT
+	$basePath = get_option("wp_basePathWimtv");
+	$baseRoot = str_replace("rest/","",$basePath);
+	wp_enqueue_style( 'calendarWimtv', $baseRoot . 'css/fullcalendar.css' );
+	wp_enqueue_style( 'programmingWimtv', $baseRoot . 'css/programming.css' );
+	wp_enqueue_style( 'jQueryWimtv', $baseRoot . 'css/jquery-ui/jquery-ui.custom.min.css' );
+	wp_enqueue_style( 'fancyboxWimtv', $baseRoot . 'css/jquery.fancybox.css' );
+	
+	wp_enqueue_script('jquery.minWimtv', 'https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
+	wp_enqueue_script('jquery.customWimtv', $baseRoot . 'script/jquery-ui.custom.min.js');
+	wp_enqueue_script('jquery.fancyboxWimtv', $baseRoot . 'script/jquery.fancybox.min.js');
+	wp_enqueue_script('jquery.mousewheelWimtv', $baseRoot . 'script/jquery.mousewheel.min.js');
+	wp_enqueue_script('fullcalendarWimtv', $baseRoot . 'script/fullcalendar/fullcalendar.min.js');
+	wp_enqueue_script('utilsWimtv', $baseRoot . 'script/utils.js');
+	wp_enqueue_script('programmingWimtv', $baseRoot . 'script/programming/programming.js');
+	wp_enqueue_script('calendarWimtv', $baseRoot . 'script/programming/calendar.js');
+	wp_enqueue_script('programmingApi', plugins_url('script/programming-api.js', __FILE__));
 }
 
 if (isset($_GET['page']) && $_GET['page']=="WimVideoPro_Programming"){

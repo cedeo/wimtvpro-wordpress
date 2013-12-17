@@ -101,7 +101,7 @@ function settings_configuration($directory) {
             <!--h4><?php _e("Other information" ,"wimtvpro"); ?></h4-->
 
             <input type="hidden" value="No" name="sandbox">
-            <!--table class="form-table">
+            <!--<table class="form-table">
                 <tr>
 					<th><label for="edit-sandbox">Please select "no" to use the plugin on the WimTV server. Select "yes" to try the service only on test server</label></th>
 					<td>
@@ -134,7 +134,7 @@ function settings_configuration($directory) {
                     </td>
                 </tr>
 
-            </table-->
+            </table -->
 
             <input type="hidden" name="wimtvpro_update" value="Y" />
             <?php submit_button(__("Save changes","wimtvpro")); ?>

@@ -46,3 +46,8 @@ table.itemsPublic  div.FREEOFCHARGE{
 #container_wrapper{margin:0 auto!important; text-align:center;}
 .responsiveVideo object{margin:0 auto;}
 .responsiveVideo video{margin:0 auto;}
+.media-frame .media-iframe iframe{overflow:auto!important;}
+
+.wrapperiframe   {width:100%;  height:100%; margin:0 auto;}
+.h_iframe        {position:relative; padding-top: 100%;}
+.h_iframe iframe {position:absolute;top:0;left:0;width:100%; height:100%;}

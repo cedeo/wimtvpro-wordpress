@@ -42,7 +42,6 @@ function wimtvpro_programming(){
 			
             <div style="display:none">
                 <div class="embedded">
-                    <h1>Codice Embed</h1>
                     <textarea id="progCode" onclick="this.focus(); this.select();"></textarea>
                 </div>
 			</div>            
@@ -69,10 +68,10 @@ function wimtvpro_programming(){
 		<table id='tableLive' class='wp-list-table widefat fixed pages'>
 		<thead>
         	<tr>
-            <th><?php _e("Title","wimtvpro");?></th>
+            <th><?php _e("Title");?></th>
             <th><?php _e("Modify","wimtvpro");?></th>
             <th><?php _e("Remove");?></th>
-            <th><?php _e("Embedded","wimtvpro");?></th>
+            <th><?php _e("Shortcode","wimtvpro");?></th>
             </tr>
          </thead>
 		<tbody>
@@ -91,7 +90,10 @@ function wimtvpro_programming(){
                 
                 </td>
 				<td>
-              	 [wimprog id="<?php echo $prog->identifier;?>"]
+                
+                <textarea style="resize: none; width:90%;height:100%;" readonly='readonly' 
+                onclick="this.focus(); this.select();">[wimprog id="<?php echo $prog->identifier;?>"]</textarea>
+          
                 </td>
 			</tr>
 		<?php

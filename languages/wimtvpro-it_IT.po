@@ -1065,3 +1065,27 @@ msgstr "Grafico"
 msgid "You aren't videos"
 msgstr "Non hai video"
 
+#: 
+msgid "Programmings"
+msgstr "Palinsesti"
+
+#: 
+msgid "Send"
+msgstr "Invia"
+
+#: 
+msgid "Skip"
+msgstr "Salta"
+
+#: 
+msgid "Give a name to this programming (not mandatory)"
+msgstr "Scegli un nome per il palinsesto (opzionale)"
+
+#: 
+msgid "Modify Programming"
+msgstr "Modifica Palinsesto"
+
+#: 
+msgid "New Programming"
+msgstr "Nuovo Palinsesto"
+

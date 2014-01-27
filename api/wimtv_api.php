@@ -41,12 +41,14 @@ function apiGetUUID() {
     $request = $apiAccessor->getRequest('uuid');
     return $apiAccessor->execute($request);
 }
+
 function apiDownload($hostId) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->getRequest('videos/' . $hostId . '/download');
+    $request = $apiAccessor->downloadRequest('videos/' . $hostId . '/download');
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request, "");
 }
+
 function apiUpload($parameters) {
     $apiAccessor = getApi();
     $request = $apiAccessor->postRequest('videos?uploadIdentifier=' . $parameters['uploadIdentifier']);

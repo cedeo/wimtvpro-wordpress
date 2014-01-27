@@ -65,6 +65,12 @@ class Api {
         return Request::delete($url);
     }
 
+    function downloadRequest($subUrl) {
+        $request = Api::getRequest($subUrl);
+        $request->no_body = true;
+        return $request;
+    }
+
     function authenticate($request) {
         return $request->authenticateWith($this->username, $this->password);
     }

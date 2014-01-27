@@ -48,7 +48,8 @@ class Request
            $max_redirects           = self::MAX_REDIRECTS_DEFAULT,
            $payload_serializers     = array(),
            $cookiefile              = '',
-           $cookiejar               = '';
+           $cookiejar               = '',
+           $no_body                 = false;
 
     // Options
     // private $_options = array(
@@ -840,6 +841,9 @@ class Request
             curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookiejar);
         }
 
+        if ($this->no_body) {
+            curl_setopt($ch, CURLOPT_NOBODY, true);
+        }
         // https://github.com/nategood/httpful/issues/84
         // set Content-Length to the size of the payload if present
         if (isset($this->payload)) {

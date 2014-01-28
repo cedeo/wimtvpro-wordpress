@@ -77,6 +77,7 @@ class Api {
 
     function execute($request, $expectedMimeType='text/html', $clientLanguage=true) {
         $request->expects($expectedMimeType);
+        $request->addHeader("X-Wimtv-Pro-Plugin-Name", "wordpress");
         if ($clientLanguage)
             $request->addHeader('Accept-Language', $_SERVER["HTTP_ACCEPT_LANGUAGE"]);
         $request->_curlPrep();

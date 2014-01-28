@@ -6,6 +6,8 @@
  * Time: 17.07
  * To change this template use File | Settings | File Templates.
  */
+include_once("../../../../wp-load.php");
+include_once("../api/wimtv_api.php");
 
 define('CHUNK_SIZE', 1024*1024); // Size (in bytes) of tiles chunk
 
@@ -43,30 +45,27 @@ function readfile_chunked($file, $size, $username, $password) {
     ob_end_clean();
 }
 
-function wimtvpro_download() {
-    $code = explode("download/", request_path());
-    if (count($code)>1) {
-        $host_id = $code[1];
-        $info = apiDownload($host_id);
-        $headers = $info->headers;
-        $opts = getApi();
-        $username = $opts->username;
-        $password = $opts->password;
+function wimtvpro_download($host_id) {
+    $info = apiDownload($host_id);
+    $headers = $info->headers;
+    $opts = getApi();
+    $username = $opts->username;
+    $password = $opts->password;
 
-        $response_headers = array('content-type', 'content-disposition', 'accept-ranges', 'content-length');
+    $response_headers = array('content-type', 'content-disposition', 'accept-ranges', 'content-length');
 
-        foreach ($response_headers as $header) {
-            header($header . ": " . $headers[$header]);
-            //print_r($header . ": " . $headers[$header] . "\n");
-        }
-        header('Connection: close');
-
-        $file = $info->request->uri;
-        $size = $headers['content-length'];
-
-        readfile_chunked($file, $size, $username, $password);
-    } else {
-        echo ("File not found");
+    foreach ($response_headers as $header) {
+        header($header . ": " . $headers[$header]);
+        //print_r($header . ": " . $headers[$header] . "\n");
     }
+    header('Connection: close');
+
+    $file = $info->request->uri;
+    $size = $headers['content-length'];
+
+    readfile_chunked($file, $size, $username, $password);
     die();
 }
+
+$host_id = $_GET['host_id'];
+wimtvpro_download($host_id);

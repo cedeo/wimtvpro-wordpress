@@ -167,7 +167,8 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
    }
  
   if ($isfound) {
-    $urlVideo = downloadVideo($content_item_new,$status_array[0]);
+    $urlVideo = wimtvpro_checkCleanUrl("functions", "download.php?host_id=" . $content_item_new);
+      //$urlVideo = downloadVideo($content_item_new,$status_array[0]);
   	$action .= "<td><a class='icon_download' href='" . $urlVideo . "' title='Download'></a></td>";
   }
   else

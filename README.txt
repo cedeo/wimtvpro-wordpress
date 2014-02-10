@@ -20,6 +20,7 @@ WimTVPro allows its users to:
 <li> Upload new videos, describe and publish</li>
 
 <li> For each video published, set of access conditions (free, creative commons, pay per view)</li>
+
 <li>Set a price for the visualisation of your video content. Just connect your Web TV to your PayPal account</li>
 
 <li> Given a list of videos, publish those of choice on your website</li>
@@ -41,7 +42,9 @@ WimTVPro allows its users to:
 
 <li> Embed your live and on demand videos on any site</li>
 
-<li> Synchronize videos with your WimTV account </li><li>Create a video channel on WimTV, becoming part of the community</li>
+<li> Synchronize videos with your WimTV account </li>
+
+<li>Create a video channel on WimTV, becoming part of the community</li>
 </ol>
 
 The plugin is integrated into the menu and is divided into six section, to always have an ordered control of content.
@@ -103,7 +106,7 @@ For install "sudo apt-get install php5-curl"
 == 3.0.0 =
 * Restyling code and graphic
 == 3.1.0 =
-* Bugfix, added Programming
+* Bugfix, added Programmings
 
 == Upgrade Notice ==
 Into version 2.0 added Playlist videos and Report. When you update insert newly user and password wimtv.

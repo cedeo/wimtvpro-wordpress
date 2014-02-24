@@ -27,8 +27,26 @@ function wimtvpro_submenu($view_page){
 
 function media_wimtvpro_process() {
   media_upload_header();
+
+  $script = "<script type='text/javascript'>
+  jQuery('.buttonInsert').click(function() {
+      var width = jQuery(this).parent().children('.w').val();
+      var height = jQuery(this).parent().children('.h').val();
+      var id = jQuery(this).attr('id');
+	  var win = window.dialogArguments || opener || parent || top;
+      var shortcode  =  \"[streamingWimtv id='\" + id + \"' width='\" + width + \"' height='\" + height + \"' ]\";
+	  win.send_to_editor(shortcode);
+
+  });
+  jQuery('.buttonInsertPlayList').click(function() {
+      var id = jQuery(this).attr('id');
+	  var win = window.dialogArguments || opener || parent || top;
+      var shortcode  =  \"[playlistWimtv id='\" + id + \"']\";
+	  win.send_to_editor(shortcode);
+
+  });</script>";
   
-  $videos .= "<h3 class='media-title'>WimVod</h3><table class='itemsInsert'>" . wimtvpro_getVideos(TRUE, FALSE, TRUE) . "</table><div class='empty'></div>";
+  $videos = "<table class='itemsInsert'>" . wimtvpro_getVideos(TRUE, FALSE, TRUE) . "</table><div class='empty'></div>";
   
   $array_playlist = dbExtractPlayList(get_option('wp_userwimtv'));
   $numberPlaylist=count($array_playlist);
@@ -76,7 +94,7 @@ function media_wimtvpro_process() {
 }
 
   $videos .= "</ul><div class='empty'></div>";
-  echo $videos;
+  echo $videos . $script;
 
 }
 function wimtvpro_media_menu_handle() {

@@ -562,22 +562,7 @@ jQuery(document).ready(function() {
 });
 
   jQuery("ul.itemsPublic li a").colorbox();
-  jQuery('.buttonInsert').click(function() {
-      var width = jQuery(this).parent().children('.w').val();
-      var height = jQuery(this).parent().children('.h').val();
-      var id = jQuery(this).attr('id');
-	  var win = window.dialogArguments || opener || parent || top;
-      var shortcode  =  "[streamingWimtv id='" + id + "' width='" + width + "' height='" + height + "' ]";
-	  win.send_to_editor(shortcode); 
-	    
-  });
-  jQuery('.buttonInsertPlayList').click(function() {
-      var id = jQuery(this).attr('id');
-	  var win = window.dialogArguments || opener || parent || top;
-      var shortcode  =  "[playlistWimtv id='" + id + "']";
-	  win.send_to_editor(shortcode); 
-	   
-  });
+
     
   //Playlist
   functionPlaylist();

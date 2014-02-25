@@ -30,12 +30,12 @@ div.help a{
 
 
 .icon_sync0 {
-	 cursor:pointer; display:none;
-  background: linear-gradient(to bottom, #FEFEFE, #F4F4F4) repeat scroll 0 0 #F3F3F3;
+	cursor:pointer; display:none;
+    background: linear-gradient(to bottom, #FEFEFE, #F4F4F4) repeat scroll 0 0 #F3F3F3;
     border-color: #BBBBBB;
     color: #333333;
     text-shadow: 0 1px 0 #FFFFFF;
-	 -moz-box-sizing: border-box;
+	-moz-box-sizing: border-box;
     border-radius: 3px 3px 3px 3px;
     border-style: solid;
     border-width: 1px;

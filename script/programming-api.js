@@ -79,3 +79,13 @@ ProgUtils.api.deleteItems = function(progId,itemId) {
 ProgUtils.api.removeItem = function(progId, itemId) {
 	return url_pathPlugin + 'functions/programming/deleteItems.php?progId=' + progId + '&itemId='+ itemId;
 };
+
+/**
+ * Update di un Item esistente sul palinsesto in un dato momento
+ *
+ * @param: progId	il programming identifier di riferimento
+ * @param: itemId	ref. a item da aggiornare
+ */
+ProgUtils.api.updateItem = function(progId, itemId) {
+    return url_pathPlugin + 'functions/programming/updateItem.php?progId=' + progId + '&itemId='+ itemId;
+};

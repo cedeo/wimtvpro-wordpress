@@ -302,7 +302,7 @@ function apiRemoveItemProgramming($progId,$qs) {
 }
 function apiDeleteProgramming($progId) {
     $apiAccessor = getApi();
-	 $request = $apiAccessor->deleteRequest("programming/".$progId);
+	$request = $apiAccessor->deleteRequest("programming/".$progId);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
@@ -310,7 +310,7 @@ function apiDetailsProgramming($programming_id) {
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('programming/' . $programming_id);
     $request = $apiAccessor->authenticate($request);
-	 $request->sendsAndExpects(Mime::JSON);
+	$request->sendsAndExpects(Mime::JSON);
 	$request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json') ); 
     return $apiAccessor->execute($request, 'application/json');
 }
@@ -336,6 +336,13 @@ function apiDeleteItems($progId, $itemId) {
 }
 
 
+function apiUpdateItems($progId, $itemId, $params) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->postRequest('programming/' . $progId .'/item/' + $itemId);
+    $request->body($params);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
 
 
 

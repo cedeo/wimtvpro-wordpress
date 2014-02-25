@@ -165,6 +165,7 @@ function wimtvpro_remove() {
   delete_option( 'wp_publicPage');
   delete_option( 'wp_supportLink');
   delete_option( 'wp_supportPage');
+  delete_option( 'wp_wimtvPluginPath');
   deleteWimTVPosts();
 }
 

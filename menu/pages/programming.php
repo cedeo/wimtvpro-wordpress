@@ -27,7 +27,9 @@ function wimtvpro_programming(){
             ?>
     
             <a href='?page=WimVideoPro_Programming' class='add-new-h2'><?php echo __( 'Return to list', 'wimtvpro') ?></a></h2>
-            
+            <script type="text/javascript">
+                var imageBase = "<?php echo substr(get_option("wp_basePathWimtv"), 0, -6) ?>";
+            </script>
         
             <div id="progform">
                 <form>
@@ -53,16 +55,17 @@ function wimtvpro_programming(){
 		
 		if (isset($_GET["functionList"]) && ($_GET["functionList"]=="delete")){
 			$idProgrammingDelete = isset($_GET["id"]) ? $_GET["id"] : "";
-			$response = apiDeleteProgramming($idProgrammingDelete);
+			apiDeleteProgramming($idProgrammingDelete);
 		}
 		
 	?>
+
         <h2> <?php _e("Programmings","wimtvpro");?> 
         <a href='<?php echo $_SERVER['REQUEST_URI'] . "&namefunction=newProgramming" ?>' class='add-new-h2'><?php echo __( 'New','wimtvpro' ) ?></a>
         </h2>
         
         <?php
-		$response = apiGetProgrammings($idProgrammingDelete);
+		$response = apiGetProgrammings();
 		$arrayjsonst = json_decode($response);
 		?>
 		<table id='tableLive' class='wp-list-table widefat fixed pages'>

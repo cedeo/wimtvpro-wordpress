@@ -8,6 +8,10 @@ ProgUtils.api.getBaseUrl = function (){
 	return url_pathPlugin;
 };
 
+/*** For images ***/
+ProgUtils.api.getBaseImageUrl = function (){
+    return imageBase + "/";
+};
 
 /*** GET ***/
 

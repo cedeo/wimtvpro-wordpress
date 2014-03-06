@@ -2,7 +2,10 @@
 /**
  * Written by walter at 24/10/13
  */
- 
+/**
+ * Ritorna il markup completo della tabella video presente in WimBox.
+ * Filtra in caso di ricerca ed ordina in caso di ordinamento.
+ */
 function wimtvpro_getVideos($showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="", $sql_where="", $sql_order="") {
     global $user, $wpdb, $wp_query;
 

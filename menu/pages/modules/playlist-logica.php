@@ -2,6 +2,9 @@
 /**
  * Written by walter at 24/10/13
  */
+/**
+ * Ritorna il markup necessario per mostrare i video inseriti e da inserire nelle playlist.
+ */
 function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="",$playlist=FALSE) {
 	$replace_content = get_option("wp_replaceContentWimtv");
 	$my_media= "";

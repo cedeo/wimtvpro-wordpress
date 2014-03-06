@@ -53,14 +53,17 @@ include_once("embedded/embeddedProgramming.php");
 
 load_plugin_textdomain( 'wimtvpro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
+//Aggiunta shortcodes
 add_shortcode( 'streamingWimtv', 'wimtvpro_shortcode_streaming' );
 add_shortcode( 'playlistWimtv', 'wimtvpro_shortcode_playlist' );
 add_shortcode( 'wimvod', 'wimtvpro_shortcode_wimvod' );
 add_shortcode( 'wimlive', 'wimtvpro_shortcode_wimlive' );
 add_shortcode( 'wimprog', 'wimtvpro_shortcode_programming' );
-/* What to do when the plugin is activated? */
+
+// What to do when the plugin is activated
 register_activation_hook(__FILE__,'wimtvpro_install');
-/* What to do when the plugin is deactivated? */
+
+// What to do when the plugin is deactivated
 register_deactivation_hook( __FILE__, 'wimtvpro_remove');
 
 function wimtvpro_install() {
@@ -129,7 +132,9 @@ function wimtvpro_setting() {
   add_option( 'wp_supportLink', 'http://support.wim.tv/?cat=5');
   add_option( 'wp_supportPage', 'http://support.wim.tv/?p=');
   
-} 
+}
+
+//Executes the wimtvpro_setting function on plugin activation
 add_action( 'admin_init', 'wimtvpro_setting');
 
 function wimtvpro_remove() {
@@ -169,9 +174,6 @@ function wimtvpro_remove() {
   deleteWimTVPosts();
 }
 
-// End table for wimvideo pro
-
-
 //menu admin
 function wimtvpro_menu(){
     $user = wp_get_current_user();
@@ -186,7 +188,7 @@ function wimtvpro_menu(){
 		  $registrationHidden = "";
       	add_submenu_page($registrationHidden, __('WimTV Registration',"wimtvpro"), __('WimTV Registration',"wimtvpro"), 'administrator', 'WimTvPro_Registration', 'wimtvpro_registration');
       }
-	add_submenu_page('WimTvPro', __('Upload Video',"wimtvpro"), __('Upload Video',"wimtvpro"), 'administrator', 'WimTV_Upload', 'wimtvpro_upload');
+	  add_submenu_page('WimTvPro', __('Upload Video',"wimtvpro"), __('Upload Video',"wimtvpro"), 'administrator', 'WimTV_Upload', 'wimtvpro_upload');
       add_submenu_page('WimTvPro', 'WimBox', 'WimBox', 'administrator', 'WimBox', 'wimtvpro_wimbox');
       add_submenu_page('WimTvPro', 'WimVod', 'WimVod', 'administrator', 'WimVod', 'wimtvpro_mystreaming');
       
@@ -204,19 +206,19 @@ function wimtvpro_menu(){
       add_menu_page('WimVod', 'WimVod', 'editor', 'WimVideo', 'wimtvpro_mystreaming', plugins_url('images/iconMenu.png', __FILE__), 6);
     }
 }
+
+// Adds the admin menu of the plugin
 add_action('admin_menu', 'wimtvpro_menu');
-// END menu admin
 
 
-// Attach video into post
+// Adds the tab that allows users to insert videos and playlists in posts.
 function wimtvpro_media_menu($tabs) {
   $newtab = array('wimtvpro' => __('WimVod/Playlist', 'wimtvpro_insert'),
-  					//'wimtvproLive' => __('Live', 'wimtvpro_insertLive')
+  				//'wimtvproLive' => __('Live', 'wimtvpro_insertLive')
 				);
   return array_merge($tabs, $newtab);
 }
 add_filter('media_upload_tabs', 'wimtvpro_media_menu');
-// End attach video into post
 
 
 //Jquery and Css
@@ -311,118 +313,121 @@ add_action('admin_head', 'my_custom_js');
 //End Jquery and Css
 
 
-//Widget
+//Widgets
 class myStreaming extends WP_Widget {
-function myStreaming() {
-parent::__construct( false, 'Wimtv: WimVod' );
-}
-function widget( $args, $instance ) {
-extract($args);
-echo $before_widget;
-$title = apply_filters( 'WimVod', $instance['title'] );
-echo $before_widget;
-if ( ! empty( $title ) )
-		echo $before_title . $title . $after_title;
+    function myStreaming() {
+        parent::__construct( false, 'Wimtv: WimVod' );
+    }
+    function widget( $args, $instance ) {
+        extract($args);
+        echo $before_widget;
+        $title = apply_filters( 'WimVod', $instance['title'] );
+        echo $before_widget;
+        if ( ! empty( $title ) )
+            echo $before_title . $title . $after_title;
 
-echo "<table class='itemsPublic'>" . wimtvpro_getVideos(TRUE, FALSE, FALSE, "block") . "</table>";
- 
-echo $after_widget;
-}
-function update( $new_instance, $old_instance ) {
-$instance['title'] = strip_tags( $new_instance['title'] );
+        echo "<table class='itemsPublic'>" . wimtvpro_getVideos(TRUE, FALSE, FALSE, "block") . "</table>";
 
-return $new_instance;
+        echo $after_widget;
+    }
+    function update( $new_instance, $old_instance ) {
+        $instance['title'] = strip_tags( $new_instance['title'] );
+
+        return $new_instance;
+    }
+    function form( $instance ) {
+        _e("Title");
+        $title = apply_filters( 'WimVod', $instance['title'] );
+        ?>
+        <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+
+        <?php
+    }
 }
-function form( $instance ) {
-_e("Title");
-$title = apply_filters( 'WimVod', $instance['title'] );
-?>
-<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
-  
-<?php
-}
-}
+
 class myPersonalDate extends WP_Widget {
-function myPersonalDate () {
-parent::__construct( false, 'Wimtv:' . __("Profile") );
-}
+    function myPersonalDate () {
+        parent::__construct( false, 'Wimtv:' . __("Profile") );
+    }
 
-function widget( $args, $instance ) {
-    extract($args);
+    function widget( $args, $instance ) {
+        extract($args);
+            $title = apply_filters( 'WimTV' . __("Profile"), $instance['title'] );
+        echo $before_widget;
+        if ( ! empty( $title ) )
+            echo $before_title . $title . $after_title;
+        // This example is adapted from node.module.
+
+        $response = apiGetProfile();
+        $arrayjsuser = json_decode($response);
+        $profileuser= "";
+        $namepage = "";
+        if (get_option("wp_logo")=="si")
+          $profileuser .= "<img src='" . $arrayjsuser ->imageLogoPath . "'>";
+        if (get_option("wp_name")=="si"){
+          if (isset($arrayjsuser->pageName)) $namepage .= "<p><b>" . $arrayjsuser->pageName . "</b><br/>" . $arrayjsuser->pageDescription . "</p>";
+          else $namepage .= "<p><b>" . $arrayjsuser->username . "</b></p>";
+        }
+        $profileuser .= $namepage;
+        if (get_option("wp_date")=="si")
+          $profileuser .= "<p><br/>" . $arrayjsuser->name . " " . $arrayjsuser->surname . "<br/>" . $arrayjsuser->dateOfBirth . "<br/>" . $arrayjsuser->sex . "<br/>" . "</p>";
+        if (get_option("wp_email")=="si")
+          $profileuser .= "<p><b>" . __("Contact") . "</b><br/>" . $arrayjsuser->email . "<br/>";
+        if (get_option("wp_social")=="si") {
+          if (isset($arrayjsuser->linkedinURI))
+            $profileuser .= "<a target='_new' href='" . $arrayjsuser->linkedinURI . "'><img src='" . plugins_url('images/linkedin.png', __FILE__) . "'></a>";
+          if (isset($arrayjsuser->twitterURI))
+            $profileuser .= "<a target='_new' href='" . $arrayjsuser->twitterURI . "'><img src='" . plugins_url('images/twitter.png', __FILE__) . "'></a>";
+          if (isset($arrayjsuser->facebookURI))
+            $profileuser .= "<a target='_new' href='" . $arrayjsuser->facebookURI . "'><img src='" . plugins_url('images/facebook.png', __FILE__) . "'></a>";
+          $profileuser .= "</p>";
+        }
+        echo $profileuser;
+        echo $after_widget;
+    }
+
+    function update( $new_instance, $old_instance ) {
+        var_dump($old_instance);
+        $instance['title'] = strip_tags( $new_instance['title'] );
+        update_option('wp_logo', $_POST['ImageLogoProfile']);
+        update_option('wp_name', $_POST['pageNameProfile']);
+        update_option('wp_date', $_POST['personalDateProfile']);
+        update_option('wp_email', $_POST['EmailProfile']);
+        update_option('wp_social', $_POST['SocialProfile']);
+        return $new_instance;
+    }
+
+    function form( $instance ) {
+
+        _e("Title");
         $title = apply_filters( 'WimTV' . __("Profile"), $instance['title'] );
-    echo $before_widget;
-    if ( ! empty( $title ) )
-        echo $before_title . $title . $after_title;
-    // This example is adapted from node.module.
+        ?>
+        <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+          <p>
+           <input type="checkbox" id="edit-imagelogoprofile" name="ImageLogoProfile" value="si" <?php if (get_option("wp_logo")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-imagelogoprofile">Logo</label><br/>
+           <input type="checkbox" id="edit-pagenameprofile" name="pageNameProfile" value="si" <?php if (get_option("wp_name")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-pagenameprofile"><?php  _e("Page Name","wimtvpro"); ?></label><br/>
+           <input type="checkbox" id="edit-personaldateprofile" name="personalDateProfile" value="si"  <?php if (get_option("wp_date")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-personaldateprofile"><?php _e("Personal Info","wimtvpro"); ?></label><br/>
+           <input type="checkbox" id="edit-emailprofile" name="EmailProfile" value="si"  <?php if (get_option("wp_email")=="si") echo 'checked="checked"'; ?> class="form-checkbox" /> <label class="option" for="edit-emailprofile">Email</label><br/>
+           <input type="checkbox" id="edit-socialprofile" name="SocialProfile" value="si"  <?php if (get_option("wp_social")=="si") echo 'checked="checked"'; ?> checked="checked" class="form-checkbox" />  <label class="option" for="edit-socialprofile">Link Social</label>
+           </p>
 
-    $response = apiGetProfile();
-    $arrayjsuser = json_decode($response);
-    $profileuser= "";
-    $namepage = "";
-    if (get_option("wp_logo")=="si")
-      $profileuser .= "<img src='" . $arrayjsuser ->imageLogoPath . "'>";
-    if (get_option("wp_name")=="si"){
-      if (isset($arrayjsuser->pageName)) $namepage .= "<p><b>" . $arrayjsuser->pageName . "</b><br/>" . $arrayjsuser->pageDescription . "</p>";
-      else $namepage .= "<p><b>" . $arrayjsuser->username . "</b></p>";
+        <?php
     }
-    $profileuser .= $namepage;
-    if (get_option("wp_date")=="si")
-      $profileuser .= "<p><br/>" . $arrayjsuser->name . " " . $arrayjsuser->surname . "<br/>" . $arrayjsuser->dateOfBirth . "<br/>" . $arrayjsuser->sex . "<br/>" . "</p>";
-    if (get_option("wp_email")=="si")
-      $profileuser .= "<p><b>" . __("Contact") . "</b><br/>" . $arrayjsuser->email . "<br/>";
-    if (get_option("wp_social")=="si") {
-      if (isset($arrayjsuser->linkedinURI))
-        $profileuser .= "<a target='_new' href='" . $arrayjsuser->linkedinURI . "'><img src='" . plugins_url('images/linkedin.png', __FILE__) . "'></a>";
-      if (isset($arrayjsuser->twitterURI))
-        $profileuser .= "<a target='_new' href='" . $arrayjsuser->twitterURI . "'><img src='" . plugins_url('images/twitter.png', __FILE__) . "'></a>";
-      if (isset($arrayjsuser->facebookURI))
-        $profileuser .= "<a target='_new' href='" . $arrayjsuser->facebookURI . "'><img src='" . plugins_url('images/facebook.png', __FILE__) . "'></a>";
-      $profileuser .= "</p>";
-    }
-    echo $profileuser;
-    echo $after_widget;
-}
-function update( $new_instance, $old_instance ) {
-var_dump($old_instance);
-$instance['title'] = strip_tags( $new_instance['title'] );
-update_option('wp_logo', $_POST['ImageLogoProfile']);
-  update_option('wp_name', $_POST['pageNameProfile']);
-  update_option('wp_date', $_POST['personalDateProfile']);
-  update_option('wp_email', $_POST['EmailProfile']);
-  update_option('wp_social', $_POST['SocialProfile']);
-return $new_instance;
 }
 
-function form( $instance ) {
-
-_e("Title");
-$title = apply_filters( 'WimTV' . __("Profile"), $instance['title'] );
-?>
-<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
-  <p>
-   <input type="checkbox" id="edit-imagelogoprofile" name="ImageLogoProfile" value="si" <?php if (get_option("wp_logo")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-imagelogoprofile">Logo</label><br/>
-   <input type="checkbox" id="edit-pagenameprofile" name="pageNameProfile" value="si" <?php if (get_option("wp_name")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-pagenameprofile"><?php  _e("Page Name","wimtvpro"); ?></label><br/>
-   <input type="checkbox" id="edit-personaldateprofile" name="personalDateProfile" value="si"  <?php if (get_option("wp_date")=="si") echo 'checked="checked"'; ?> class="form-checkbox" />  <label class="option" for="edit-personaldateprofile"><?php _e("Personal Info","wimtvpro"); ?></label><br/>
-   <input type="checkbox" id="edit-emailprofile" name="EmailProfile" value="si"  <?php if (get_option("wp_email")=="si") echo 'checked="checked"'; ?> class="form-checkbox" /> <label class="option" for="edit-emailprofile">Email</label><br/>
-   <input type="checkbox" id="edit-socialprofile" name="SocialProfile" value="si"  <?php if (get_option("wp_social")=="si") echo 'checked="checked"'; ?> checked="checked" class="form-checkbox" />  <label class="option" for="edit-socialprofile">Link Social</label>
-   </p>
-	   
-<?php
-}
-}
-function my_register_widgets() {
-register_widget( "myPersonalDate" );
+function register_personal_date() {
+    register_widget( "myPersonalDate" );
 }
 
-function my_register_widgets2() {
-register_widget( "myStreaming" );
+function register_my_streaming() {
+    register_widget( "myStreaming" );
 }
 
-add_action( 'widgets_init', 'my_register_widgets' );
-add_action( 'widgets_init', 'my_register_widgets2' );
+add_action( 'widgets_init', 'register_personal_date' );
+add_action( 'widgets_init', 'register_my_streaming' );
 //End Widget
 
-//ShortCode player
+//ShortCodes
 function wimtvpro_shortcode_streaming($atts) {
 
   global $wpdb,$user;
@@ -490,6 +495,7 @@ function wimtvpro_shortcode_playlist($atts) {
 function wimtvpro_shortcode_wimvod($atts) {
 	return "<table class='itemsPublic'>" . wimtvpro_getVideos(TRUE, FALSE, FALSE) . "</table><div class='clear'></div>";
 }
+
 function wimtvpro_shortcode_wimlive($atts) {
 	$embeddedLive =  plugins_url('embedded/embeddedLive.php', __FILE__);
 	$pageLive = "<script>jQuery(document).ready(function(){
@@ -507,13 +513,14 @@ function wimtvpro_shortcode_wimlive($atts) {
 	</script>";
 	return $pageLive;
 }
+
 function wimtvpro_shortcode_programming($atts) {
 	$id = shortcode_atts(array('id'=>0), $atts);
   	$progId = $id['id'];
 	return wimtvpro_programming_embedded($progId);
 }
 
-
+// JS scripts for specific pages
 function wimtvpro_registration_script() {
 	//PROGRAMMING SCRIPT
 	$basePath = get_option("wp_basePathWimtv");
@@ -542,11 +549,6 @@ if (isset($_GET['page']) && $_GET['page']=="WimVideoPro_UploadVideo"){
 	add_action( 'admin_footer','wimtvpro_uploadScript');
 }
 
-
-
 function wimtvpro_uploadScript() {
 	wp_enqueue_script('jquery.preloadWidget', plugins_url('script/progressbar/jquery.ajax-progress.js', __FILE__));
-	
-
-
 }

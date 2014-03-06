@@ -2,7 +2,9 @@
 /**
  * Written by walter at 28/10/13
  */
-
+/**
+ * Ritorna la tabella degli eventi live, prendendola da liveList.php
+ */
 function wimtvpro_elencoLive($type, $identifier, $onlyActive=true){
     echo '
         <script type="text/javascript">
@@ -46,6 +48,9 @@ function wimtvpro_elencoLive($type, $identifier, $onlyActive=true){
 
 }
 
+/**
+ * Crea o modifica un live esistente. I parametri devono essere passati attraverso POST.
+ */
 
 function wimtvpro_savelive($function) {
 

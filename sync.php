@@ -1,7 +1,7 @@
 <?php
 /**
-  * @file
-  * Synchronize the video with wim.tv.
+  * Sincronizza il db interno del plugin con i dati presenti su wim.tv.
+  * Viene chiamato via Http dopo l'upload di un file o al click sul pulsante "Sincronizza" in WimVod e WimBox
   *
   */
   

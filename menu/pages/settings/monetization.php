@@ -2,7 +2,11 @@
 /**
  * Written by walter at 31/10/13
  */
-
+/**
+ * Mostra la pagina della monetizzazione nei settings, la logica viene gestita nella prima parte, del codice,
+ * il markup rimane sotto.
+ * TODO: questa divisione tra markup e logica può essere migliorata prendendo spunto dai templates di Drupal.
+ */
 function settings_monetization($dati) {
 
     $view_page = wimtvpro_alert_reg();

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Mostra la pagina delle playlist presente nel menu laterale, la logica viene gestita nella prima parte, del codice,
+ * il markup rimane sotto.
+ * TODO: questa divisione tra markup e logica può essere migliorata prendendo spunto dai templates di Drupal.
+ */
 function wimtvpro_programming(){
 	
 	$view_page = wimtvpro_alert_reg();

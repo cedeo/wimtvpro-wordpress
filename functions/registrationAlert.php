@@ -2,6 +2,11 @@
 /**
  * Written by walter at 06/11/13
  */
+/**
+ * Questa funzione ritorna un booleano che indica qualora l'utente abbia effettuato la registrazione o no.
+ * In caso di utente non registrato, mostra anche un alert per reindirizzarlo alla pagina di registrazione/login.
+ * Dovrebbe essere chiamata all'inizio di ogni pagina che richiede che l'utente sia loggato per funzionare.
+ */
 function wimtvpro_alert_reg() {
 
     //If user isn't registered or not inser user and password

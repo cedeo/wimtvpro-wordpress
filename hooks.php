@@ -23,8 +23,11 @@ function wimtvpro_submenu($view_page){
 	$submenu .= "</ul>";
 	return $submenu;
 }
- 
 
+/**
+ * Questa funzione genera il contenuto della sezione che permette l'inserimento di contenuti di wim.tv all'interno dei post.
+ * In base al contenuto scelto inserisce lo shortcode corrispondente all'interno del post, nel punto dov'è posizionato il cursore.
+ */
 function media_wimtvpro_process() {
   media_upload_header();
 

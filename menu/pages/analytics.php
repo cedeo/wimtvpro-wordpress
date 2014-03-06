@@ -2,6 +2,11 @@
 /**
  * Written by walter at 24/10/13
  */
+/**
+ * Mostra la pagina delle statistiche nel menu laterale, la logica viene gestita nella prima parte, del codice,
+ * il markup rimane sotto.
+ * TODO: questa divisione tra markup e logica può essere migliorata prendendo spunto dai templates di Drupal.
+ */
 $user = trim(get_option("wp_userWimtv"));
 
 include_once("modules/graph.php");

@@ -1,0 +1,4 @@
+I file playlist.php e video.php espongono dei metodi che permettono di fare query al database senza scriverle, in maniera simile a come vengono chiamate le API di wim.tv.
+Non si appoggiano su librerie esterne, semplicemente costruiscono le query SQL a partire dai parametri passati.
+I metodi esposti nel file playlist.php permettono di interfacciarsi con la tabella delle playlist.
+I metodi esposti nel file video.php permettono di interfacciarsi con la tabella dei video.

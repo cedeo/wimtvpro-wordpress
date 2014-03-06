@@ -1,0 +1,4 @@
+Il file log.php è un'estensione di Kint, la libreria utilizzata per il logging.
+Espone le API di Kint, e fornisce due funzioni per loggare le cose di base, ovvero defaultLog() e logParams().
+Per stampare il log di qualunque cosa, basta chiamare la funzione d(<Roba da loggare>), esposta da Kint.
+http://raveren.github.io/kint/

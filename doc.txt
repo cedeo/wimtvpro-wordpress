@@ -1,0 +1,21 @@
+Il funzionamento del plugin dipende in gran parte dal file wimtvpro.php.
+In esso sono presenti tutti gli script di inizializzazione, quelli degli shortcode e dei widget.
+Vengono inoltre importati tutti i file necessari al plugin per funzionare.
+
+La cartella api/ contiene la parte di codice necessaria per interfacciarsi alle API di wim.tv.
+
+La cartella database/ contiene il codice necessario per interfacciarsi col db interno del plugin.
+
+La cartella embedded/ contiene il codice necessario per il funzionamento dei video embedded, sotto forma di playlist, video live, on demand o palinsesto.
+
+La cartella functions/ contiente delle funzioni per la maggior parte chiamate direttamente via http che forniscono alcune funzionalità come il download in chunks e il progresso dell'upload di un file.
+
+La cartella log/ contiene la libreria per il logging, necessaria solo in sviluppo.
+
+La cartella menu/ contiene il codice necessario a gestire il menu laterale generato dal plugin nella sezione amministrativa.
+
+La cartella languages/ contiene le traduzioni dei testi presenti nel plugin.
+
+Le cartelle css/, images/ e script/ contengono le risorse necessarie al plugin.
+
+In tutti i file .php dovrebbe esserci documentata la funzione che assolvono.

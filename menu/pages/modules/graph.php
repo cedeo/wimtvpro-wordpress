@@ -2,6 +2,9 @@
 /**
  * Written by walter at 30/10/13
  */
+/**
+ * Funzioni necessarie alla serializzazione e alla visualizzazione dei dati provenienti da stats.wim.tv
+ */
 function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
     $dateRange = getDateRange($from_dmy, $to_dmy);
     $count_date = count($dateRange);

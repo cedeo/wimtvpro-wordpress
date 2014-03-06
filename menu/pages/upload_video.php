@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file
- * This file is use for the upload video and function.
- *
+ * Mostra la pagina di upload di un video presente nel menu laterale, la logica viene gestita nella prima parte, del codice,
+ * il markup rimane sotto.
+ * TODO: questa divisione tra markup e logica può essere migliorata prendendo spunto dai templates di Drupal.
  */
 function wimtvpro_upload() {
     $view_page = wimtvpro_alert_reg();

@@ -3,6 +3,9 @@
  * Written by walter at 06/11/13
  */
 function wimtvpro_unzip($location,$newLocation) {
+    /**
+     * Dezippa un file.
+     */
     require_once(ABSPATH .'/wp-admin/includes/file.php'); //the cheat
     WP_Filesystem();
     return unzip_file($location, $newLocation);
@@ -31,6 +34,10 @@ function wimtvpro_searchFile($mainDir, $ext) {
 }
 
 function return_bytes($val) {
+    /**
+     * Ritorna il numero di byte corrispondenti alla stringa passata.
+     * Es. 2k => 2048
+     */
     $val = trim($val);
     $last = strtolower($val[strlen($val)-1]);
     switch ($last) {
@@ -72,20 +79,34 @@ function getDateRange($startDate, $endDate, $format="d/m/Y") {
 
 
 function wimtvpro_checkCleanUrl($base, $url) {
+    /**
+     * Ritorna la url corretta in base alla directory in cui è installato il plugin.
+     * Utile per chiamare i file presenti in functions, o scripts.php.
+     */
     return plugins_url($base . "/" . $url, __FILE__);
 }
 
 function lastURLComponent($string) {
+    /**
+     * Ritorna l'ultimo componente di una url.
+     * Es. www.google.com/ciao/a/tutti ritorna "tutti".
+     */
     $parts = explode("/", $string);
     return $parts[count($parts) - 1];
 }
 
 
 function wimtvpro_link_help() {
- return '<div class="help" style="float:right"><a href="' .  get_option("wp_supportLink") . '" target="_new">' . __("Help") . '</a></div>';
+    /**
+     * Ritorna il markup del pulsante che rimanda al sito di supporto, presente quasi in ogni pagina del plugin.
+     */
+    return '<div class="help" style="float:right"><a href="' .  get_option("wp_supportLink") . '" target="_new">' . __("Help") . '</a></div>';
 }
 
 function timezoneList(){
+    /**
+     * Ritorna la lista delle Timezone selezionabili quando si crea o si modifica un evento live.
+     */
 	$arrayTimeZone ["Kwajalein"]="(GMT -12:00) Eniwetok, Kwajalein";
 	$arrayTimeZone ["Pacific/Pago_Pago"]="(GMT -11:00) Midway Island, Samoa";
 	$arrayTimeZone ["US/Hawaii"]="(GMT -10:00) Hawaii";

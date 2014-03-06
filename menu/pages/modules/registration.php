@@ -2,6 +2,10 @@
 /**
  * Written by walter at 24/10/13
  */
+/**
+ * Esegue la registrazione di un utente su wim.tv.
+ * Permette anche di switchare tra peer e www attraverso il passaggio del parametro $sandbox.
+ */
 function wimtvpro_register($name, $surname, $email, $username, $password, $password_repeat, $sex, $sandbox) {
 
     if ($sandbox=="No") {

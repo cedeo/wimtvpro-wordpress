@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * Questa funzione, presente in tutti i plugin più o meno alla stessa maniera, si occupa di ritornare la tabella dei video presenti in WimBox e WimVod.
+ * E' ancora abbastanza caotica, andrebbe rifattorizzata dividendo il template dall'elaborazione dei dati, in quanto la maniera in cui viene generata ora la tabella,
+ * ovvero appendendo stringhe a result e ritornando alla fine l'unione di tanti pezzi di tabella sotto forma di stringhe.
+ */
+
 function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$stLicense,$playlist) {
   global $user,$wpdb;
   $form = "";
@@ -236,31 +243,6 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
   }
 
   return $my_media;
-}
-
-function downloadVideo($id, $infofileName) {
-	$credential = get_option("wp_userWimtv") . ":" . get_option("wp_passWimtv");
-	$filename = "";
-	$ext = "";
-	if ($infofileName!=""){
-		$infoFile = explode (".",$infofileName);
-		$numeroCount = count($infoFile); // se ci fosse un file che ha più di un punto
-		$ext = $infoFile[$numeroCount-1];
-		$filename = $infoFile[0];
-		for ($i=1;$i<$numeroCount-1;$i++){
-			$filename .= "." . $infoFile[$i];
-		}
-	}
-	$url_download = get_option("wp_basePathWimtv") . "videos/" . $id . "/download";
-	if ($filename!=""){
-		$url_download .= "?filename=" . $filename . "&ext=" . $ext;
-	}
-	
-	$url_info = parse_url($url_download);
-	$url_path_info = pathinfo($url_info['path']);
-	$url = $url_info['scheme'] . '://' . $credential . '@' .
-	$url_info['host']  . $url_path_info['dirname'] .'/'. rawurlencode($url_path_info['basename']);  
-	return $url;
 }
 
 ?>

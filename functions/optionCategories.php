@@ -1,4 +1,8 @@
 <?php
+/**
+ * Questa funzione ritorna la lista delle categorie selezionabili per un video.
+ * Viene utilizzata quando viene fatto l'upload di un video per permettere la scelta delle categorie.
+ */
 function wimtvpro_readOptionCategory(){
 	$category="";
 	$response = apiGetVideoCategories();

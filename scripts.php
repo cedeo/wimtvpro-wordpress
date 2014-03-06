@@ -1,5 +1,8 @@
 <?php
-  global $user,$wpdb;
+/**
+ *  Questo file viene chiamato via Http,e fornisce funzionalità diverse in base al parametro GET 'namefunction' passato.
+ */
+global $user,$wpdb;
   include("../../../wp-load.php");
   include_once("api/api.php");
 
@@ -31,6 +34,10 @@
     $ordina = $_GET['ordina'];
 
   if(empty($_FILES) && empty($_POST) && isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+      /**
+       * Questo caso si presenta quando la dimensione del file caricato è maggiore del massimo permesso dall'installazione di Wordpress.
+       * Viene fatta una post che arriva con payload vuoto.
+       */
       echo '<div class="error"><p><strong>';
       echo str_replace("%d",$postmaxsize_mb,__("The server where your Wordpress is installed does not support upload of files exceeding %d. If you want to upload videos larger than %d, please modify your server settings. WimTV supports up to 2GB file size per upload.","wimtvpro"));
       echo '</strong></p></div>';
@@ -38,12 +45,12 @@
 
   //trigger_error($function, E_USER_NOTICE);
   switch ($function) {
+
     case "putST":
-    
-    //TODO: deprecated API call. 
-    	//API  http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
-        //curl -u {username}:{password} -d "license_type=TEMPLATE_LICENSE&paymentMode=PAYPERVIEW&pricePerView=50.00&pricePerViewCurrency=EUR" http://www.wim.tv/wimtv-webapp/rest/videos/{contentIdentifier}/showtime
-     
+        /**
+         * Richiede che vengano passati anche come parametri GET 'id', e tutti i valori presenti nell'array $param.
+         * Aggiunge un video a WimVod (lo mette in Showtime).
+         */
  
     $licenseType= "";
     $paymentMode= "";
@@ -84,6 +91,10 @@
       die();
     break;
     case "putAcqST":
+        /**
+         * Richiede che vengano passati anche come parametri GET 'id', 'coId' e tutti i valori presenti nell'array $param.
+         * Aggiunge un video acquired, con acquiredIdentifier corrispondente a 'coId' a WimVod (lo mette in Showtime).
+         */
         $licenseType = "";
         $paymentMode = "";
         $ccType = "";
@@ -121,7 +132,10 @@
         die();
         break;
     case "removeST";
-
+        /**
+         * Richiede che vengano passati anche come parametri GET 'id' e 'showtimeId'.
+         * Rimuove un video da WimVod (lo toglie dallo showtime).
+         */
       dbSetVideoPosition($id, "0", "");
  
       $response = apiDeleteFromShowtime($id, $stid);
@@ -139,6 +153,10 @@
       die();
     break;
     case "ReSortable":
+        /**
+         * Richiede che venga passato anche come parametro GET 'ordina'.
+         * Riordina i video nella tabella WimBox o WimVod.
+         */
       $list_video = explode(",", $ordina);
       foreach ($list_video as $position => $item) {
         $position = $position + 1;
@@ -151,41 +169,53 @@
       break;
 
     case "urlCreate":
-      $response = apiCreateUrl(urlencode($_GET['titleLive']));  //curl_exec($ch);
-      echo $response;
-      break;
+        /**
+         * Richiede che venga passato anche come parametro GET 'titleLive'.
+         * Crea e ritorna l'url del video live con titolo passato.
+         */
+        $response = apiCreateUrl(urlencode($_GET['titleLive']));
+        echo $response;
+        break;
 
     case "passCreate":
-      $response = apiChangePassword($_GET['newPass']);
-      echo $response;
-	  die();
-      break;
+        /**
+         * Richiede che venga passato anche come parametro GET 'newPass'.
+         * Cambia la password dei live dell'utente autenticato.
+         */
+        $response = apiChangePassword($_GET['newPass']);
+        echo $response;
+	    die();
+        break;
 
     case "RemoveVideo":
+        /**
+         * Richiede che venga passato anche come parametro GET 'id'.
+         * Rimuove il video con host_id corrispondente al parametro 'id' da wim.tv.
+         */
 		//connect at API for upload video to wimtv
 		$response = apiDeleteVideo($id);
 		$arrayjsonst = json_decode($response);
 		if ($arrayjsonst->result=="SUCCESS")
 			dbDeleteVideo($id);
 		echo $response;
-    break;
+        break;
     
     case "getUsers":
-      $sqlVideos = dbGetViewVideoModule($id);
-      $stateView = explode ("|",$sqlVideos[0]->viewVideoModule);
-      $arrayUsers = explode (",",$stateView[1]);
+        $sqlVideos = dbGetViewVideoModule($id);
+        $stateView = explode ("|",$sqlVideos[0]->viewVideoModule);
+        $arrayUsers = explode (",",$stateView[1]);
     
-      $q_users = mysql_query("SELECT ID,user_login FROM " . $wpdb->prefix . "users");
-      while($username = mysql_fetch_array($q_users)){
-      	$valueOption = "U-" .  $username['ID'];
-        echo "<option value='" .  $valueOption . "'";
-        foreach ($arrayUsers as $typeUser){    
-        	if ($valueOption == $typeUser) echo " selected='selected' ";
+        $q_users = mysql_query("SELECT ID,user_login FROM " . $wpdb->prefix . "users");
+        while($username = mysql_fetch_array($q_users)){
+         	$valueOption = "U-" .  $username['ID'];
+           echo "<option value='" .  $valueOption . "'";
+           foreach ($arrayUsers as $typeUser){
+             if ($valueOption == $typeUser) echo " selected='selected' ";
+           }
+           echo ">" . $username['user_login'] . "</option>";
         }
-        echo ">" . $username['user_login'] . "</option>";
-      }
-      die();
-      break;
+        die();
+        break;
     
     case "getRoles":
       $sqlVideos = dbGetViewVideoModule($id);
@@ -223,6 +253,9 @@
     
 	
 	case "uploadFile":
+        /**
+         * Esegue l'upload di un video su wim.tv.
+         */
 		$sizefile = filesize($_FILES['videoFile']['tmp_name']);
 		$urlfile = @$_FILES['videoFile']['tmp_name'];
 		$uploads_info = wp_upload_dir();

@@ -3,6 +3,12 @@
 /**
  * Written by walter at 24/10/13
  */
+/**
+ * Mostra la pagina delle impostazioni presente nel menu laterale,
+ * Questa pagina gestisce la pagina principale dei settings.
+ * I dati dell'utente vengono presi alla riga 217, e poi in base al parametro GET 'update',
+ * viene mostrata la pagina dei settings richiesta.
+ */
 include_once("settings/configuration.php");
 include_once("settings/prices.php");
 include_once("settings/monetization.php");

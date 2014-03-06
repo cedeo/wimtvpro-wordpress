@@ -2,6 +2,9 @@
 /**
  * Written by walter at 06/11/13
  */
+/**
+ * Queste funzioni servono per autogenerare la pagina con i video presenti in WimVod.
+ */
 function update_page_wimvod(){
     if (get_option("wp_publicPage")=="Yes"){
         global $wpdb;

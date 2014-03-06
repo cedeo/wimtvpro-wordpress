@@ -1,5 +1,9 @@
 <?php
-  global $user,$wpdb;
+/**
+ * Questo file viene chiamato via Ajax per fornire un'interfaccia con cui creare e modificare le playlist.
+ * Attraverso il parametro GET 'namefunction' viene scelta l'azione da intraprendere
+ */
+global $user,$wpdb;
   include("../../../wp-blog-header.php");
 
   if (isset($_GET['namefunction']))
@@ -18,6 +22,10 @@
   switch ($function) {
   
     case "AddVideoToPlaylist":
+        /**
+         * Richiede che vengano passati anche come parametri GET 'namePlayList', 'idPlayList' e 'id' (id del video).
+         * Aggiunge un video alla playlist.
+         */
     	$listVideo = "";
 
 
@@ -50,40 +58,55 @@
     break;
   
     case "createPlaylist":
-      $uploads_info = wp_upload_dir();
-      $directory = $uploads_info["basedir"] .  "/playlistWim";
+        /**
+         * Richiede che venga passato come parametro GET 'namePlayList'.
+         * Crea una nuova playlist.
+         */
+        $uploads_info = wp_upload_dir();
+        $directory = $uploads_info["basedir"] .  "/playlistWim";
 		   if (!is_dir($directory)) {
 			  $directory = mkdir($uploads_info["basedir"] . "/playlistWim");
 			}
 
         dbInsertPlayist(get_option('wp_userwimtv'), $name);
 	           	
-      die();
+        die();
     
     break;
     
     case "modTitlePlaylist":
+        /**
+         * Richiede che vengano passati anche come parametri GET 'namePlayList' e 'idPlayList'.
+         * Modifica il titolo della playlist.
+         */
 
-      dbUpdatePlaylist($idPlayList, $name);
+        dbUpdatePlaylist($idPlayList, $name);
 
-      die();
+        die();
     
     break;
 
 	case "removePlaylist":
-	  
-	  $uploads_info = wp_upload_dir();
+        /**
+         * Richiede che venga passato come parametro GET 'idPlayList'.
+         * Rimuove la playlist.
+         */
+	    $uploads_info = wp_upload_dir();
 
-      dbDeletePlayist($idPlayList);
+        dbDeletePlayist($idPlayList);
 
-      die();
+        die();
     
     break;
 
     
     default:
-      echo "Non entro";
-      die();
+        /**
+         * Stampa "non entro" se il nome della funzione richiesta non corrisponde a nessuno di quelli elencati.
+         * Scelta di Simona, vai a capire.
+         */
+        echo "Non entro";
+        die();
   }
     
 ?>

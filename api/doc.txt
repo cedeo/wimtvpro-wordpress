@@ -1,0 +1,16 @@
+L'interfaccia con le API di wim.tv è unica in tutti e tre i plugin.
+E' in pratica un wrapper di Httpful, una libreria che serve ad implementare chiamate ad API REST.
+Importando il file wimtv_api.php, si ha a disposizione tutte le funzioni che chiamano le API di wim.tv, ritornando un oggetto della classe Response,
+che può essere convertito in un oggetto php serializzato dal JSON ritornato, usando la funzione json_decode($response).
+
+Allo stesso modo, le API di stats.wim.tv sono disponibili attraverso le funzioni dichiarate in analytics_api.php.
+
+Entrambi i file, quando importati, inizializzano un singleton ciascuno con i parametri base, ovvero username e password dell'utente con cui si devono autenticare le chiamate,
+e l'host a cui le chiamate devono essere fatte (si può facilmente switchare tra peer e www cambiando i parametri passati a initApi() e initAnalytics()).
+
+A livello più basso, la classe Api è il vero wrapper intorno ad Httpful, che gestisce la maniera in cui vengono fatte le richieste.
+Contiene i due singleton, istanze della stessa classe Api, e si occupa di creare le richieste, attraverso i metodi getRequest(), postRequest(), putRequest(), deleteRequest() e uploadRequest().
+Il metodo execute(), invece, gestisce la chiamata vera e propria, e ritorna la risposta dell'api, o solleva un'eccezione a livello USER_WARNING se qualcosa non funziona, ritornando una stringa vuota.
+
+Le richieste generate dalla classe Api altro non sono che oggetti della classe Request di Httpful, e come tali possono essere modellate utilizzando i metodi descritti nella doc di Httpful.
+http://phphttpclient.com/docs/index.html

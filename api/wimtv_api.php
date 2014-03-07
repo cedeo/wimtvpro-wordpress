@@ -336,7 +336,7 @@ function apiDeleteItems($progId, $itemId) {
 
 function apiUpdateItems($progId, $itemId, $params) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->postRequest('programming/' . $progId .'/item/' + $itemId);
+    $request = $apiAccessor->postRequest("programming/" . $progId . "/item/" . $itemId);
     $request->body($params);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);

@@ -103,6 +103,8 @@ function settings_configuration($directory) {
 
             </table>
 
+            <!-- Comment/uncomment this to lock/unlock sandbox features -->
+            
             <h4><?php _e("Other information" ,"wimtvpro"); ?></h4>
 
             <input type="hidden" value="No" name="sandbox">

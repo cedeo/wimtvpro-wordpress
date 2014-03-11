@@ -93,3 +93,12 @@ ProgUtils.api.removeItem = function(progId, itemId) {
 ProgUtils.api.updateItem = function(progId, itemId) {
     return url_pathPlugin + 'functions/programming/updateItem.php?progId=' + progId + '&itemId='+ itemId;
 };
+
+/**
+ * Copia tutti gli elementi di un item in una o pià date di destinazione
+ *
+ * @param: progId	il programming identifier di riferimento
+ */
+ProgUtils.api.mimicItem = function(progId) {
+    return buildUrl(programmingBase, "api=mimicItem&progId=" + progId);
+};

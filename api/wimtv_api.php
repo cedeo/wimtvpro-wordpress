@@ -333,7 +333,6 @@ function apiDeleteItems($progId, $itemId) {
     return $apiAccessor->execute($request);
 }
 
-
 function apiUpdateItems($progId, $itemId, $params) {
     $apiAccessor = getApi();
     $request = $apiAccessor->postRequest("programming/" . $progId . "/item/" . $itemId);
@@ -342,6 +341,12 @@ function apiUpdateItems($progId, $itemId, $params) {
     return $apiAccessor->execute($request);
 }
 
+function apiMimicItem($progId) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->postRequest("programming/" . $progId . "/mimic");
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
 
 
 initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));

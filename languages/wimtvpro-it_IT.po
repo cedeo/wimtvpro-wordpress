@@ -1089,3 +1089,15 @@ msgstr "Modifica Palinsesto"
 msgid "New Programming"
 msgstr "Nuovo Palinsesto"
 
+#: 
+msgid "Videos per page"
+msgstr "Video per pagina"
+
+#: 
+msgid "Not contains"
+msgstr "Non contiene"
+
+#: 
+msgid "Found"
+msgstr "Trovati"
+

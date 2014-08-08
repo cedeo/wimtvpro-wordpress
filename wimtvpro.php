@@ -47,6 +47,10 @@ include_once("functions/jwPlayer.php");
 include_once("functions/updateWimVod.php");
 include_once("functions/listDownload.php");
 include_once("functions/optionCategories.php");
+
+// NS:
+include_once("functions/smartSync.php");
+
 include_once("functions/detailShowtime.php");
 include_once("embedded/embeddedPlayList.php");
 include_once("embedded/embeddedProgramming.php");
@@ -196,6 +200,7 @@ function wimtvpro_menu(){
 	  add_submenu_page('WimTvPro', 'WimLive', 'WimLive', 'administrator', 'WimLive', 'wimtvpro_live');
       add_submenu_page('WimTvPro', __('Analytics'), __('Analytics'), 'administrator', 'WimTVPro_Report', 'wimtvpro_Report');
 
+      // NS: WE TEMPORARY HIDE THE PROGRAMMINGS SECTION
       add_submenu_page('WimTvPro', __('Programmings',"wimtvpro"), __('Programmings',"wimtvpro"), 'administrator', 'WimVideoPro_Programming', 'wimtvpro_programming');
     }
     
@@ -480,7 +485,9 @@ function wimtvpro_shortcode_streaming($atts) {
 
       $response = apiGetPlayerShowtime($id, $params);
 	  wp_reset_query();
-	  return "<div style='text-align:center'>" . $response . "</div>";
+// NS: changed outer div to include width and heigth
+	  return "<div style='text-align:center;height:" . $height . "px;width:" . $width . "px'>" . $response . "</div>";
+//	  return "<div style='text-align:center'>" . $response . "</div>";
   } else {
 	return "<p>You don't have permission to see the video</p>";
   }  

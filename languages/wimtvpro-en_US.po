@@ -982,3 +982,14 @@ msgstr ""
 msgid "You aren't videos"
 msgstr ""
 
+#: 
+msgid "Videos per page"
+msgstr ""
+
+#: 
+msgid "Not contains"
+msgstr ""
+
+#: 
+msgid "Found"
+msgstr ""

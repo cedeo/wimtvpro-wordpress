@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Mostra la pagina di upload di un video presente nel menu laterale, la logica viene gestita nella prima parte, del codice,
+ * Mostra la pagina di upload di un video presente nel menu laterale,
+ * la logica viene gestita nella prima parte, del codice,
  * il markup rimane sotto.
  * TODO: questa divisione tra markup e logica può essere migliorata prendendo spunto dai templates di Drupal.
  */
@@ -12,7 +13,7 @@ function wimtvpro_upload() {
     }
     $serverActiveFile = ini_get("file_uploads");
     $category = wimtvpro_readOptionCategory();
-
+    
     if ($serverActiveFile!=1) {
         echo '<div class="error"><p><strong>';
         _e("Attention! Your server does not support upload of files, please modify your server settings with file_uploads = On.","wimtvpro");

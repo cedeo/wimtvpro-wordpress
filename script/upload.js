@@ -103,7 +103,8 @@ jQuery(document).ready(function(){
             success: function(response) {
                 jQuery (".progress-bar").hide();
                 jQuery("#message").html (response);	
-                $inputs.prop("disabled", false);
+                // NS: After upload leave controls disabled
+                $inputs.prop("disabled", true);
                 jQuery("#addCategories").html("");
                 $inputs.each(function(index, element) {
                     if ((jQuery(this).attr("id")!="submit") && (jQuery(this).attr("id")!="nameFunction"))

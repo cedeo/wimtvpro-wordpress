@@ -1,28 +1,28 @@
 <?php
+
 /**
  * Written by walter at 11/11/13
  */
-
-function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categories, $urlPlay, $title, $duration, $showtimeId,$acquired_identifier) {
+function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categories, $urlPlay, $title, $duration, $showtimeId, $acquired_identifier) {
     global $wpdb;
     $video = array("uid" => $user,
-                   "contentidentifier" => $contentId,
-                   "mytimestamp" => time(),
-                   "position" => '0',
-                   "state" => $state,
-                   "viewVideoModule" => '3',
-				   "acquiredIdentifier" => $acquired_identifier,
-                   "status" => $status,
-                   "urlThumbs" => mysql_real_escape_string($urlThumbs),
-                   "category" => $categories,
-                   "urlPlay" => mysql_real_escape_string($urlPlay),
-                   "title" => mysql_real_escape_string($title),
-                   "duration" => $duration,
-                   "showtimeidentifier" => $showtimeId);
+        "contentidentifier" => $contentId,
+        "mytimestamp" => time(),
+        "position" => '0',
+        "state" => $state,
+        "viewVideoModule" => '3',
+        "acquiredIdentifier" => $acquired_identifier,
+        "status" => $status,
+        "urlThumbs" => mysql_real_escape_string($urlThumbs),
+        "category" => $categories,
+        "urlPlay" => mysql_real_escape_string($urlPlay),
+        "title" => mysql_real_escape_string($title),
+        "duration" => $duration,
+        "showtimeidentifier" => $showtimeId);
     return $wpdb->insert(VIDEO_TABLE_NAME, $video);
 }
 
-function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration, $showtimeId, $categories, $contentId,$acquired_identifier) {
+function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration, $showtimeId, $categories, $contentId, $acquired_identifier) {
     global $wpdb;
 
     $title = mysql_real_escape_string($title);
@@ -43,7 +43,7 @@ function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration,
                                          WHERE contentidentifier='{$contentId}'");
 }
 
-function dbUpdateVideoState($contentId, $state, $showtimeId=null) {
+function dbUpdateVideoState($contentId, $state, $showtimeId = null) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
     $set = "SET state='{$state}'";
@@ -77,7 +77,7 @@ function dbSetViewVideoModule($contentId, $state) {
     return $wpdb->query("UPDATE {$table} {$set} WHERE contentidentifier='{$contentId}'");
 }
 
-function dbSetVideoPosition($contentId, $position, $state=null) {
+function dbSetVideoPosition($contentId, $position, $state = null) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
     $set = "SET position='{$position}'";
@@ -86,51 +86,74 @@ function dbSetVideoPosition($contentId, $position, $state=null) {
     return $wpdb->query("UPDATE {$table} {$set} WHERE contentidentifier='{$contentId}'");
 }
 
-function dbGetUserVideosId($user) {
+function dbGetUserVideosId($user, $filter = "") {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
-    return $wpdb->get_results("SELECT contentidentifier FROM {$table} WHERE uid='{$user}'");
+    switch ($filter) {
+        case "":
+            $query = "SELECT contentidentifier FROM {$table} WHERE uid='{$user}'";
+            break;
+        case "pending":
+            $query = "SELECT contentidentifier FROM {$table} WHERE uid='{$user}' AND status LIKE '%|%'";
+            break;
+        default:
+            $query = "SELECT contentidentifier FROM {$table} WHERE uid='{$user}'";
+            break;
+    }
+
+    return $wpdb->get_results($query);
 }
 
-function dbBuildGetVideosWhere($showtime, $public) {
+function dbBuildGetVideosWhere($showtime, $public, $additional_where = null) {
     $where = "";
     if ($showtime)
         $where .= "AND state='showtime'";
     if ($public) {
         $where .= "AND ((viewVideoModule like '{$public}%') OR (viewVideoModule like '3%')) ";
     }
+    if ($additional_where) {
+        $where .= "AND " . $additional_where;
+    }
     return $where;
 }
 
-function dbGetVideosCount($user, $showtime, $public) {
+function dbGetVideosCount($user, $showtime, $public, $where_clause = null) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
-    $where = dbBuildGetVideosWhere($showtime, $public);
+    $where = dbBuildGetVideosWhere($showtime, $public, $where_clause);
     $query = "SELECT count(*) as count FROM {$table} WHERE uid='{$user}' " . $where;
     return $wpdb->get_results($query);
 }
 
-function dbGetUserVideos($user, $showtime, $public, $offset=0, $rows=0) {
+function dbGetUserVideos($user, $showtime, $public, $offset = 0, $rows = 0, $where_clause = null, $sql_order = null) {
     global $wpdb;
+
     $table = VIDEO_TABLE_NAME;
-    $where = dbBuildGetVideosWhere($showtime, $public);
-	if (!$showtime){
-		$query = "SELECT * FROM {$table} WHERE uid='{$user}' {$where} ORDER BY mytimestamp DESC LIMIT {$offset}, ${rows}";
-	} else {
-		    $query = "SELECT * FROM {$table} WHERE uid='{$user}' {$where} ORDER BY position ASC LIMIT {$offset}, ${rows}";
-	}
+    $where = dbBuildGetVideosWhere($showtime, $public, $where_clause);
+    if (!$showtime) {
+        if ($sql_order == null) {
+            $sql_order = "mytimestamp DESC";
+        }
+        $query = "SELECT * FROM {$table} WHERE uid='{$user}' {$where} ORDER BY $sql_order LIMIT {$offset}, ${rows}";
+    } else {
+        if ($sql_order == null) {
+            $sql_order = "position ASC";
+        }
+        $query = "SELECT * FROM {$table} WHERE uid='{$user}' {$where} ORDER BY $sql_order LIMIT {$offset}, ${rows}";
+    }
+
     return $wpdb->get_results($query);
 }
 
-function dbBuildVideosIn($listVideos, $in=true) {
+function dbBuildVideosIn($listVideos, $in = true) {
     if (count($listVideos)) {
         $where = " AND contentidentifier ";
         if (!$in)
             $where .= "NOT";
         $where .= " IN (";
-        foreach ($listVideos as $index=>$video) {
+        foreach ($listVideos as $index => $video) {
             $where .= "'" . $video . "'";
-            if ($index < count($listVideos)-1)
+            if ($index < count($listVideos) - 1)
                 $where .= ", ";
         }
         $where .= ")";
@@ -139,7 +162,7 @@ function dbBuildVideosIn($listVideos, $in=true) {
     return "";
 }
 
-function dbGetUserVideosIn($user, $listVideos, $showtime=false, $playlist=true) {
+function dbGetUserVideosIn($user, $listVideos, $showtime = false, $playlist = true) {
     global $wpdb;
     $and_showtime = "";
     if ($showtime) {

@@ -1101,3 +1101,10 @@ msgstr "Non contiene"
 msgid "Found"
 msgstr "Trovati"
 
+#: 
+msgid "Videos"
+msgstr "Video"
+
+#: 
+msgid "You are removing video with title:\n\n\t__TITLE__\n\nAre you sure ?"
+msgstr "Si sta per eliminare il video con titolo:\n\n\t__TITLE__\n\nSi vuol procedere ?"

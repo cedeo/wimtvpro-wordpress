@@ -20,7 +20,7 @@ function wimtvpro_submenu($view_page) {
         $submenu .= "<li><a href='admin.php?page=WimTvPro&update=3' class='user'>" . __("Personal Info", "wimtvpro") . "</a> |";
         
         // NS: Disabling "Features Page"
-//        $submenu .= "<li><a href='admin.php?page=WimTvPro&update=4' class='other'>" . __("Features", "wimtvpro") . "</a> ";
+        $submenu .= "<li><a href='admin.php?page=WimTvPro&update=4' class='other'>" . __("Features", "wimtvpro") . "</a> ";
     }
     $submenu .= "</ul>";
     return $submenu;

@@ -73,6 +73,7 @@ function wimtvpro_getVideos($showtime = FALSE, $private = TRUE, $insert_into_pag
       } */
 
 
+
     if ($number_page > 1) {
         $pagination = '<div id="wp_pagination">';
 
@@ -88,37 +89,39 @@ function wimtvpro_getVideos($showtime = FALSE, $private = TRUE, $insert_into_pag
             $pagination .= '<a class="last page button" href="' . get_pagenum_link($number_page) . '">&raquo;</a>';
         }
 
-
-        //Videos per page BLOCK
-        $rowsperpage_values = array(
-            '5' => '5',
-            '10' => '10',
-            '20' => '20',
-        );
-        // FORM OBJECT
-        $rowsperpageSelector = "<form name='rowsperpageForm' id='rowsperpageForm' method='GET'>";
-        foreach ($_GET as $key => $value) {
-            $rowsperpageSelector .= "<input type='hidden' name='$key' value='$value'/>";
-        }
-        $rowsperpageSelector .="</form>";
-        // SELECT LABEL OBJECT
-        $rowsperpageSelector .="<label for='rowsperpage' style='display: inline; margin-left: 100px;'>" . __("Videos per page", "wimtvpro") . "</label>";
-        // SELECT OBJECT
-        $rowsperpageSelector .="<select name='rowsperpage' onChange='document.getElementById(\"rowsperpageForm\").submit();' form='rowsperpageForm'>";
-        foreach ($rowsperpage_values as $opt_value => $opt_label) {
-            $selected = ($opt_value == $rows) ? " selected='selected'" : "";
-            $rowsperpageSelector.="<option value='" . $opt_value . "'" . $selected . ">" . $opt_label . "</option>";
-        }
-        $rowsperpageSelector.="</select>";
-
-        $pagination .= $rowsperpageSelector;
         $pagination .= '</div>';
     } else {
         $pagination = "";
     }
 
-    $my_media.="<div>" . __("Found", "wimtvpro") . ": " . $array_count . " videos";
-    return $my_media . $pagination;
+    // NS: ADD NUMBER OF VIDEO FOUND
+    $my_media.="<div>" . __("Found", "wimtvpro") . ": " . $array_count . " " . __("Videos", "wimtvpro");
+
+    // NS: ADD NUMBER OF ROWS SELECTOR
+    // FORM "number of rows"
+    $rowsperpage_values = array(
+        '5' => '5',
+        '10' => '10',
+        '20' => '20',
+    );
+    $rowsperpageSelector = "<form name='rowsperpageForm' id='rowsperpageForm' method='GET'>";
+    foreach ($_GET as $key => $value) {
+        $rowsperpageSelector .= "<input type='hidden' name='$key' value='$value'/>";
+    }
+    $rowsperpageSelector .="</form>";
+    $rowsperpageSelector .="<label for='rowsperpage' style='display: inline; margin-left: 100px;'>" . __("Videos per page", "wimtvpro") . "</label>";
+    $rowsperpageSelector .="<select name='rowsperpage' onChange='document.getElementById(\"rowsperpageForm\").submit();' form='rowsperpageForm'>";
+    foreach ($rowsperpage_values as $opt_value => $opt_label) {
+        $selected = ($opt_value == $rows) ? " selected='selected'" : "";
+        $rowsperpageSelector.="<option value='" . $opt_value . "'" . $selected . ">" . $opt_label . "</option>";
+    }
+    $rowsperpageSelector.="</select>";
+    $my_media.=$rowsperpageSelector . "</div>";
+
+    // NS: ADD PAGINATION
+    $my_media .= $pagination;
+
+    return $my_media;
 }
 
 ?>

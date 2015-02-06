@@ -61,11 +61,11 @@ function wimtvpro_register($name, $surname, $email, $username, $password, $passw
                 update_option('wp_registration', 'TRUE');
 
                 // NS: AFTER USER CREATION IMMEDIATLY SET VISIBILITY OF VIDEOS IN WIMVOD TO PUBLIC
-                //if (isset($_POST['reg_Password']) && isset($_POST['reg_Password'])) {
-                //    initApi(get_option("wp_basePathWimtv"), $_POST['reg_Username'], $_POST['reg_Password']);
-                //    $dati["hidePublicShowtimeVideos"] = "false";
-                //    $response = apiEditProfile($dati);
-                //}
+                if (isset($_POST['reg_Password']) && isset($_POST['reg_Password'])) {
+                    initApi(get_option("wp_basePathWimtv"), $_POST['reg_Username'], $_POST['reg_Password']);
+                    $dati["hidePublicShowtimeVideos"] = "false";
+                    $response = apiEditProfile($dati);
+                }
             } else {
                 foreach ($arrayjsonst->messages as $message) {
                     $testoErrore = $message->field . " : " . $message->message . "<br/>";

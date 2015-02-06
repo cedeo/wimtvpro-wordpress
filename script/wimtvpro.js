@@ -1,6 +1,4 @@
-
 jQuery(document).ready(function() {
-
     jQuery("span.wimtv-thumbnail").click(function() {
         viewVideo(this);
     });
@@ -10,7 +8,8 @@ jQuery(document).ready(function() {
         if (jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").length) {
             var url = jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").attr("id");
             console.log(url);
-            jQuery(elem).colorbox({href: url, width: '50%', height: '80%'});
+//            jQuery(elem).colorbox({href: url, width: '50%', height: '80%'});
+            jQuery(elem).colorbox({href: url, width: '50%', height: 'auto'});
         } else {
             alert(videoproblem);
         }
@@ -71,40 +70,40 @@ jQuery(document).ready(function() {
                 jQuery("ul.items").html(response);
             }
         });
-
-
     }
 
     function callRemoveVideo(element) {
-
-        jQuery.ajax({
-            context: this,
-            url: url_pathPlugin + "scripts.php",
-            type: "GET",
-            dataType: "json",
-            async: false,
-            data: "namefunction=RemoveVideo&id=" + element.parent().parent().attr("id"),
-            beforeSend: function() {
-                element.parent("tr").children(".icon").hide();
-                element.parent().append("<span class='loading'></span>");
-            },
-            complete: function() {
-                element.parent("tr").children(".icon").show();
-                jQuery(".loading").remove();
-            },
-            success: function(response) {
-                var result = response.result;
-                if (result == "SUCCESS") {
-                    alert(response.message);
+        title = element.closest("tr").children("td").children("b").html();
+        message = WP_TRANSLATE.remove_video_confirm_message.replace("__TITLE__", title);
+        if (confirm(message))
+        {
+            jQuery.ajax({
+                context: this,
+                url: url_pathPlugin + "scripts.php",
+                type: "GET",
+                dataType: "json",
+                async: false,
+                data: "namefunction=RemoveVideo&id=" + element.parent().parent().attr("id"),
+                beforeSend: function() {
+                    element.parent("tr").children(".icon").hide();
+                    element.parent().append("<span class='loading'></span>");
+                },
+                complete: function() {
+                    element.parent("tr").children(".icon").show();
+                    jQuery(".loading").remove();
+                },
+                success: function(response) {
+                    var result = response.result;
+                    if (result == "SUCCESS") {
+                        alert(response.message);
+                    }
+                    location.reload();
+                },
+                error: function(request, error) {
+                    alert(request.responseText);
                 }
-                location.reload();
-            },
-            error: function(request, error) {
-                alert(request.responseText);
-            }
-        })
-
-
+            })
+        }
     }
 
     function callviewVideothumbs(element) {
@@ -246,7 +245,6 @@ jQuery(document).ready(function() {
 
     }
 
-
     function putST(element, namefunction, licenseType, paymentMode, ccType, pricePerView, pricePerViewCurrency, changeClass, coId, id) {
         jQuery.ajax({
             context: this,
@@ -268,7 +266,6 @@ jQuery(document).ready(function() {
                 jQuery(".form_save").hide();
             },
             success: function(response) {
-
                 var result = response.result;
 
                 if (result == "SUCCESS") {
@@ -289,9 +286,11 @@ jQuery(document).ready(function() {
             }
         });
     }
+
     function callViewForm(element) {
         element.parent().children(".formVideo").fadeToggle("slow");
     }
+
     function callPutShowtime(element) {
         var thisclass = element.attr("class");
         if (thisclass.indexOf("cc") >= 0) {
@@ -362,6 +361,7 @@ jQuery(document).ready(function() {
             }
         });
     }
+
     function callRemoveShowtime(element) {
         nomeclass = element.attr("class");
         coId = "";
@@ -374,6 +374,7 @@ jQuery(document).ready(function() {
             changeClass = "icon_Putshowtime";
             coId = "&showtimeId=" + element.attr("id");
         }
+
         jQuery.ajax({
             context: this,
             url: url_pathPlugin + "scripts.php",
@@ -403,17 +404,19 @@ jQuery(document).ready(function() {
             }
         });
     }
+
     jQuery(".icon_sync0").click(function() {
         callSync(this);
     });
+
     jQuery(".free,.cc,.ppv").click(function() {
         callPutShowtime(jQuery(this));
     });
 
-
     jQuery(".icon_Putshowtime,.icon_AcquPutshowtime").click(function() {
         callViewForm(jQuery(this));
     });
+
     jQuery(".icon_AcqRemoveshowtime,.icon_Removeshowtime,.icon_RemoveshowtimeInto").click(function() {
         callRemoveShowtime(jQuery(this));
     });
@@ -421,7 +424,6 @@ jQuery(document).ready(function() {
     jQuery(".icon_viewVideo").click(function() {
         callviewVideothumbs(jQuery(this));
     });
-
 
     jQuery(".icon_remove").click(function() {
         callRemoveVideo(jQuery(this));
@@ -474,6 +476,7 @@ jQuery(document).ready(function() {
             }
         });
     });
+
     jQuery(".removeUrl").click(function() {
         jQuery(this).hide();
         jQuery(".createUrl").show();
@@ -482,7 +485,6 @@ jQuery(document).ready(function() {
         jQuery("#edit-url").val("");
         jQuery("#urlcreate").show();
     });
-
 });
 
 

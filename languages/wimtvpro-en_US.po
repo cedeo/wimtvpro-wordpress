@@ -993,3 +993,11 @@ msgstr ""
 #: 
 msgid "Found"
 msgstr ""
+
+#: 
+msgid "Videos"
+msgstr ""
+
+#: 
+msgid "You are removing video with title:\n\n\t__TITLE__\n\nAre you sure ?"
+msgstr ""

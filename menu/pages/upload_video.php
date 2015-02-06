@@ -44,7 +44,8 @@ function wimtvpro_upload() {
                 <p>
                     <label for="edit-descriptionfile"><?php _e("Description","wimtvpro"); ?> </label>
                     <br/>
-                    <textarea id="edit-descriptionfile" name="descriptionfile" cols="150" rows="5"></textarea>
+                    <!--NS: We have reduced number of columns-->
+                    <textarea id="edit-descriptionfile" name="descriptionfile" cols="110" rows="5"></textarea>
                 </p>
 
                 <p>

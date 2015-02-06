@@ -39,7 +39,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
         $my_media .= "</tr>";
         return $my_media;
     }
-
+    $title = stripslashes($title);
     foreach ($array as $key => $value) {
         $var = explode("-", $value);
 
@@ -186,7 +186,8 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
                 }
             } else {
                 if ($user->roles[0] == "administrator") {
-                    $action .= "<td class='icon'><span class='icon_RemoveshowtimeInto' title='Remove to My Streaming' id='" . $showtime_identifier . "'></span></td>";
+                    // NS: Added "translation" in title, i.e.: __("Remove from WimVod", "wimtvpro")
+                    $action .= "<td class='icon'><span class='icon_RemoveshowtimeInto' title='" . __("Remove from WimVod", "wimtvpro") . "' id='" . $showtime_identifier . "'></span></td>";
                     $action .= "<td><span class='icon_moveThumbs' title='" . __("Drag", "wimtvpro") . "'></span></td>";
                     $action .= "<td><span class='icon_viewVideo' rel='" . $view_video_state . "' title='Video Privacy'></span></td>";
                     $action .= "<td><textarea style='resize: none; width:90%;height:100%; readonly='readonly' onclick='this.focus(); this.select();'>[streamingWimtv  id='" . $content_item_new . "' width='" . get_option("wp_widthPreview") . "' height='" . get_option("wp_heightPreview") . "']</textarea></td>";
@@ -264,7 +265,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 //            $my_media .="<input style='display: none;' maxweight='3' class='w insert-media_W' type='text' value='" . get_option("wp_widthPreview") . "'>px  <br/>" .
 //                    "<input style='display: none;' maxweight='3' class='h insert-media_H' type='text' value='" . get_option("wp_heightPreview") . "'>px<br/></span>";
 //            
-            
+
             $send = get_submit_button(__('Insert into Post', "wimtvpro"), 'buttonInsert', $content_item_new, false);
         }
         $my_media .= $send . "</td></tr>";

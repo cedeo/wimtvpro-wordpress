@@ -1,5 +1,5 @@
 <?php
-
+// SETTINGS.PHP
 /**
  * Written by walter at 24/10/13
  */
@@ -60,7 +60,8 @@ function wimtvpro_configure() {
                             require_once(ABSPATH . '/wp-admin/includes/file.php'); //the cheat
 
                             WP_Filesystem();
-                            $return = unzip_file($directory . "/" . get_option('wp_nameSkin') . ".zip", $directory);
+//                            $return = unzip_file($directory . "/" . get_option('wp_nameSkin') . ".zip", $directory."/PINO");
+                            $return = unzip_file($directory . "/" . $arrayFile[0] . ".zip", $directory);
 
                             if ($return) {
                                 update_option('wp_nameSkin', $arrayFile[0]);
@@ -225,9 +226,9 @@ function wimtvpro_configure() {
                     break;
 
 //                NS: Disabling "Features Page"
-//                case "4": //Features
-//                    settings_features($dati);
-//                    break;
+                case "4": //Features
+                    settings_features($dati);
+                    break;
             }
 
             echo "</div>";

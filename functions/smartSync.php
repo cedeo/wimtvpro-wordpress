@@ -23,7 +23,10 @@ class wimtvpro_smartSync {
         
         foreach ($db_pending_video_array as $db_record) {
             $error_response = "";
-            $api_video_detail_response = apiGetDetailsVideo($db_record->contentidentifier, &$error_response);
+            // NS: We removed the "&" from error response to avoid problem with php 5.4
+//            $api_video_detail_response = apiGetDetailsVideo($db_record->contentidentifier, &$error_response);
+            $api_video_detail_response = apiGetDetailsVideo($db_record->contentidentifier, $error_response);
+
             // VIDEO HAS NOT YET TRANSCODED OR NOT EXISTS
             if ($api_video_detail_response == "") {
                 $notReadyString="The video is not ready yet";

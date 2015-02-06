@@ -42,34 +42,52 @@ if ($arrayjson_live) {
 
         $identifier = $value->identifier;
 
-        $embedded_iframe = apiGetLiveIframe($identifier, $timezone);
+        $skin = "";
+        if (get_option('wp_nameSkin') != "") {
+            $uploads_info = wp_upload_dir();
+            $directory = $uploads_info["baseurl"] . "/skinWim";
+
+            $nomeFilexml = wimtvpro_searchFile($uploads_info["basedir"] . "/skinWim/" . get_option('wp_nameSkin') . "/wimtv/", "xml");
+            $skin = "&skin=" . $directory . "/" . get_option('wp_nameSkin') . "/wimtv/" . $nomeFilexml;
+        }
+
+        $params = "timezone=" . $timezone;
+        if ($skin != "") {
+            $params.="&amp;skin=" . $skin;
+        }
+        if ($id == "all") {
+            $embedded_code_text = "[wimlive id='$identifier' zone='$timezone']";
+        } else {
+            $embedded_code_text = apiGetLiveIframe($identifier, $params);
+        }
         $details_live = apiGetLive($identifier, $timezone);
         //d($livedate);
         $livedate = json_decode($details_live);
 
         $data = $livedate->eventDateMillisec;
         $timezoneOffset = intval($livedate->timezoneOffset) / 1000;
-        $timestamp = floor($data);
-        $timestamp = $timestamp / 1000;
+        $timestamp = floor($data / 1000);
 
         $start = new DateTime("@$timestamp");
         // NS: We use the POSTed value "clitimestamp" to calculate whether or not
         // the client is in "daylight saving".
         // $timezoneName = timezone_name_from_abbr("", $timezoneOffset, false);
-        $timezoneName = timezone_name_from_abbr("", $timezoneOffset, !date('I', $_POST['clitimestamp']));
+        $clitimestamp = $_POST['timestamp'];
         
+        $timezoneName = timezone_name_from_abbr("", $timezoneOffset, date('I', $clitimestamp));
         
         $real_timezone = new DateTimeZone($timezoneName);
         $start->setTimezone($real_timezone);
+
         $oraMin = $start->format('H') . ":" . $start->format('i');
         $timeToStart = $livedate->timeToStart;
         $timeLeft = $livedate->timeLeft;
 
         //$urlPeer = "http://peer.wim.tv:8080/wimtv-webapp/rest";
         //$embedded_code = htmlentities(curl_exec($ch_embedded));
-        //$embedded_iframe = '<iframe id="com-wimlabs-player" name="com-wimlabs-player" src="' . $urlPeer . '/liveStreamEmbed/' . $identifier . '/player?width=692&height=440" style="min-width: 692px; min-height: 440px;"></iframe>';
+        //$embedded_code_text = '<iframe id="com-wimlabs-player" name="com-wimlabs-player" src="' . $urlPeer . '/liveStreamEmbed/' . $identifier . '/player?width=692&height=440" style="min-width: 692px; min-height: 440px;"></iframe>';
 
-        $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();">' . $embedded_iframe . '</textarea>';
+        $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();">' . $embedded_code_text . '</textarea>';
         if ($type == "table") {
             //Check Live is now
 
@@ -122,7 +140,7 @@ if ($arrayjson_live) {
                 $day = __("Begins to ", "wimtvpro") . $day;
                 $output = $name . "<br/>";
                 $output .= $data . " " . $oraMin . "<br/>" . $durata . "<br/>";
-                $output .= $embedded_iframe;
+                $output .= $embedded_code_text;
             }
         }
     }

@@ -51,7 +51,7 @@ function wimtvpro_programming() {
                 <div style="display:none">
                     <div class="embedded">
                         <textarea id="progCode" onclick="this.focus();
-                                this.select();"></textarea>
+                                    this.select();"></textarea>
                     </div>
                 </div>            
                 <?php
@@ -104,7 +104,7 @@ function wimtvpro_programming() {
 
                                     <textarea style="resize: none; width:90%;height:100%;" readonly='readonly' 
                                               onclick="this.focus();
-                                    this.select();">[wimprog id="<?php echo $prog->identifier; ?>"]</textarea>
+                                        this.select();">[wimprog id="<?php echo $prog->identifier; ?>"]</textarea>
 
                                 </td>
                             </tr>

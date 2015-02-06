@@ -282,6 +282,10 @@ switch ($function) {
          * Esegue l'upload di un video su wim.tv.
          */
         $sizefile = filesize($_FILES['videoFile']['tmp_name']);
+//        var_dump($_FILES);
+//        print "<hr>";
+//        var_dump("sizefile is: " . $sizefile . "<br>");
+
         $urlfile = @$_FILES['videoFile']['tmp_name'];
         $uploads_info = wp_upload_dir();
         $directory = $uploads_info["basedir"] . "/videotmp";
@@ -293,10 +297,16 @@ switch ($function) {
             $unique_temp_filename = $directory . "/" . time() . '.' . preg_replace('/.*?\//', '', "tmp");
             $unique_temp_filename = str_replace("\\", "/", $unique_temp_filename);
             if (@move_uploaded_file($urlfile, $unique_temp_filename)) {
-                //echo "copiato";
+//                echo "FILE HAS BEEN COPIED TO: " . $unique_temp_filename;
             } else {
-                //echo "non copiato";
+//                echo "FILE COPY FAILED";
             }
+        } else {
+            echo '<div class="error"><p><strong>';
+            echo 'The server where your Wordpress is installed does not support upload of large (bigger than 2GB) files. 
+                    Try to set both <code>upload_max_filesize=0</code> and <code>post_max_size=0</code> in your php.ini file.';
+            echo '</strong></p></div>';
+            die();
         }
         $error = 0;
         $titlefile = $_POST['titlefile'];

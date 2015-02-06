@@ -107,12 +107,12 @@ function wimtvpro_savelive($function) {
         if ($error == 0) {
             $name = $_POST['name'];
             $payperview = $_POST['payperview'];
-            if ($payperview == "0") {
-                $typemode = "FREEOFCHARGE";
-            } else {
-                $paymentCode = apiGetUUID();
-                $typemode = "PAYPERVIEW&pricePerView=" . $payperview . "&ccy=EUR&paymentCode=" . $paymentCode;
-            }
+//            if ($payperview == "0") {
+//                $typemode = "FREEOFCHARGE";
+//            } else {
+//                $paymentCode = apiGetUUID();
+//                $typemode = "PAYPERVIEW&pricePerView=" . $payperview . "&ccy=EUR&paymentCode=" . $paymentCode;
+//            }
             $url = $_POST['Url'];
 
             if ($_POST['Giorno'] != "") {
@@ -141,7 +141,25 @@ function wimtvpro_savelive($function) {
                 $record = $_POST['Record'];
             }
 
-            $parameters = array('name' => $name,
+
+
+            $ccy = "EUR";
+            $pricePerView = "0";
+
+            if ($payperview == "0") {
+                $typemode = "FREEOFCHARGE";
+                $pricePerView = "0";
+            } else {
+                $typemode = "PAYPERVIEW";
+                $pricePerView = $payperview;
+            }
+
+            // GET A PAYMENT CODE FROM SERVER
+            $paymentCodeResponse = apiGetUUID();
+            $paymentCode = isset($paymentCodeResponse->body) ? $paymentCodeResponse->body : "";
+
+            $parameters = array(
+                'name' => $name,
                 'url' => $url,
                 'eventDate' => $giorno,
                 'paymentMode' => $typemode,
@@ -151,7 +169,11 @@ function wimtvpro_savelive($function) {
                 'durationUnit' => 'Minute',
                 'publicEvent' => $public,
                 'eventTimeZone' => $_POST['eventTimeZone'],
-                'recordEvent' => $record);
+                'recordEvent' => $record,
+                "paymentCode" => $paymentCode,
+                "pricePerView" => $pricePerView,
+                "ccy" => $ccy
+            );
 
             if ($_POST['eventTimeZone'] != "")
                 $timezone = $_POST['eventTimeZone'];

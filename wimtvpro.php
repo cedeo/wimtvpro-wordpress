@@ -3,7 +3,7 @@
   Plugin Name: Wim Tv Pro
   Plugin URI: http://wimtvpro.tv
   Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-  Version: 3.5.1
+  Version: 3.6
   Author: WIMLABS
   Author URI: http://www.wimlabs.com
   License: GPLv2 or later

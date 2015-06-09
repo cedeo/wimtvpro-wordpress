@@ -123,11 +123,13 @@ function wimtvpro_wimbox() {
         <table  id='FALSE' class='items wp-list-table widefat fixed pages'>
             <thead>
                 <tr style='width:100%'>
-                    <th  style='width:30%'>Video</th>
-                    <th style='width:30%'><?php echo __("Posted", "wimtvpro") ?></th>
-                    <th style='width:30%'>Download</th>
-                    <th style='width:20%'><?php echo __("Preview") ?></th>
-                    <th style='width:20%'><?php echo __("Remove") ?></th>
+                    <th  style='width:20%'>Video</th>
+                    <!-- NS: thumb -->
+                    <th  style='width:10%'>Thumbnail</th>
+                    <th style='width:10%'><?php echo __("Posted", "wimtvpro") ?></th>
+                    <th style='width:10%'>Download</th>
+                    <th style='width:10%'><?php echo __("Preview") ?></th>
+                    <th style='width:10%'><?php echo __("Remove") ?></th>
                 </tr>
             </thead>
             <tbody>

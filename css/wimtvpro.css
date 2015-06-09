@@ -87,13 +87,27 @@ table.items  div.thumb {
 }
 
 .icon_licence  {
-    width:30px; height:30px; position: absolute;
+    width:30px; height:30px; 
+    position: absolute;
+    z-index: 10;  top:0 \;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .icon_licence {
+        /*top:0;*/
+    }
+}
+
+
+/*.icon_licence  {
+    width:30px; 
+    height:30px; 
+    position: relative;
     z-index: 10;  top:0 \;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
-    .icon_licence {top:0;}
-}
+    .icon_licence {top:30px;}
+}*/
 
 table.items tr.streams {background-color:#CFC;}
 
@@ -301,7 +315,7 @@ ul.itemsInsert tr div.thumbPublic img {
 
 }
 table.itemsInsert tr img {
-    width: 100%;
+    /*width: 100%;*/
     height: 60%;
 }
 div.empty {
@@ -356,9 +370,19 @@ div.empty {
 .icon_deletePlay {
     background: transparent url('../images/remove.png') no-repeat top center; width:20px; height:20px;display:block; float:right; cursor:pointer;
 }
-table td.image{position:relative;}
-table td.image img,table td.image span{
-    width:160px; height:100px; position: relative;
+/*table td.image{position:relative;}*/
+
+table td.image img{
+    /*width:160px;*/ 
+    height:100px; 
+    position: relative;
+}
+
+table td.image span{
+    width:160px; 
+    height:100px; 
+    position: relative;
+    text-align: center;
 }
 
 div.registration{
@@ -472,10 +496,14 @@ div#view_graph div.cols div.col div.countview .barTraffic{
 }
 
 span.wimtv-thumbnail img{
-    width:100%;	 background:#fff url('../images/empty.jpg') no-repeat center center;
+    /*width:100%;*/
+    background:#fff url('../images/empty.jpg') no-repeat center center;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 span.wimtv-thumbnail{
-    width:100%;
+    /*width:100%;*/
+    width: 200px !important;
 }
 iframe {
     overflow:hidden;
@@ -624,4 +652,84 @@ div.wp-list-table{
 .insert-media_H{
     width: 60px;
     text-align: right;
+}
+
+/*NS: thumb*/
+span.wimtv-thumbnail-edit{
+    display: inline !important;
+}
+
+
+input.wimtv-thumbnail-upload{
+    display: block;
+    overflow: hidden;
+}
+
+button.wimtv-thumbnail-upload{
+    text-align: left;
+    width: 80px;
+}
+
+.wimtv-thumbnail-upload img{
+    margin-right: 2px;
+    vertical-align: middle;
+}
+
+button.wimtv-thumbnail-reset{
+    text-align: left;
+    width: 80px;
+}
+
+.wimtv-thumbnail-reset img{
+    margin-right: 2px;
+    vertical-align: middle;
+}
+
+input.wimtv-thumbnail-upload-disabled{
+    display: block;
+    overflow: hidden;
+}
+
+button.wimtv-thumbnail-upload-disabled{
+    text-align: left;
+    width: 80px;
+}
+
+.wimtv-thumbnail-upload img-disabled{
+    margin-right: 2px;
+    vertical-align: middle;
+}
+
+button.wimtv-thumbnail-reset-disabled{
+    text-align: left;
+    width: 80px;
+}
+
+.wimtv-thumbnail-reset-disabled img{
+    margin-right: 2px;
+    vertical-align: middle;
+}
+
+.wimtv-thumbnail-overlayText{
+    /*    background-color: #4285B3;
+        width: 200px !important;*/
+
+    /*    position: absolute !important;
+        top: 0px !important;
+        left: 0px !important;
+        width: 100% !important;*/
+
+    position: absolute !important;
+    top: 20px !important;
+    left: 30px !important;
+    width: 130px !important;
+    color: wheat !important;
+}
+
+
+
+
+
+#tableLive th, td{
+    text-align: center;
 }

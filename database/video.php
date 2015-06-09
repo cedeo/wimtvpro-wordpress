@@ -43,6 +43,15 @@ function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration,
                                          WHERE contentidentifier='{$contentId}'");
 }
 
+function dbUpdateVideoThumb($contentId, $urlThumbs) {
+    global $wpdb;
+    $urlThumbs = mysql_real_escape_string($urlThumbs);
+    $contentId = mysql_real_escape_string($contentId);
+    $table = VIDEO_TABLE_NAME;
+    $query = "UPDATE {$table} SET urlThumbs='{$urlThumbs}' WHERE contentidentifier='{$contentId}'";
+    return $wpdb->query($query);
+}
+
 function dbUpdateVideoState($contentId, $state, $showtimeId = null) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;

@@ -93,6 +93,7 @@ switch ($function) {
 
         die();
         break;
+
     case "putAcqST":
         /**
          * Richiede che vengano passati anche come parametri GET 'id', 'coId' e tutti i valori presenti nell'array $param.
@@ -134,6 +135,7 @@ switch ($function) {
         echo $response;
         die();
         break;
+
     case "removeST";
         /**
          * Richiede che vengano passati anche come parametri GET 'id' e 'showtimeId'.
@@ -146,6 +148,7 @@ switch ($function) {
         echo $response;
         die();
         break;
+
     case "StateViewThumbs":
         $state = $_GET['state'];
         dbSetViewVideoModule($id, $state);
@@ -155,6 +158,7 @@ switch ($function) {
         echo $state;
         die();
         break;
+
     case "ReSortable":
         /**
          * Richiede che venga passato anche come parametro GET 'ordina'.
@@ -274,8 +278,6 @@ switch ($function) {
 
         die();
         break;
-
-
 
     case "uploadFile":
         /**
@@ -398,8 +400,95 @@ switch ($function) {
             die();
         }
 
+        break;
 
+    case "uploadThumb":
+        /**
+         * Esegue l'upload di una thumbnail su wim.tv.
+         */
+        $urn = $_POST['urn'];
+        $maxFileSize = 300000;
+        $sizefile = filesize($_FILES['fileThumb']['tmp_name']);
 
+        $urlfile = @$_FILES['fileThumb']['tmp_name'];
+
+        // Get reference to uri: "wp-content/uploads/videotmp"
+        $uploads_info = wp_upload_dir();
+        $directory = $uploads_info["basedir"] . "/videotmp";
+
+        if (!is_dir($directory)) {
+            $directory_create = mkdir($uploads_info["basedir"] . "/videotmp");
+        }
+        $unique_temp_filename_full = "";
+        $unique_temp_filename = "";
+        if ($urlfile != "") {
+            $ext = pathinfo($_FILES['fileThumb']['name'], PATHINFO_EXTENSION);
+
+            $unique_temp_filename = time() . '.' . preg_replace('/.*?\//', '', $ext);
+            $unique_temp_filename_full = $directory . "/" . $unique_temp_filename;
+            $unique_temp_filename_full = str_replace("\\", "/", $unique_temp_filename_full);
+            if (@move_uploaded_file($urlfile, $unique_temp_filename_full)) {
+//                echo "FILE HAS BEEN COPIED TO: " . $unique_temp_filename;
+            } else {
+//                echo "FILE COPY FAILED";
+            }
+        } else {
+            echo '<div class="error"><p><strong>';
+            echo 'The server where your Wordpress is installed does not support upload of large (bigger than 2GB) files. 
+                    Try to set both <code>upload_max_filesize=0</code> and <code>post_max_size=0</code> in your php.ini file.';
+            echo '</strong></p></div>';
+            die();
+        }
+        $error = 0;
+
+        if ($sizefile > $maxFileSize) {
+            @unlink($unique_temp_filename);
+        }
+
+        if ((strlen(trim($urlfile)) > 0) && ($error == 0)) {
+            //UPLOAD THUMB TO WIMTV
+            set_time_limit(0);
+            // NS: WE HAVE TO SPECIFY BOTH LOCAL FILENAME AND DESTINATION FILENAME
+            $post = array("file" => $unique_temp_filename_full . ";filename=" . $unique_temp_filename,
+                "itemId" => $urn,
+            );
+
+            $response = apiUploadThumb($post);
+            $arrayjsonst = json_decode($response);
+
+            if (isset($arrayjsonst->stored)) {
+
+                if ($arrayjsonst->stored == true) {
+                    $videos = dbGetVideo($urn);
+                    $title = (isset($videos[0]) && $videos[0]->title != null) ? $videos[0]->title : "";
+                    // NEWLY ADDED THUMB HAS BEEN CORRECTLY STORED: INSERT THE NEW THUMB-URL TO LOCAL DB
+                    $newThumbHTML = '<img src="' . $arrayjsonst->url . '"  title="' . $title . '" class="wimtv-thumbnail" />';
+                    dbUpdateVideoThumb($urn, $newThumbHTML);
+                }
+            }
+
+            echo $response;
+        }
+        break;
+
+    case "resetThumb":
+        /**
+         * Esegue il reset della thumbnail di un video su wim.tv.
+         */
+        $urn = $_POST['urn'];
+        $islive = $_POST['islive'];
+//        var_dump($_POST);die;
+        $response = apiDeleteThumb($urn);
+        if ($islive != "true") {
+            // WIMBOX: UPDATE STANDARD THUMB FIELD IN LOCAL DB
+            $arrayjsonst = json_decode($response);
+            $videos = dbGetVideo($urn);
+            $title = (isset($videos[0]) && $videos[0]->title != null) ? $videos[0]->title : "";
+            $stdThumbHTML = '<img src="' . $arrayjsonst->defaultUrl . '"  title="' . $title . '" class="wimtv-thumbnail" />';
+            dbUpdateVideoThumb($urn, $stdThumbHTML);
+        }
+        // RETURN RESPONSE
+        echo $response;
         break;
 
     default:

@@ -1,10 +1,147 @@
 jQuery(document).ready(function() {
-    jQuery("span.wimtv-thumbnail").click(function() {
+    initHandlers();   
+});
+
+function initHandlers(){
+   jQuery("span.wimtv-thumbnail").click(function() {
         viewVideo(this);
     });
 
+    // NS: thumb - START
+    jQuery("button.wimtv-thumbnail-upload").click(function() {
+        jQuery(this).parent().children("input").unbind("change");
+        jQuery(this).parent().children("input").change(function() {
+            uploadThumb(this);
+            jQuery(this).parent().children("input").attr("value", "");
+        });
+        jQuery(this).parent().children("input").click();
+    });
+
+    jQuery("button.wimtv-thumbnail-reset").click(function() {
+        resetThumb(this)
+    });
+
+    function uploadThumb(el) {
+        // RETRIEVE URN
+        var urn = jQuery(el).parent().children(".wimtv-thumbnail-upload").children("input").attr("value");
+        // RETRIEVE FILE
+        var inputFileUploadElement = jQuery(el);
+
+        // CHECK FILE TYPE
+        // THE FOLLOWING EXTENSION ARE ALSO LOCKED IN FILE DIALOG (accept='.png,.jpg')
+        // Please see: wp-content/plugins/wimtvpro/functions/listDownload.php
+        // and wp-content/plugins/wimtvpro/utils.php (getEditThumbnailControl)
+        var validExtensions = ['jpg', 'png']; //array of valid extensions
+        var fileName = inputFileUploadElement[0].files[0].name;
+        var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+        if (jQuery.inArray(fileNameExt, validExtensions) == -1) {
+            alert("Invalid file type (allowed: " + validExtensions.toString() + ")");
+            return false;
+        }
+        // CHECK FILE SIZE
+        var fileSize = inputFileUploadElement[0].files[0].size;
+        // Please change also serverside check '$maxFileSize' in:
+        // "wp-content/plugins/wimtvpro/scripts.php"  
+        var maxSize_k = 300
+        if (fileSize > maxSize_k * 1000) {
+            alert("Invalid file size (max: " + maxSize_k + " KB)");
+            return false;
+        }
+
+        var formData = new FormData();
+        jQuery.each(inputFileUploadElement[0].files, function(i, file) {
+            formData.append('fileThumb', file);
+        });
+
+        formData.append('urn', urn);
+        formData.append('namefunction', "uploadThumb");
+        jQuery.ajax({
+            url: url_pathPlugin + "scripts.php",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: "POST",
+            async: true,
+            enctype: 'multipart/form-data',
+//            xhr: function() {
+//                var xhr = new window.XMLHttpRequest();
+//                xhr.upload.addEventListener("progress", this.progresso, false);
+//                return xhr;
+//            },
+            beforeSend: function() {
+                // SHOW AJAX-LOADER IMAGE INSIDE THE BUTTON
+                inputFileUploadElement.parent().children(".wimtv-thumbnail-upload").children("img").attr("src", url_pathPlugin + "images/ajax-loader.gif")
+            },
+            success: function(response) {
+                // ALL IS OK!
+                // response.stored or response.url
+                if (response.stored === true) {
+                    var newUrl = response.url + '?' + Math.random();
+                    thumbEl = inputFileUploadElement.parent().parent().parent("tr").children(".image").children("span").children('img');
+                    thumbEl.attr("src", newUrl);
+                }
+                else {
+                    alert("Sorry, cannot store thumbnail. Please try again.");
+                }
+            },
+            error: function(request, error) {
+                // AN ERROR OCCURRED!        
+                alert("Sorry, an error occurred:\n" + request.responseText);
+//                jQuery("#message").html(request.responseText);
+            },
+            complete: function(response) {
+                // AFTER SUCCESS OR ERROR DO:
+                // RESET IMAGE BUTTON
+                inputFileUploadElement.parent().children(".wimtv-thumbnail-upload").children("img").attr("src", url_pathPlugin + "images/add_16x16.png");
+            }
+        });
+    }
+
+    function resetThumb(el) {
+        // RETRIEVE URN
+        var urn = jQuery(el).parent().children(".wimtv-thumbnail-upload").children("input").attr("value");
+        var islive = jQuery(el).attr("islive");
+        var button = jQuery(el);
+        var formData = new FormData();
+        formData.append('urn', urn);
+        formData.append('namefunction', "resetThumb");
+        formData.append('islive', islive);
+        jQuery.ajax({
+            url: url_pathPlugin + "scripts.php",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: "POST",
+            async: true,
+            beforeSend: function() {
+                // SHOW AJAX-LOADER IMAGE INSIDE THE BUTTON
+                button.children("img").attr("src", url_pathPlugin + "images/ajax-loader.gif")
+            },
+            success: function(response) {
+                // ALL IS OK!
+                var stdUrl = response.defaultUrl;
+                thumbEl = button.parent().parent().parent("tr").children(".image").children("span").children('img');
+                thumbEl.attr("src", stdUrl);
+            },
+            error: function(request, error) {
+                // AN ERROR OCCURRED!        
+                alert("AN ERROR OCCURRED: \n\n" + request.responseText);
+                jQuery("#message").html(request.responseText);
+            },
+            complete: function(response) {
+                // AFTER SUCCESS OR ERROR DO:
+                // RESET IMAGE BUTTON
+                button.children("img").attr("src", url_pathPlugin + "images/remove2.png")
+            }
+        });
+    }
+    // NS: thumb - END
+
+
     function viewVideo(elem) {
-        console.log('seiqui');
+//        console.log('sei qui');
         if (jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").length) {
             var url = jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").attr("id");
             console.log(url);
@@ -30,7 +167,7 @@ jQuery(document).ready(function() {
             },
             complete: function() {
                 jQuery(".loaderTable").hide();
-
+                initHandlers();
             },
             success: function(response) {
                 jQuery("form#formVideo").show();
@@ -484,71 +621,13 @@ jQuery(document).ready(function() {
         jQuery("#edit-url").removeAttr("disabled");
         jQuery("#edit-url").val("");
         jQuery("#urlcreate").show();
-    });
-});
-
-
-
-function viewCategories(obj) {
-    jQuery("#addCategories").html(selectCat);
-    var selectedArray = new Array();
-    count = 0;
-    for (i = 0; i < obj.options.length; i++) {
-        if (obj.options[i].selected) {
-            selectedArray[count] = obj.options[i].value;
-            valueSelected = obj.options[i].value;
-            count++;
-            jQuery("#addCategories").append("<br/>" + valueSelected);
-        }
-    }
-}
-
-function viewWho(obj) {
-    var selectedArray = new Array();
-    count = 0;
-    jQuery("#AddUser").html("");
-    jQuery("#AddRole").html("");
-
-    for (i = 0; i < obj.options.length; i++) {
-        if (obj.options[i].selected) {
-
-            selectedArray[count] = obj.options[i].value;
-            valueSelected = obj.options[i].text;
-            count++;
-
-            if (obj.options[i].parentNode.id == "optUsers") {
-                if (jQuery("#AddUser").html() == "")
-                    jQuery("#AddUser").html(videoPrivacy[8]);
-                jQuery("#AddUser").append(" " + valueSelected);
-            }
-            if (obj.options[i].parentNode.id == "optRoles") {
-                if (jQuery("#AddRole").html() == "")
-                    jQuery("#AddRole").html(videoPrivacy[9]);
-                jQuery("#AddRole").append(" " + valueSelected);
-            }
-
-        }
-    }
-    for (i = 0; i < obj.options.length; i++) {
-        if ((obj.options[i].selected) && (obj.options[i].parentNode.id != "optUsers") && (obj.options[i].parentNode.id != "optRoles")) {
-            jQuery("#AddUser").html(obj.options[i].text);
-            jQuery("#AddRole").html("");
-            jQuery(obj).children().children().removeAttr("selected");
-            jQuery(obj).children().removeAttr("selected");
-            jQuery(obj).children().eq(i).attr("selected", "selected");
-
-        }
-    }
-
-
-}
-
-
-
-
-jQuery(document).ready(function() {
-
-    jQuery("input#edit-videofile").change(function() {
+    }); 
+    
+    
+    
+    
+    ///////////// SECOND BLOCK ONREADY
+       jQuery("input#edit-videofile").change(function() {
         fileName = jQuery(this).val();
         fileTypes = ["", "mov", "mpg", "avi", "flv", "mpeg", "mp4", "mkv", "m4v"];
         if (!fileName) {
@@ -747,8 +826,6 @@ jQuery(document).ready(function() {
         }
     });
 
-
-
     jQuery(".termsLink").colorbox({width: "80%", height: "80%", iframe: true, href: jQuery(this).attr("href")});
 
     jQuery(".ppvNoActive").click(function() {
@@ -758,7 +835,278 @@ jQuery(document).ready(function() {
     jQuery(".icon_downloadNone").click(function() {
         alert(videoproblem);
     });
+}
+
+function viewCategories(obj) {
+    jQuery("#addCategories").html(selectCat);
+    var selectedArray = new Array();
+    count = 0;
+    for (i = 0; i < obj.options.length; i++) {
+        if (obj.options[i].selected) {
+            selectedArray[count] = obj.options[i].value;
+            valueSelected = obj.options[i].value;
+            count++;
+            jQuery("#addCategories").append("<br/>" + valueSelected);
+        }
+    }
+}
+
+function viewWho(obj) {
+    var selectedArray = new Array();
+    count = 0;
+    jQuery("#AddUser").html("");
+    jQuery("#AddRole").html("");
+
+    for (i = 0; i < obj.options.length; i++) {
+        if (obj.options[i].selected) {
+
+            selectedArray[count] = obj.options[i].value;
+            valueSelected = obj.options[i].text;
+            count++;
+
+            if (obj.options[i].parentNode.id == "optUsers") {
+                if (jQuery("#AddUser").html() == "")
+                    jQuery("#AddUser").html(videoPrivacy[8]);
+                jQuery("#AddUser").append(" " + valueSelected);
+            }
+            if (obj.options[i].parentNode.id == "optRoles") {
+                if (jQuery("#AddRole").html() == "")
+                    jQuery("#AddRole").html(videoPrivacy[9]);
+                jQuery("#AddRole").append(" " + valueSelected);
+            }
+
+        }
+    }
+    for (i = 0; i < obj.options.length; i++) {
+        if ((obj.options[i].selected) && (obj.options[i].parentNode.id != "optUsers") && (obj.options[i].parentNode.id != "optRoles")) {
+            jQuery("#AddUser").html(obj.options[i].text);
+            jQuery("#AddRole").html("");
+            jQuery(obj).children().children().removeAttr("selected");
+            jQuery(obj).children().removeAttr("selected");
+            jQuery(obj).children().eq(i).attr("selected", "selected");
+
+        }
+    }
 
 
-});
+}
+
+
+// SECOND BLOCK ONREADY
+//jQuery(document).ready(function() {
+//
+//    jQuery("input#edit-videofile").change(function() {
+//        fileName = jQuery(this).val();
+//        fileTypes = ["", "mov", "mpg", "avi", "flv", "mpeg", "mp4", "mkv", "m4v"];
+//        if (!fileName) {
+//            return;
+//        }
+//
+//        dots = fileName.split(".");
+//        // get the part AFTER the LAST period.
+//        fileType = "." + dots[dots.length - 1];
+//
+//        if (fileTypes.join(".").indexOf(fileType.toLowerCase()) != -1) {
+//            return true;
+//        } else {
+//            alert(erroreFile[0] + " \n\n"
+//                    + (fileTypes.join(" ."))
+//                    + "\n\n" + erroreFile[1]);
+//            jQuery("input[name=\"files[videoFile]\"]").val("");
+//        }
+//    });
+//
+//    jQuery("ul.itemsPublic li a").colorbox();
+//
+//
+//    //Playlist
+//    functionPlaylist();
+//
+//    jQuery('.icon_playlist').click(function() {
+//        callInsertIntoPlayList(jQuery(this));
+//    });
+//
+//    function callInsertIntoPlayList(elem) {
+//        var contentIdAdd = elem.attr("rel");
+//
+//        var playlistId = "";
+//        jQuery(".playlist").each(function(i) {
+//            var classe = jQuery(this).attr("class");
+//            if (classe == "playlist selected") {
+//                playlistId = jQuery(this).attr("rel");
+//            }
+//        });
+//        if (playlistId == "") {
+//            alert(titlePlaylistJs);
+//        } else {
+//
+//
+//            jQuery.ajax({
+//                context: this,
+//                url: url_pathPlugin + "script_playlist.php",
+//                type: "GET",
+//                data: {
+//                    idPlayList: playlistId,
+//                    id: contentIdAdd,
+//                    namefunction: "AddVideoToPlaylist"
+//                },
+//                success: function(response) {
+//                    //jQuery(this).hide();
+//                    if (response != "")
+//                        alert(response);
+//                    else {
+//                        ok = false;
+//                        jQuery(".playlist").each(function(i) {
+//                            var classe = jQuery(this).attr("class");
+//                            if (classe == "playlist selected") {
+//                                var counter = parseInt(jQuery(this).children(".counter").html());
+//                                jQuery(this).children(".counter").html(counter + 1);
+//                                ok = true;
+//                            }
+//
+//                        });
+//                        if (ok)
+//                            alert(titlePlaylistSelectJs);
+//                    }
+//
+//                },
+//                error: function(jqXHR, textStatus, errorThrown) {
+//                    alert(errorThrown);
+//                }
+//            });
+//        }
+//
+//
+//    }
+//
+//
+//    function functionPlaylist() {
+//        /*SORTABLE*/
+//        jQuery("table.items_playlist tbody").sortable({
+//            placeholder: "ui-state-highlight",
+//            connectWith: "table tbody",
+//            active: function() {
+//
+//                $count = jQuery(".sortable1 table#droptrue").find('tbody > tr').length;
+//                if ($count == 0) {
+//                    jQuery(".sortable1 table#droptrue tbody").append("<tr class='appoggio'></tr>");
+//                }
+//
+//            },
+//            deactivate: function(event, ui) {
+//                jQuery(".appoggio").remove();
+//                var sort = jQuery(".sortable2 table#dropfalse tbody").sortable("toArray");
+//                jQuery(".list").val(sort);
+//                if (sort == "")
+//                    jQuery(".sortable2 table#dropfalse tbody").append("<tr class='appoggio'></tr>");
+//                $count = jQuery(".sortable1 table#droptrue").find('tbody > tr').length;
+//                if ($count == 0) {
+//                    jQuery(".sortable1 table#droptrue tbody").append("<tr class='appoggio'></tr>");
+//                }
+//            }
+//        });
+//        /*jQuery( ".sortable1 table#droptrue" ).sortable({
+//         connectWith: "tr"		
+//         });
+//         jQuery( ".sortable2 table#dropfalse" ).sortable({
+//         connectWith: "tr",
+//         deactivate: function( event, ui ) {
+//         var sort = jQuery(".sortable2 table#dropfalse").sortable("toArray");
+//         jQuery(".list").val(sort);
+//         }
+//         });*/
+//        jQuery('input.title').change(function() {
+//            jQuery(this).parent().children('.icon_modTitlePlay').show();
+//        });
+//
+//        jQuery('.icon_selectPlay').click(function() {
+//            jQuery(".playlist").removeClass("selected");
+//            jQuery(this).parent().addClass("selected");
+//        });
+//
+//        jQuery(".icon_viewPlay,.icon_viewPlay_title").click(function() {
+//            var id = jQuery(this).attr("id");
+//            console.log(url_pathPlugin + "embedded/embeddedPlayList.php?isAdmin=true&id=" + id);
+//            jQuery(this).colorbox({width: '80%', height: '80%', href: url_pathPlugin + "embedded/embeddedPlayList.php?isAdmin=true&id=" + id});
+//        });
+//
+//        jQuery('.icon_createPlay').click(function() {
+//            var nameNewPlaylist = jQuery(this).parent().children("input").val();
+//            //ID = playlist_##
+//            var count = jQuery(".playlist").size();
+//            count = count + 1;
+//            //add to DB
+//            jQuery.ajax({
+//                context: this,
+//                url: url_pathPlugin + "script_playlist.php",
+//                type: "GET",
+//                data: {
+//                    namePlayList: nameNewPlaylist,
+//                    namefunction: "createPlaylist"
+//                },
+//                success: function() {
+//                    location.reload();
+//                },
+//                error: function() {
+//                    location.reload();
+//                }
+//            });
+//
+//        });
+//
+//        jQuery('.icon_deletePlay').click(function() {
+//            var nameNewPlaylist = jQuery(this).parent().children("input").val();
+//            //remove from DB
+//            var idPlayList = jQuery(this).parent().parent().attr("rel");
+//            //add to DB
+//            jQuery.ajax({
+//                context: this,
+//                url: url_pathPlugin + "script_playlist.php",
+//                type: "GET",
+//                data: {
+//                    idPlayList: idPlayList,
+//                    namefunction: "removePlaylist"
+//                },
+//                success: function() {
+//                    location.reload();
+//
+//
+//                },
+//                error: function() {
+//                    location.reload();
+//                }
+//            });
+//
+//        });
+//    }
+//
+//
+//    //End Playlist
+//
+//
+//    jQuery('#edit-sandbox').change(function() {
+//        if (jQuery(this).value == "No") {
+//            jQuery('#sandbox').attr('href', 'http://www.wim.tv/wimtv-webapp/userRegistration.do?execution=e1s1');
+//            jQuery('#site').html('www.wim.tv');
+//        } else {
+//            jQuery('#sandbox').attr('href', 'http://www.wim.tv/wimtv-webapp/userRegistration.do?execution=e1s1');
+//            jQuery('#site').html('peer.wim.tv');
+//        }
+//    });
+//
+//
+//
+//    jQuery(".termsLink").colorbox({width: "80%", height: "80%", iframe: true, href: jQuery(this).attr("href")});
+//
+//    jQuery(".ppvNoActive").click(function() {
+//        alert(nonePayment);
+//    });
+//
+//    jQuery(".icon_downloadNone").click(function() {
+//        alert(videoproblem);
+//    });
+//
+//
+//});
+
 

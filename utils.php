@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Written by walter at 06/11/13
  */
-function wimtvpro_unzip($location,$newLocation) {
+function wimtvpro_unzip($location, $newLocation) {
     /**
      * Dezippa un file.
      */
-    require_once(ABSPATH .'/wp-admin/includes/file.php'); //the cheat
+    require_once(ABSPATH . '/wp-admin/includes/file.php'); //the cheat
     WP_Filesystem();
     return unzip_file($location, $newLocation);
 }
@@ -15,18 +16,17 @@ function wimtvpro_searchFile($mainDir, $ext) {
     if ($directory_handle = @opendir($mainDir)) {
         //Read directory for skin JWPLAYER
         while (($file = readdir($directory_handle)) !== FALSE) {
-            if ((!is_dir($file)) && ($file!=".") && ($file!="..")) {
-                $explodeFile = explode("." , $file);
-                if ($explodeFile[1]==$ext){
+            if ((!is_dir($file)) && ($file != ".") && ($file != "..")) {
+                $explodeFile = explode(".", $file);
+                if ($explodeFile[1] == $ext) {
                     closedir($directory_handle);
                     return $file;
                 }
             }
         }
-    }
-    else {
+    } else {
         $uploads_info = wp_upload_dir();
-        if (wimtvpro_unzip($mainDir .".zip", $uploads_info["basedir"] .  "/skinWim")==TRUE) {
+        if (wimtvpro_unzip($mainDir . ".zip", $uploads_info["basedir"] . "/skinWim") == TRUE) {
             return wimtvpro_searchFile($mainDir, $ext);
         }
     }
@@ -39,7 +39,7 @@ function return_bytes($val) {
      * Es. 2k => 2048
      */
     $val = trim($val);
-    $last = strtolower($val[strlen($val)-1]);
+    $last = strtolower($val[strlen($val) - 1]);
     switch ($last) {
         case 'g':
             $val *= 1024;
@@ -51,7 +51,7 @@ function return_bytes($val) {
     return $val;
 }
 
-function getDateRange($startDate, $endDate, $format="d/m/Y") {
+function getDateRange($startDate, $endDate, $format = "d/m/Y") {
 
     //Create output variable
 
@@ -61,22 +61,20 @@ function getDateRange($startDate, $endDate, $format="d/m/Y") {
 
     $total_days = round(abs(strtotime($endDate) - strtotime($startDate)) / 86400, 0) + 1;
 
-    if($total_days<0) {
+    if ($total_days < 0) {
         return false;
     }
 
     //Populate array of weekdays and counts
 
-    for($day=0; $day<$total_days; $day++) {
+    for ($day = 0; $day < $total_days; $day++) {
         $datesArray[] = date($format, strtotime("{$startDate} + {$day} days"));
     }
 
     //Return results array
 
     return $datesArray;
-
 }
-
 
 function wimtvpro_checkCleanUrl($base, $url) {
     /**
@@ -95,48 +93,97 @@ function lastURLComponent($string) {
     return $parts[count($parts) - 1];
 }
 
-
 function wimtvpro_link_help() {
     /**
      * Ritorna il markup del pulsante che rimanda al sito di supporto, presente quasi in ogni pagina del plugin.
      */
-    return '<div class="help" style="float:right"><a href="' .  get_option("wp_supportLink") . '" target="_new">' . __("Help") . '</a></div>';
+    return '<div class="help" style="float:right"><a href="' . get_option("wp_supportLink") . '" target="_new">' . __("Help") . '</a></div>';
 }
 
-function timezoneList(){
+function timezoneList() {
     /**
      * Ritorna la lista delle Timezone selezionabili quando si crea o si modifica un evento live.
      */
-	$arrayTimeZone ["Kwajalein"]="(GMT -12:00) Eniwetok, Kwajalein";
-	$arrayTimeZone ["Pacific/Pago_Pago"]="(GMT -11:00) Midway Island, Samoa";
-	$arrayTimeZone ["US/Hawaii"]="(GMT -10:00) Hawaii";
-	$arrayTimeZone ["US/Alaska"]="(GMT -9:00) Alaska";
-	$arrayTimeZone ["America/Los_Angeles"]="(GMT -8:00) Pacific Time (US &amp; Canada)";
-	$arrayTimeZone ["America/Denver"]="(GMT -7:00) Mountain Time (US &amp; Canada)";
-	$arrayTimeZone ["America/Chicago"]="(GMT -6:00) Central Time (US &amp; Canada), Mexico City";
-	$arrayTimeZone ["America/New_York"]="(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima";
-	$arrayTimeZone ["America/Halifax"]="(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz";
-	$arrayTimeZone ["Canada/Newfoundlan"]="(GMT -3:30) Newfoundland";
-	$arrayTimeZone ["America/Sao_Paulo"]="(GMT -3:00) Brazil, Buenos Aires, Georgetown";
-	$arrayTimeZone ["Atlantic/South_Georgia"]="(GMT -2:00) Mid-Atlantic";
-	$arrayTimeZone ["Atlantic/Cape_Verde"]="(GMT -1:00 hour) Azores, Cape Verde Islands";
-	$arrayTimeZone ["Europe/London"]="(GMT) Western Europe Time, London, Lisbon, Casablanca";
-	$arrayTimeZone ["Europe/Rome"]="(GMT +1:00 hour) Rome, Madrid, Paris, Copenhagen";
-	$arrayTimeZone ["Europe/Istanbul"]="(GMT +2:00) Helsinki, Istanbul, Kaliningrad, South Africa";
-	$arrayTimeZone ["Europe/Moscow"]="(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg";
-	$arrayTimeZone ["Asia/Tehran"]="(GMT +3:30) Tehran";
-	$arrayTimeZone ["Asia/Dubai"]="(GMT +4:00) Abu Dhabi, Dubai, Muscat, Baku, Tbilisi";
-	$arrayTimeZone ["Asia/Kabul"]="(GMT +4:30) Kabul";
-	$arrayTimeZone ["Indian/Maldives"]="(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent";
-	$arrayTimeZone ["Asia/Calcutta"]="(GMT +5:30) Bombay, Calcutta, Madras, New Delhi";
-	$arrayTimeZone ["Asia/Katmandu"]="(GMT +5:45) Kathmandu";
-	$arrayTimeZone ["Asia/Dacca"]="(GMT +6:00) Almaty, Dhaka, Colombo";
-	$arrayTimeZone ["Asia/Bangkok"]="(GMT +7:00) Bangkok, Hanoi, Jakarta";
-	$arrayTimeZone ["Asia/Hong_Kong"]="(GMT +8:00) Beijing, Perth, Singapore, Hong Kong";
-	$arrayTimeZone ["Asia/Tokyo"]="(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk";
-	$arrayTimeZone ["Australia/Adelaide"]="(GMT +9:30) Adelaide, Darwin";
-	$arrayTimeZone ["Australia/Sydney"]="(GMT +10:00) Sydney, Melbourne, Brisbane, Vladivostok";
-	$arrayTimeZone ["Asia/Magadan"]="(GMT +11:00) Magadan, Solomon Islands, New Caledonia";
-	$arrayTimeZone ["Australia/Auckland"]="(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka";
-	return  $arrayTimeZone ;
+    $arrayTimeZone ["Kwajalein"] = "(GMT -12:00) Eniwetok, Kwajalein";
+    $arrayTimeZone ["Pacific/Pago_Pago"] = "(GMT -11:00) Midway Island, Samoa";
+    $arrayTimeZone ["US/Hawaii"] = "(GMT -10:00) Hawaii";
+    $arrayTimeZone ["US/Alaska"] = "(GMT -9:00) Alaska";
+    $arrayTimeZone ["America/Los_Angeles"] = "(GMT -8:00) Pacific Time (US &amp; Canada)";
+    $arrayTimeZone ["America/Denver"] = "(GMT -7:00) Mountain Time (US &amp; Canada)";
+    $arrayTimeZone ["America/Chicago"] = "(GMT -6:00) Central Time (US &amp; Canada), Mexico City";
+    $arrayTimeZone ["America/New_York"] = "(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima";
+    $arrayTimeZone ["America/Halifax"] = "(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz";
+    $arrayTimeZone ["Canada/Newfoundlan"] = "(GMT -3:30) Newfoundland";
+    $arrayTimeZone ["America/Sao_Paulo"] = "(GMT -3:00) Brazil, Buenos Aires, Georgetown";
+    $arrayTimeZone ["Atlantic/South_Georgia"] = "(GMT -2:00) Mid-Atlantic";
+    $arrayTimeZone ["Atlantic/Cape_Verde"] = "(GMT -1:00 hour) Azores, Cape Verde Islands";
+    $arrayTimeZone ["Europe/London"] = "(GMT) Western Europe Time, London, Lisbon, Casablanca";
+    $arrayTimeZone ["Europe/Rome"] = "(GMT +1:00 hour) Rome, Madrid, Paris, Copenhagen";
+    $arrayTimeZone ["Europe/Istanbul"] = "(GMT +2:00) Helsinki, Istanbul, Kaliningrad, South Africa";
+    $arrayTimeZone ["Europe/Moscow"] = "(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg";
+    $arrayTimeZone ["Asia/Tehran"] = "(GMT +3:30) Tehran";
+    $arrayTimeZone ["Asia/Dubai"] = "(GMT +4:00) Abu Dhabi, Dubai, Muscat, Baku, Tbilisi";
+    $arrayTimeZone ["Asia/Kabul"] = "(GMT +4:30) Kabul";
+    $arrayTimeZone ["Indian/Maldives"] = "(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent";
+    $arrayTimeZone ["Asia/Calcutta"] = "(GMT +5:30) Bombay, Calcutta, Madras, New Delhi";
+    $arrayTimeZone ["Asia/Katmandu"] = "(GMT +5:45) Kathmandu";
+    $arrayTimeZone ["Asia/Dacca"] = "(GMT +6:00) Almaty, Dhaka, Colombo";
+    $arrayTimeZone ["Asia/Bangkok"] = "(GMT +7:00) Bangkok, Hanoi, Jakarta";
+    $arrayTimeZone ["Asia/Hong_Kong"] = "(GMT +8:00) Beijing, Perth, Singapore, Hong Kong";
+    $arrayTimeZone ["Asia/Tokyo"] = "(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk";
+    $arrayTimeZone ["Australia/Adelaide"] = "(GMT +9:30) Adelaide, Darwin";
+    $arrayTimeZone ["Australia/Sydney"] = "(GMT +10:00) Sydney, Melbourne, Brisbane, Vladivostok";
+    $arrayTimeZone ["Asia/Magadan"] = "(GMT +11:00) Magadan, Solomon Islands, New Caledonia";
+    $arrayTimeZone ["Australia/Auckland"] = "(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka";
+    return $arrayTimeZone;
+}
+
+function getEditThumbnailControl($identifier, $liveThumbnail = "", $isEnabled = true) {
+    //NS: thumb
+    $isLive = "";
+    $isEnabledTag = "disabled=true";
+    $isEnabledUploadButtonCSS = "wimtv-thumbnail-upload-disabled";
+    $isEnabledResetButtonCSS = "wimtv-thumbnail-reset-disabled";
+    if ($isEnabled) {
+        $isEnabledTag = "";
+        $isEnabledUploadButtonCSS = "wimtv-thumbnail-upload";
+        $isEnabledResetButtonCSS = "wimtv-thumbnail-reset";
+    }
+
+    if ($liveThumbnail != "") {
+        $isLive = " islive='true'";
+    }
+
+    $ctrl = "";
+    $ctrl .= "<span class='wimtv-thumbnail-edit'>";
+    $ctrl .= "<button class='$isEnabledUploadButtonCSS' $isLive $isEnabledTag><input type='hidden' value='$identifier'/>
+                <img src='" . plugins_url('/images/add_16x16.png', __FILE__) . "'>"
+            . __('Upload', "wimtvpro") .
+            "</button>";
+    $ctrl .= "<input type='file' style='display:none;' accept='.png,.jpg'/>";
+    $ctrl .= "<br/>";
+    $ctrl .= "<button class='$isEnabledResetButtonCSS' $isLive $isEnabledTag><img src='" . plugins_url('/images/remove2.png', __FILE__) . "'> Reset</button>";
+    $ctrl .="</span>";
+
+    if ($liveThumbnail != "") {
+        $overlayText = "";
+        if (!$isEnabled) {
+            $overlayText = "<span class='wimtv-thumbnail-overlayText'>Please save your live event before uploading a custom thumb</span>";
+        }
+        $ctrlLive = "<table>";
+        $ctrlLive .= "<tr>";
+        $ctrlLive .="
+            <td class='image'>
+                <span style='width:200px;display: inline-block'>
+                    <img style='vertical-align: middle;' src='$liveThumbnail'/>
+                    $overlayText
+                </span>
+            </td>";
+        $ctrlLive .="<td>$ctrl</td>";
+        $ctrlLive .="</tr>";
+        $ctrlLive .= "</table>";
+        $ctrl = $ctrlLive;
+    }
+
+    return $ctrl;
 }

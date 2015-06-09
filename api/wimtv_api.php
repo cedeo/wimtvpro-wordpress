@@ -12,7 +12,7 @@ use \Httpful\Request;
 
 function initApi($host, $username, $password) {
     // NS: TEMP
-    // $host="http://peer.wim.tv:8080/wimtv-webapp/rest/";
+//    $host = "http://peer.wim.tv:8080/wimtv-webapp/rest/";
     Api::initApiAccessor($host, $username, $password);
 }
 
@@ -60,8 +60,14 @@ function apiUpload($parameters) {
     $request->body($parameters);
     $request->sends(Mime::UPLOAD);
     $request->attach(array('file' => $parameters['file']));
+    
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
+    
+//    var_dump($request);print("\napiupload request!\n");
+//    $response =  $apiAccessor->execute($request);
+//    var_dump($response);die("\napiupload response\n");;
+//    return $response;
 }
 
 function apiGetUploadProgress($contentIdentifier) {
@@ -393,6 +399,24 @@ function apiUpdateItems($progId, $itemId, $params) {
 function apiMimicItem($progId) {
     $apiAccessor = getApi();
     $request = $apiAccessor->postRequest("programming/" . $progId . "/mimic");
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
+// THUMBNAILS
+function apiUploadThumb($parameters) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->postRequest('customize/video/' . $parameters['itemId'] . '/image');
+//    $request->body($parameters);
+    $request->sends(Mime::UPLOAD);
+    $request->attach(array('file' => $parameters['file']));
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
+function apiDeleteThumb($itemId) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->deleteRequest('customize/video/' . $itemId . '/image');
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }

@@ -52,7 +52,6 @@ function wimtvpro_live() {
             }
 
             $dati = apiGetLive($_GET['id'], $_GET['timezone']);
-
             $arraydati = json_decode($dati);
             $name = $arraydati->name;
             if ($arraydati->paymentMode == "FREEOFCHARGE")
@@ -131,6 +130,7 @@ function wimtvpro_live() {
                     <th>URL</th>
                     <th>* <?php echo __("Schedule") ?></th>
                     <th><?php echo __("Embed Code", "wimtvpro") ?></th>
+                    <th><?php echo __("Edit") ?></th>
                     <th><?php echo __("Remove") ?></th>
                 </tr>
             </thead>
@@ -170,6 +170,12 @@ function wimtvpro_live() {
             </h2>
             <p>
                 <?php echo _e("Please complete all the fields marked with an *", "wimtvpro") ?>
+
+                <?php
+                $customThumbUrl = ($dati->body->customThumbUrl != NULL) ? $dati->body->customThumbUrl : "https://www.wim.tv/wimtv-webapp/images/getStarted/wimtv-live.png";
+                print getEditThumbnailControl($_GET['id'], $customThumbUrl, $page == "modifyLive");
+                ?>
+
             <form action="#" method="post" id="wimtvpro-wimlive-form" accept-charset="UTF-8">
 
                 <p><label for="edit-name"><?php _e("Title"); ?> <span>*</span></label>
@@ -254,13 +260,13 @@ function wimtvpro_live() {
                 </p>
                 <input type="hidden" name="wimtvpro_live" value="Y" />
                 <input type="hidden" id="timelivejs" name="timelivejs" value="" />
+
                 <?php
                 if ($page == "AddLive")
                     submit_button(__("Create", "wimtvpro"));
                 else
                     submit_button(__("Update", "wimtvpro"));
                 ?>
-
             </form>
         </div>
 

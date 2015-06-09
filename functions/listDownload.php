@@ -35,7 +35,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
         $videothumb = "<img src=''/>";
         $title = (($record_new->title) != "") ? $record_new->title : $status_pending;
         $my_media = "<tr class='disabledItem' id='" . $content_item_new . "'>";
-        $my_media .= "<td class='image' colspan='5' ><span class='wimtv-thumbnail' >" . $videothumb . "</span><br/>$title <br/>" . __('This video has not yet been processed, wait a few minutes and try to synchronize', "wimtvpro");
+        $my_media .= "<td class='image' colspan='6' ><span class='wimtv-thumbnail' >" . $videothumb . "</span><br/>$title <br/>" . __('This video has not yet been processed, wait a few minutes and try to synchronize', "wimtvpro");
         $my_media .= "</tr>";
         return $my_media;
     }
@@ -95,7 +95,8 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     $wimtvpro_url = "";
     //For Admin
     if ($isfound) {
-        $video = "<span class='wimtv-thumbnail' >" . $replace_video . "</span>";
+//        $video = "<span class='wimtv-thumbnail' >" . $replace_video . "</span>";
+        $video = "<span class='wimtv-thumbnail' >" .$licenze_video . $replace_video . "</span>";
     } else {
         $video = $replace_video;
         $replace_video = false;
@@ -128,7 +129,6 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
         //else 
         //$action .= "<div class='thumbPublic'>";
 
-
         if ($private) {
 
 //        NS:
@@ -141,6 +141,9 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 //        exit;
             $action = "";
             if ((!$showtime) || (trim($showtime) == "FALSE")) {
+                //NS: thumb
+                $action .="<td>" . getEditThumbnailControl($content_item_new) . "</td>";
+
                 $id = "";
                 $title_add = __("Add to WimVod", "wimtvpro");
                 $title_remove = __("Remove from WimVod", "wimtvpro");
@@ -195,7 +198,6 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
                     /* if ($licenseType!="PAYPERVIEW") $action  .= "<td><span class='icon_playlist' rel='" . $showtime_identifier . "' title='Add to Playlist selected'></span></td>"; */
                 }
             }
-
             if ($isfound) {
                 $urlVideo = wimtvpro_checkCleanUrl("functions", "download.php?host_id=" . $content_item_new);
                 //$urlVideo = downloadVideo($content_item_new,$status_array[0]);
@@ -216,7 +218,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
             else {
                 $style_view = "";
                 if ($urlPlay != "") {
-// NS: possible vug about size of preview player. Conversely player is OK in case of "View Video" (6 lines up)
+                    // NS: possible vug about size of preview player. Conversely player is OK in case of "View Video" (6 lines up)
                     $href_view = wimtvpro_checkCleanUrl("embedded", "embeddedAll.php?c=" . $content_item_new);
                     $play = TRUE;
                 }
@@ -248,7 +250,8 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
         if ($playlist)
             $action = "";
-        $my_media .= "<td class='image'>" . $licenze_video . $video . "<br/>";
+//        $my_media .= "<td class='image'>" . $licenze_video . $video . "<br/>";
+        $my_media .= "<td class='image'>" . $video . "<br/>";
         if ($private)
             $my_media .="<b>" . $title . "</b>";
         $my_media .= $linkView . "</td>" . $action;

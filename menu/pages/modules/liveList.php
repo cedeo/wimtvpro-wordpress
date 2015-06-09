@@ -121,6 +121,8 @@ if ($arrayjson_live) {
             $output .="<a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "&timezone=" . $timezoneOffset . "' alt='" . __("Modify")
                     . "'   title='" . __("Modify", "wimtvpro") . "'><img src='" . get_option('wp_wimtvPluginPath') . "images/mod.png"
                     . "'  alt='" . __("Modify", "wimtvpro") . "'></a>";
+            $output .="</td>";
+            $output .= "<td> ";
             $output .= "<a href='?page=WimLive&namefunction=deleteLive&id=" . $identifier . "' title='" . __("Remove") . "'><img src='" . get_option('wp_wimtvPluginPath') . "images/remove.png" . "' alt='" . __("Remove") . "'></a>";
 
             $output .="</td>

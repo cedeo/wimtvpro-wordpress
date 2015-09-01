@@ -11,7 +11,6 @@
 function settings_live($dati) {
     $view_page = wimtvpro_alert_reg();
     $submenu = wimtvpro_submenu($view_page);
-
     if (!isset($dati['liveStreamPwd']))
         $dati['liveStreamPwd'] = "";
     if ($dati['liveStreamPwd'] == "null")
@@ -24,11 +23,11 @@ function settings_live($dati) {
     ?>
 
     <h2>
-    <?php echo wimtvpro_link_help(); ?>
-    <?php echo __('Live configuration', "wimtvpro") ?></h2>
+        <?php echo wimtvpro_link_help(); ?>
+        <?php echo __('Live configuration', "wimtvpro") ?></h2>
 
     <?php echo str_replace("live", "current", $submenu) ?>
-
+    
 
     <div class="clear"></div>
     <p><?php echo __('this section you can enable live streaming settings to better match your specific needs. Choose between "Live streaming" to stream your own events, or use the features reserved for Event Organisers and Event Resellers to play the role of organiser or distributor (on behalf of Event Organiser) of live events.', "wimtvpro") ?></p>
@@ -55,7 +54,7 @@ function settings_live($dati) {
         });
     </script>
 
-    <form enctype="multipart/form-data" action="#" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
+    <form enctype="multipart/form-data" action="<?php echo add_query_arg($_GET)?>" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
         <table class="form-table">
             <tr>
                 <th><label for="liveStreamEnabled"><?php echo __("Live streaming", "wimtvpro") ?></label></th>
@@ -87,26 +86,26 @@ function settings_live($dati) {
 
             <!--  // NS: We hide the following rows to disable "Event Resell" and "Live  stream event organization -->   
 
-    <!--            <tr>
-                    <th><label for="eventResellerEnabled"><?php echo __("Live stream events resale", "wimtvpro") ?></label></th>
-                    <td>
-                      <input type="checkbox" id="edit-eventResellerEnabled"
-                             name="eventResellerEnabled" value="true" <?php if (strtoupper($dati['eventResellerEnabled']) == "TRUE") echo ' checked="checked"' ?> />
-                      <div class="description"><?php echo __("Enables you to distribute live events organised by other parties (Event Organisers).", "wimtvpro") ?></div>
-                    </td>
-                </tr>
+        <!--            <tr>
+                        <th><label for="eventResellerEnabled"><?php echo __("Live stream events resale", "wimtvpro") ?></label></th>
+                        <td>
+                          <input type="checkbox" id="edit-eventResellerEnabled"
+                                 name="eventResellerEnabled" value="true" <?php if (strtoupper($dati['eventResellerEnabled']) == "TRUE") echo ' checked="checked"' ?> />
+                          <div class="description"><?php echo __("Enables you to distribute live events organised by other parties (Event Organisers).", "wimtvpro") ?></div>
+                        </td>
+                    </tr>
 
-                <tr>
-                    <th><label for="eventOrganizerEnabled"><?php echo __("Live stream events organisation", "wimtvpro") ?></label></th>
-                    <td>
-                      <input type="checkbox" id="edit-eventOrganizerEnabled" name="eventOrganizerEnabled" value="true" <?php if (strtoupper($dati['eventOrganizerEnabled']) == "TRUE") echo ' checked="checked"' ?> />
-                      <div class="description"><?php echo __("Select if you want to organise live evants and collaborate with an Event Reseller for their distribution.", "wimtvpro") ?></div>
-                    </td>
-                </tr>-->
+                    <tr>
+                        <th><label for="eventOrganizerEnabled"><?php echo __("Live stream events organisation", "wimtvpro") ?></label></th>
+                        <td>
+                          <input type="checkbox" id="edit-eventOrganizerEnabled" name="eventOrganizerEnabled" value="true" <?php if (strtoupper($dati['eventOrganizerEnabled']) == "TRUE") echo ' checked="checked"' ?> />
+                          <div class="description"><?php echo __("Select if you want to organise live evants and collaborate with an Event Reseller for their distribution.", "wimtvpro") ?></div>
+                        </td>
+                    </tr>-->
         </table>
         <div class="hidden_value"></div>
         <input type="hidden" name="wimtvpro_update" value="Y" />
-    <?php echo submit_button(__("Update", "wimtvpro")) ?>
+        <?php echo submit_button(__("Update", "wimtvpro")) ?>
     </form>
 
     <?php

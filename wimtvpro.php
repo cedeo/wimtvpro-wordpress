@@ -3,13 +3,13 @@
   Plugin Name: Wim Tv Pro
   Plugin URI: http://wimtvpro.tv
   Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-  Version: 3.6
+  Version: 3.6.5
   Author: WIMLABS
   Author URI: http://www.wimlabs.com
   License: GPLv2 or later
  */
 
-/*  Copyright 2013  wimlabs  (email : riccardo@cedeo.net)
+/*  Copyright 2013-2015  wimlabs  (email : riccardo@cedeo.net)
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
@@ -203,7 +203,6 @@ function wimtvpro_menu() {
 
         // NS: WE TEMPORARY HIDE THE PROGRAMMINGS SECTION
         add_submenu_page('WimTvPro', __('Programmings', "wimtvpro"), __('Programmings', "wimtvpro"), 'administrator', 'WimVideoPro_Programming', 'wimtvpro_programming');
-
         add_submenu_page('WimTvPro', __('Analytics'), __('Analytics'), 'administrator', 'WimTVPro_Report', 'wimtvpro_Report');
     }
 
@@ -233,9 +232,6 @@ add_filter('media_upload_tabs', 'wimtvpro_media_menu');
 add_action('init', 'wimtvpro_install_jquery');
 
 function wimtvpro_install_jquery() {
-
-
-
     wp_enqueue_script('jquery');
     wp_enqueue_script('jquery-ui-sortable');
     wp_enqueue_script('jquery-ui-datepicker');
@@ -259,6 +255,7 @@ function wimtvpro_install_jquery() {
         wp_enqueue_style('wimtvproCssCore');
     }
 
+    wp_enqueue_script('jstzScript', plugins_url('script/jstz-1.0.4.min.js', __FILE__));
 
     if (isset($_GET['page']) && $_GET['page'] != "WimVideoPro_Programming") {
         // Register the script first.
@@ -445,7 +442,6 @@ function register_my_streaming() {
 
 //add_action('widgets_init', 'register_personal_date');
 //add_action('widgets_init', 'register_my_streaming');
-
 //End Widget
 //ShortCodes
 function wimtvpro_shortcode_streaming($atts) {

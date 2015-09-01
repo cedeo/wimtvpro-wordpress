@@ -43,6 +43,11 @@ class Api {
         Api::$analytics = new Api($host, $username, $password);
     }
 
+    // NS API PROGRAMMINGS
+    function getHost(){
+        return $this->host;        
+    }
+    
     function compileUrl($subUrl) {
         $url = $this->host . $subUrl;
         return $url;

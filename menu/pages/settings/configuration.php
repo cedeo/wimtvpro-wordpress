@@ -58,7 +58,7 @@ function settings_configuration($directory) {
             <div class="empty"></div>
             <h4><?php _e("Connect to your account on WimTV", "wimtvpro"); ?></h4>
 
-            <form enctype="multipart/form-data" action="#" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
+            <form enctype="multipart/form-data" action="<?php echo add_query_arg($_GET)?>" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
 
                 <table class="form-table">
 

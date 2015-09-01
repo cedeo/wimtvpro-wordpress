@@ -113,7 +113,7 @@ function timezoneList() {
     $arrayTimeZone ["America/Chicago"] = "(GMT -6:00) Central Time (US &amp; Canada), Mexico City";
     $arrayTimeZone ["America/New_York"] = "(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima";
     $arrayTimeZone ["America/Halifax"] = "(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz";
-    $arrayTimeZone ["Canada/Newfoundlan"] = "(GMT -3:30) Newfoundland";
+    $arrayTimeZone ["Canada/Newfoundland"] = "(GMT -3:30) Newfoundland";
     $arrayTimeZone ["America/Sao_Paulo"] = "(GMT -3:00) Brazil, Buenos Aires, Georgetown";
     $arrayTimeZone ["Atlantic/South_Georgia"] = "(GMT -2:00) Mid-Atlantic";
     $arrayTimeZone ["Atlantic/Cape_Verde"] = "(GMT -1:00 hour) Azores, Cape Verde Islands";
@@ -136,6 +136,20 @@ function timezoneList() {
     $arrayTimeZone ["Asia/Magadan"] = "(GMT +11:00) Magadan, Solomon Islands, New Caledonia";
     $arrayTimeZone ["Australia/Auckland"] = "(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka";
     return $arrayTimeZone;
+}
+
+function getTimezoneNameEquivalent($timezoneName) {
+    $time = new \DateTime('now', new DateTimeZone($timezoneName));
+    $timezoneOffset = $time->format('P');
+
+    $defaultTimezoneArray = timezoneList();
+    foreach ($defaultTimezoneArray as $tzName => $descr) {
+        $tzTime = new \DateTime('now', new DateTimeZone($tzName));
+        $tzTimezoneOffset = $tzTime->format('P');
+        if ($tzTimezoneOffset == $timezoneOffset){
+            return $tzName;
+        }
+    }
 }
 
 function getEditThumbnailControl($identifier, $liveThumbnail = "", $isEnabled = true) {

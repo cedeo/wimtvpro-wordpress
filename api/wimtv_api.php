@@ -60,10 +60,10 @@ function apiUpload($parameters) {
     $request->body($parameters);
     $request->sends(Mime::UPLOAD);
     $request->attach(array('file' => $parameters['file']));
-    
+
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
-    
+
 //    var_dump($request);print("\napiupload request!\n");
 //    $response =  $apiAccessor->execute($request);
 //    var_dump($response);die("\napiupload response\n");;
@@ -86,12 +86,17 @@ function apiGetProfile() {
 }
 
 function apiEditProfile($params) {
+//    var_dump($params);
     $apiAccessor = getApi();
     $request = $apiAccessor->postRequest('profile');
-    $request->sends(Mime::JSON);
+//    $request->sends(Mime::JSON);
+    $request->sendsAndExpects(Mime::JSON);
+    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+
     $request->body($params);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request, 'application/json');
+//    return $apiAccessor->execute($request, 'application/json');
+    return $apiAccessor->execute($request);
 }
 
 function apiRegistration($params) {
@@ -279,11 +284,6 @@ function apiGetLiveIframe($host_id, $params = "") {
 function apiAddLive($parameters, $timezone = null) {
     $apiAccessor = getApi();
     $url = $apiAccessor->liveHostsUrl;
-//    var_dump($parameters);
-//PRINT "<HR>";
-//var_dump($url);
-//var_dump($timezone);
-//exit;
     if ($timezone)
         $url .= '?timezone=' . $timezone;
     $request = $apiAccessor->postRequest($url);
@@ -311,6 +311,46 @@ function apiDeleteLive($host_id) {
 }
 
 //PROGRAMMING
+// NS API PROGRAMMINGS
+function apiProgrammingGetIframe($progID) {
+    $apiAccessor = getApi();
+    $apiHost = $apiAccessor->getHost();
+    $wimtvUrl = substr($apiHost, 0, -6) . "/"; // OPP: str_replace("/rest", "", $apiHost);
+    $simple = "true";
+    $wimtvuser = get_option("wp_userwimtv"); //"linolino2";
+    $OTPresponse = apiProgrammingGetOTP();
+    $arrayjsonst = json_decode($OTPresponse);
+    $iframe = "<div>OTP Connection Error<div>";
+    if ($arrayjsonst != null && $arrayjsonst->key != null) {
+//    $wimtvpwd = "edab5d78-3533-11e5-a151-feff819cdc9f"; //get_option("wp_passwimtv")
+        $wimtvpwd = $arrayjsonst->key;
+        $url = $wimtvUrl . "programming.do?simple=$simple&wimtvuser=$wimtvuser&wimtvpwd=$wimtvpwd";
+
+        if ($progID != "" && $progID != null) {
+            $url.="&progId=$progID";
+        }
+
+        $iframe = "<iframe id ='mainFrame' 
+                        scrolling='no'
+                        style='border: none; overflow:hidden;' 
+                        src='$url' 
+                        width='100%' height='700px'/>";
+    }
+    return $iframe;
+}
+
+// Get One-Time Password
+function apiProgrammingGetOTP($expire = 3) {
+    $params['expire'] = $expire;
+    $apiAccessor = getApi();
+    $request = $apiAccessor->postRequest('security/otp');
+    $request->sendsAndExpects(Mime::JSON);
+    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    $request->body($params);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
 function apiProgrammingPool() {
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('programmingPool');
@@ -326,9 +366,12 @@ function apiGetCurrentProgrammings($qs) {
 }
 
 function apiPostProgrammings($qs) {
+//    var_dump($qs);die;
     $apiAccessor = getApi();
     $request = $apiAccessor->postRequest("programmings");
     $request = $apiAccessor->authenticate($request);
+    $request->sendsAndExpects(Mime::JSON);
+    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
     $request->body($qs);
     return $apiAccessor->execute($request);
 }

@@ -18,19 +18,25 @@ function wimtvpro_elencoLive($type, $identifier, $onlyActive = true) {
     echo 'var url_pathPlugin ="' . plugin_dir_url(__FILE__) . '";';
 
     echo '
+    var cliTimezoneName = jstz.determine().name();    
     var timezone = -(new Date().getTimezoneOffset())*60*1000;
+    console.log(timezone);
 	//window.location.assign(window.location + "&timezone="+timezone);';
-    // NS: We POST the param "clitimestamp" to let CMS server calculate whether 
-    // or no tthe client is in "daylight saving".
+    // NS: We POST the param "cliTimezoneName" to let CMS server know the client timezone.
     echo '
-        var clitimestamp=new Date().getTime();
+//        var cliTimeOffset=new Date().getTimezoneOffset()*(-60);
+//        if (isDaylightSavings()){
+//            cliTimeOffset -= 3600;
+//        }
+// data: "type=' . $type . '&timezone =" + timezone  + "&id=' . $identifier . '&onlyActive=' . $onlyActive . '&cliTimeOffset="+ cliTimeOffset + "&cliTimezoneName="+ cliTimezoneName,        
+    
 	jQuery.ajax({
 			context: this,
 			url:  url_pathPlugin + "liveList.php",
 			type: "POST",
 			dataType: "html",
 			async: false,
-			data: "type=' . $type . '&timezone =" + timezone  + "&id=' . $identifier . '&onlyActive=' . $onlyActive . '&timestamp="+ clitimestamp,
+			data: "type=' . $type . '&timezone =" + timezone  + "&id=' . $identifier . '&onlyActive=' . $onlyActive . '&cliTimezoneName="+ cliTimezoneName,
 			success: function(response) {
 ';
 
@@ -61,46 +67,53 @@ function wimtvpro_savelive($function) {
         //Check fields required
 
         if (strlen(trim($_POST['name'])) == 0) {
-            /* echo '<div class="error"><p><strong>';
-              _e("You must write a wimlive's name.","wimtvpro");
-              echo '</strong></p></div>'; */
+            echo '<div class="error"><p><strong>';
+            _e("You must set a title.", "wimtvpro");
+            echo '</strong></p></div>';
             $error++;
         }
         if (strlen(trim($_POST['payperview'])) == 0) {
-            /* echo '<div class="error"><p><strong>';
-              _e("You must write a price for your event (or free of charge).","wimtvpro");
-              echo '</strong></p></div>'; */
+            echo '<div class="error"><p><strong>';
+            _e("You must set a price for your event (or free of charge).", "wimtvpro");
+            echo '</strong></p></div>';
             $error++;
         }
         if (strlen(trim($_POST['Url'])) == 0) {
-            /*  echo '<div class="error"><p><strong>';
-              _e("You must write a url.","wimtvpro");
-              echo '</strong></p></div>'; */
+            echo '<div class="error"><p><strong>';
+            _e("You set write an url.", "wimtvpro");
+            echo '</strong></p></div>';
             $error++;
         }
         if (strlen(trim($_POST['Giorno'])) == 0) {
-            /*  echo '<div class="error"><p><strong>';
-              _e("You must write a day of your event.","wimtvpro");
-              echo '</strong></p></div>'; */
+            echo '<div class="error"><p><strong>';
+            _e("You must set a day for your event.", "wimtvpro");
+            echo '</strong></p></div>';
             $error++;
         }
         if (strlen(trim($_POST['Ora'])) == 0) {
-            /* echo '<div class="error"><p><strong>';
-              _e("You must write a hour of your event.","wimtvpro");
-              echo '</strong></p></div>'; */
+            echo '<div class="error"><p><strong>';
+            _e("You must set an hour for your event.", "wimtvpro");
+            echo '</strong></p></div>';
             $error++;
         }
         if (strlen(trim($_POST['Duration'])) == 0) {
-            /* echo '<div class="error"><p><strong>';
-              _e("You must write a duration of your event.","wimtvpro");
-              echo '</strong></p></div>'; */
+            echo '<div class="error"><p><strong>';
+            _e("You must set a duration for your event.", "wimtvpro");
+            echo '</strong></p></div>';
             $error++;
         }
 
         if (!isset($_POST['Public'])) {
-            /* echo '<div class="error"><p><strong>';
-              _e("You must check if you event is public or private.","wimtvpro");
-              echo '</strong></p></div>'; */
+            echo '<div class="error"><p><strong>';
+            _e("You must check if your event is public or private.", "wimtvpro");
+            echo '</strong></p></div>';
+            $error++;
+        }
+
+        if (!isset($_POST['eventTimeZone']) || $_POST['eventTimeZone'] == "") {
+            echo '<div class="error"><p><strong>';
+            _e("You must specify a timezone (GMT).", "wimtvpro");
+            echo '</strong></p></div>';
             $error++;
         }
 
@@ -175,10 +188,11 @@ function wimtvpro_savelive($function) {
                 "ccy" => $ccy
             );
 
-            if ($_POST['eventTimeZone'] != "")
+            if ($_POST['eventTimeZone'] != "") {
                 $timezone = $_POST['eventTimeZone'];
-            else
+            } else {
                 $timezone = $_POST['timelivejs'];
+            }
             if ($function == "modify") {
                 $response = apiModifyLive($_GET['id'], $parameters, $timezone);
             } else {

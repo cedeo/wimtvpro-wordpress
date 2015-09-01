@@ -28,7 +28,7 @@ function settings_personal($dati) {
     <?php echo str_replace("user","current",$submenu) ?>
 
     <div class="clear"></div>
-    <form enctype="multipart/form-data" action="#" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
+    <form enctype="multipart/form-data" action="<?php echo add_query_arg($_GET)?>" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
         <h4><?php __("Personal Info","wimtvpro") ?></h4>
         <table class="form-table">
             <tr>

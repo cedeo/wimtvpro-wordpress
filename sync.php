@@ -13,8 +13,8 @@ else
 global $user, $wpdb;
 
 $response = apiGetVideos();
-$array_json_videos = json_decode($response);
 
+$array_json_videos = json_decode($response);
 if ($array_json_videos == NULL) {
     _e("Can not establish a connection with Wim.tv. Contact the administrator.", "wimtvpro");
 } else {
@@ -87,7 +87,7 @@ if ($array_json_videos == NULL) {
             }
         }
     } else {
-        _e("You aren't videos", "wimtvpro");
+        _e("No videos found", "wimtvpro");
     }
 
     //var_dump(array_diff($elenco_video_wp ,$elenco_video_wimtv ));
@@ -97,7 +97,14 @@ if ($array_json_videos == NULL) {
     }
 
     if ((isset($_GET['sync']))) {
-        echo wimtvpro_getVideos($_GET['showtime'], TRUE);
+        $response = wimtvpro_getVideos($_GET['showtime'], TRUE);
+        if (isset($_GET['getvideocount'])) {
+            $videoCount = sizeof($array_json_videos->items);
+            $response_array['videocount'] = $videoCount;
+            $response_array['tablebody'] = $response;
+            $response = json_encode($response_array);
+        }
+        echo $response;
     }
 
     //UPDATE PAGE MY STREAMING

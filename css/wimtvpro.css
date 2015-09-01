@@ -726,10 +726,9 @@ button.wimtv-thumbnail-reset-disabled{
     color: wheat !important;
 }
 
-
-
-
-
-#tableLive th, td{
-    text-align: center;
+.icon-transcoding{
+    width:130px;
 }
+/*#tableLive th, td{
+    text-align: center;
+}*/

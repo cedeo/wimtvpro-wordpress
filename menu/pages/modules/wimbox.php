@@ -95,7 +95,7 @@ function wimtvpro_getVideos($showtime = FALSE, $private = TRUE, $insert_into_pag
     }
 
     // NS: ADD NUMBER OF VIDEO FOUND
-    $my_media.="<div>" . __("Found", "wimtvpro") . ": " . $array_count . " " . __("Videos", "wimtvpro");
+    $my_media.="<div>" . __("Found", "wimtvpro") . ": <span id='videoCount'>" . $array_count . "</span> " . __("Videos", "wimtvpro");
 
     // NS: ADD NUMBER OF ROWS SELECTOR
     // FORM "number of rows"

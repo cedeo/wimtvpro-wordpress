@@ -1,4 +1,5 @@
 <?php
+
 // SETTINGS.PHP
 /**
  * Written by walter at 24/10/13
@@ -17,8 +18,8 @@ include_once("settings/live.php");
 include_once("settings/features.php");
 
 function wimtvpro_configure() {
+
     $uploads_info = wp_upload_dir();
-    echo "<div class='clear'></div>";
     if (!isset($_GET["pack"])) {
         if (!isset($_GET["update"])) {
             $directory = $uploads_info["basedir"] . "/skinWim";
@@ -26,7 +27,6 @@ function wimtvpro_configure() {
 
             if (isset($_POST['wimtvpro_update']) && $_POST['wimtvpro_update'] == 'Y') {
                 //Form data sent
-
                 $error = 0;
                 //Upload Skin
                 $file = $_FILES['files']['name']["uploadSkin"];
@@ -77,7 +77,6 @@ function wimtvpro_configure() {
                 } else {
                     update_option('wp_nameSkin', $_POST['nameSkin']);
                 }
-
                 // Required
                 if (strlen(trim($_POST['userWimtv'])) == 0) {
                     echo '<div class="error"><p><strong>';
@@ -111,15 +110,19 @@ function wimtvpro_configure() {
                         initAnalytics("http://peer.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
                     }
 
+
                     $response = apiGetProfile();
+//                    var_dump($response);die;
                     $arrayjsonst = json_decode($response);
-                    if ($arrayjsonst->paypalEmail != "")
+                    if ($arrayjsonst->paypalEmail != "") {
                         update_option('wp_activePayment', "true");
-                    else
+                    } else {
                         update_option('wp_activePayment', "false");
+                    }
 
-
-                    if (($_POST['sandbox'] != get_option('wp_sandbox')) && (($_POST['userWimtv'] == "username") && ($_POST['passWimtv'] == "password"))) {
+// NS: DISATTIVATO CHECK SU $_POST['sandbox']
+//                    if (($_POST['sandbox'] != get_option('wp_sandbox')) && (($_POST['userWimtv'] == "username") && ($_POST['passWimtv'] == "password"))) {
+                    if ((($_POST['userWimtv'] == "username") && ($_POST['passWimtv'] == "password"))) {
                         update_option('wp_registration', 'FALSE');
                         update_option('wp_userwimtv', 'username');
                         update_option('wp_passwimtv', 'password');
@@ -176,13 +179,15 @@ function wimtvpro_configure() {
                     //$key = str_replace("Uri","URI",$key);
                     $dati[$key] = $value;
                 }
-
                 unset($dati['wimtvpro_update']);
                 unset($dati['submit']);
                 unset($dati['submit']);
                 unset($dati['affiliate2']);
                 unset($dati['affiliateConfirm2']);
                 $response = apiEditProfile($dati);
+//                var_dump($dati);
+//                print("<hr>");
+//                var_dump($response);
                 $arrayjsonst = json_decode($response);
 
                 if ($dati['paypalEmail'] != "")
@@ -212,7 +217,6 @@ function wimtvpro_configure() {
             $dati = json_decode($response, true);
 
             switch ($_GET['update']) {
-
                 case "1": //Monetization
                     settings_monetization($dati);
                     break;

@@ -47,6 +47,7 @@ ProgUtils.api.itemsAt = function() {
  */
 ProgUtils.api.programmingInfo = function() {
 	return url_pathPlugin + 'functions/programming/programmings.php';
+//	return "http://asinello/test/test_echo_post_get.php";
 };
 
 /**

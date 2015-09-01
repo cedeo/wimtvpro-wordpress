@@ -28,7 +28,6 @@ function wimtvpro_live() {
     $page = isset($_GET['namefunction']) ? $_GET['namefunction'] : "";
     $noneElenco = FALSE;
     switch ($page) {
-
         case "addLive":
             $noneElenco = TRUE;
             //aggiungere script per pickdata e pickhour
@@ -50,26 +49,41 @@ function wimtvpro_live() {
             if (isset($_POST["wimtvpro_live"])) {
                 wimtvpro_savelive("modify");
             }
+            $cliTimezoneName = isset($_GET['cliTimezoneName']) ? $_GET['cliTimezoneName'] : "";
 
             $dati = apiGetLive($_GET['id'], $_GET['timezone']);
+//            $dati = apiGetLive($_GET['id'], $_GET['timezone']);
+
             $arraydati = json_decode($dati);
+//            var_dump($arraydati);die;
             $name = $arraydati->name;
             if ($arraydati->paymentMode == "FREEOFCHARGE")
                 $payperview = "0";
-            else
+            else {
                 $payperview = $arraydati->pricePerView;
+            }
+
+
             $url = $arraydati->url;
             $recordEvent = $arraydati->recordEvent;
             $publicEvent = $arraydati->publicEvent;
             $giorno = $arraydati->eventDate;
             $timezone = $arraydati->timeZone;
             $data = $arraydati->eventDateMillisec;
-            $timezoneOffset = intval($arraydati->timezoneOffset);
-            $timestamp = intval($data) / 1000;
+
+//            $timezoneOffset = intval($arraydati->timezoneOffset);
+//            $timestamp = intval($data) / 1000;
+//            $start = new DateTime("@$timestamp");
+//            $timezoneName = timezone_name_from_abbr("", $timezoneOffset, false);
+//            $real_timezone = new DateTimeZone($timezoneName);
+//            $start->setTimezone($real_timezone);
+
+            $timestamp = floor($data / 1000);
             $start = new DateTime("@$timestamp");
-            $timezoneName = timezone_name_from_abbr("", $timezoneOffset, false);
-            $real_timezone = new DateTimeZone($timezoneName);
-            $start->setTimezone($real_timezone);
+
+            $cliTimezone = new DateTimeZone($cliTimezoneName);
+            $start->setTimezone($cliTimezone);
+
             $ora = $start->format('H') . ":" . $start->format('i');
             $tempo = $arraydati->duration;
             $ore = floor($tempo / 60);
@@ -232,13 +246,14 @@ function wimtvpro_live() {
                 </p>
                 <?php
                 $currentTimeZone = ini_get('date.timezone');
+//                $cliTimezoneNameEquivalent = getTimezoneNameEquivalent($cliTimezoneName);
                 ?>
                 <p><label for="edit-giorno"><?php _e("Start date", "wimtvpro"); ?> <?php _e("dd/mm/yy", "wimtvpro"); ?> *</label>
                     <input  type="text" class="pickadate" id="edit-giorno" name="Giorno" value="<?php echo $giorno; ?>" size="10" maxlength="10"></p>
 
                 <p><label for="edit-ora"><?php _e("Start time", "wimtvpro"); ?> *</label>
                     <input class="pickatime" type="text" id="edit-ora" name="Ora" value="<?php echo $ora; ?>" size="10" maxlength="10">
-                    <label for="edit-eventTimeZone"><?php _e("Time zone", "wimtvpro"); ?></label>
+                    <label for="edit-eventTimeZone"><?php _e("Time zone", "wimtvpro"); ?> *</label>
                     <select id="edit-eventTimeZone" name="eventTimeZone">
                         <option value="">----------------------------------</option>
                         <?php

@@ -74,7 +74,7 @@ function settings_monetization($dati) {
         });
     </script>
 
-    <form enctype="multipart/form-data" action="#" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
+    <form enctype="multipart/form-data" action="<?php echo add_query_arg($_GET)?>" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
         <h4><?php echo __("Affiliation","wimtvpro")  ?></h4>
         <table class="form-table">
             <tr>

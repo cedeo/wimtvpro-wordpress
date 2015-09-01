@@ -4,14 +4,20 @@ include("../../../../../../wp-load.php");
 //include_once("../api/api.php");
 $userpeer = get_option("wp_userWimtv");
 $timezone = isset($_POST['timezone_']) ? $_POST['timezone_'] : "";
+$cliTimezoneName = isset($_POST['cliTimezoneName']) ? $_POST['cliTimezoneName'] : "";
+
+//var_dump($cliTimezoneName);die;
 $type = $_POST['type'];
 $id = $_POST['id'];
 $onlyActive = $_POST['onlyActive'];
 header('Content-type: text/html');
+
 $json = apiGetLiveEvents($timezone, $onlyActive);
 $arrayjson_live = json_decode($json);
+//var_dump($arrayjson_live);die;
 $count = -1;
 $output = "";
+
 if ($arrayjson_live) {
     foreach ($arrayjson_live->{"hosts"} as $key => $value) {
         $count++;
@@ -65,20 +71,28 @@ if ($arrayjson_live) {
         $livedate = json_decode($details_live);
 
         $data = $livedate->eventDateMillisec;
-        $timezoneOffset = intval($livedate->timezoneOffset) / 1000;
-        $timestamp = floor($data / 1000);
+        $remote_timezoneOffset = intval($livedate->timezoneOffset) / 1000;
+        $remote_timestamp = floor($data / 1000);
 
-        $start = new DateTime("@$timestamp");
-        // NS: We use the POSTed value "clitimestamp" to calculate whether or not
-        // the client is in "daylight saving".
-        // $timezoneName = timezone_name_from_abbr("", $timezoneOffset, false);
-        $clitimestamp = $_POST['timestamp'];
-        
-        $timezoneName = timezone_name_from_abbr("", $timezoneOffset, date('I', $clitimestamp));
-        
-        $real_timezone = new DateTimeZone($timezoneName);
-        $start->setTimezone($real_timezone);
+        $start = new DateTime("@$remote_timestamp");
 
+        // NS: We use the POSTed value "cliTimeOffset" to calculate local
+        // client timezone taking into account whether the client is in daylight 
+        // savings or not. We do that in js by using a custom function (isDaylightSavings())
+        // (see wimtvpro.js)
+        
+//        $cliTimeOffset = $_POST['cliTimeOffset'];
+        
+//        $timezoneName = timezone_name_from_abbr("", $cliTimeOffset, 0);
+//        $timezoneName = get_offset_to_name($cliTimeOffset);
+
+        
+//        if ($timezoneName != false) {
+            $cliTimezone = new DateTimeZone($cliTimezoneName);
+            $start->setTimezone($cliTimezone);
+//        }
+        
+        
         $oraMin = $start->format('H') . ":" . $start->format('i');
         $timeToStart = $livedate->timeToStart;
         $timeLeft = $livedate->timeLeft;
@@ -118,7 +132,8 @@ if ($arrayjson_live) {
             $output .= "<td>" . $embedded_code . "</td>";
             $output .= "<td> ";
 
-            $output .="<a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "&timezone=" . $timezoneOffset . "' alt='" . __("Modify")
+//            $output .="<a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "&timezone=" . $timezoneOffset . "' alt='" . __("Modify")
+            $output .="<a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "&timezone=" . $remote_timezoneOffset . "&cliTimezoneName=".$cliTimezoneName."' alt='" . __("Modify")
                     . "'   title='" . __("Modify", "wimtvpro") . "'><img src='" . get_option('wp_wimtvPluginPath') . "images/mod.png"
                     . "'  alt='" . __("Modify", "wimtvpro") . "'></a>";
             $output .="</td>";
@@ -151,4 +166,21 @@ if ($count < 0)
     $output = __("There are no live events", "wimtvpro");
 
 echo $output;
+
+/* Takes a GMT offset (in hours) and returns a timezone name */
+
+function get_offset_to_name($offset) {
+//    $offset *= 3600; // convert hour offset to seconds
+    $abbrarray = timezone_abbreviations_list();
+    foreach ($abbrarray as $abbr) {
+        foreach ($abbr as $city) {
+            if ($city['offset'] == $offset) {
+                return $city['timezone_id'];
+            }
+        }
+    }
+
+    return FALSE;
+}
+
 ?>

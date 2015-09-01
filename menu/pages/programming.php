@@ -6,6 +6,33 @@
  * TODO: questa divisione tra markup e logica può essere migliorata prendendo spunto dai templates di Drupal.
  */
 function wimtvpro_programming() {
+    $imgUrl = get_option('wp_wimtvPluginPath') . "images/postit_blank.png";
+    $textMessage_EN ="<center><b>Currently not available</b></center>
+        We are working on a better version in next release.";
+    
+    $textMessage_IT ="<center><b>Palinsensti disabilitati</b></center>
+        Stiamo lavorando ad una versione migliorata per la prossima release.";
+    print "<div style=\"
+                background: url('$imgUrl') no-repeat; 
+                width: 330px;
+                margin-top: 100px;    
+                margin-left: auto;    
+                margin-right: auto;    
+                    \">
+            <div style=\"
+                font-size: 1.3em !important;
+                position: relative;
+                top: 60px;
+                left: 60px;
+                width:250px;
+                height:354px;
+                overflow:hidden;
+                padding: 10px;
+                line-height: 2em;\">
+                $textMessage_IT <br/> $textMessage_EN 
+            </div>
+           </div>";
+    return;
 
     $view_page = wimtvpro_alert_reg();
     if (!$view_page) {
@@ -17,47 +44,23 @@ function wimtvpro_programming() {
         <?php
         echo wimtvpro_link_help();
 
+
         $page = isset($_GET['namefunction']) ? $_GET['namefunction'] : "";
         switch ($page) {
             case "newProgramming" || "modProgramming":
+                if ($page == "newProgramming") {
+                    _e("New Programming", "wimtvpro");
+                    $progID = "";
+                } else {
+                    _e("Modify Programming", "wimtvpro");
+                    $progID = isset($_GET["progId"]) ? $_GET["progId"] : "";
+                }
                 ?>
-                <h2>
-                    <?php
-                    if ($page == "newProgramming") {
-                        _e("New Programming", "wimtvpro");
-                        $nameProgramming = "";
-                    } else {
-                        _e("Modify Programming", "wimtvpro");
-                        $progId = isset($_GET["progId"]) ? $_GET["progId"] : "";
-                    }
-                    ?>
-
-                    <a href='?page=WimVideoPro_Programming' class='add-new-h2'><?php echo __('Return to list', 'wimtvpro') ?></a></h2>
-                <script type="text/javascript">
-                    var imageBase = "<?php echo substr(get_option("wp_basePathWimtv"), 0, -6) ?>";
-                </script>
-
-                <div id="progform">
-                    <form>
-                        <label><?php _e("Give a name to this programming (not mandatory)", "wimtvpro"); ?></label>
-                        <input type="text" value="<?php echo $nameProgramming; ?>" id="progname" />
-                        <input type="submit" value="<?php _e("Send", "wimtvpro"); ?>" class="button button-primary submitnow" />
-                        <input type="submit" value="<?php _e("Skip", "wimtvpro"); ?>" class="button submitnow" />
-                    </form>
-                </div>
-                <!-- calendar -->
-                <div id="calendar"></div>
-
-                <div style="display:none">
-                    <div class="embedded">
-                        <textarea id="progCode" onclick="this.focus();
-                                    this.select();"></textarea>
-                    </div>
-                </div>            
+                <h2><a href='?page=WimVideoPro_Programming' class='add-new-h2'><?php echo __('Return to list', 'wimtvpro') ?></a></h2>
                 <?php
+                echo apiProgrammingGetIframe($progID);
+
                 break;
-
-
             default:
 
                 if (isset($_GET["functionList"]) && ($_GET["functionList"] == "delete")) {
@@ -86,29 +89,31 @@ function wimtvpro_programming() {
                     <tbody>
 
                         <?php
-                        foreach ($arrayjsonst->programmings as $prog) {
-                            if (!isset($prog->name))
-                                $titleProgramming = __("No title", "eventissimo");
-                            else
-                                $titleProgramming = $prog->name;
-                            ?>
-                            <tr>
-                                <td><?php echo $titleProgramming; ?></td>
-                                <td><a href='?page=WimVideoPro_Programming&namefunction=modifyProgramming&title=<?php echo $titleProgramming; ?>&progId=<?php echo $prog->identifier; ?>' alt='<?php _e("Modify", "wimtvpro"); ?>' title='<?php _e("Modify", "wimtvpro"); ?>'><img src='<?php echo get_option('wp_wimtvPluginPath'); ?>images/mod.png'  alt='<?php _e("Modify", "wimtvpro"); ?>'></a>
-                                </td>
-                                <td><a href='?page=WimVideoPro_Programming&functionList=delete&id=<?php echo $prog->identifier; ?>' alt='<?php _e("Remove"); ?>' title='<?php _e("Remove"); ?>'><img src='<?php echo get_option('wp_wimtvPluginPath'); ?>images/remove.png'  alt='<?php _e("Remove"); ?>'></a>
+                        if ($arrayjsonst != null && $arrayjsonst->programmings != null) {
+                            foreach ($arrayjsonst->programmings as $prog) {
+                                if (!isset($prog->name))
+                                    $titleProgramming = __("No title", "eventissimo");
+                                else
+                                    $titleProgramming = $prog->name;
+                                ?>
+                                <tr>
+                                    <td><?php echo $titleProgramming; ?></td>
+                                    <td><a href='?page=WimVideoPro_Programming&namefunction=modifyProgramming&title=<?php echo $titleProgramming; ?>&progId=<?php echo $prog->identifier; ?>' alt='<?php _e("Modify", "wimtvpro"); ?>' title='<?php _e("Modify", "wimtvpro"); ?>'><img src='<?php echo get_option('wp_wimtvPluginPath'); ?>images/mod.png'  alt='<?php _e("Modify", "wimtvpro"); ?>'></a>
+                                    </td>
+                                    <td><a href='?page=WimVideoPro_Programming&functionList=delete&id=<?php echo $prog->identifier; ?>' alt='<?php _e("Remove"); ?>' title='<?php _e("Remove"); ?>'><img src='<?php echo get_option('wp_wimtvPluginPath'); ?>images/remove.png'  alt='<?php _e("Remove"); ?>'></a>
 
 
-                                </td>
-                                <td>
+                                    </td>
+                                    <td>
 
-                                    <textarea style="resize: none; width:90%;height:100%;" readonly='readonly' 
-                                              onclick="this.focus();
-                                        this.select();">[wimprog id="<?php echo $prog->identifier; ?>"]</textarea>
+                                        <textarea style="resize: none; width:90%;height:100%;" readonly='readonly' 
+                                                  onclick="this.focus();
+                                                          this.select();">[wimprog id="<?php echo $prog->identifier; ?>"]</textarea>
 
-                                </td>
-                            </tr>
-                            <?php
+                                    </td>
+                                </tr>
+                                <?php
+                            }
                         }
                         echo "</tbody></table>";
                         ?>

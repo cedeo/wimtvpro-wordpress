@@ -125,11 +125,11 @@ function wimtvpro_wimbox() {
                 <tr style='width:100%'>
                     <th  style='width:20%'>Video</th>
                     <!-- NS: thumb -->
-                    <th  style='width:10%'>Thumbnail</th>
-                    <th style='width:10%'><?php echo __("Posted", "wimtvpro") ?></th>
-                    <th style='width:10%'>Download</th>
-                    <th style='width:10%'><?php echo __("Preview") ?></th>
-                    <th style='width:10%'><?php echo __("Remove") ?></th>
+                    <th  style='width:15%'>Thumbnail</th>
+                    <th style='width:20%'><?php echo __("Posted", "wimtvpro") ?></th>
+                    <th style='width:15%'>Download</th>
+                    <th style='width:15%'><?php echo __("Preview") ?></th>
+                    <th style='width:15%'><?php echo __("Remove") ?></th>
                 </tr>
             </thead>
             <tbody>

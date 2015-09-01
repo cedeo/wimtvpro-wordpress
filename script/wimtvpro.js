@@ -1,144 +1,8 @@
 jQuery(document).ready(function() {
-    initHandlers();   
-});
-
-function initHandlers(){
-   jQuery("span.wimtv-thumbnail").click(function() {
+    initEditThumbControls();
+    jQuery("span.wimtv-thumbnail").click(function() {
         viewVideo(this);
     });
-
-    // NS: thumb - START
-    jQuery("button.wimtv-thumbnail-upload").click(function() {
-        jQuery(this).parent().children("input").unbind("change");
-        jQuery(this).parent().children("input").change(function() {
-            uploadThumb(this);
-            jQuery(this).parent().children("input").attr("value", "");
-        });
-        jQuery(this).parent().children("input").click();
-    });
-
-    jQuery("button.wimtv-thumbnail-reset").click(function() {
-        resetThumb(this)
-    });
-
-    function uploadThumb(el) {
-        // RETRIEVE URN
-        var urn = jQuery(el).parent().children(".wimtv-thumbnail-upload").children("input").attr("value");
-        // RETRIEVE FILE
-        var inputFileUploadElement = jQuery(el);
-
-        // CHECK FILE TYPE
-        // THE FOLLOWING EXTENSION ARE ALSO LOCKED IN FILE DIALOG (accept='.png,.jpg')
-        // Please see: wp-content/plugins/wimtvpro/functions/listDownload.php
-        // and wp-content/plugins/wimtvpro/utils.php (getEditThumbnailControl)
-        var validExtensions = ['jpg', 'png']; //array of valid extensions
-        var fileName = inputFileUploadElement[0].files[0].name;
-        var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
-        if (jQuery.inArray(fileNameExt, validExtensions) == -1) {
-            alert("Invalid file type (allowed: " + validExtensions.toString() + ")");
-            return false;
-        }
-        // CHECK FILE SIZE
-        var fileSize = inputFileUploadElement[0].files[0].size;
-        // Please change also serverside check '$maxFileSize' in:
-        // "wp-content/plugins/wimtvpro/scripts.php"  
-        var maxSize_k = 300
-        if (fileSize > maxSize_k * 1000) {
-            alert("Invalid file size (max: " + maxSize_k + " KB)");
-            return false;
-        }
-
-        var formData = new FormData();
-        jQuery.each(inputFileUploadElement[0].files, function(i, file) {
-            formData.append('fileThumb', file);
-        });
-
-        formData.append('urn', urn);
-        formData.append('namefunction', "uploadThumb");
-        jQuery.ajax({
-            url: url_pathPlugin + "scripts.php",
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            type: "POST",
-            async: true,
-            enctype: 'multipart/form-data',
-//            xhr: function() {
-//                var xhr = new window.XMLHttpRequest();
-//                xhr.upload.addEventListener("progress", this.progresso, false);
-//                return xhr;
-//            },
-            beforeSend: function() {
-                // SHOW AJAX-LOADER IMAGE INSIDE THE BUTTON
-                inputFileUploadElement.parent().children(".wimtv-thumbnail-upload").children("img").attr("src", url_pathPlugin + "images/ajax-loader.gif")
-            },
-            success: function(response) {
-                // ALL IS OK!
-                // response.stored or response.url
-                if (response.stored === true) {
-                    var newUrl = response.url + '?' + Math.random();
-                    thumbEl = inputFileUploadElement.parent().parent().parent("tr").children(".image").children("span").children('img');
-                    thumbEl.attr("src", newUrl);
-                }
-                else {
-                    alert("Sorry, cannot store thumbnail. Please try again.");
-                }
-            },
-            error: function(request, error) {
-                // AN ERROR OCCURRED!        
-                alert("Sorry, an error occurred:\n" + request.responseText);
-//                jQuery("#message").html(request.responseText);
-            },
-            complete: function(response) {
-                // AFTER SUCCESS OR ERROR DO:
-                // RESET IMAGE BUTTON
-                inputFileUploadElement.parent().children(".wimtv-thumbnail-upload").children("img").attr("src", url_pathPlugin + "images/add_16x16.png");
-            }
-        });
-    }
-
-    function resetThumb(el) {
-        // RETRIEVE URN
-        var urn = jQuery(el).parent().children(".wimtv-thumbnail-upload").children("input").attr("value");
-        var islive = jQuery(el).attr("islive");
-        var button = jQuery(el);
-        var formData = new FormData();
-        formData.append('urn', urn);
-        formData.append('namefunction', "resetThumb");
-        formData.append('islive', islive);
-        jQuery.ajax({
-            url: url_pathPlugin + "scripts.php",
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            type: "POST",
-            async: true,
-            beforeSend: function() {
-                // SHOW AJAX-LOADER IMAGE INSIDE THE BUTTON
-                button.children("img").attr("src", url_pathPlugin + "images/ajax-loader.gif")
-            },
-            success: function(response) {
-                // ALL IS OK!
-                var stdUrl = response.defaultUrl;
-                thumbEl = button.parent().parent().parent("tr").children(".image").children("span").children('img');
-                thumbEl.attr("src", stdUrl);
-            },
-            error: function(request, error) {
-                // AN ERROR OCCURRED!        
-                alert("AN ERROR OCCURRED: \n\n" + request.responseText);
-                jQuery("#message").html(request.responseText);
-            },
-            complete: function(response) {
-                // AFTER SUCCESS OR ERROR DO:
-                // RESET IMAGE BUTTON
-                button.children("img").attr("src", url_pathPlugin + "images/remove2.png")
-            }
-        });
-    }
-    // NS: thumb - END
-
 
     function viewVideo(elem) {
 //        console.log('sei qui');
@@ -155,11 +19,10 @@ function initHandlers(){
     function callSync(elem) {
         jQuery.ajax({
             url: url_pathPlugin + "sync.php",
-            dataType: "html",
-            data: {sync: true, showtime: jQuery("table.items").attr("id")},
+            dataType: "json",
+            data: {sync: true, showtime: jQuery("table.items").attr("id"), getvideocount: true},
             type: "GET",
             beforeSend: function() {
-
                 jQuery(".loaderTable").show();
                 jQuery("form#formVideo").hide();
                 jQuery("table.items").hide();
@@ -167,14 +30,14 @@ function initHandlers(){
             },
             complete: function() {
                 jQuery(".loaderTable").hide();
-                initHandlers();
+                initEditThumbControls();
             },
             success: function(response) {
                 jQuery("form#formVideo").show();
                 jQuery("table.items").show();
                 console.log(response);
-                jQuery("table.items tbody").html(response);
-
+                jQuery("#videoCount").html(response.videocount);
+                jQuery("table.items tbody").html(response.tablebody);
                 jQuery("a.viewThumb").click(function() {
                     jQuery(this).colorbox({href: jQuery(this).attr("id")});
                 });
@@ -435,7 +298,6 @@ function initHandlers(){
         } else {
             height = "35%";
         }
-
         jQuery(element).colorbox({
             html: function() {
 
@@ -466,7 +328,6 @@ function initHandlers(){
                 jQuery(".form_save").click(function() {
                     var namefunction, licenseType, paymentMode, ccType, pricePerView, pricePerViewCurrency, changeClass, coId, id = "";
                     var id = element.parent().parent().parent("tr").attr("id");
-
                     var icon = element.parent().parent().parent("tr").children(".icon");
                     var nomeclass = element.parent().parent().parent("tr").children(".icon").children("span.add").attr("class");
                     var thisclass = element.attr("class");
@@ -511,7 +372,9 @@ function initHandlers(){
             changeClass = "icon_Putshowtime";
             coId = "&showtimeId=" + element.attr("id");
         }
-
+//        alert("nomeclass: " +nomeclass + "\n" + "namefunction: " + namefunction + "\n" + "changeClass: " + changeClass + "\n" +"coId: " + coId );
+//        alert(element.parent().parent().parent().parent().parent().attr("id"));
+//        return;
         jQuery.ajax({
             context: this,
             url: url_pathPlugin + "scripts.php",
@@ -545,23 +408,18 @@ function initHandlers(){
     jQuery(".icon_sync0").click(function() {
         callSync(this);
     });
-
     jQuery(".free,.cc,.ppv").click(function() {
         callPutShowtime(jQuery(this));
     });
-
     jQuery(".icon_Putshowtime,.icon_AcquPutshowtime").click(function() {
         callViewForm(jQuery(this));
     });
-
     jQuery(".icon_AcqRemoveshowtime,.icon_Removeshowtime,.icon_RemoveshowtimeInto").click(function() {
         callRemoveShowtime(jQuery(this));
     });
-
     jQuery(".icon_viewVideo").click(function() {
         callviewVideothumbs(jQuery(this));
     });
-
     jQuery(".icon_remove").click(function() {
         callRemoveVideo(jQuery(this));
     });
@@ -613,7 +471,6 @@ function initHandlers(){
             }
         });
     });
-
     jQuery(".removeUrl").click(function() {
         jQuery(this).hide();
         jQuery(".createUrl").show();
@@ -621,13 +478,13 @@ function initHandlers(){
         jQuery("#edit-url").removeAttr("disabled");
         jQuery("#edit-url").val("");
         jQuery("#urlcreate").show();
-    }); 
-    
-    
-    
-    
+    });
+
+
+
+
     ///////////// SECOND BLOCK ONREADY
-       jQuery("input#edit-videofile").change(function() {
+    jQuery("input#edit-videofile").change(function() {
         fileName = jQuery(this).val();
         fileTypes = ["", "mov", "mpg", "avi", "flv", "mpeg", "mp4", "mkv", "m4v"];
         if (!fileName) {
@@ -647,17 +504,14 @@ function initHandlers(){
             jQuery("input[name=\"files[videoFile]\"]").val("");
         }
     });
-
     jQuery("ul.itemsPublic li a").colorbox();
 
 
     //Playlist
     functionPlaylist();
-
     jQuery('.icon_playlist').click(function() {
         callInsertIntoPlayList(jQuery(this));
     });
-
     function callInsertIntoPlayList(elem) {
         var contentIdAdd = elem.attr("rel");
 
@@ -710,8 +564,6 @@ function initHandlers(){
 
 
     }
-
-
     function functionPlaylist() {
         /*SORTABLE*/
         jQuery("table.items_playlist tbody").sortable({
@@ -811,8 +663,6 @@ function initHandlers(){
 
         });
     }
-
-
     //End Playlist
 
 
@@ -825,16 +675,147 @@ function initHandlers(){
             jQuery('#site').html('peer.wim.tv');
         }
     });
-
     jQuery(".termsLink").colorbox({width: "80%", height: "80%", iframe: true, href: jQuery(this).attr("href")});
-
     jQuery(".ppvNoActive").click(function() {
         alert(nonePayment);
     });
-
     jQuery(".icon_downloadNone").click(function() {
         alert(videoproblem);
     });
+});
+
+function initEditThumbControls() {
+
+    // NS: thumb - START
+    jQuery("button.wimtv-thumbnail-upload").click(function() {
+        jQuery(this).parent().children("input").unbind("change");
+        jQuery(this).parent().children("input").change(function() {
+            uploadThumb(this);
+            jQuery(this).parent().children("input").attr("value", "");
+        });
+        jQuery(this).parent().children("input").click();
+    });
+    jQuery("button.wimtv-thumbnail-reset").click(function() {
+        resetThumb(this)
+    });
+
+    function uploadThumb(el) {
+        // RETRIEVE URN
+        var urn = jQuery(el).parent().children(".wimtv-thumbnail-upload").children("input").attr("value");
+        // RETRIEVE FILE
+        var inputFileUploadElement = jQuery(el);
+
+        // CHECK FILE TYPE
+        // THE FOLLOWING EXTENSION ARE ALSO LOCKED IN FILE DIALOG (accept='.png,.jpg')
+        // Please see: wp-content/plugins/wimtvpro/functions/listDownload.php
+        // and wp-content/plugins/wimtvpro/utils.php (getEditThumbnailControl)
+        var validExtensions = ['jpg', 'png']; //array of valid extensions
+        var fileName = inputFileUploadElement[0].files[0].name;
+        var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+        if (jQuery.inArray(fileNameExt, validExtensions) == -1) {
+            alert("Invalid file type (allowed: " + validExtensions.toString() + ")");
+            return false;
+        }
+        // CHECK FILE SIZE
+        var fileSize = inputFileUploadElement[0].files[0].size;
+        // Please change also serverside check '$maxFileSize' in:
+        // "wp-content/plugins/wimtvpro/scripts.php"  
+        var maxSize_k = 300
+        if (fileSize > maxSize_k * 1000) {
+            alert("Invalid file size (max: " + maxSize_k + " KB)");
+            return false;
+        }
+
+        var formData = new FormData();
+        jQuery.each(inputFileUploadElement[0].files, function(i, file) {
+            formData.append('fileThumb', file);
+        });
+
+        formData.append('urn', urn);
+        formData.append('namefunction', "uploadThumb");
+        jQuery.ajax({
+            url: url_pathPlugin + "scripts.php",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: "POST",
+            async: true,
+            enctype: 'multipart/form-data',
+//            xhr: function() {
+//                var xhr = new window.XMLHttpRequest();
+//                xhr.upload.addEventListener("progress", this.progresso, false);
+//                return xhr;
+//            },
+            beforeSend: function() {
+                // SHOW AJAX-LOADER IMAGE INSIDE THE BUTTON
+                inputFileUploadElement.parent().children(".wimtv-thumbnail-upload").children("img").attr("src", url_pathPlugin + "images/ajax-loader.gif")
+            },
+            success: function(response) {
+                // ALL IS OK!
+                // response.stored or response.url
+                if (response.stored === true) {
+                    var newUrl = response.url + '?' + Math.random();
+                    thumbEl = inputFileUploadElement.parent().parent().parent("tr").children(".image").children("span").children('img');
+                    thumbEl.attr("src", newUrl);
+                }
+                else {
+                    alert("Sorry, cannot store thumbnail. Please try again.");
+                }
+            },
+            error: function(request, error) {
+                // AN ERROR OCCURRED!        
+                alert("Sorry, an error occurred:\n" + request.responseText);
+//                jQuery("#message").html(request.responseText);
+            },
+            complete: function(response) {
+                // AFTER SUCCESS OR ERROR DO:
+                // RESET IMAGE BUTTON
+                inputFileUploadElement.parent().children(".wimtv-thumbnail-upload").children("img").attr("src", url_pathPlugin + "images/add_16x16.png");
+            }
+        });
+    }
+
+    function resetThumb(el) {
+        // RETRIEVE URN
+        var urn = jQuery(el).parent().children(".wimtv-thumbnail-upload").children("input").attr("value");
+        var islive = jQuery(el).attr("islive");
+        var button = jQuery(el);
+        var formData = new FormData();
+        formData.append('urn', urn);
+        formData.append('namefunction', "resetThumb");
+        formData.append('islive', islive);
+        jQuery.ajax({
+            url: url_pathPlugin + "scripts.php",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: "POST",
+            async: true,
+            beforeSend: function() {
+                // SHOW AJAX-LOADER IMAGE INSIDE THE BUTTON
+                button.children("img").attr("src", url_pathPlugin + "images/ajax-loader.gif")
+            },
+            success: function(response) {
+                // ALL IS OK!
+                var stdUrl = response.defaultUrl;
+                thumbEl = button.parent().parent().parent("tr").children(".image").children("span").children('img');
+                thumbEl.attr("src", stdUrl);
+            },
+            error: function(request, error) {
+                // AN ERROR OCCURRED!        
+                alert("AN ERROR OCCURRED: \n\n" + request.responseText);
+                jQuery("#message").html(request.responseText);
+            },
+            complete: function(response) {
+                // AFTER SUCCESS OR ERROR DO:
+                // RESET IMAGE BUTTON
+                button.children("img").attr("src", url_pathPlugin + "images/remove2.png")
+            }
+        });
+    }
+    // NS: thumb - END
 }
 
 function viewCategories(obj) {
@@ -891,6 +872,19 @@ function viewWho(obj) {
 
 }
 
+function isDaylightSavings() {
+    var today = new Date();
+    var jan = new Date(today.getFullYear(), 0, 1);
+    var jul = new Date(today.getFullYear(), 6, 1);
+    var max = Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+    return today.getTimezoneOffset() < max;
+}
+
+//function evaluateDaylightSavings(date) {
+//    var jan = new Date(date.getFullYear(), 0, 1);
+//    var jul = new Date(date.getFullYear(), 6, 1);
+//    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+//}
 
 // SECOND BLOCK ONREADY
 //jQuery(document).ready(function() {

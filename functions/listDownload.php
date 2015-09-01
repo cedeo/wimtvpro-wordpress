@@ -32,7 +32,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     //NS: Pending videos
     $status_pending = (isset($status_array[1])) ? $status_array[1] : false;
     if ($status_pending) {
-        $videothumb = "<img src=''/>";
+        $videothumb = "<img src='' class='icon-transcoding'/>";
         $title = (($record_new->title) != "") ? $record_new->title : $status_pending;
         $my_media = "<tr class='disabledItem' id='" . $content_item_new . "'>";
         $my_media .= "<td class='image' colspan='6' ><span class='wimtv-thumbnail' >" . $videothumb . "</span><br/>$title <br/>" . __('This video has not yet been processed, wait a few minutes and try to synchronize', "wimtvpro");

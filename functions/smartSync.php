@@ -29,7 +29,7 @@ class wimtvpro_smartSync {
 
             // VIDEO HAS NOT YET TRANSCODED OR NOT EXISTS
             if ($api_video_detail_response == "") {
-                $notReadyString="The video is not ready yet";
+                $notReadyString=__("The video is not ready yet", "wimtvpro");
                 $errorBody = $error_response->body;
                 $notReady = strstr($errorBody, $notReadyString);
                 

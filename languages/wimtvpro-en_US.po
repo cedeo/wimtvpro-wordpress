@@ -7,6 +7,139 @@ msgstr ""
 "Project-Id-Version: Wimtvpro\n"
 "Language: en\n"
 
+# START OF WHITELABEL CUSTOMIZATION
+#: 
+msgid "API_URL"
+msgstr "https://www.wim.tv/wimtv-webapp/rest/"
+
+#: 
+msgid "APP_NAME"
+msgstr "WimTvPro"
+
+#: 
+msgid "APP_HOME_LINK_URL"
+msgstr "http://www.wim.tv"
+
+#: 
+msgid "HELP_LINK_URL"
+msgstr "http://support.wim.tv/?cat=5"
+
+# menu items
+
+#: 
+msgid "SETTINGS_menuLink"
+msgstr "Settings"
+
+#: 
+msgid "REGISTER_menuLink"
+msgstr "REGISTER"
+
+#: 
+msgid "UPLOAD_menuLink"
+msgstr "Upload video"
+
+#: 
+msgid "WIMBOX_menuLink"
+msgstr "WimBox"
+
+#: 
+msgid "WIMVOD_menuLink"
+msgstr "WimVod"
+
+#: 
+msgid "PLAYLIST_menuLink"
+msgstr "Playlist"
+
+#: 
+msgid "WIMLIVE_menuLink"
+msgstr "WimLive"
+
+#: 
+msgid "SCHEDULES_menuLink"
+msgstr "Schedules"
+
+#: 
+msgid "ANALYTICS_menuLink"
+msgstr "Analytics"
+
+# menu urls
+
+#: 
+msgid "SETTINGS_urlLink"
+msgstr "config"
+
+#: 
+msgid "REGISTER_urlLink"
+msgstr "register"
+
+#: 
+msgid "UPLOAD_urlLink"
+msgstr "uploadvideo"
+
+#: 
+msgid "WIMBOX_urlLink"
+msgstr "showvideo"
+
+#: 
+msgid "WIMVOD_urlLink"
+msgstr "showpublished"
+
+#: 
+msgid "PLAYLIST_urlLink"
+msgstr "playlist"
+
+#: 
+msgid "WIMLIVE_urlLink"
+msgstr "liveevent"
+
+#: 
+msgid "SCHEDULES_urlLink"
+msgstr "schedules"
+
+#: 
+msgid "ANALYTICS_urlLink"
+msgstr "analytics"
+
+# page titles
+
+#: 
+msgid "SETTINGS_pageTitle"
+msgstr "Settings"
+
+#: 
+msgid "REGISTER_pageTitle"
+msgstr "Registration"
+
+#: 
+msgid "UPLOAD_pageTitle"
+msgstr "Upload video"
+
+#: 
+msgid "WIMBOX_pageTitle"
+msgstr "Wimbox"
+
+#: 
+msgid "WIMVOD_pageTitle"
+msgstr "WimVod"
+
+#: 
+msgid "PLAYLIST_pageTitle"
+msgstr "Playlist"
+
+#: 
+msgid "WIMLIVE_pageTitle"
+msgstr "WimLive"
+
+#: 
+msgid "SCHEDULES_pageTitle"
+msgstr "Schedules"
+
+#: 
+msgid "ANALYTICS_pageTitle"
+msgstr "Analytics"
+
+# END OF WHITELABEL CUSTOMIZATION
+
 #: 
 msgid "Synchronize"
 msgstr "Synchronize"
@@ -76,8 +209,8 @@ msgid "SIGN IT"
 msgstr "SIGN IN"
 
 #: 
-msgid "Analytics"
-msgstr "Analytics"
+# msgid "Analytics"
+# msgstr "Analytics"
 
 #: 
 msgid "Pricing"
@@ -555,8 +688,8 @@ msgid "Cannot establish a connection with Wimtv. User and/or password incorrect"
 msgstr "Cannot establish a connection with Wimtv. User and/or password incorrect"
 
 #: 
-msgid "Programming"
-msgstr "Schedule"
+# msgid "Programming"
+# msgstr "Schedule"
 
 #: 
 msgid "Connect to your account on WimTV"

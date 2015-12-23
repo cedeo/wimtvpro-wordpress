@@ -18,7 +18,7 @@ include_once("settings/live.php");
 include_once("settings/features.php");
 
 function wimtvpro_configure() {
-
+global $WIMTV_API_HOST;
     $uploads_info = wp_upload_dir();
     if (!isset($_GET["pack"])) {
         if (!isset($_GET["update"])) {
@@ -103,7 +103,10 @@ function wimtvpro_configure() {
 
                     update_option('wp_userwimtv', $_POST['userWimtv']);
                     update_option('wp_passwimtv', $_POST['passWimtv']);
-                    initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
+
+//                    initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
+                    initApi(cms_getWimtvApiUrl(), cms_getWimtvUser(), cms_getWimtvPwd());
+
                     if (get_option("wp_sandbox") == "No") {
                         initAnalytics("http://www.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
                     } else {
@@ -112,7 +115,7 @@ function wimtvpro_configure() {
 
 
                     $response = apiGetProfile();
-//                    var_dump($response);die;
+//var_dump($response);die;
                     $arrayjsonst = json_decode($response);
                     if ($arrayjsonst->paypalEmail != "") {
                         update_option('wp_activePayment', "true");
@@ -120,8 +123,8 @@ function wimtvpro_configure() {
                         update_option('wp_activePayment', "false");
                     }
 
-// NS: DISATTIVATO CHECK SU $_POST['sandbox']
-//                    if (($_POST['sandbox'] != get_option('wp_sandbox')) && (($_POST['userWimtv'] == "username") && ($_POST['passWimtv'] == "password"))) {
+                    // NS: DISATTIVATO CHECK SU $_POST['sandbox']
+                    // if (($_POST['sandbox'] != get_option('wp_sandbox')) && (($_POST['userWimtv'] == "username") && ($_POST['passWimtv'] == "password"))) {
                     if ((($_POST['userWimtv'] == "username") && ($_POST['passWimtv'] == "password"))) {
                         update_option('wp_registration', 'FALSE');
                         update_option('wp_userwimtv', 'username');

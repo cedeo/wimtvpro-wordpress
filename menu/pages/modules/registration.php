@@ -46,12 +46,11 @@ function wimtvpro_register($name, $surname, $email, $username, $password, $passw
 
         if ($arrayjsonst) {
             if ($arrayjsonst->result == "SUCCESS") {
-
+                $page = __('SETTINGS_urlLink', "wimtvpro") . "&pack=1";
+//                window.location = "admin.php?page=WimTvPro&pack=1";
                 echo '
               <script type="text/javascript">
-				<!--
-				window.location = "admin.php?page=WimTvPro&pack=1";
-				//-->
+                    window.location = "admin.php?page=' . $page . '";
               </script>';
                 echo '<div class="updated"><p><strong>';
                 _e("Registration successful.", "wimtvpro");

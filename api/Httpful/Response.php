@@ -19,20 +19,24 @@ class Response
            $content_type,
            $parent_type,
            $charset,
+           $meta_data,
            $is_mime_vendor_specific = false,
            $is_mime_personal = false;
 
     private $parsers;
+
     /**
      * @param string $body
      * @param string $headers
      * @param Request $request
+     * @param array $meta_data
      */
-    public function __construct($body, $headers, Request $request)
+    public function __construct($body, $headers, Request $request, array $meta_data = array())
     {
         $this->request      = $request;
         $this->raw_headers  = $headers;
         $this->raw_body     = $body;
+        $this->meta_data    = $meta_data;
 
         $this->code         = $this->_parseCode($headers);
         $this->headers      = Response\Headers::fromString($headers);
@@ -61,7 +65,7 @@ class Response
     }
 
     /**
-     * @return return bool
+     * @return bool
      */
     public function hasBody()
     {
@@ -72,8 +76,8 @@ class Response
      * Parse the response into a clean data structure
      * (most often an associative array) based on the expected
      * Mime type.
-     * @return array|string|object the response parse accordingly
      * @param string Http response body
+     * @return array|string|object the response parse accordingly
      */
     public function _parse($body)
     {
@@ -106,8 +110,8 @@ class Response
     /**
      * Parse text headers from response into
      * array of key value pairs
-     * @return array parse headers
      * @param string $headers raw headers
+     * @return array parse headers
      */
     public function _parseHeaders($headers)
     {
@@ -133,7 +137,9 @@ class Response
 
     public function _parseCode($headers)
     {
-        $parts = explode(' ', substr($headers, 0, strpos($headers, "\r\n")));
+        $end = strpos($headers, "\r\n");
+        if ($end === false) $end = strlen($headers);
+        $parts = explode(' ', substr($headers, 0, $end));
         if (count($parts) < 2 || !is_numeric($parts[1])) {
             throw new \Exception("Unable to parse response code from HTTP response due to malformed response");
         }

@@ -8,9 +8,15 @@ jQuery(document).ready(function() {
 //        console.log('sei qui');
         if (jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").length) {
             var url = jQuery(elem).parent().parent("tr").children("td").children("a.viewThumb").attr("id");
-            console.log(url);
-//            jQuery(elem).colorbox({href: url, width: '50%', height: '80%'});
-            jQuery(elem).colorbox({href: url, width: '50%', height: 'auto'});
+            console.log("function viewVideo says: " + url);
+//            jQuery(elem).colorbox({href: url, width: '50%', height: 'auto'});
+            jQuery(elem).colorbox({
+                href: url,
+                width: 'auto',
+                height: 'auto',
+                onComplete: function() {
+                    jQuery(elem).colorbox.resize();
+                }});
         } else {
             alert(videoproblem);
         }

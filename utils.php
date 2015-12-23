@@ -97,7 +97,8 @@ function wimtvpro_link_help() {
     /**
      * Ritorna il markup del pulsante che rimanda al sito di supporto, presente quasi in ogni pagina del plugin.
      */
-    return '<div class="help" style="float:right"><a href="' . get_option("wp_supportLink") . '" target="_new">' . __("Help") . '</a></div>';
+//    return '<div class="help" style="float:right"><a href="' . get_option("wp_supportLink") . '" target="_new">' . __("Help") . '</a></div>';
+    return '<div class="help" style="float:right"><a href="' . __('HELP_LINK_URL', "wimtvpro") . '" target="_new">' . __("Help") . '</a></div>';
 }
 
 function timezoneList() {
@@ -146,7 +147,7 @@ function getTimezoneNameEquivalent($timezoneName) {
     foreach ($defaultTimezoneArray as $tzName => $descr) {
         $tzTime = new \DateTime('now', new DateTimeZone($tzName));
         $tzTimezoneOffset = $tzTime->format('P');
-        if ($tzTimezoneOffset == $timezoneOffset){
+        if ($tzTimezoneOffset == $timezoneOffset) {
             return $tzName;
         }
     }

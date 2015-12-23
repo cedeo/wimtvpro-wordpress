@@ -96,7 +96,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     //For Admin
     if ($isfound) {
 //        $video = "<span class='wimtv-thumbnail' >" . $replace_video . "</span>";
-        $video = "<span class='wimtv-thumbnail' >" .$licenze_video . $replace_video . "</span>";
+        $video = "<span class='wimtv-thumbnail' >" . $licenze_video . $replace_video . "</span>";
     } else {
         $video = $replace_video;
         $replace_video = false;
@@ -192,10 +192,13 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
                     // NS: Added "translation" in title, i.e.: __("Remove from WimVod", "wimtvpro")
                     $action .= "<td class='icon'><span class='icon_RemoveshowtimeInto' title='" . __("Remove from WimVod", "wimtvpro") . "' id='" . $showtime_identifier . "'></span></td>";
                     $action .= "<td><span class='icon_moveThumbs' title='" . __("Drag", "wimtvpro") . "'></span></td>";
-                    $action .= "<td><span class='icon_viewVideo' rel='" . $view_video_state . "' title='Video Privacy'></span></td>";
+// NS: HIDE PRIVACY
+//                    $action .= "<td><span class='icon_viewVideo' rel='" . $view_video_state . "' title='Video Privacy'></span></td>";
                     $action .= "<td><textarea style='resize: none; width:90%;height:100%; readonly='readonly' onclick='this.focus(); this.select();'>[streamingWimtv  id='" . $content_item_new . "' width='" . get_option("wp_widthPreview") . "' height='" . get_option("wp_heightPreview") . "']</textarea></td>";
 
                     /* if ($licenseType!="PAYPERVIEW") $action  .= "<td><span class='icon_playlist' rel='" . $showtime_identifier . "' title='Add to Playlist selected'></span></td>"; */
+                } else if (current_user_can("editor")) {
+                    $action .= "<td><textarea style='resize: none; width:90%;height:100%; readonly='readonly' onclick='this.focus(); this.select();'>[streamingWimtv  id='" . $content_item_new . "' width='" . get_option("wp_widthPreview") . "' height='" . get_option("wp_heightPreview") . "']</textarea></td>";
                 }
             }
             if ($isfound) {

@@ -20,8 +20,9 @@ function wimtvpro_live() {
     $enabledLive = $dati["liveStreamEnabled"];
 
     if (strtoupper($enabledLive) != "TRUE") {
+        
         echo "<div class='error'>" . __("To use WimLive, you need to enable live streaming in Live Configuration in your Settings", "wimtvpro") .
-        " <a href='admin.php?page=WimTvPro&update=2'>Live streaming</a></div>";
+        " <a href='admin.php?page=".__('SETTINGS_urlLink', "wimtvpro")."&update=2'>Live streaming</a></div>";
         die();
     }
 
@@ -55,7 +56,7 @@ function wimtvpro_live() {
 //            $dati = apiGetLive($_GET['id'], $_GET['timezone']);
 
             $arraydati = json_decode($dati);
-//            var_dump($arraydati);die;
+
             $name = $arraydati->name;
             if ($arraydati->paymentMode == "FREEOFCHARGE")
                 $payperview = "0";
@@ -149,7 +150,7 @@ function wimtvpro_live() {
                 </tr>
             </thead>
             <tbody>
-                <?php wimtvpro_elencoLive("table", "all") ?>
+                <?php wimtvpro_elencoLive("table", ""); ?>
             </tbody>
         </table>
         </div>

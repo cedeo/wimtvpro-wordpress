@@ -23,7 +23,7 @@ function wimtvpro_upload() {
     ?>
     <div class='wrap'>
     <?php  echo  wimtvpro_link_help();?>
-    <h2><?php echo __("Upload Video","wimtvpro") ?></h2>
+    <h2><?php echo __("UPLOAD_pageTitle","wimtvpro") ?></h2>
     <div id='message'></div>
 
     <div class="progress-bar">

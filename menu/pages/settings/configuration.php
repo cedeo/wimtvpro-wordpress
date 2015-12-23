@@ -45,20 +45,19 @@ function settings_configuration($directory) {
     <div class="wrap">
         <?php echo wimtvpro_link_help(); ?>
 
-        <h2><?php _e("Configuration", "wimtvpro"); ?></h2>
+        <h2><?php _e('SETTINGS_pageTitle', "wimtvpro"); //_e("Configuration", "wimtvpro");   ?></h2>
 
         <?php
         $view_page = wimtvpro_alert_reg();
         $submenu = wimtvpro_submenu($view_page);
+        echo $submenu;
         ?>
-
-        <?php echo str_replace("config", "current", $submenu) ?>
 
         <div>
             <div class="empty"></div>
             <h4><?php _e("Connect to your account on WimTV", "wimtvpro"); ?></h4>
 
-            <form enctype="multipart/form-data" action="<?php echo add_query_arg($_GET)?>" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
+            <form enctype="multipart/form-data" action="<?php echo add_query_arg($_GET) ?>" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
 
                 <table class="form-table">
 
@@ -93,19 +92,19 @@ function settings_configuration($directory) {
                 </table>
                 <!-- NS: SET THE display PROPERTY 'none'/'block' TO HIDE/SHOW WIDTH AND HIGHT VIDEO SETTINGS-->
                 <!-- <div style="display: block;"> -->
-                    <h4><?php _e("Size of the player for your videos", "wimtvpro"); ?></h4>
+                <h4><?php _e("Size of the player for your videos", "wimtvpro"); ?></h4>
 
-                    <table class="form-table">
-                        <tr>
-                            <th><label for="edit-heightpreview"><?php _e("Height"); ?> (default: 280px)</label></th>
-                            <td><input type="text" id="edit-heightpreview" name="heightPreview" value="<?php echo get_option("wp_heightPreview"); ?>" size="100" maxlength="200" class="form-text" /></td>
-                        </tr>
-                        <tr>
-                            <th><label for="edit-widthpreview"><?php _e("Width"); ?> (default: 500px) </label></th>
-                            <td><input type="text" id="edit-widthpreview" name="widthPreview" value="<?php echo get_option("wp_widthPreview"); ?>" size="100" maxlength="200" class="form-text" /></td>
-                        </tr>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="edit-heightpreview"><?php _e("Height"); ?> (default: 280px)</label></th>
+                        <td><input type="text" id="edit-heightpreview" name="heightPreview" value="<?php echo get_option("wp_heightPreview"); ?>" size="100" maxlength="200" class="form-text" /></td>
+                    </tr>
+                    <tr>
+                        <th><label for="edit-widthpreview"><?php _e("Width"); ?> (default: 500px) </label></th>
+                        <td><input type="text" id="edit-widthpreview" name="widthPreview" value="<?php echo get_option("wp_widthPreview"); ?>" size="100" maxlength="200" class="form-text" /></td>
+                    </tr>
 
-                    </table>
+                </table>
                 <!-- </div> -->
                 <?php /* NS: HIDE ADDITIONAL OPTIONS
                  * 

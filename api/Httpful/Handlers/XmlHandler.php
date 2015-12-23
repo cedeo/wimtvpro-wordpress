@@ -32,10 +32,11 @@ class XmlHandler extends MimeHandlerAdapter
     /**
      * @param string $body
      * @return mixed
-     * @throws Exception if unable to parse
+     * @throws \Exception if unable to parse
      */
     public function parse($body)
     {
+        $body = $this->stripBom($body);
         if (empty($body))
             return null;
         $parsed = simplexml_load_string($body, null, $this->libxml_opts, $this->namespace);
@@ -47,12 +48,43 @@ class XmlHandler extends MimeHandlerAdapter
     /**
      * @param mixed $payload
      * @return string
-     * @throws Exception if unable to serialize
+     * @throws \Exception if unable to serialize
      */
     public function serialize($payload)
     {
         list($_, $dom) = $this->_future_serializeAsXml($payload);
         return $dom->saveXml();
+    }
+
+    /**
+     * @param mixed $payload
+     * @return string
+     * @author Ted Zellers
+     */
+    public function serialize_clean($payload)
+    {
+        $xml = new \XMLWriter;
+        $xml->openMemory();
+        $xml->startDocument('1.0','ISO-8859-1');
+        $this->serialize_node($xml, $payload);
+        return $xml->outputMemory(true);
+    }
+
+    /**
+     * @param \XMLWriter $xmlw
+     * @param mixed $node to serialize
+     * @author Ted Zellers
+     */
+    public function serialize_node(&$xmlw, $node){
+        if (!is_array($node)){
+            $xmlw->text($node);
+        } else {
+            foreach ($node as $k => $v){
+                $xmlw->startElement($k);
+                    $this->serialize_node($xmlw, $v);
+                $xmlw->endElement();
+            }
+        }
     }
 
     /**

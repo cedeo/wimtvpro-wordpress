@@ -45,7 +45,6 @@ function createContentId() {
 jQuery(document).ready(function() {
 
     jQuery("#wimtvpro-upload").submit(function(event) {
-
         event.preventDefault();
         var progress = jQuery(".progress-bar span");
         jQuery(progress).css("width", "0");

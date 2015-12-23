@@ -1,12 +1,29 @@
 <?php
 
-function wimtvpro_programming_embedded($progId){
+function wimtvpro_programming_embedded($progId) {
+    $basePath = cms_getWimtvApiUrl();
+    $height = get_option("wp_heightPreview") + 100;
+    $width = get_option("wp_widthPreview");
+    
+    $skinData = wimtvpro_get_skin_data();
+    $skinStyle="";
+    $skinLogo="";
+    if ($skinData['styleUrl'] != "") {
+        $skinStyle = $skinData["styleUrl"];
+    }
 
-	$basePath = get_option("wp_basePathWimtv");
-	$height = get_option("wp_heightPreview")+100;
-	$width = get_option("wp_widthPreview");
-	$iframe ='<div class="wrapperiframe" style="max-width:"' . $width . 'px" ><div class="h_iframe"><iframe src="' . $basePath . 'programming/' . $progId . '/embedded" frameborder="0" allowfullscreen style="overflow:hidden;" style="height:"' . $height . 'px;width:2px"></iframe></div></div>';
-	return $iframe;
+    if ($skinData['logoUrl'] != "") {
+        $skinLogo = $skinData['logoUrl'];
+    }
+    
+    $iframeUrl = $basePath . 'programming/' . $progId . '/embedded?width='.$width.'&height='.$height.'&insecureMode=on&autostart=true&skin='.$skinStyle.'&logo='.$skinLogo;       
+    $iframe = '
+        <div class="wrapperiframe" style="width:' . $width . 'px">
+        <div class="h_iframe">
+            <iframe src="' . $iframeUrl . '" frameborder="0" allowfullscreen style="overflow:hidden;" style="height:"' . $height . 'px;width:2px"></iframe>
+        </div>
+        </div>';
+    return $iframe;
 }
 
 ?>

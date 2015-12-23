@@ -6,33 +6,35 @@
  * TODO: questa divisione tra markup e logica può essere migliorata prendendo spunto dai templates di Drupal.
  */
 function wimtvpro_programming() {
-    $imgUrl = get_option('wp_wimtvPluginPath') . "images/postit_blank.png";
-    $textMessage_EN ="<center><b>Currently not available</b></center>
-        We are working on a better version in next release.";
-    
-    $textMessage_IT ="<center><b>Palinsensti disabilitati</b></center>
-        Stiamo lavorando ad una versione migliorata per la prossima release.";
-    print "<div style=\"
-                background: url('$imgUrl') no-repeat; 
-                width: 330px;
-                margin-top: 100px;    
-                margin-left: auto;    
-                margin-right: auto;    
-                    \">
-            <div style=\"
-                font-size: 1.3em !important;
-                position: relative;
-                top: 60px;
-                left: 60px;
-                width:250px;
-                height:354px;
-                overflow:hidden;
-                padding: 10px;
-                line-height: 2em;\">
-                $textMessage_IT <br/> $textMessage_EN 
-            </div>
-           </div>";
-    return;
+//    if (!isConnectedToTestServer()) {
+//        $imgUrl = get_option('wp_wimtvPluginPath') . "images/postit_blank.png";
+//        $textMessage_EN = "<center><b>Currently not available</b></center>
+//        We are working on a better version in next release.";
+//
+//        $textMessage_IT = "<center><b>Palinsensti disabilitati</b></center>
+//        Stiamo lavorando ad una versione migliorata per la prossima release.";
+//        print "<div style=\"
+//                background: url('$imgUrl') no-repeat; 
+//                width: 330px;
+//                margin-top: 100px;    
+//                margin-left: auto;    
+//                margin-right: auto;    
+//                    \">
+//            <div style=\"
+//                font-size: 1.3em !important;
+//                position: relative;
+//                top: 60px;
+//                left: 60px;
+//                width:250px;
+//                height:354px;
+//                overflow:hidden;
+//                padding: 10px;
+//                line-height: 2em;\">
+//                $textMessage_IT <br/> $textMessage_EN 
+//            </div>
+//           </div>";
+//        return;
+//    }
 
     $view_page = wimtvpro_alert_reg();
     if (!$view_page) {
@@ -56,7 +58,7 @@ function wimtvpro_programming() {
                     $progID = isset($_GET["progId"]) ? $_GET["progId"] : "";
                 }
                 ?>
-                <h2><a href='?page=WimVideoPro_Programming' class='add-new-h2'><?php echo __('Return to list', 'wimtvpro') ?></a></h2>
+                <h2><a href='?page=<?php _e('SCHEDULES_urlLink', "wimtvpro"); ?>' class='add-new-h2'><?php echo __('Return to list', 'wimtvpro') ?></a></h2>
                 <?php
                 echo apiProgrammingGetIframe($progID);
 
@@ -98,9 +100,9 @@ function wimtvpro_programming() {
                                 ?>
                                 <tr>
                                     <td><?php echo $titleProgramming; ?></td>
-                                    <td><a href='?page=WimVideoPro_Programming&namefunction=modifyProgramming&title=<?php echo $titleProgramming; ?>&progId=<?php echo $prog->identifier; ?>' alt='<?php _e("Modify", "wimtvpro"); ?>' title='<?php _e("Modify", "wimtvpro"); ?>'><img src='<?php echo get_option('wp_wimtvPluginPath'); ?>images/mod.png'  alt='<?php _e("Modify", "wimtvpro"); ?>'></a>
+                                    <td><a href='?page=<?php _e('SCHEDULES_urlLink', "wimtvpro"); ?>&namefunction=modifyProgramming&title=<?php echo $titleProgramming; ?>&progId=<?php echo $prog->identifier; ?>' alt='<?php _e("Modify", "wimtvpro"); ?>' title='<?php _e("Modify", "wimtvpro"); ?>'><img src='<?php echo get_option('wp_wimtvPluginPath'); ?>images/mod.png'  alt='<?php _e("Modify", "wimtvpro"); ?>'></a>
                                     </td>
-                                    <td><a href='?page=WimVideoPro_Programming&functionList=delete&id=<?php echo $prog->identifier; ?>' alt='<?php _e("Remove"); ?>' title='<?php _e("Remove"); ?>'><img src='<?php echo get_option('wp_wimtvPluginPath'); ?>images/remove.png'  alt='<?php _e("Remove"); ?>'></a>
+                                    <td><a href='?page=<?php _e('SCHEDULES_urlLink', "wimtvpro"); ?>&functionList=delete&id=<?php echo $prog->identifier; ?>' alt='<?php _e("Remove"); ?>' title='<?php _e("Remove"); ?>'><img src='<?php echo get_option('wp_wimtvPluginPath'); ?>images/remove.png'  alt='<?php _e("Remove"); ?>'></a>
 
 
                                     </td>

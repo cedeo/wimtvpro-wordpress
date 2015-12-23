@@ -62,7 +62,7 @@ function wimtvpro_playlist() {
 ?>
     <div class='wrap'>
     <?php  echo  wimtvpro_link_help();?>
-    <h2>Playlist <?php echo $linkReturn ?></h2>
+    <h2><?php _e('PLAYLIST_pageTitle', "wimtvpro"); ?> <?php echo $linkReturn ?></h2>
     <p><?php echo __("Create a playlist of videos (ONLY FREE videos are possible) to be posted to your website","wimtvpro") ?></p>
     <p><?php echo __("Move videos from left to right","wimtvpro") ?></p>
     <?php if ($updated) {
@@ -130,7 +130,7 @@ function wimtvpro_playlist() {
                 </td>
                 
                 <td>
-                    <a href="?page=WimTV_Playlist&namefunction=modPlaylist&id=<?php echo $record->id ?>">
+                    <a href="?page=<?php _e('PLAYLIST_urlLink', "wimtvpro"); ?>&namefunction=modPlaylist&id=<?php echo $record->id ?>">
                         <span class="icon_modPlay"></span>
                     </a>
                 </td>

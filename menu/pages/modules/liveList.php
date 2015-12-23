@@ -14,6 +14,7 @@ header('Content-type: text/html');
 
 $json = apiGetLiveEvents($timezone, $onlyActive);
 $arrayjson_live = json_decode($json);
+
 //var_dump($arrayjson_live);die;
 $count = -1;
 $output = "";
@@ -48,19 +49,37 @@ if ($arrayjson_live) {
 
         $identifier = $value->identifier;
 
+//        $skin = "";
+//        if (get_option('wp_nameSkin') != "") {
+//            $uploads_info = wp_upload_dir();
+//            $directory = $uploads_info["baseurl"] . "/skinWim";
+//
+//            $nomeFilexml = wimtvpro_searchFile($uploads_info["basedir"] . "/skinWim/" . get_option('wp_nameSkin') . "/wimtv/", "xml");
+//            $skin = "&skin=" . $directory . "/" . get_option('wp_nameSkin') . "/wimtv/" . $nomeFilexml;
+//        }
+//
+//        $params = "timezone=" . $timezone;
+//        if ($skin != "") {
+//            $params.="&amp;skin=" . $skin;
+//        }
+
+        $insecureMode = "&insecureMode=on";
         $skin = "";
-        if (get_option('wp_nameSkin') != "") {
-            $uploads_info = wp_upload_dir();
-            $directory = $uploads_info["baseurl"] . "/skinWim";
-
-            $nomeFilexml = wimtvpro_searchFile($uploads_info["basedir"] . "/skinWim/" . get_option('wp_nameSkin') . "/wimtv/", "xml");
-            $skin = "&skin=" . $directory . "/" . get_option('wp_nameSkin') . "/wimtv/" . $nomeFilexml;
+        $logo = "";
+        
+        $params.=$insecureMode;
+        // A SKIN HAS BEEN ADDED: OVERRIDE DEFAULT SKIN PATH
+        $skinData = wimtvpro_get_skin_data();
+        if ($skinData['styleUrl'] != "") {
+            $skin = "&skin=" . htmlentities($skinData['styleUrl']);
+            $params.= $skin;
         }
 
-        $params = "timezone=" . $timezone;
-        if ($skin != "") {
-            $params.="&amp;skin=" . $skin;
+        if ($skinData['logoUrl'] != "") {
+            $logo = "&logo=" . htmlentities($skinData['logoUrl']);
+            $params.= $logo;
         }
+
         if ($id == "all") {
             $embedded_code_text = "[wimlive id='$identifier' zone='$timezone']";
         } else {
@@ -80,19 +99,15 @@ if ($arrayjson_live) {
         // client timezone taking into account whether the client is in daylight 
         // savings or not. We do that in js by using a custom function (isDaylightSavings())
         // (see wimtvpro.js)
-        
 //        $cliTimeOffset = $_POST['cliTimeOffset'];
-        
 //        $timezoneName = timezone_name_from_abbr("", $cliTimeOffset, 0);
 //        $timezoneName = get_offset_to_name($cliTimeOffset);
-
-        
 //        if ($timezoneName != false) {
-            $cliTimezone = new DateTimeZone($cliTimezoneName);
-            $start->setTimezone($cliTimezone);
+        $cliTimezone = new DateTimeZone($cliTimezoneName);
+        $start->setTimezone($cliTimezone);
 //        }
-        
-        
+
+
         $oraMin = $start->format('H') . ":" . $start->format('i');
         $timeToStart = $livedate->timeToStart;
         $timeLeft = $livedate->timeLeft;
@@ -101,7 +116,7 @@ if ($arrayjson_live) {
         //$embedded_code = htmlentities(curl_exec($ch_embedded));
         //$embedded_code_text = '<iframe id="com-wimlabs-player" name="com-wimlabs-player" src="' . $urlPeer . '/liveStreamEmbed/' . $identifier . '/player?width=692&height=440" style="min-width: 692px; min-height: 440px;"></iframe>';
 
-        $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();">' . $embedded_code_text . '</textarea>';
+        $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();" style="width: 100%">' . $embedded_code_text . '</textarea>';
         if ($type == "table") {
             //Check Live is now
 
@@ -133,12 +148,12 @@ if ($arrayjson_live) {
             $output .= "<td> ";
 
 //            $output .="<a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "&timezone=" . $timezoneOffset . "' alt='" . __("Modify")
-            $output .="<a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "&timezone=" . $remote_timezoneOffset . "&cliTimezoneName=".$cliTimezoneName."' alt='" . __("Modify")
+            $output .="<a href='?page=" . __("WIMLIVE_urlLink", "wimtvpro") . "&namefunction=modifyLive&id=" . $identifier . "&timezone=" . $remote_timezoneOffset . "&cliTimezoneName=" . $cliTimezoneName . "' alt='" . __("Modify")
                     . "'   title='" . __("Modify", "wimtvpro") . "'><img src='" . get_option('wp_wimtvPluginPath') . "images/mod.png"
                     . "'  alt='" . __("Modify", "wimtvpro") . "'></a>";
             $output .="</td>";
             $output .= "<td> ";
-            $output .= "<a href='?page=WimLive&namefunction=deleteLive&id=" . $identifier . "' title='" . __("Remove") . "'><img src='" . get_option('wp_wimtvPluginPath') . "images/remove.png" . "' alt='" . __("Remove") . "'></a>";
+            $output .= "<a href='?page=" . __("WIMLIVE_urlLink", "wimtvpro") . "&namefunction=deleteLive&id=" . $identifier . "' title='" . __("Remove") . "'><img src='" . get_option('wp_wimtvPluginPath') . "images/remove.png" . "' alt='" . __("Remove") . "'></a>";
 
             $output .="</td>
 
@@ -162,8 +177,9 @@ if ($arrayjson_live) {
         }
     }
 }
-if ($count < 0)
+if ($count < 0) {
     $output = __("There are no live events", "wimtvpro");
+}
 
 echo $output;
 

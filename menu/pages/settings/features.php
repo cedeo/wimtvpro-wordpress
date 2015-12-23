@@ -47,7 +47,7 @@ function settings_features($dati) {
     <form enctype="multipart/form-data" action="<?php echo add_query_arg($_GET)?>" method="post" id="configwimtvpro-group" accept-charset="UTF-8">
         <table class="form-table">
             <tr>
-                <th><label for="edit-name"><?php echo __("Index and show public videos on WimTV","wimtvpro") ?> (<a href="http://www.wim.tv" target="new">www.wim.tv</a>)</label></th>
+                <th><label for="edit-name"><?php echo __("Index and show public videos on WimTV","wimtvpro") ?> (<a href="<?php _e('APP_HOME_LINK_URL', "wimtvpro"); ?>" target="new"><?php _e('APP_HOME_LINK_URL', "wimtvpro"); ?></a>)</label></th>
                 <td>
                     <select id="edit-hidePublicShowtimeVideos" name="hidePublicShowtimeVideos" class="form-select">
                         <option value="false"

@@ -2,10 +2,9 @@
 
 /**
  * Written by walter at 30/10/13
- * Updated by Netsense s.r.l. 2014-2015
+ * Updated by Netsense s.r.l. 2014
  */
 include_once("api.php");
-include_once("wimtv_api_cmsspecific.php");
 
 use \Api\Api;
 use \Httpful\Mime;
@@ -14,16 +13,14 @@ use \Httpful\Request;
 /* * *** API SETTINGS **** */
 //NS
 global $WIMTV_API_TEST, $WIMTV_API_PRODUCTION, $WIMTV_API_HOST;
+$WIMTV_API_TEST = "http://peer.wim.tv:8080/wimtv-webapp/rest/";
+$WIMTV_API_PRODUCTION = get_option("wp_basePathWimtv");
 
-$WIMTV_API_TEST = cms_getWimtvApiTestUrl();
-$WIMTV_API_PRODUCTION = cms_getWimtvApiProductionUrl();
-
-//$WIMTV_API_HOST = $WIMTV_API_TEST;
-$WIMTV_API_HOST = $WIMTV_API_PRODUCTION;
+$WIMTV_API_HOST = $WIMTV_API_TEST;
+//$WIMTV_API_HOST = $WIMTV_API_PRODUCTION;
 /* * ******* */
 
 function initApi($host, $username, $password) {
-// $host = "http://www.wim.tv/wimtv-webapp/rest/";
     Api::initApiAccessor($host, $username, $password);
 }
 
@@ -302,14 +299,30 @@ function apiAddLive($parameters, $timezone = null) {
     $request = $apiAccessor->postRequest($url);
     $request = $apiAccessor->authenticate($request);
 
-//    $request->sendsAndExpects(Mime::JSON);
-//    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    $request->sendsAndExpects(Mime::JSON);
+    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 
     $request->body($parameters);
-
+    
     $response = $apiAccessor->execute($request, 'application/json', false);
 
-
+//    $parameters_json = json_encode($parameters);
+//    $apiAccessor = getApi();
+//    $url = $apiAccessor->liveHostsUrl;
+//    if ($timezone)
+//        $url .= '?timezone=' . $timezone;
+//    $request = $apiAccessor->postRequest($url);
+//    $request->body($parameters_json);
+//    $request = $apiAccessor->authenticate($request);
+//    $response = $apiAccessor->execute($request, 'application/json', false);
+//    var_dump($parameters);
+//    print "<hr/>";
+//    var_dump($parameters_json);
+//    print "<hr/>";
+//    var_dump($request);
+//    print "<hr/>";
+//    var_dump($response);
+//    die;
     return $response;
 }
 
@@ -338,8 +351,7 @@ function apiProgrammingGetIframe($progID) {
     $apiHost = $apiAccessor->getHost();
     $wimtvUrl = substr($apiHost, 0, -6) . "/"; // OPP: str_replace("/rest", "", $apiHost);
     $simple = "true";
-//    $wimtvuser = variable_get("userWimtv"); //"linolino2";
-    $wimtvuser = cms_getWimtvUser(); //"linolino2";
+    $wimtvuser = get_option("wp_userwimtv"); //"linolino2";
     $OTPresponse = apiProgrammingGetOTP();
     $arrayjsonst = json_decode($OTPresponse);
     $iframe = "<div>OTP Connection Error<div>";
@@ -494,6 +506,5 @@ function isConnectedToTestServer() {
     return ($WIMTV_API_HOST === $WIMTV_API_TEST);
 }
 
-initApi($WIMTV_API_HOST, cms_getWimtvUser(), cms_getWimtvPwd());
-//initApi($WIMTV_API_HOST, variable_get("userWimtv"), variable_get("passWimtv"));
+initApi($WIMTV_API_HOST, get_option("wp_userwimtv"), get_option("wp_passwimtv"));
 ?>

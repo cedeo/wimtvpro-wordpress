@@ -205,9 +205,10 @@ function wimtvpro_savelive($function) {
             if ($result == "SUCCESS") {
                 echo '<script language="javascript">
             <!--
-            window.location = "admin.php?page=WimLive";
+            //window.location = "admin.php?page=WimLive";
+            window.location = "admin.php?page='. __("WIMLIVE_urlLink", "wimtvpro"). '"</script>';
             //-->
-            </script>';
+            //</script>';
 
 
                 echo '<div class="updated"><p><strong>';
@@ -223,7 +224,7 @@ function wimtvpro_savelive($function) {
                         $formset_error .= $value->message . "<br/>";
                 }
                 echo '<div class="error"><p><strong>' . $formset_error . '</strong></p></div>';
-                echo '<div><strong>' . $response . '</strong></div>';
+                //echo '<div><strong>' . $response . '</strong></div>';
             }
         }
     }

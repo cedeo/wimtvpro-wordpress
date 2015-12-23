@@ -1,48 +1,26 @@
 <?php
+
 // EMBEDDEDALL.PHP
+// NS: THIS FILE CONCERN WIMBOX e "WIMVOD PAYPERVIEW" PLAY
+
 global $user;
 include("../../../../wp-load.php");
+
+//var_dump(get_option('wp_nameSkin'));die;
+
 $contentItem = $_GET['c'];
 $directory = isset($uploads_info) ? $uploads_info["baseurl"] . "/skinWim" : "";
 $streamItem = isset($_GET['s']) ? $_GET['s'] : "";
 if (strlen($contentItem) > 0) {
 
     $arrayPlay = dbGetVideo($contentItem);
+    $widthDiv = get_option("wp_widthPreview") + 5; // + 280;
     $heightDiv = get_option("wp_heightPreview") + 150;
-    $widthDiv = get_option("wp_widthPreview") + 280;
-    echo "<div class='responsiveVideo'>";
-    echo "<div id='container'> </div>";
+    $output = "<div class='responsiveVideo' style='width: " . $widthDiv . "px; height: " . $heightDiv . "px;'>";
+    $output .= "<div id='container' style='margin-left:auto; margin-right:auto;'> </div>";
 
     if ($arrayPlay[0]->urlPlay != "") {
-
-        $dimensions = "width: '" . get_option("wp_widthPreview") . "', height: '" . get_option("wp_heightPreview") . "',";
-
-        $urlPlay = explode("$$", $arrayPlay[0]->urlPlay);
-
-        if (!isset($arrayPlay[0]->urlThumbs))
-            $thumbs[1] = "";
-        else
-            $thumbs = explode('"', $arrayPlay[0]->urlThumbs);
-        $thumbs = str_replace('\\', '', $thumbs);
-        $dirJwPlayer = plugin_dir_url(dirname(__FILE__)) . "script/jwplayer/player.swf";
-        $configFile = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'], $contentItem, $dirJwPlayer);
-
-        //Ricerca NomeFilexml
-        $uploads_info = wp_upload_dir();
-        echo "<script type='text/javascript'>jwplayer('container').setup({";
-
-        // SET SKIN PATH AS DEFAULT
-        $skin = "'skin':'" . plugin_dir_url(dirname(__FILE__)) . "/script/skinDefault/wimtv/wimtv.xml',";
-
-        if (get_option('wp_nameSkin') != "") {
-            // A SKIN HAS BEEN ADDED: OVERRIDE DEFAULT SKIN PATH
-            $directory = $uploads_info["baseurl"] . "/skinWim";
-            $nomeFilexml = wimtvpro_searchFile($uploads_info["basedir"] . "/skinWim/" . get_option('wp_nameSkin') . "/wimtv/", "xml");
-//            $skin = "'skin':'" . $directory . "/" . get_option('wp_nameSkin') . "/" . $nomeFilexml . "',";
-            $skin = "'skin':'" . $directory . "/" . get_option('wp_nameSkin') . "/wimtv/" . $nomeFilexml . "',";
-        }
-        echo $skin . $dimensions . $configFile . " image: '" . $thumbs[1] . "',
-		});</script>";
+        $output .= configurePlayerJS($contentItem);
 
         $output .= "<h3>" . $arrayPlay[0]->title . " (Preview)</h3>";
         $output .= "[<b>" . $arrayPlay[0]->duration . "</b>]";
@@ -72,4 +50,54 @@ if (strlen($contentItem) > 0) {
         echo __('This video has not yet been processed, wait a few minutes and try to synchronize', "wimtvpro");
     }
 }
+
+//function configurePlayer($contentItem) {
+//    $player = array();
+//
+//    $response = apiGetDetailsVideo($contentItem);
+//    $arrayjson = json_decode($response);
+//
+//    $player['file'] = $arrayjson->streamingUrl->file;
+//    $player['streamer'] = $arrayjson->streamingUrl->streamer;
+//    $player['type'] = "rtmp";
+//    $player['primary'] = "flash";
+//    $player['rtmp'] = "{tunnelling: false, fallback: false}";
+//
+//
+//    $player['width'] = get_option("wp_widthPreview");
+//    $player['height'] = get_option("wp_heightPreview");
+//    $player['image'] = $arrayjson->thumbnailUrl;
+//
+//    $player['skin'] = "";
+//    $player['logo'] = "";
+//
+//    // A SKIN HAS BEEN ADDED: OVERRIDE DEFAULT SKIN PATH
+//    $skinData = wimtvpro_get_skin_data();
+//    if ($skinData['styleUrl'] != "") {
+//        $player['skin'] = "{name : '" . $skinData["skinName"] . "', url : '" . $skinData['styleUrl'] . "'}";
+//    }
+//
+//    if ($skinData['logoUrl'] != "") {
+//        $player['logo'] = "{file : '" . $skinData['logoUrl'] . "', hide : true}";
+//    }
+//
+//
+//
+//    $playerScript = "
+//            <script>jwplayer.key='2eZ9I53RjqbPVAQkIqbUFMgV2WBIyWGMCY7ScjJWMUg=';</script>
+//            <script type='text/javascript'>jwplayer('container').setup({";
+//
+//    foreach ($player as $key => $value) {
+//        if ($value != "") {
+//            if ($key != "rtmp" && $key != "skin" && $key != "logo") {
+//                $value = "'" . $value . "'";
+//            }
+//            $playerScript.=$key . ": " . $value . ",";
+//        }
+//    }
+//
+//    $playerScript .= "});</script>";
+//    return $playerScript;
+//}
+
 ?>

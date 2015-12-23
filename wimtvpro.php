@@ -1,15 +1,15 @@
 <?php
 /*
-  Plugin Name: Wim Tv Pro
+  Plugin Name: Wim Tv Pro for WP
   Plugin URI: http://wimtvpro.tv
   Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-  Version: 3.6.5
+  Version: 4.0
   Author: WIMLABS
   Author URI: http://www.wimlabs.com
   License: GPLv2 or later
  */
 
-/*  Copyright 2013-2015  wimlabs  (email : riccardo@cedeo.net)
+/*  Copyright 2013  wimlabs  (email : riccardo@cedeo.net)
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
@@ -26,8 +26,6 @@
  */
 
 // Create a term metadata table where $type = metadata type
-
-
 
 include_once("database/db.php");
 include_once("log/log.php");
@@ -137,7 +135,8 @@ function wimtvpro_setting() {
     add_option('wp_supportPage', 'http://support.wim.tv/?p=');
 
     // NS: WE SET HERE DEFAULT WIM.TV BASEPATH
-    update_option('wp_basePathWimtv', 'https://www.wim.tv/wimtv-webapp/rest/');
+//    update_option('wp_basePathWimtv', 'https://www.wim.tv/wimtv-webapp/rest/');
+    update_option('wp_basePathWimtv', __('API_URL', "wimtvpro"));
 }
 
 //Executes the wimtvpro_setting function on plugin activation
@@ -180,40 +179,135 @@ function wimtvpro_remove() {
     deleteWimTVPosts();
 }
 
-//menu admin
-function wimtvpro_menu() {
-    $user = wp_get_current_user();
-    //For Admin
-    if ($user->roles[0] == "administrator") {
-
-        add_menu_page('WimTvPro', 'WimTvPro', 'administrator', 'WimTvPro', 'wimtvpro_configure', plugins_url('images/iconMenu.png', __FILE__), 6);
-
-        add_submenu_page('WimTvPro', __('Settings', "wimtvpro"), __('Settings', "wimtvpro"), 'administrator', 'WimTvPro', 'wimtvpro_configure');
-
-        if ((get_option("wp_registration") == FALSE) || ((get_option("wp_userwimtv") == "username") && get_option("wp_passwimtv") == "password")) {
-            $registrationHidden = "";
-            add_submenu_page($registrationHidden, __('WimTV Registration', "wimtvpro"), __('WimTV Registration', "wimtvpro"), 'administrator', 'WimTvPro_Registration', 'wimtvpro_registration');
-        }
-        add_submenu_page('WimTvPro', __('Upload Video', "wimtvpro"), __('Upload Video', "wimtvpro"), 'administrator', 'WimTV_Upload', 'wimtvpro_upload');
-        add_submenu_page('WimTvPro', 'WimBox', 'WimBox', 'administrator', 'WimBox', 'wimtvpro_wimbox');
-        add_submenu_page('WimTvPro', 'WimVod', 'WimVod', 'administrator', 'WimVod', 'wimtvpro_mystreaming');
-
-        add_submenu_page('WimTvPro', __('Playlist', "wimtvpro"), __('Playlist', "wimtvpro"), 'administrator', 'WimTV_Playlist', 'wimtvpro_playlist');
-        add_submenu_page('WimTvPro', 'WimLive', 'WimLive', 'administrator', 'WimLive', 'wimtvpro_live');
-
-        // NS: WE TEMPORARY HIDE THE PROGRAMMINGS SECTION
-        add_submenu_page('WimTvPro', __('Programmings', "wimtvpro"), __('Programmings', "wimtvpro"), 'administrator', 'WimVideoPro_Programming', 'wimtvpro_programming');
-        add_submenu_page('WimTvPro', __('Analytics'), __('Analytics'), 'administrator', 'WimTVPro_Report', 'wimtvpro_Report');
-    }
-
-    if ($user->roles[0] == "author") {
-        add_menu_page('WimTvPro', 'WimVod', 'author', 'WimVideo', 'wimtvpro_mystreaming', plugins_url('images/iconMenu.png', __FILE__), 6);
-    }
-    if ($user->roles[0] == "editor") {
-        add_menu_page('WimVod', 'WimVod', 'editor', 'WimVideo', 'wimtvpro_mystreaming', plugins_url('images/iconMenu.png', __FILE__), 6);
+function wimtvpro_admin_notice() {
+    if (isConnectedToTestServer()) {
+        PRINT "<div class='isTestServer'>WARNING: WIMTV IS CONNECTED TO TEST SERVER!</div>";
     }
 }
 
+//menu admin
+function wimtvpro_menu() {
+    // SHOW ADMINISTRATOR NOTICES
+    add_action('admin_notices', 'wimtvpro_admin_notice');
+//    $user = wp_get_current_user();
+    if (current_user_can("edit_others_posts")) {
+        // ADMINISTRATOR AND EDITOR
+        $menu_slug = __('SETTINGS_urlLink', "wimtvpro");
+        add_menu_page(__('SETTINGS_menuLink', "wimtvpro"), __('APP_NAME', "wimtvpro"), "edit_others_posts", $menu_slug, 'wimtvpro_configure', plugins_url('images/iconMenu.png', __FILE__), 6);
+        wimtvpro_menu_by_capability($menu_slug, "edit_others_posts");
+    } else if (current_user_can("edit_posts")) {
+        // AUTHOR AND CONTRIBUTOR
+        $menu_slug = __('UPLOAD_urlLink', "wimtvpro");
+        add_menu_page(__('UPLOAD_menuLink', "wimtvpro"), __('APP_NAME', "wimtvpro"), "edit_posts", $menu_slug, 'wimtvpro_upload', plugins_url('images/iconMenu.png', __FILE__), 6);
+        wimtvpro_menu_by_capability($menu_slug, "edit_posts");
+    }
+
+    return;
+    /*   // OLD 
+      //For Admin
+      if (current_user_can("administrator")) {
+      //    if ($user->roles[0] == "administrator") {
+      add_menu_page(__('SETTINGS_menuLink', "wimtvpro"), __('APP_NAME', "wimtvpro"), 'administrator', __('SETTINGS_urlLink', "wimtvpro"), 'wimtvpro_configure', plugins_url('images/iconMenu.png', __FILE__), 6);
+
+      add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('SETTINGS_menuLink', "wimtvpro"), __('SETTINGS_menuLink', "wimtvpro"), 'administrator', __('SETTINGS_urlLink', "wimtvpro"), 'wimtvpro_configure');
+
+      if ((get_option("wp_registration") == FALSE) || ((get_option("wp_userwimtv") == "username") && get_option("wp_passwimtv") == "password")) {
+      $registrationHidden = "";
+      add_submenu_page($registrationHidden, __('WimTV Registration', "wimtvpro"), __('WimTV Registration', "wimtvpro"), 'administrator', 'WimTvPro_Registration', 'wimtvpro_registration');
+      }
+      add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('UPLOAD_menuLink', "wimtvpro"), __('UPLOAD_menuLink', "wimtvpro"), 'administrator', __('UPLOAD_urlLink', "wimtvpro"), 'wimtvpro_upload');
+      add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('WIMBOX_menuLink', "wimtvpro"), __('WIMBOX_menuLink', "wimtvpro"), 'administrator', __('WIMBOX_urlLink', "wimtvpro"), 'wimtvpro_wimbox');
+      add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('WIMVOD_menuLink', "wimtvpro"), __('WIMVOD_menuLink', "wimtvpro"), 'administrator', __('WIMVOD_urlLink', "wimtvpro"), 'wimtvpro_mystreaming');
+
+      add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('PLAYLIST_menuLink', "wimtvpro"), __('PLAYLIST_menuLink', "wimtvpro"), 'administrator', __('PLAYLIST_urlLink', "wimtvpro"), 'wimtvpro_playlist');
+      add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('WIMLIVE_menuLink', "wimtvpro"), __('WIMLIVE_menuLink', "wimtvpro"), 'administrator', __('WIMLIVE_urlLink', "wimtvpro"), 'wimtvpro_live');
+
+
+      add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('SCHEDULES_menuLink', "wimtvpro"), __('SCHEDULES_menuLink', "wimtvpro"), 'administrator', __('SCHEDULES_urlLink', "wimtvpro"), 'wimtvpro_programming');
+      add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('ANALYTICS_menuLink', "wimtvpro"), __('ANALYTICS_menuLink', "wimtvpro"), 'administrator', __('ANALYTICS_urlLink', "wimtvpro"), 'wimtvpro_Report');
+      } else if (current_user_can("editor")) {
+      //    if ($user->roles[0] == "editor") {
+      add_menu_page(__('WIMVOD_menuLink', "wimtvpro"), __('WIMVOD_menuLink', "wimtvpro"), 'editor', __('WIMVOD_urlLink', "wimtvpro"), 'wimtvpro_mystreaming', plugins_url('images/iconMenu.png', __FILE__), 6);
+      }
+      else if (current_user_can("author")) {
+      //    if ($user->roles[0] == "author") {
+      add_menu_page(__('WIMVOD_menuLink', "wimtvpro"), __('WIMVOD_menuLink', "wimtvpro"), 'author', __('WIMVOD_urlLink', "wimtvpro"), 'wimtvpro_mystreaming', plugins_url('images/iconMenu.png', __FILE__), 6);
+      }
+     */
+}
+
+function wimtvpro_menu_by_capability($parent_slug, $capability) {
+    add_submenu_page($parent_slug, __('SETTINGS_menuLink', "wimtvpro"), __('SETTINGS_menuLink', "wimtvpro"), 'edit_others_posts', __('SETTINGS_urlLink', "wimtvpro"), 'wimtvpro_configure');
+    if ((get_option("wp_registration") == FALSE) || ((get_option("wp_userwimtv") == "username") && get_option("wp_passwimtv") == "password")) {
+        $registrationHidden = "";
+//        add_submenu_page($registrationHidden, __('WimTV Registration', "wimtvpro"), __('WimTV Registration', "wimtvpro"), 'edit_others_posts', 'WimTvPro_Registration', 'wimtvpro_registration');
+        add_submenu_page($registrationHidden, __('REGISTER_menuLink', "wimtvpro"), __('REGISTER_menuLink', "wimtvpro"), 'edit_others_posts', __('REGISTER_urlLink', "wimtvpro"), 'wimtvpro_registration');
+    }
+    add_submenu_page($parent_slug, __('UPLOAD_menuLink', "wimtvpro"), __('UPLOAD_menuLink', "wimtvpro"), $capability, __('UPLOAD_urlLink', "wimtvpro"), 'wimtvpro_upload');
+    add_submenu_page($parent_slug, __('WIMBOX_menuLink', "wimtvpro"), __('WIMBOX_menuLink', "wimtvpro"), $capability, __('WIMBOX_urlLink', "wimtvpro"), 'wimtvpro_wimbox');
+    add_submenu_page($parent_slug, __('WIMVOD_menuLink', "wimtvpro"), __('WIMVOD_menuLink', "wimtvpro"), $capability, __('WIMVOD_urlLink', "wimtvpro"), 'wimtvpro_mystreaming');
+
+    add_submenu_page($parent_slug, __('PLAYLIST_menuLink', "wimtvpro"), __('PLAYLIST_menuLink', "wimtvpro"), $capability, __('PLAYLIST_urlLink', "wimtvpro"), 'wimtvpro_playlist');
+    add_submenu_page($parent_slug, __('WIMLIVE_menuLink', "wimtvpro"), __('WIMLIVE_menuLink', "wimtvpro"), $capability, __('WIMLIVE_urlLink', "wimtvpro"), 'wimtvpro_live');
+
+
+    add_submenu_page($parent_slug, __('SCHEDULES_menuLink', "wimtvpro"), __('SCHEDULES_menuLink', "wimtvpro"), $capability, __('SCHEDULES_urlLink', "wimtvpro"), 'wimtvpro_programming');
+    add_submenu_page($parent_slug, __('ANALYTICS_menuLink', "wimtvpro"), __('ANALYTICS_menuLink', "wimtvpro"), $capability, __('ANALYTICS_urlLink', "wimtvpro"), 'wimtvpro_Report');
+
+//    add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('SETTINGS_menuLink', "wimtvpro"), __('SETTINGS_menuLink', "wimtvpro"), "edit_others_posts", __('SETTINGS_urlLink', "wimtvpro"), 'wimtvpro_configure');
+//    if ((get_option("wp_registration") == FALSE) || ((get_option("wp_userwimtv") == "username") && get_option("wp_passwimtv") == "password")) {
+//        $registrationHidden = "";
+//        add_submenu_page($registrationHidden, __('WimTV Registration', "wimtvpro"), __('WimTV Registration', "wimtvpro"), $capability, 'WimTvPro_Registration', 'wimtvpro_registration');
+//    }
+//    add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('UPLOAD_menuLink', "wimtvpro"), __('UPLOAD_menuLink', "wimtvpro"), $capability, __('UPLOAD_urlLink', "wimtvpro"), 'wimtvpro_upload');
+//    add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('WIMBOX_menuLink', "wimtvpro"), __('WIMBOX_menuLink', "wimtvpro"), $capability, __('WIMBOX_urlLink', "wimtvpro"), 'wimtvpro_wimbox');
+//    add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('WIMVOD_menuLink', "wimtvpro"), __('WIMVOD_menuLink', "wimtvpro"), $capability, __('WIMVOD_urlLink', "wimtvpro"), 'wimtvpro_mystreaming');
+//
+//    add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('PLAYLIST_menuLink', "wimtvpro"), __('PLAYLIST_menuLink', "wimtvpro"), $capability, __('PLAYLIST_urlLink', "wimtvpro"), 'wimtvpro_playlist');
+//    add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('WIMLIVE_menuLink', "wimtvpro"), __('WIMLIVE_menuLink', "wimtvpro"), $capability, __('WIMLIVE_urlLink', "wimtvpro"), 'wimtvpro_live');
+//
+//
+//    add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('SCHEDULES_menuLink', "wimtvpro"), __('SCHEDULES_menuLink', "wimtvpro"), $capability, __('SCHEDULES_urlLink', "wimtvpro"), 'wimtvpro_programming');
+//    add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('ANALYTICS_menuLink', "wimtvpro"), __('ANALYTICS_menuLink', "wimtvpro"), $capability, __('ANALYTICS_urlLink', "wimtvpro"), 'wimtvpro_Report');
+}
+
+/* OLD menu admin
+  //function wimtvpro_menu() {
+  //    // SHOW ADMINISTRATOR NOTICES
+  //    add_action('admin_notices', 'wimtvpro_admin_notice');
+  //
+  //    $user = wp_get_current_user();
+  //    //For Admin
+  //    if ($user->roles[0] == "administrator") {
+  //
+  //        add_menu_page('WimTvPro', 'WimTvPro', 'administrator', 'WimTvPro', 'wimtvpro_configure', plugins_url('images/iconMenu.png', __FILE__), 6);
+  //
+  //        add_submenu_page('WimTvPro', __('Settings', "wimtvpro"), __('Settings', "wimtvpro"), 'administrator', 'WimTvPro', 'wimtvpro_configure');
+  //
+  //        if ((get_option("wp_registration") == FALSE) || ((get_option("wp_userwimtv") == "username") && get_option("wp_passwimtv") == "password")) {
+  //            $registrationHidden = "";
+  //            add_submenu_page($registrationHidden, __('WimTV Registration', "wimtvpro"), __('WimTV Registration', "wimtvpro"), 'administrator', 'WimTvPro_Registration', 'wimtvpro_registration');
+  //        }
+  //        add_submenu_page('WimTvPro', __('Upload Video', "wimtvpro"), __('Upload Video', "wimtvpro"), 'administrator', 'WimTV_Upload', 'wimtvpro_upload');
+  //        add_submenu_page('WimTvPro', 'WimBox', 'WimBox', 'administrator', 'WimBox', 'wimtvpro_wimbox');
+  //        add_submenu_page('WimTvPro', 'WimVod', 'WimVod', 'administrator', 'WimVod', 'wimtvpro_mystreaming');
+  //
+  //        add_submenu_page('WimTvPro', __('Playlist', "wimtvpro"), __('Playlist', "wimtvpro"), 'administrator', 'WimTV_Playlist', 'wimtvpro_playlist');
+  //        add_submenu_page('WimTvPro', 'WimLive', 'WimLive', 'administrator', 'WimLive', 'wimtvpro_live');
+  //
+  //        // NS: WE TEMPORARY HIDE THE PROGRAMMINGS SECTION
+  //        add_submenu_page('WimTvPro', __('Programmings', "wimtvpro"), __('Programmings', "wimtvpro"), 'administrator', 'WimVideoPro_Programming', 'wimtvpro_programming');
+  //        add_submenu_page('WimTvPro', __('Analytics'), __('Analytics'), 'administrator', 'WimTVPro_Report', 'wimtvpro_Report');
+  //    }
+  //
+  //    if ($user->roles[0] == "author") {
+  //        add_menu_page('WimTvPro', 'WimVod', 'author', 'WimVideo', 'wimtvpro_mystreaming', plugins_url('images/iconMenu.png', __FILE__), 6);
+  //    }
+  //    if ($user->roles[0] == "editor") {
+  //        add_menu_page('WimVod', 'WimVod', 'editor', 'WimVideo', 'wimtvpro_mystreaming', plugins_url('images/iconMenu.png', __FILE__), 6);
+  //    }
+  //}
+ */
 // Adds the admin menu of the plugin
 add_action('admin_menu', 'wimtvpro_menu');
 
@@ -257,7 +351,8 @@ function wimtvpro_install_jquery() {
 
     wp_enqueue_script('jstzScript', plugins_url('script/jstz-1.0.4.min.js', __FILE__));
 
-    if (isset($_GET['page']) && $_GET['page'] != "WimVideoPro_Programming") {
+//    if (isset($_GET['page']) && $_GET['page'] != "WimVideoPro_Programming") {
+    if (isset($_GET['page']) && $_GET['page'] != __('SCHEDULES_urlLink', "wimtvpro")) {
         // Register the script first.
         wp_register_script('wimtvproScript', plugins_url('script/wimtvpro.js', __FILE__));
         // HERE
@@ -265,7 +360,8 @@ function wimtvpro_install_jquery() {
         wp_enqueue_script('wimtvproScript', plugins_url('script/wimtvpro.js', __FILE__));
     }
 
-    if (isset($_GET['page']) && $_GET['page'] == "WimTV_Upload") {
+//    if (isset($_GET['page']) && $_GET['page'] == "WimTV_Upload") {
+    if (isset($_GET['page']) && $_GET['page'] == __('UPLOAD_urlLink', "wimtvpro")) {
         wp_enqueue_script('wimtvproScriptUpload', plugins_url('script/upload.js', __FILE__));
     }
 }
@@ -477,26 +573,27 @@ function wimtvpro_shortcode_streaming($atts) {
     }
 
     //Check if user is authorized to see video
-
     if ((($userRole == "administrator") || (in_array($idUser, $typeUser["U"])) || (in_array($userRole, $typeUser["R"])) || (array_key_exists("All", $typeUser)) || (array_key_exists("", $typeUser)))) {
         extract(shortcode_atts(array('id' => $id, 'width' => $width, 'height' => $height), $atts));
         $credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
 
-        if (get_option('wp_nameSkin') != "") {
-            $uploads_info = wp_upload_dir();
-            $directory = $uploads_info["baseurl"] . "/skinWim";
-
-            $nomeFilexml = wimtvpro_searchFile($uploads_info["basedir"] . "/skinWim/" . get_option('wp_nameSkin') . "/wimtv/", "xml");
-            $skin = "&skin=" . $directory . "/" . get_option('wp_nameSkin') . "/wimtv/" . $nomeFilexml;
-//            $skin = "&skin=" . $directory . "/" . get_option('wp_nameSkin') . ".zip";
+        $insecureMode = "&insecureMode=on";
+        $skin = "";
+        $logo = "";
+        // A SKIN HAS BEEN ADDED: OVERRIDE DEFAULT SKIN PATH
+        $skinData = wimtvpro_get_skin_data();
+        if ($skinData['styleUrl'] != "") {
+            $skin = "&skin=" . htmlentities($skinData['styleUrl']);
         }
-        else
-            $skin = "";
 
-        $params = "get=1&width=" . $width . "&height=" . $height . $skin;
+        if ($skinData['logoUrl'] != "") {
+            $logo = "&logo=" . htmlentities($skinData['logoUrl']);
+        }
 
+        $params = "get=1&width=" . $width . "&height=" . $height . $insecureMode . $skin . $logo;
         $response = apiGetPlayerShowtime($id, $params);
         wp_reset_query();
+
 // NS: changed outer div to include width and heigth
 // Here in wordpress it works. In drupal we had to change the returned
 // iframe on-the-fly, because simply addig an outer div with proper
@@ -524,19 +621,34 @@ function wimtvpro_shortcode_wimlive($atts) {
     if (isset($atts['id']) && isset($atts['zone'])) {
         $identifier = $atts["id"];
         $timezone = $atts["zone"];
+//        $skin = "";
+//        if (get_option('wp_nameSkin') != "") {
+//            $uploads_info = wp_upload_dir();
+//            $directory = $uploads_info["baseurl"] . "/skinWim";
+//
+//            $nomeFilexml = wimtvpro_searchFile($uploads_info["basedir"] . "/skinWim/" . get_option('wp_nameSkin') . "/wimtv/", "xml");
+//            $skin = "&skin=" . $directory . "/" . get_option('wp_nameSkin') . "/wimtv/" . $nomeFilexml;
+//        }
+//        $params = "timezone=" . $timezone;
+//        if ($skin != "") {
+//            $params.="&amp;skin=" . $skin;
+//        }
+
+
+        $insecureMode = "&insecureMode=on";
         $skin = "";
-        if (get_option('wp_nameSkin') != "") {
-            $uploads_info = wp_upload_dir();
-            $directory = $uploads_info["baseurl"] . "/skinWim";
-
-            $nomeFilexml = wimtvpro_searchFile($uploads_info["basedir"] . "/skinWim/" . get_option('wp_nameSkin') . "/wimtv/", "xml");
-            $skin = "&skin=" . $directory . "/" . get_option('wp_nameSkin') . "/wimtv/" . $nomeFilexml;
+        $logo = "";
+        // A SKIN HAS BEEN ADDED: OVERRIDE DEFAULT SKIN PATH
+        $skinData = wimtvpro_get_skin_data();
+        if ($skinData['styleUrl'] != "") {
+            $skin = "&skin=" . htmlentities($skinData['styleUrl']);
         }
 
-        $params = "timezone=" . $timezone;
-        if ($skin != "") {
-            $params.="&amp;skin=" . $skin;
+        if ($skinData['logoUrl'] != "") {
+            $logo = "&logo=" . htmlentities($skinData['logoUrl']);
         }
+
+        $params .="timezone=" . $timezone . $insecureMode . $skin . $logo;
 
         $embedded_iframe = apiGetLiveIframe($identifier, $params);
         $pageLive = $embedded_iframe;
@@ -584,9 +696,9 @@ function wimtvpro_registration_script() {
     wp_enqueue_script('jquery.mousewheelWimtv', $baseRoot . 'script/jquery.mousewheel.min.js');
     wp_enqueue_script('fullcalendarWimtv', $baseRoot . 'script/fullcalendar/fullcalendar.min.js');
     wp_enqueue_script('utilsWimtv', $baseRoot . 'script/utils.js');
-    wp_enqueue_script('programmingWimtv', $baseRoot . 'script/programming/programming.js');
-    wp_enqueue_script('calendarWimtv', $baseRoot . 'script/programming/calendar.js');
-    wp_enqueue_script('programmingApi', plugins_url('script/programming-api.js', __FILE__));
+//    wp_enqueue_script('programmingWimtv', $baseRoot . 'script/programming/programming.js');
+//    wp_enqueue_script('calendarWimtv', $baseRoot . 'script/programming/calendar.js');
+//    wp_enqueue_script('programmingApi', plugins_url('script/programming-api.js', __FILE__));
 }
 
 if (isset($_GET['page']) && $_GET['page'] == "WimVideoPro_Programming") {
@@ -607,4 +719,18 @@ function wimtvpro_jsTranslations($jsHandle) {
         'remove_video_confirm_message' => __("You are removing video with title:\n\n\t__TITLE__\n\nAre you sure ?"),
     );
     wp_localize_script($jsHandle, 'WP_TRANSLATE', $translation_array);
+}
+
+/**
+ * Returns current plugin version.
+ * 
+ * @return string Plugin version
+ */
+function wimtvpro_get_info() {
+    if (!function_exists('get_plugins')) {
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+    }
+    $plugin_folder = get_plugins('/' . plugin_basename(dirname(__FILE__)));
+    $plugin_file = basename(( __FILE__));
+    return $plugin_folder[$plugin_file];
 }

@@ -26,7 +26,7 @@ function wimtvpro_registration() {
     ?>
     <div class='wrap'>
         <?php  echo  wimtvpro_link_help();?>
-        <h2> <?php echo __("WIMTV REGISTRATION","wimtvpro") ?> </h2>
+        <h2> <?php echo __('REGISTER_pageTitle', "wimtvpro") ;?> </h2>
     </div>
 
     <form enctype="multipart/form-data" action="#" method="post" id="configwimtvpro-group" accept-charset="UTF-8">

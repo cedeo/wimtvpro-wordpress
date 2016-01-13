@@ -14,7 +14,7 @@ msgstr "https://www.wim.tv/wimtv-webapp/rest/"
 
 #: 
 msgid "APP_NAME"
-msgstr "WimTvPro"
+msgstr "WimTVPro"
 
 #: 
 msgid "APP_HOME_LINK_URL"
@@ -116,7 +116,7 @@ msgstr "Upload video"
 
 #: 
 msgid "WIMBOX_pageTitle"
-msgstr "Wimbox"
+msgstr "WimBox"
 
 #: 
 msgid "WIMVOD_pageTitle"

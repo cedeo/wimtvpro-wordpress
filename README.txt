@@ -1,11 +1,11 @@
-=== WIMTVPRO ===
-Contributors: Wimlabs
+=== WimTVPro ===
+Contributors: WimLabs
 Tags: video, plugin, admin, media, live, on demand, streaming, playlist, web, tv, webtv, gallery, embed, channel, broadcast, stream, manage, wimtv, wimtvpro, player
 Requires at least: 3.4
-Tested up to: 4.0
+Tested up to: 4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 4.0
+Stable tag: 4.1
 
 WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
 
@@ -103,6 +103,8 @@ Check the [Wimlabs support site](http://support.wim.tv)
 * Bugfix and schedules disabled until next enhanced release
 = 4.0 =
 * New version of program scheduling functionality
+= 4.1 =
+* Minor fix for PHP 5.5 and later. Updated to jwplayer7
 
 == Upgrade Notice ==
 Into version 2.0 added videos Playlist and Report. When you update insert again your wimtv user and password.
@@ -116,4 +118,4 @@ Visit the [plugin's website](http://wimtvpro.tv)
 
 == Last updated ==
 
-23/12/2015
+13/01/2016

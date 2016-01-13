@@ -31,6 +31,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
     //NS: Pending videos
     $status_pending = (isset($status_array[1])) ? $status_array[1] : false;
+    
     if ($status_pending) {
         $videothumb = "<img src='' class='icon-transcoding'/>";
         $title = (($record_new->title) != "") ? $record_new->title : $status_pending;
@@ -39,7 +40,9 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
         $my_media .= "</tr>";
         return $my_media;
     }
+    
     $title = stripslashes($title);
+
     foreach ($array as $key => $value) {
         $var = explode("-", $value);
 
@@ -56,7 +59,9 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
             $viewPublicVideo = TRUE;
         }
     }
+
     $user = wp_get_current_user();
+
     $idUser = $user->ID;
     $userRole = $user->roles[0];
     //Video is visible only a user
@@ -67,7 +72,6 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
             (in_array($userRole, $typeUser["R"])) ||
             (array_key_exists("All", $typeUser)) ||
             (array_key_exists("", $typeUser)))) {
-
         // NS:
         // $replace_video = apiGetThumbsVideo($content_item_new);
 
@@ -79,28 +83,35 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
 
     $isfound = false;
-
-    if ((!strstr($replace_video, 'Not Found')) || (!isset($replace_video)) || ($replace_video == ""))
+    
+    if ((!strstr($replace_video, 'Not Found')) || (!isset($replace_video)) || ($replace_video == "")){
         $isfound = true;
+    }
+        
     $licenze_video = "";
+    
     if ($isfound != "") {
         // NS:
         // $replace_video = '<img src="' . $replace_video . '" title="' . $title . '" class="" />';
         $replace_video = stripslashes($record_new->urlThumbs);
 
-        if ($licenseType != "")
+        if ($licenseType != ""){
             $licenze_video = '<div class="icon_licence ' . $licenseType . '"></div>';
+        }
     }
 
     $wimtvpro_url = "";
+    
     //For Admin
     if ($isfound) {
 //        $video = "<span class='wimtv-thumbnail' >" . $replace_video . "</span>";
         $video = "<span class='wimtv-thumbnail' >" . $licenze_video . $replace_video . "</span>";
-    } else {
+    } 
+    else {
         $video = $replace_video;
         $replace_video = false;
     }
+    
     if ($replace_video) {
         $form_st = '
 		<div class="free">' . __("FREE OF CHARGE", "wimtvpro") . '</div>
@@ -121,8 +132,10 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
                 $my_media .= "<tr id='" . $content_item_new . "'>";
             }
         }
-        else
+        else{
             $my_media .= "<tr>";
+        }
+        
         $form = "";
         //if ($private)
         //$action .= "<div class='thumb ui-state-default'>";
@@ -251,14 +264,19 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
             $action = "<td style='display:none;'><a class='viewThumb' " . $style_view . " title='" . $title_view . "' href='#' id='" . $href_view . "'><span class='icon_view'></span></a></td>";
         }
 
-        if ($playlist)
+        if ($playlist) {
             $action = "";
+        }
 //        $my_media .= "<td class='image'>" . $licenze_video . $video . "<br/>";
         $my_media .= "<td class='image'>" . $video . "<br/>";
-        if ($private)
+
+        if ($private) {
             $my_media .="<b>" . $title . "</b>";
+        }
+
         $my_media .= $linkView . "</td>" . $action;
         $send = "";
+
         if ($insert_into_page) {
             $my_media .= '<td>';
 
@@ -274,11 +292,13 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
             $send = get_submit_button(__('Insert into Post', "wimtvpro"), 'buttonInsert', $content_item_new, false);
         }
+
         $my_media .= $send . "</td></tr>";
 
         //$my_media .= $send .  "</div> </tr>";
         $position_new = $position;
     }
+   
     return $my_media;
 }
 

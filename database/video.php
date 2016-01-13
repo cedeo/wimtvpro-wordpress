@@ -5,6 +5,22 @@
  */
 function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categories, $urlPlay, $title, $duration, $showtimeId, $acquired_identifier) {
     global $wpdb;
+//    $video = array("uid" => $user,
+//        "contentidentifier" => $contentId,
+//        "mytimestamp" => time(),
+//        "position" => '0',
+//        "state" => $state,
+//        "viewVideoModule" => '3',
+//        "acquiredIdentifier" => $acquired_identifier,
+//        "status" => $status,
+//        "urlThumbs" => mysql_real_escape_string($urlThumbs),
+//        "category" => $categories,
+//        "urlPlay" => mysql_real_escape_string($urlPlay),
+//        "title" => mysql_real_escape_string($title),
+//        "duration" => $duration,
+//        "showtimeidentifier" => $showtimeId);
+    
+    
     $video = array("uid" => $user,
         "contentidentifier" => $contentId,
         "mytimestamp" => time(),
@@ -13,23 +29,24 @@ function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categori
         "viewVideoModule" => '3',
         "acquiredIdentifier" => $acquired_identifier,
         "status" => $status,
-        "urlThumbs" => mysql_real_escape_string($urlThumbs),
+        "urlThumbs" => $urlThumbs,
         "category" => $categories,
-        "urlPlay" => mysql_real_escape_string($urlPlay),
-        "title" => mysql_real_escape_string($title),
+        "urlPlay" => $urlPlay,
+        "title" => $title,
         "duration" => $duration,
         "showtimeidentifier" => $showtimeId);
+    
     return $wpdb->insert(VIDEO_TABLE_NAME, $video);
 }
 
 function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration, $showtimeId, $categories, $contentId, $acquired_identifier) {
     global $wpdb;
 
-    $title = mysql_real_escape_string($title);
-    $urlThumbs = mysql_real_escape_string($urlThumbs);
-    $urlPlay = mysql_real_escape_string($urlPlay);
-    $contentId = mysql_real_escape_string($contentId);
-
+//    $title = mysql_real_escape_string($title);
+//    $urlThumbs = mysql_real_escape_string($urlThumbs);
+//    $urlPlay = mysql_real_escape_string($urlPlay);
+//    $contentId = mysql_real_escape_string($contentId);
+    
     $table = VIDEO_TABLE_NAME;
     return $wpdb->query("UPDATE {$table} SET state='{$state}',
                                              status='{$status}',
@@ -45,8 +62,8 @@ function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration,
 
 function dbUpdateVideoThumb($contentId, $urlThumbs) {
     global $wpdb;
-    $urlThumbs = mysql_real_escape_string($urlThumbs);
-    $contentId = mysql_real_escape_string($contentId);
+//    $urlThumbs = mysql_real_escape_string($urlThumbs);
+//    $contentId = mysql_real_escape_string($contentId);
     $table = VIDEO_TABLE_NAME;
     $query = "UPDATE {$table} SET urlThumbs='{$urlThumbs}' WHERE contentidentifier='{$contentId}'";
     return $wpdb->query($query);

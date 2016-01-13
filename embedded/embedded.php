@@ -49,7 +49,7 @@ if (strlen($code) > 0) {
         <h3><?php echo $showtime->{"title"} ?></h3>
         <p>[<?php echo $showtime->{"duration"} ?>] <?php echo $showtime->{"description"} ?></p>
         <?php if (count($showtime->{"categories"})) { ?>
-            <br/><?php echo _("Categories", "wimtvpro") ?><br/>
+            <br/><?php echo __("Categories", "wimtvpro"); ?><br/>
             <?php foreach ($showtime->{"categories"} as $index => $category) { ?>
                 <i><?php echo $category->categoryName ?>:</i>
                 <?php

@@ -14,7 +14,7 @@ msgstr "https://www.wim.tv/wimtv-webapp/rest/"
 
 #: 
 msgid "APP_NAME"
-msgstr "WimTvPro"
+msgstr "WimTVPro"
 
 #: 
 msgid "APP_HOME_LINK_URL"
@@ -117,7 +117,7 @@ msgstr "Carica video"
 
 #: 
 msgid "WIMBOX_pageTitle"
-msgstr "Wimbox"
+msgstr "WimBox"
 
 #: 
 msgid "WIMVOD_pageTitle"
@@ -1201,8 +1201,8 @@ msgid "You aren't videos"
 msgstr "Non hai video"
 
 #: 
-#msgid "Programmings"
-#msgstr "Palinsesti"
+msgid "Programmings"
+msgstr "Palinsesti"
 
 #: 
 msgid "Send"

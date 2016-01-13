@@ -1,15 +1,15 @@
 <?php
 /*
-  Plugin Name: Wim Tv Pro for WP
+  Plugin Name: WimTVPro for WP
   Plugin URI: http://wimtvpro.tv
   Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-  Version: 4.0
-  Author: WIMLABS
+  Version: 4.1
+  Author: WimLabs
   Author URI: http://www.wimlabs.com
   License: GPLv2 or later
  */
 
-/*  Copyright 2013  wimlabs  (email : riccardo@cedeo.net)
+/*  Copyright 2013-2016  WimLabs  (email : riccardo@wimlabs.com)
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
@@ -53,7 +53,7 @@ include_once("functions/detailShowtime.php");
 include_once("embedded/embeddedPlayList.php");
 include_once("embedded/embeddedProgramming.php");
 
-load_plugin_textdomain('wimtvpro', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+//load_plugin_textdomain('wimtvpro', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 
 //Aggiunta shortcodes
 add_shortcode('streamingWimtv', 'wimtvpro_shortcode_streaming');
@@ -77,6 +77,7 @@ function wimtvpro_install() {
     }
 
     createTables();
+    wimtvpro_fix_missing_langs();
 }
 
 function wimtvpro_setting() {
@@ -134,9 +135,12 @@ function wimtvpro_setting() {
     add_option('wp_supportLink', 'http://support.wim.tv/?cat=5');
     add_option('wp_supportPage', 'http://support.wim.tv/?p=');
 
-    // NS: WE SET HERE DEFAULT WIM.TV BASEPATH
-//    update_option('wp_basePathWimtv', 'https://www.wim.tv/wimtv-webapp/rest/');
-    update_option('wp_basePathWimtv', __('API_URL', "wimtvpro"));
+    // NS: WE SET HERE DEFAULT API BASE URL
+    // IF WE CANNOT DETECT THE API BASE URL, JUST SET IT AS THE DEFAULT WIM.TV
+    $wp_basePathWimtv = (__('API_URL', "wimtvpro") != 'API_URL') ? __('API_URL', "wimtvpro") : 'https://www.wim.tv/wimtv-webapp/rest/';
+    update_option('wp_basePathWimtv', $wp_basePathWimtv);
+    //    update_option('wp_basePathWimtv', 'https://www.wim.tv/wimtv-webapp/rest/');
+    //    update_option('wp_basePathWimtv', __('API_URL', "wimtvpro"));
 }
 
 //Executes the wimtvpro_setting function on plugin activation
@@ -733,4 +737,24 @@ function wimtvpro_get_info() {
     $plugin_folder = get_plugins('/' . plugin_basename(dirname(__FILE__)));
     $plugin_file = basename(( __FILE__));
     return $plugin_folder[$plugin_file];
+}
+
+/* THIS FUNCTION CHECK WHETHER THE PLUGIN LANGUAGE FILE EXISTS
+ * IN CASE IT DOESN'T EXIST: CREATE A COPY OF THE ENGLISH VERSION AND RENAME IT 
+ * AS LOCALIZED FILE.
+ * F.E.: If the CMS is set in french, the plugin will search for
+ * "wimtvpro-fr_FR.mo" file. If it doesn't exist it creates a new file
+ * named "wimtvpro-fr_FR.mo" by copying the content of "wimtvpro-en_US.mo"
+ */
+add_action('init', 'wimtvpro_fix_missing_langs');
+
+function wimtvpro_fix_missing_langs() {//
+    $langFolder = dirname(__FILE__) . "/languages/";
+    $locale = get_locale();
+    $moFile = $langFolder . "wimtvpro-" . $locale . ".mo";
+    if (!file_exists($moFile)) {
+        $engMoFile = str_replace($locale, "en_US", $moFile);
+        copy($engMoFile, $moFile);
+    }
+    load_plugin_textdomain('wimtvpro', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 }

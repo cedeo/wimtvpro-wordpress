@@ -53,6 +53,7 @@ include_once("functions/detailShowtime.php");
 include_once("embedded/embeddedPlayList.php");
 include_once("embedded/embeddedProgramming.php");
 
+// NS: MOVED TO "wimtvpro_fix_missing_langs()"
 //load_plugin_textdomain('wimtvpro', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 
 //Aggiunta shortcodes
@@ -747,7 +748,6 @@ function wimtvpro_get_info() {
  * named "wimtvpro-fr_FR.mo" by copying the content of "wimtvpro-en_US.mo"
  */
 add_action('init', 'wimtvpro_fix_missing_langs');
-
 function wimtvpro_fix_missing_langs() {//
     $langFolder = dirname(__FILE__) . "/languages/";
     $locale = get_locale();

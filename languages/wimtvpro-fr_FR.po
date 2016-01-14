@@ -1,0 +1,1321 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Wimtvpro\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: Wed Jan 13 2016 17:20:31 GMT+0100 (CET)\n"
+"PO-Revision-Date: Wed Jan 13 2016 17:56:34 GMT+0100 (CET)\n"
+"Last-Translator: jpaulcva <jpv.cva@gmail.com>\n"
+"Language-Team: \n"
+"Language: French (France)\n"
+"Plural-Forms: nplurals=2; plural=n > 1\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Loco - https://localise.biz/\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;"
+"__:1;_e:1;_c:1;_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;"
+"_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;"
+"esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;"
+"esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
+"X-Loco-Target-Locale: fr_FR"
+
+#: ../scripts.php:206 ../wimtvpro.php:378 ../menu/pages/playlist.php:70 ..
+#: menu/pages/settings.php:137 ../menu/pages/settings.php:203 ..
+#: menu/pages/modules/wimlive.php:216
+msgid "Update successful"
+msgstr "Mise à jour réussie"
+
+#: ../scripts.php:322
+msgid "You must write a title"
+msgstr "Vous devez aider un"
+
+#: ../scripts.php:359
+msgid "Upload successful"
+msgstr "Mise à jour réussie"
+
+#: ../scripts.php:371
+msgid "Upload error"
+msgstr "Erreur de téléchargement"
+
+#: ../scripts.php:381
+msgid "You must upload a file"
+msgstr "Vous devez télécharger un fichier"
+
+#: ../scripts.php:43 ../scripts.php:389 ../scripts.php:395
+#, php-format
+msgid ""
+"The server where your Wordpress is installed does not support upload of "
+"files exceeding %d. If you want to upload videos larger than %d, please "
+"modify your server settings. WimTV supports up to 2GB file size per upload."
+msgstr ""
+"Le serveur où votre Wordpress est installé ne supporte pas le téléchargement "
+"de fichiers excédant %d. Si vous voulez télécharger des vidéos supérieures à "
+"%d, vous devez modifier les paramètres de votre serveur. WimTV prend en "
+"charge des fichiers jusqu'à 2 Go par téléchargement."
+
+#: ../scripts.php:271 ../wimtvpro.php:389
+msgid "Everybody"
+msgstr "Tout le monde"
+
+#: ../scripts.php:276 ../wimtvpro.php:390
+msgid "Nobody (Administrators Only)"
+msgstr "Personne (Administrateurs seulement)"
+
+#: ../utils.php:101
+msgid "HELP_LINK_URL"
+msgstr "http://support.wim.tv/?cat=5"
+
+#: ../utils.php:101
+msgid "Help"
+msgstr "Aide"
+
+#: ../utils.php:176 ../menu/pages/upload_video.php:68
+msgid "Upload"
+msgstr "Télécharger"
+
+#: ../sync.php:20
+msgid "Can not establish a connection with Wim.tv. Contact the administrator."
+msgstr ""
+"Vous ne pouvez pas établir une connexion avec Wim.tv. Contactez "
+"l'administrateur."
+
+#: ../sync.php:91
+msgid "No videos found"
+msgstr "Pas de vidéos trouvées"
+
+# menu urls
+#: ../hooks.php:14 ../wimtvpro.php:198 ../wimtvpro.php:243 ..
+#: menu/pages/analytics.php:152 ../menu/pages/wimlive.php:25 ..
+#: menu/pages/settings/prices.php:40 ../menu/pages/settings/prices.php:160 ..
+#: menu/pages/modules/registration.php:49 ../functions/registrationAlert.php:18
+msgid "SETTINGS_urlLink"
+msgstr "configuration"
+
+#: ../hooks.php:16
+msgid "Configuration"
+msgstr "Configuration"
+
+# msgid "Analytics"
+# msgstr "Analytics"
+#: ../hooks.php:18 ../menu/pages/settings/prices.php:15
+msgid "Pricing"
+msgstr "Tarif"
+
+#: ../hooks.php:19 ../menu/pages/settings/monetization.php:42
+msgid "Monetisation"
+msgstr "Monétisation"
+
+#: ../hooks.php:20
+msgid "Live"
+msgstr "Direct"
+
+#: ../hooks.php:21 ../wimtvpro.php:524 ../menu/pages/registration.php:34 ..
+#: menu/pages/settings/personal.php:26 ../menu/pages/settings/personal.php:32
+msgid "Personal Info"
+msgstr "Informations personnelles"
+
+#: ../hooks.php:24 ../menu/pages/settings/features.php:44
+msgid "Features"
+msgstr "Fonctionalités"
+
+#: ../hooks.php:97 ../functions/listDownload.php:293
+msgid "Insert into Post"
+msgstr "Insérer dans l'article"
+
+#. Name of the plugin
+msgid "Wim Tv Pro for WP"
+msgstr "Wim Tv Pro pour WP"
+
+#. URI of the plugin
+msgid "http://wimtvpro.tv"
+msgstr "http://wimtvpro.tv"
+
+#. Description of the plugin
+msgid ""
+"WimTVPro is the video plugin that adds several features to manage and "
+"publish video on demand, video playlists and stream live events on your "
+"website."
+msgstr ""
+"WimTVPro est le plugin vidéo qui ajoute plusieurs fonctionnalités pour gérer "
+"et publier des vidéos à la demande, des listes de lecture, des flux vidéo et "
+"des événements en direct sur votre site web."
+
+#. Author of the plugin
+msgid "WIMLABS"
+msgstr "WIMLABS"
+
+#. Author URI of the plugin
+msgid "http://www.wimlabs.com"
+msgstr "http://www.wimlabs.com"
+
+# START OF WHITELABEL CUSTOMIZATION
+#: ../wimtvpro.php:139 ../wimtvpro.php:139
+msgid "API_URL"
+msgstr "https://www.wim.tv/wimtv-webapp/rest/"
+
+# menu items
+#: ../wimtvpro.php:199 ../wimtvpro.php:243 ../wimtvpro.php:243
+msgid "SETTINGS_menuLink"
+msgstr "Paramètres"
+
+#: ../wimtvpro.php:199 ../wimtvpro.php:204
+msgid "APP_NAME"
+msgstr "WimTvPro"
+
+#: ../wimtvpro.php:203 ../wimtvpro.php:249 ../wimtvpro.php:367 ..
+#: menu/pages/wimbox.php:56
+msgid "UPLOAD_urlLink"
+msgstr "envoyervideo"
+
+#: ../wimtvpro.php:204 ../wimtvpro.php:249 ../wimtvpro.php:249
+msgid "UPLOAD_menuLink"
+msgstr "Envoyer une vidéo"
+
+#: ../wimtvpro.php:247 ../wimtvpro.php:247 ../functions/registrationAlert.php:17
+msgid "REGISTER_menuLink"
+msgstr "INSCRIPTION"
+
+#: ../wimtvpro.php:247 ../functions/registrationAlert.php:17
+msgid "REGISTER_urlLink"
+msgstr "inscription"
+
+#: ../wimtvpro.php:250 ../wimtvpro.php:250
+msgid "WIMBOX_menuLink"
+msgstr "WimBox"
+
+#: ../wimtvpro.php:250
+msgid "WIMBOX_urlLink"
+msgstr "montrervideo"
+
+#: ../wimtvpro.php:251 ../wimtvpro.php:251
+msgid "WIMVOD_menuLink"
+msgstr "WimVod"
+
+#: ../wimtvpro.php:251
+msgid "WIMVOD_urlLink"
+msgstr "montrerpublies"
+
+#: ../wimtvpro.php:253 ../wimtvpro.php:253
+msgid "PLAYLIST_menuLink"
+msgstr "Playlist"
+
+#: ../wimtvpro.php:253 ../menu/pages/playlist.php:133
+msgid "PLAYLIST_urlLink"
+msgstr "playlist"
+
+#: ../wimtvpro.php:254 ../wimtvpro.php:254
+msgid "WIMLIVE_menuLink"
+msgstr "WimLive"
+
+#: ../wimtvpro.php:254 ../menu/pages/modules/wimlive.php:209 ..
+#: menu/pages/modules/liveList.php:151 ../menu/pages/modules/liveList.php:156
+msgid "WIMLIVE_urlLink"
+msgstr "evenementdirect"
+
+#: ../wimtvpro.php:257 ../wimtvpro.php:257
+msgid "SCHEDULES_menuLink"
+msgstr "Programme"
+
+#: ../wimtvpro.php:257 ../wimtvpro.php:358 ../menu/pages/programming.php:61 ..
+#: menu/pages/programming.php:103 ../menu/pages/programming.php:105
+msgid "SCHEDULES_urlLink"
+msgstr "programmes"
+
+#: ../wimtvpro.php:258 ../wimtvpro.php:258
+msgid "ANALYTICS_menuLink"
+msgstr "Statistiques"
+
+#: ../wimtvpro.php:258 ../menu/pages/analytics.php:43 ../menu/pages/analytics.php:
+#: 121 ../menu/pages/analytics.php:152
+msgid "ANALYTICS_urlLink"
+msgstr "statistiques"
+
+#: ../wimtvpro.php:319
+msgid "WimVod/Playlist"
+msgstr "WimVod/Playlist"
+
+#: ../wimtvpro.php:376
+msgid "First, You must selected a playlist"
+msgstr "D'abord, vous devez sélectionner une playlist"
+
+#: ../wimtvpro.php:377
+msgid "The video is insert into playlist selected!"
+msgstr "La vidéo est insérée dans la playlist sélectionnée"
+
+#: ../wimtvpro.php:379
+msgid "Refresh page for view video"
+msgstr "Rafraichir la page pour voir la vidéo"
+
+#: ../wimtvpro.php:380 ../menu/pages/settings.php:90
+msgid "The password is required"
+msgstr "Le mot de passe est requis"
+
+#: ../wimtvpro.php:381
+msgid "You selected"
+msgstr "vous avez sélectionné"
+
+#: ../wimtvpro.php:382
+msgid ""
+"You need compile fiscal information for your account, for enabling pay per "
+"view posting. Please provide it in Monetisation section of your Settings"
+msgstr ""
+"Vous devez renseigner l'information fiscale pour votre compte pour permettre "
+"l'affichage des chaines payantes. Rendez-vous dans la section \"Monétisation\" "
+"de vos Paramètres"
+
+#: ../wimtvpro.php:383
+msgid "Do you want to publish your videos for free?"
+msgstr "Voulez-vous publier vos vidéos gratuitement ?"
+
+#: ../wimtvpro.php:384
+msgid "Publish"
+msgstr "Publier"
+
+#: ../wimtvpro.php:385 ../menu/pages/playlist.php:75 ../menu/pages/wimlive.php:
+#: 284 ../menu/pages/settings/features.php:84 ../menu/pages/settings/live.php:108
+#: ../menu/pages/settings/personal.php:90 ../menu/pages/settings/monetization.php:
+#: 151
+msgid "Update"
+msgstr "Mise à jour"
+
+#: ../wimtvpro.php:386 ../embedded/embeddedAll.php:50 ../functions/listDownload.
+#: php:39
+msgid ""
+"This video has not yet been processed, wait a few minutes and try to "
+"synchronize"
+msgstr ""
+"Cette vidéo n'a pas encore été traitée, attendez quelques minutes et essayez "
+"de synchroniser"
+
+#: ../wimtvpro.php:388
+msgid "Select who can see the video"
+msgstr "Sélectionnez qui peut voir la vidéo"
+
+#: ../wimtvpro.php:391
+msgid "Where can anonymous viewers see the video (if you selected Everybody)?"
+msgstr ""
+"Où les spectateurs anonymes peuvent-ils voir la vidéo (si vous avez "
+"sélectionné Tout le monde) ?"
+
+#: ../wimtvpro.php:392
+msgid "Nowhere"
+msgstr "Nulle part"
+
+#: ../wimtvpro.php:393
+msgid "Widget"
+msgstr "Widget"
+
+#: ../wimtvpro.php:394
+msgid "Pages"
+msgstr "Pages"
+
+#: ../wimtvpro.php:395
+msgid "Widget and Pages"
+msgstr "Widget and Pages"
+
+#: ../wimtvpro.php:396
+msgid "Roles"
+msgstr "Rôles"
+
+#: ../wimtvpro.php:397
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: ../wimtvpro.php:399
+msgid "Please only upload files that end in types:"
+msgstr "Téléchargez uniquement les fichiers de types suivants :"
+
+#: ../wimtvpro.php:400
+msgid "Please select a new file and try again."
+msgstr "Sélectionnez un nouveau fichier et essayez à nouveau."
+
+#: ../wimtvpro.php:450 ../wimtvpro.php:517 ../menu/pages/playlist.php:108 ..
+#: menu/pages/upload_video.php:41 ../menu/pages/programming.php:85 ..
+#: menu/pages/programming_BAK.php:80 ../menu/pages/wimlive.php:142 ..
+#: menu/pages/wimlive.php:196
+msgid "Title"
+msgstr "Titre"
+
+#: ../wimtvpro.php:463 ../wimtvpro.php:468 ../wimtvpro.php:518
+msgid "Profile"
+msgstr "Profil"
+
+#: ../wimtvpro.php:490
+msgid "Contact"
+msgstr "Contact"
+
+#: ../wimtvpro.php:523 ../menu/pages/settings/features.php:68
+msgid "Page Name"
+msgstr "Nom de la page"
+
+#: ../wimtvpro.php:722
+msgid ""
+"You are removing video with title:\n"
+"\n"
+"	__TITLE__\n"
+"\n"
+"Are you sure ?"
+msgstr ""
+"Vous allez supprimer cette vidéo \n"
+"\n"
+"	__TITLE__\n"
+"\n"
+"Etes-vous sûr ?"
+
+#: ../menu/pages/playlist.php:24 ../menu/pages/programming.php:61 ..
+#: menu/pages/programming_BAK.php:35 ../menu/pages/wimlive.php:184
+msgid "Return to list"
+msgstr "Retour à la liste"
+
+#: ../menu/pages/playlist.php:65
+msgid "PLAYLIST_pageTitle"
+msgstr "Playlist"
+
+#: ../menu/pages/playlist.php:66
+msgid ""
+"Create a playlist of videos (ONLY FREE videos are possible) to be posted to "
+"your website"
+msgstr ""
+"Créer une playlist de vidéos (possible uniquement avec des vidéos gratuites) "
+"qui sera affichée à votre site Web"
+
+#: ../menu/pages/playlist.php:67
+msgid "Move videos from left to right"
+msgstr "Déplacer les vidéo de gauche à droite"
+
+#: ../menu/pages/playlist.php:91
+msgid "All video"
+msgstr "Toutes les vidéos"
+
+#: ../menu/pages/playlist.php:98
+msgid "Playlist"
+msgstr "Playlist"
+
+#: ../menu/pages/playlist.php:110 ../menu/pages/wimbox.php:131 ..
+#: menu/pages/wimvod.php:90
+msgid "Preview"
+msgstr "Aperçu"
+
+#: ../menu/pages/playlist.php:111 ../menu/pages/programming.php:88 ..
+#: menu/pages/programming_BAK.php:83
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: ../menu/pages/playlist.php:112 ../menu/pages/programming.php:86 ..
+#: menu/pages/programming.php:103 ../menu/pages/programming.php:103 ..
+#: menu/pages/programming.php:103 ../menu/pages/programming_BAK.php:81 ..
+#: menu/pages/programming_BAK.php:97 ../menu/pages/programming_BAK.php:97 ..
+#: menu/pages/programming_BAK.php:97 ../menu/pages/modules/liveList.php:151 ..
+#: menu/pages/modules/liveList.php:152 ../menu/pages/modules/liveList.php:153
+msgid "Modify"
+msgstr "Modifier"
+
+#: ../menu/pages/playlist.php:113 ../menu/pages/wimbox.php:132 ..
+#: menu/pages/programming.php:87 ../menu/pages/programming.php:105 ..
+#: menu/pages/programming.php:105 ../menu/pages/programming.php:105 ..
+#: menu/pages/programming_BAK.php:82 ../menu/pages/programming_BAK.php:99 ..
+#: menu/pages/programming_BAK.php:99 ../menu/pages/programming_BAK.php:99 ..
+#: menu/pages/wimlive.php:149 ../menu/pages/wimlive.php:212 ..
+#: menu/pages/modules/liveList.php:156 ../menu/pages/modules/liveList.php:156 ..
+#: functions/listDownload.php:255
+msgid "Remove"
+msgstr "Supprimer"
+
+#: ../menu/pages/analytics.php:42 ../menu/pages/analytics.php:67 ..
+#: menu/pages/analytics.php:160
+msgid "Streams"
+msgstr "Flux"
+
+#: ../menu/pages/analytics.php:42 ../menu/pages/analytics.php:143
+msgid "From"
+msgstr "de"
+
+#: ../menu/pages/analytics.php:42 ../menu/pages/analytics.php:145
+msgid "To"
+msgstr "à"
+
+#: ../menu/pages/analytics.php:43 ../menu/pages/analytics.php:67 ..
+#: menu/pages/analytics.php:68 ../menu/pages/analytics.php:121
+msgid "Current month"
+msgstr "Mois courant"
+
+#: ../menu/pages/analytics.php:43 ../menu/pages/analytics.php:68 ..
+#: menu/pages/analytics.php:121
+msgid "Change Date"
+msgstr "Changer la date"
+
+#: ../menu/pages/analytics.php:151
+msgid "You commercial packet"
+msgstr "Abonnement souscrit"
+
+#: ../menu/pages/analytics.php:152
+msgid "Change"
+msgstr "Changement"
+
+#: ../menu/pages/analytics.php:155
+msgid "You did not generate any traffic in this period"
+msgstr "Vous n'avez pas généré de trafic dans cette période"
+
+#: ../menu/pages/analytics.php:157 ../menu/pages/analytics.php:182
+msgid "Traffic"
+msgstr "Trafic"
+
+#: ../menu/pages/analytics.php:158
+msgid "Storage space"
+msgstr "Espace de stockage"
+
+#: ../menu/pages/analytics.php:161
+msgid "Chart"
+msgstr "Graphique"
+
+#: ../menu/pages/analytics.php:168 ../menu/pages/analytics.php:176
+msgid "Viewers"
+msgstr "Spectateurs"
+
+#: ../menu/pages/analytics.php:169
+msgid "Activate Viewers"
+msgstr "Spectateurs actifs"
+
+#: ../menu/pages/analytics.php:170
+msgid "Max viewers"
+msgstr "Spectateurs max"
+
+#: ../menu/pages/analytics.php:176
+msgid "Total"
+msgstr "Total"
+
+#: ../menu/pages/analytics.php:180 ../menu/pages/modules/graph.php:40
+msgid "Date"
+msgstr "Date"
+
+#: ../menu/pages/analytics.php:181 ../menu/pages/wimlive.php:274
+msgid "Duration"
+msgstr "Durée"
+
+#: ../menu/pages/registration.php:29
+msgid "REGISTER_pageTitle"
+msgstr "Enregistrement"
+
+#: ../menu/pages/registration.php:37 ../menu/pages/settings/personal.php:35
+msgid "First Name"
+msgstr "Prénom"
+
+#. Da mettere sotto First Name in Personal Info
+#: ../menu/pages/registration.php:41 ../menu/pages/settings/personal.php:38
+msgid "Last Name"
+msgstr "Nom"
+
+#: ../menu/pages/registration.php:50 ../menu/pages/settings/personal.php:47
+msgid "Gender"
+msgstr "Genre"
+
+#: ../menu/pages/registration.php:63
+msgid "Login Credentials"
+msgstr "Login Credentials"
+
+#: ../menu/pages/registration.php:77 ../menu/pages/settings/configuration.php:65
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: ../menu/pages/registration.php:87
+msgid "Repeat"
+msgstr "Répéter"
+
+#: ../menu/pages/registration.php:101 ../menu/pages/registration.php:104
+msgid "Terms of Service"
+msgstr "conditions d'utilisation"
+
+#: ../menu/pages/registration.php:103
+msgid "I have read and agree to WimTV"
+msgstr "J'ai lu et accepté les "
+
+#: ../menu/pages/registration.php:106
+msgid "Privacy Policies"
+msgstr "Politique de confidentialité"
+
+#: ../menu/pages/registration.php:114
+msgid "Register"
+msgstr "Inscription"
+
+#: ../menu/pages/upload_video.php:19
+msgid ""
+"Attention! Your server does not support upload of files, please modify your "
+"server settings with file_uploads = On."
+msgstr ""
+"Attention ! Votre serveur ne supporte pas le téléchargement de fichiers, "
+"Modifiez les paramètres de votre serveur : setting file_uploads = On."
+
+#: ../menu/pages/upload_video.php:26
+msgid "UPLOAD_pageTitle"
+msgstr "Envoyer vidéo"
+
+#: ../menu/pages/upload_video.php:31
+msgid "Do not leave this page until the upload is complete"
+msgstr "Ne pas quitter cette page jusqu'a téléchargement complet"
+
+#: ../menu/pages/upload_video.php:37
+msgid "Select video"
+msgstr "Sélectionnez une vidéo"
+
+#: ../menu/pages/upload_video.php:45
+msgid "Description"
+msgstr "Description"
+
+#: ../menu/pages/upload_video.php:53
+msgid "Category"
+msgstr "Catégorie"
+
+#: ../menu/pages/upload_video.php:53
+msgid "Subcategory"
+msgstr "Sous-catégorie"
+
+#: ../menu/pages/upload_video.php:62
+msgid "Multiselect with CTRL"
+msgstr "Multi-selection avec la touche CTRL"
+
+#: ../menu/pages/settings.php:38
+msgid "This file isn't format correct for jwplayer's skin"
+msgstr "Le fichier n'est pas dans le bon format pour l'habillage du player jwplayer"
+
+#: ../menu/pages/settings.php:44
+msgid "Uploaded file is "
+msgstr "La fichier téléchargé est"
+
+#: ../menu/pages/settings.php:46
+msgid "Kb. It must be less than"
+msgstr "Kb. Il doit être inférieur à"
+
+#: ../menu/pages/settings.php:53 ../menu/pages/settings.php:71
+msgid "Internal error."
+msgstr "Erreur interne"
+
+#: ../menu/pages/settings.php:83
+msgid "The username is required"
+msgstr "Le nom d'utilisateur est requis"
+
+#: ../menu/pages/settings.php:143
+msgid ""
+"Can not establish a connection with Wim.tv. Username and/or Password are not "
+"correct."
+msgstr ""
+"Vous ne pouvez pas établir une connexion avec WimTV. Nom d'utilisateur et/ou "
+"mot de passe incorrect."
+
+#: ../menu/pages/wimbox.php:56
+msgid "WIMBOX_pageTitle"
+msgstr "Wimbox"
+
+#: ../menu/pages/wimbox.php:56
+msgid "Upload Video"
+msgstr "Envoyer vidéo"
+
+#: ../menu/pages/wimbox.php:58
+msgid ""
+"Here you find all videos you have uploaded. If you wish to post one of these "
+"videos on your site, move it to WimVod by clicking the corresponding icon"
+msgstr ""
+"Vous trouverez ici toutes les vidéos que vous avez téléchargées. Si vous "
+"souhaitez poster une de ces vidéos sur votre site, déplacez-la vers WimVod "
+"en cliquant sur l'icône correspondante"
+
+# END OF WHITELABEL CUSTOMIZATION
+#: ../menu/pages/wimbox.php:61 ../menu/pages/wimvod.php:72
+msgid "Synchronize"
+msgstr "Synchroniser"
+
+#: ../menu/pages/wimbox.php:68 ../menu/pages/wimbox.php:77 ../menu/pages/wimbox.
+#: php:177
+msgid "Search"
+msgstr "Recherche"
+
+#: ../menu/pages/wimbox.php:75
+msgid "video title"
+msgstr "Titre de la vidéo"
+
+#: ../menu/pages/wimbox.php:84
+msgid "Not contains"
+msgstr "Pas de contenu"
+
+#: ../menu/pages/wimbox.php:91 ../menu/pages/wimbox.php:116
+msgid "Order"
+msgstr "Tri"
+
+#: ../menu/pages/wimbox.php:99
+msgid "by title"
+msgstr "par titre"
+
+#: ../menu/pages/wimbox.php:112
+msgid "DESC"
+msgstr "DESC"
+
+#: ../menu/pages/wimbox.php:129 ../menu/pages/wimvod.php:81
+msgid "Posted"
+msgstr "Posté"
+
+#: ../menu/pages/wimbox.php:175
+msgid "Close"
+msgstr "Fermer"
+
+#: ../menu/pages/wimvod.php:67
+msgid "WIMVOD_pageTitle"
+msgstr "WimVod"
+
+#: ../menu/pages/wimvod.php:68
+msgid "Here you can"
+msgstr "Ici vous pouvez"
+
+#: ../menu/pages/wimvod.php:68
+msgid "Manage the videos you want to publish, both in posts and widgets"
+msgstr ""
+"Gérer les vidéos que vous souhaitez publier, à la fois dans les messages et "
+"les widgets"
+
+#: ../menu/pages/wimvod.php:69
+msgid "Shortcode to post all videos:"
+msgstr "Shortcode pour afficher toutes les vidéos"
+
+#: ../menu/pages/wimvod.php:82
+msgid "Change position"
+msgstr "Changer la position"
+
+#: ../menu/pages/programming.php:54 ../menu/pages/programming_BAK.php:27
+msgid "New Programming"
+msgstr "Nouveau programme"
+
+#: ../menu/pages/programming.php:57 ../menu/pages/programming_BAK.php:30
+msgid "Modify Programming"
+msgstr "Modifier la programmation"
+
+#: ../menu/pages/programming.php:74 ../menu/pages/programming_BAK.php:69
+msgid "Programmings"
+msgstr "Programmation"
+
+#: ../menu/pages/programming.php:75 ../menu/pages/programming_BAK.php:70 ..
+#: menu/pages/wimlive.php:121
+msgid "New"
+msgstr "Nouveau"
+
+#: ../menu/pages/programming.php:97 ../menu/pages/programming_BAK.php:91
+msgid "No title"
+msgstr "Pas de titre"
+
+#: ../menu/pages/programming_BAK.php:42
+msgid "Give a name to this programming (not mandatory)"
+msgstr "Donnez un nom à ce programme (facultatif)"
+
+#: ../menu/pages/programming_BAK.php:44
+msgid "Send"
+msgstr "Envoyer"
+
+#: ../menu/pages/programming_BAK.php:45
+msgid "Skip"
+msgstr "Sauter"
+
+#: ../menu/pages/wimlive.php:24
+msgid ""
+"To use WimLive, you need to enable live streaming in Live Configuration in "
+"your Settings"
+msgstr ""
+"Pour utiliser WimLive, vous devez activer streaming en direct dans la "
+"configuration de vos paramètres"
+
+#: ../menu/pages/wimlive.php:124
+msgid "Here you can create and post live streaming events to your website."
+msgstr ""
+"Ici, vous pouvez créer et poster des événements streaming en direct sur "
+"votre site web."
+
+#: ../menu/pages/wimlive.php:126
+msgid "This service can be used in one of these two modalities:"
+msgstr "Ce service peut être utilisé dans l'une de ces deux modalités:"
+
+#: ../menu/pages/wimlive.php:129
+msgid ""
+"Install a third party video encoding software (e.g. Adobe Flash Media Live "
+"Encoder, Wirecast etc.) on your pc: this solution is recommended if you want "
+"to connect an external video camera to your pc"
+msgstr ""
+"Installez un logiciel tiers d'encodage vidéo (par exemple Adobe Flash Media "
+"Live Encoder, wirecast etc.) sur votre PC : cette solution est recommandée "
+"si vous souhaitez connecter une caméra vidéo externe à votre PC"
+
+#: ../menu/pages/wimlive.php:132
+msgid ""
+"Use WimTV encoding software. Broadcast directly from your webcam, by simply "
+"clicking the icon \"Live now\". By clicking “Live now” icon, the producer will "
+"open in a new browser tab. Keep it open during the whole transmission."
+msgstr ""
+"Utilisez le logiciel d'encodage WimTV. Diffusez directement à partir de "
+"votre webcam, en cliquant simplement sur l'icône \"Direct maintenant\". En "
+"cliquant sur l'icône \"Direct maintenant\", le producteur va s'ouvrir dans un "
+"nouvel onglet du navigateur. Gardez-le ouvert pendant toute la transmission."
+
+#: ../menu/pages/wimlive.php:137
+msgid "Shortcode to post Lives:"
+msgstr "Shortcode pour afficher tous les directs"
+
+#: ../menu/pages/wimlive.php:138
+msgid "Time is shown according to timezone of your device"
+msgstr "L'heure est affichée selon le fuseau horaire de votre appareil"
+
+#: ../menu/pages/wimlive.php:146
+msgid "Schedule"
+msgstr "Programme"
+
+#: ../menu/pages/wimlive.php:147
+msgid "Embed Code"
+msgstr "Code intégré"
+
+#: ../menu/pages/wimlive.php:148
+msgid "Edit"
+msgstr "Editer"
+
+#: ../menu/pages/wimlive.php:187
+msgid "Please complete all the fields marked with an *"
+msgstr "Les champs marqués par * sont obligatoires"
+
+#: ../menu/pages/wimlive.php:198
+msgid "Please insert the title of the live event"
+msgstr "Ajouter le titre de votre événement en direct"
+
+#: ../menu/pages/wimlive.php:200
+msgid "Set the price to access the event"
+msgstr "Sélectionnez le prix pour accéder à l'événement"
+
+#: ../menu/pages/wimlive.php:203
+msgid ""
+"Please, set a price for viewing your event (set 0 for free of charge). "
+"Prices are expressed in &euro;"
+msgstr ""
+"Indiquer le prix du visionnage de votre événement (0 = Gratuit). Les prix "
+"sont exprimés en &euro;"
+
+#: ../menu/pages/wimlive.php:210
+msgid "You need the streaming server URL. Click “Obtain URL\" button to get one"
+msgstr ""
+"Vous devez renseigner l'url du serveur de streaming. Cliquer sur le bouton "
+"“Obtenir URL\" pour en avoir une"
+
+#: ../menu/pages/wimlive.php:211
+msgid "Obtain URL"
+msgstr "Obtenir l'URL"
+
+#: ../menu/pages/wimlive.php:214
+msgid "Password Live is missing, insert a password for live streaming:"
+msgstr ""
+"Le mot de passe du direct est manquant, insérez un mot de passe pour le flux "
+"du direct"
+
+#: ../menu/pages/wimlive.php:216
+msgid "Save"
+msgstr "Enregistrer"
+
+#: ../menu/pages/wimlive.php:221
+msgid "Event status"
+msgstr "Statut de l'événement"
+
+#: ../menu/pages/wimlive.php:222
+msgid "Public"
+msgstr "Publique"
+
+#: ../menu/pages/wimlive.php:225
+msgid "Private"
+msgstr "Privée"
+
+#: ../menu/pages/wimlive.php:232
+#, php-format
+msgid "If you want to index your event on %d, and in WimView app, select \"Public\""
+msgstr ""
+"Si vous voulez indexer votre événement sur %d, et dans WimView (application "
+"mobile WimTV) choisissez \"Publique\""
+
+#: ../menu/pages/wimlive.php:238
+msgid "Record event"
+msgstr "Evénement enregistré"
+
+#: ../menu/pages/wimlive.php:239 ../menu/pages/settings/features.php:54
+msgid "Yes"
+msgstr "oui"
+
+#: ../menu/pages/wimlive.php:242 ../menu/pages/settings/prices.php:58
+msgid "No"
+msgstr "Non"
+
+#: ../menu/pages/wimlive.php:245
+msgid ""
+"Select “Yes” if you want to record your event. The recorded video will be "
+"listed among your videos in WimBox"
+msgstr "La vidéo enregistrée sera répertorié parmi vos vidéos dans WimBox"
+
+#: ../menu/pages/wimlive.php:252
+msgid "Start date"
+msgstr "Date de début"
+
+#: ../menu/pages/wimlive.php:252
+msgid "dd/mm/yy"
+msgstr "jj/mm/aa"
+
+#: ../menu/pages/wimlive.php:255
+msgid "Start time"
+msgstr "Heure de début"
+
+#: ../menu/pages/wimlive.php:257
+msgid "Time zone"
+msgstr "Fuseau horaire"
+
+#: ../menu/pages/wimlive.php:282
+msgid "Create"
+msgstr "Créer"
+
+#: ../menu/pages/settings/features.php:50
+msgid "Index and show public videos on WimTV"
+msgstr "Indexer et montrer des vidéos publiques sur WimTV"
+
+#: ../menu/pages/settings/features.php:50 ../menu/pages/settings/features.php:50
+msgid "APP_HOME_LINK_URL"
+msgstr "http://www.wim.tv"
+
+#: ../menu/pages/settings/features.php:65
+msgid "WimTV Page"
+msgstr "Page WimTV"
+
+#: ../menu/pages/settings/features.php:75
+msgid "Page Description"
+msgstr "Description de la page"
+
+# page titles
+#: ../menu/pages/settings/configuration.php:48
+msgid "SETTINGS_pageTitle"
+msgstr "Paramètres"
+
+# msgid "Programming"
+# msgstr "Schedule"
+#: ../menu/pages/settings/configuration.php:58
+msgid "Connect to your account on WimTV"
+msgstr "Connectez-vous à votre compte sur WimTV"
+
+#: ../menu/pages/settings/configuration.php:75
+msgid "Upload and/or choose a skin for your player"
+msgstr "Télécharger et/ou choisissez un habillage pour votre player"
+
+#: ../menu/pages/settings/configuration.php:75
+msgid "Download it from"
+msgstr "Téléchargez-le"
+
+#: ../menu/pages/settings/configuration.php:79
+msgid "Skin Name"
+msgstr "Nom de l'habillage"
+
+#: ../menu/pages/settings/configuration.php:83
+msgid "upload a new skin for your player"
+msgstr "Télécharger un nouvel habillage pour votre player"
+
+#: ../menu/pages/settings/configuration.php:86
+msgid "Only .zip files are supported Save wp-content/uploads/skinWim to a public URL"
+msgstr ""
+"Seuls les fichiers .zip sont pris en charge Sauvegarder wp-"
+"content/uploads/skinWim vers une URL publique"
+
+#: ../menu/pages/settings/configuration.php:87
+msgid "To use the skin of your choice, copy the"
+msgstr "Pour utiiliser un habillage de votre choix, copier le"
+
+#: ../menu/pages/settings/configuration.php:87
+msgid ""
+"file to the root directory (e.g. http://www.mysite.com). You can do it all "
+"via FTP  (e.g. FileZilla, Classic FTP, etc)."
+msgstr ""
+"fichier à la racine (par exemeple (http://www.monsite.com) Vous pouvez le "
+"faire via FTP (FileZilla, Classic FTP, etc.)"
+
+#: ../menu/pages/settings/configuration.php:87
+msgid "More information"
+msgstr "Plus d'informations"
+
+#: ../menu/pages/settings/configuration.php:95
+msgid "Size of the player for your videos"
+msgstr "Taille du player pour vos vidéos"
+
+#: ../menu/pages/settings/configuration.php:99
+msgid "Height"
+msgstr "Hauteur"
+
+#: ../menu/pages/settings/configuration.php:103
+msgid "Width"
+msgstr "Largeur"
+
+#: ../menu/pages/settings/configuration.php:155
+msgid "Save changes"
+msgstr "Enregistrer changements"
+
+#: ../menu/pages/settings/live.php:27
+msgid "Live configuration"
+msgstr "Configuration du direct"
+
+#: ../menu/pages/settings/live.php:33
+msgid ""
+"this section you can enable live streaming settings to better match your "
+"specific needs. Choose between \"Live streaming\" to stream your own events, "
+"or use the features reserved for Event Organisers and Event Resellers to "
+"play the role of organiser or distributor (on behalf of Event Organiser) of "
+"live events."
+msgstr ""
+"Dans cette section, vous pouvez activer les paramètres streaming en direct "
+"pour mieux répondre à vos besoins spécifiques. Choisissez entre «Streaming "
+"direct\" pour écouter vos propres événements, ou utiliser les fonctions "
+"réservées aux organisateurs de l'événement et les revendeurs événement qui "
+"pourront avoir le rôle de l'organisateur ou du distributeur (au nom de "
+"l'Organisateur de l'événement) des événements en direct."
+
+#: ../menu/pages/settings/live.php:60
+msgid "Live streaming"
+msgstr "Retransmission en direct"
+
+#: ../menu/pages/settings/live.php:73
+msgid "Enables you to live stream your events with WimTV"
+msgstr "Sélectionnez si vous voulez diffuser des événements en direct avec WimTV"
+
+#: ../menu/pages/settings/live.php:78
+msgid "Password"
+msgstr "Mot d epasse"
+
+#: ../menu/pages/settings/live.php:81
+msgid ""
+"A password is required for live streaming (for authenticating yourself with "
+"the streaming server)."
+msgstr ""
+"Un mot de passe est nécessaire pour le streaming en direct (dans le but de "
+"vous authentifier avec le serveur de streaming)."
+
+#: ../menu/pages/settings/live.php:90
+msgid "Live stream events resale"
+msgstr "Revente d'événements en direct"
+
+#: ../menu/pages/settings/live.php:94
+msgid ""
+"Enables you to distribute live events organised by other parties (Event "
+"Organisers)."
+msgstr ""
+"Sélectionnez si vous voulez distribuer des événements en direct organisés "
+"par d'autres parties (Organisateurs d'Événements)."
+
+#: ../menu/pages/settings/live.php:99
+msgid "Live stream events organisation"
+msgstr "Organisation de l'événement en direct"
+
+#: ../menu/pages/settings/live.php:102
+msgid ""
+"Select if you want to organise live evants and collaborate with an Event "
+"Reseller for their distribution."
+msgstr ""
+"Sélectionnez si vous souhaitez organiser des événements en direct et "
+"collaborer avec un revendeur l'événement pour sa distribution."
+
+#: ../menu/pages/settings/personal.php:57
+msgid "Date of Birth"
+msgstr "Date de naissance"
+
+#: ../menu/pages/settings/personal.php:65
+msgid "Social networks"
+msgstr "Réseaux sociaux"
+
+#: ../menu/pages/settings/monetization.php:46
+msgid ""
+"Please complete the following fields if you wish to make financial "
+"transactions on Wim.tv (e.g. buy or sell videos, post pay per view videos or "
+"bundles). You may wish to fill your data now or do it later by returning in "
+"this section of your Settings."
+msgstr ""
+"Remplissez les champs suivants si vous souhaitez faire ou recevoir des "
+"paiements sur Wim.tv (par exemple, acheter ou vendre des vidéos, articles "
+"payants, vidéos à la demande ou paquet de vidéos ) . Vous pouvez remplir vos "
+"données maintenant ou le faire plus tard en revenant à cette section de vos "
+"paramètres .\n"
+
+#: ../menu/pages/settings/monetization.php:78
+msgid "Affiliation"
+msgstr "Affiliation"
+
+#: ../menu/pages/settings/monetization.php:81
+msgid "Are you affiliate to the following company?"
+msgstr "Êtes-vous affilié à la compagnie suivante ?"
+
+#: ../menu/pages/settings/monetization.php:91
+msgid "Company Name"
+msgstr "Nom de la compagnie"
+
+#: ../menu/pages/settings/monetization.php:97
+msgid "Have you the legal right of acting as an affiliate to the preceeding company?"
+msgstr ""
+"Vous avez le droit légal d'agir comme une compagnie affiliée à la compagnie "
+"précédente ? "
+
+#: ../menu/pages/settings/monetization.php:110
+msgid "PayPal"
+msgstr "Paypal"
+
+#: ../menu/pages/settings/monetization.php:113
+msgid "Paypal Email"
+msgstr "Email du compte Paypal"
+
+#: ../menu/pages/settings/monetization.php:117
+msgid "Tax Info"
+msgstr "Information taxes"
+
+#: ../menu/pages/settings/monetization.php:120
+msgid "Tax Code"
+msgstr "Code taxe"
+
+#: ../menu/pages/settings/monetization.php:124
+msgid "VAT Code"
+msgstr "Code TVA"
+
+#: ../menu/pages/settings/monetization.php:128
+msgid "Billing address"
+msgstr "Adresse de facturation"
+
+#: ../menu/pages/settings/monetization.php:131
+msgid "Street"
+msgstr "Rue"
+
+#: ../menu/pages/settings/monetization.php:136
+msgid "City"
+msgstr "Ville"
+
+#: ../menu/pages/settings/monetization.php:141
+msgid "State"
+msgstr "Etat"
+
+#: ../menu/pages/settings/monetization.php:146
+msgid "Zip/Postal Code"
+msgstr "Code postal"
+
+#: ../menu/pages/settings/prices.php:17
+msgid "Back"
+msgstr "Retour"
+
+#: ../menu/pages/settings/prices.php:93
+msgid "Use of WimTV requires subscription to a monthly storage and bandwidth package"
+msgstr ""
+"L'utilisation de Wimtv demande la souscription mensuelle d'un abonnement de "
+"stockage et de bande passante"
+
+#: ../menu/pages/settings/prices.php:108
+msgid "Bandwidth"
+msgstr "Bande passante"
+
+#: ../menu/pages/settings/prices.php:116
+msgid "Storage"
+msgstr "Stockage"
+
+#: ../menu/pages/settings/prices.php:124
+msgid "Support"
+msgstr "Support"
+
+#: ../menu/pages/settings/prices.php:132
+msgid "Hours of Transmission"
+msgstr "Heures de transmission"
+
+#: ../menu/pages/settings/prices.php:140
+#, php-format
+msgid "Price/mo. for %d Mo"
+msgstr "Prix/mois pour %d Mo"
+
+#: ../menu/pages/settings/prices.php:143
+msgid "m"
+msgstr "m"
+
+#: ../menu/pages/settings/prices.php:157
+msgid "day left"
+msgstr "jour restant"
+
+#: ../menu/pages/settings/prices.php:173
+msgid "Assuming video+audio encoded at 1 Mbps"
+msgstr "En supposant que la vidéo + audio ait été encodée à 1Mbps"
+
+#: ../menu/pages/settings/prices.php:174
+msgid "VAT to be added"
+msgstr "La TVA a été ajoutée"
+
+#: ../menu/pages/settings/prices.php:176
+msgid "If, before the end of the month, you"
+msgstr "Si, avant la fin du mois, vous"
+
+#: ../menu/pages/settings/prices.php:178
+msgid "reach 80% level you will be notified"
+msgstr "atteignez un niveau de 80%, vous serez averti par email"
+
+#: ../menu/pages/settings/prices.php:179
+msgid "exceed 100% level you will be asked to upgrade to another package."
+msgstr "dépassez un niveau de 100%, serez invité à renouveler votre souscription."
+
+#: ../menu/pages/settings/prices.php:182
+msgid ""
+"Note that, if you stay within the usage limits of the Free Package, use of "
+"WimTV is free"
+msgstr ""
+"Notez que, si vous restez dans les limites d'utilisation de l'offre gratuite,"
+" l'utilisation de WimTV est libre"
+
+#: ../menu/pages/settings/prices.php:183
+msgid ""
+"If you license content and/or provide services in WimTV, revenue sharing "
+"will apply"
+msgstr ""
+"Si vous possédez une licence de contenu et / ou fourniture des services dans "
+"WimTV, le partage des revenus sera applicable"
+
+#: ../menu/pages/settings/prices.php:184
+msgid "Enjoy your WimTVPro video plugin!"
+msgstr "Profitez de votre plugin WimTV Pro !"
+
+#: ../menu/pages/modules/wimbox.php:98
+msgid "Found"
+msgstr "Trouvé"
+
+#: ../menu/pages/modules/wimbox.php:98
+msgid "Videos"
+msgstr "Vidéos"
+
+#: ../menu/pages/modules/wimbox.php:112
+msgid "Videos per page"
+msgstr "Vidéos par page"
+
+#: ../menu/pages/modules/wimlive.php:71
+msgid "You must set a title."
+msgstr "Vous devez choisir un titre"
+
+#: ../menu/pages/modules/wimlive.php:77
+msgid "You must set a price for your event (or free of charge)."
+msgstr "Vous devez choisir un prix pour votre événement (0 = gratuit)"
+
+#: ../menu/pages/modules/wimlive.php:83
+msgid "You set write an url."
+msgstr "Vous devez écrire une url"
+
+#: ../menu/pages/modules/wimlive.php:89
+msgid "You must set a day for your event."
+msgstr "Vous devez choisir un jour pour votre événement"
+
+#: ../menu/pages/modules/wimlive.php:95
+msgid "You must set an hour for your event."
+msgstr "Vous devez choisir une heure pour votre événement"
+
+#: ../menu/pages/modules/wimlive.php:101
+msgid "You must set a duration for your event."
+msgstr "Vous devez choisir une durée pour votre événement"
+
+#: ../menu/pages/modules/wimlive.php:108
+msgid "You must check if your event is public or private."
+msgstr "Vous devez choisir si votre événement est public ou privé"
+
+#: ../menu/pages/modules/wimlive.php:115
+msgid "You must specify a timezone (GMT)."
+msgstr "Vous devez spécifier un fuseau horaire (GMT)"
+
+#: ../menu/pages/modules/wimlive.php:218
+msgid "Insert successful"
+msgstr "Insertion réussie"
+
+#: ../menu/pages/modules/liveList.php:172
+msgid "Begins to "
+msgstr "Commence à"
+
+#: ../menu/pages/modules/liveList.php:181
+msgid "There are no live events"
+msgstr "Il n'y a pas d'événements direct"
+
+#: ../menu/pages/modules/registration.php:25
+msgid "Password isn't same"
+msgstr "Le mot de passe est allumée"
+
+#: ../menu/pages/modules/registration.php:56
+msgid "Registration successful."
+msgstr "Inscription réussie"
+
+#: ../menu/pages/modules/registration.php:75
+msgid "Internal error. Contact wimTV's administrator."
+msgstr "Erreur interne. Contactez l'administrateur WimTV"
+
+#: ../menu/pages/modules/registration.php:80
+msgid "You did not compile all requested fields"
+msgstr "Vous ne avez pas compilé tous les champs demandés"
+
+#: ../menu/pages/modules/graph.php:40
+msgid "Total viewers"
+msgstr "Total spectateurs"
+
+#: ../menu/pages/modules/graph.php:40
+msgid "Average Traffic"
+msgstr "Trafic moyen"
+
+#: ../menu/pages/modules/graph.php:51
+msgid "viewers"
+msgstr "Téléspectateurs"
+
+#: ../menu/pages/modules/graph.php:53
+msgid "viewer"
+msgstr "Téléspectateur"
+
+#: ../embedded/embedded.php:52 ../embedded/embeddedAll.php:28
+msgid "Categories"
+msgstr "Catégories"
+
+#: ../embedded/live_webproducer.php:60
+msgid ""
+"On this page you can view the video you're broadcasting live. Keep it open "
+"during the whole transmission."
+msgstr ""
+"Sur cette page vous pouvez voir la vidéo que vous diffuser en direct. Gardez-"
+"la ouverte pendant toute la transmission."
+
+#: ../functions/smartSync.php:32
+msgid "The video is not ready yet"
+msgstr "Cette vidéo n'est pas encore prête"
+
+#: ../functions/registrationAlert.php:16
+msgid "If you don't have a WimTV account"
+msgstr "Vous n'avez pas de compte WimTV"
+
+#: ../functions/registrationAlert.php:18
+msgid "LOGIN"
+msgstr "LOGIN"
+
+#: ../functions/registrationAlert.php:19
+msgid "with your WimTV credentials"
+msgstr "avec vos crédits WimTV"
+
+#: ../functions/listDownload.php:117
+msgid "FREE OF CHARGE"
+msgstr "GRATUIT"
+
+#: ../functions/listDownload.php:119
+msgid "CREATIVE COMMONS"
+msgstr "CREATIVE COMMONS"
+
+#: ../functions/listDownload.php:123 ../functions/listDownload.php:125
+msgid "PAY PER VIEW"
+msgstr "Chaîne payante"
+
+#: ../functions/listDownload.php:161
+msgid "Add to WimVod"
+msgstr "Ajouter à WimVod"
+
+#: ../functions/listDownload.php:162 ../functions/listDownload.php:206
+msgid "Remove from WimVod"
+msgstr "Supprimer de WimVod"
+
+#: ../functions/listDownload.php:207
+msgid "Drag"
+msgstr "Glisser"
+
+#: ../functions/listDownload.php:231
+msgid "View Video"
+msgstr "Voir la vidéo"
+
+#: ../functions/listDownload.php:243
+msgid "Preview Video"
+msgstr "Aperçu de la vidéo"

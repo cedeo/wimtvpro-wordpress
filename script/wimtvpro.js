@@ -23,6 +23,7 @@ jQuery(document).ready(function() {
     }
 
     function callSync(elem) {
+//        alert(url_pathPlugin);return;
         jQuery.ajax({
             url: url_pathPlugin + "sync.php",
             dataType: "json",

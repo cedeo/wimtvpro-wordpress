@@ -877,7 +877,7 @@ msgstr "Remove from WimVod"
 
 #: 
 msgid "You need compile fiscal information for your account, for enabling pay per view posting. Please provide it in Monetisation section of your Settings"
-msgstr "If you wish to make or receive payments in WimTV (e.g. buy or sell videos, post pay per view videos or bundles, stream pay live events, etc...) please provide the relevant information in the  Monetisation section of your Settings"
+msgstr "If you wish to make or receive payments in WimTV (e.g. buy or sell videos, post pay per view videos or bundles, stream pay live events, etc...) please provide the relevant information in the Monetisation section of your Settings"
 
 #: 
 msgid "Return to list"

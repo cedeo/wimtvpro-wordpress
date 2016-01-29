@@ -104,7 +104,7 @@ Check the [Wimlabs support site](http://support.wim.tv)
 = 4.0 =
 * New version of program scheduling functionality
 = 4.1 =
-* Minor fix for PHP 5.5 and later. Updated to jwplayer7. French translation
+* Minor fix for PHP 5.5 and later. Updated to jwplayer7. French translation upodated
 
 == Upgrade Notice ==
 Into version 2.0 added videos Playlist and Report. When you update insert again your wimtv user and password.
@@ -118,4 +118,4 @@ Visit the [plugin's website](http://wimtvpro.tv)
 
 == Last updated ==
 
-14/01/2016
+29/01/2016

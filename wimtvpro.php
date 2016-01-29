@@ -373,35 +373,34 @@ function wimtvpro_install_jquery() {
 
 function my_custom_js() {
     echo '<script type="text/javascript">
-	
 	var url_pathPlugin ="' . plugin_dir_url(__FILE__) . '";
-	var titlePlaylistJs = "' . __("First, You must selected a playlist", "wimtvpro") . '";
-	var titlePlaylistSelectJs = "' . __("The video is insert into playlist selected!", "wimtvpro") . '";
-	var updateSuc = "' . __("Update successful", "wimtvpro") . '";
-	var refreshpage = "' . __("Refresh page for view video", "wimtvpro") . '";
-	var passwordReq = "' . __("The password is required", "wimtvpro") . '";
-	var selectCat = "' . __("You selected", "wimtvpro") . '";
-	var nonePayment = "' . __('You need compile fiscal information for your account, for enabling pay per view posting. Please provide it in Monetisation section of your Settings', 'wimtvpro') . '";
-	var gratuito = "' . __('Do you want to publish your videos for free?', 'wimtvpro') . '";
-	var messageSave = "' . __('Publish', "wimtvpro") . '";
-	var update = "' . __('Update', "wimtvpro") . '";
-	var videoproblem = "' . __('This video has not yet been processed, wait a few minutes and try to synchronize', "wimtvpro") . '";
+	var titlePlaylistJs = "' . addslashes(__("First, You must selected a playlist", "wimtvpro")) . '";
+	var titlePlaylistSelectJs = "' . addslashes(__("The video is insert into playlist selected!", "wimtvpro")) . '";
+	var updateSuc = "' . addslashes(__("Update successful", "wimtvpro")) . '";
+	var refreshpage = "' . addslashes(__("Refresh page for view video", "wimtvpro")) . '";
+	var passwordReq = "' . addslashes(__("The password is required", "wimtvpro")) . '";
+	var selectCat = "' . addslashes(__("You selected", "wimtvpro")) . '";
+	var nonePayment = "' . addslashes(__('You need compile fiscal information for your account, for enabling pay per view posting. Please provide it in Monetisation section of your Settings', 'wimtvpro')) . '";
+	var gratuito = "' . addslashes(__('Do you want to publish your videos for free?', 'wimtvpro')) . '";
+	var messageSave = "' . addslashes(__('Publish', "wimtvpro")). '";
+	var update = "' . addslashes(__('Update', "wimtvpro")) . '";
+	var videoproblem = "' . addslashes(__('This video has not yet been processed, wait a few minutes and try to synchronize', "wimtvpro")) . '";
 	var videoPrivacy = new Array();
-	 videoPrivacy[0] = "' . __('Select who can see the video', "wimtvpro") . '";
-	 videoPrivacy[1] = "' . __('Everybody', "wimtvpro") . '";
-	 videoPrivacy[2] = "' . __('Nobody (Administrators Only)', "wimtvpro") . '";
-	 videoPrivacy[3] = "' . __('Where can anonymous viewers see the video (if you selected Everybody)?', "wimtvpro") . '";
-	 videoPrivacy[4] = "' . __('Nowhere', "wimtvpro") . '";
-	 videoPrivacy[5] = "' . __('Widget', "wimtvpro") . '";
-	 videoPrivacy[6] = "' . __('Pages', "wimtvpro") . '";
-	 videoPrivacy[7] = "' . __('Widget and Pages', "wimtvpro") . '";
-	 videoPrivacy[8] = "' . __('Roles', "wimtvpro") . '";
-	 videoPrivacy[9] = "' . __('Users', "wimtvpro") . '";
+	 videoPrivacy[0] = "' . addslashes(__('Select who can see the video', "wimtvpro")) . '";
+	 videoPrivacy[1] = "' . addslashes(__('Everybody', "wimtvpro")) . '";
+	 videoPrivacy[2] = "' . addslashes(__('Nobody (Administrators Only)', "wimtvpro")) . '";
+	 videoPrivacy[3] = "' . addslashes(__('Where can anonymous viewers see the video (if you selected Everybody)?', "wimtvpro")) . '";
+	 videoPrivacy[4] = "' . addslashes(__('Nowhere', "wimtvpro")) . '";
+	 videoPrivacy[5] = "' . addslashes(__('Widget', "wimtvpro")) . '";
+	 videoPrivacy[6] = "' . addslashes(__('Pages', "wimtvpro")) . '";
+	 videoPrivacy[7] = "' . addslashes(__('Widget and Pages', "wimtvpro")) . '";
+	 videoPrivacy[8] = "' . addslashes(__('Roles', "wimtvpro")) . '";
+	 videoPrivacy[9] = "' . addslashes(__('Users', "wimtvpro")) . '";
 	 var erroreFile = new Array();
-	 erroreFile[0] = "' . __('Please only upload files that end in types:', "wimtvpro") . '";
-	 erroreFile[1] = "' . __('Please select a new file and try again.', "wimtvpro") . '";
+	 erroreFile[0] = "' . addslashes(__('Please only upload files that end in types:', "wimtvpro")) . '";
+	 erroreFile[1] = "' . addslashes(__('Please select a new file and try again.', "wimtvpro")) . '";
 	';
-
+    
     $language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
     if (substr($language, 0, 2) == 'it') {
         echo "var point =','";
@@ -753,7 +752,8 @@ function wimtvpro_fix_missing_langs() {//
     $locale = get_locale();
     $moFile = $langFolder . "wimtvpro-" . $locale . ".mo";
     if (!file_exists($moFile)) {
-        $engMoFile = str_replace($locale, "en_US", $moFile);
+        $engMoFile = $langFolder . "wimtvpro-en_US.mo";
+        //str_replace($locale, "en_US", $moFile);
         copy($engMoFile, $moFile);
     }
     load_plugin_textdomain('wimtvpro', false, dirname(plugin_basename(__FILE__)) . '/languages/');

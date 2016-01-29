@@ -203,7 +203,7 @@ function apiGetDetailsShowtime($id) {
     return $apiAccessor->execute($request, "application/json");
 }
 
-function apiGetPlayerShowtime($id, $parameters) {
+function apiGetPlayerShowtime($id, $parameters) {    
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('videos/' . $id . "/embeddedPlayers?" . $parameters);
     $request = $apiAccessor->authenticate($request);
@@ -279,7 +279,11 @@ function apiGetLiveIframe($host_id, $params = "") {
     }
     $request = $apiAccessor->getRequest($url);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request, 'text/xml, application/xml');
+
+//    return $apiAccessor->execute($request, 'text/xml, application/xml');
+    return $apiAccessor->execute($request, 'text/xml');
+//    return $apiAccessor->execute($request, 'application/xml');
+//    return $apiAccessor->execute($request, 'application/json');
 }
 
 //function apiGetLiveIframe($host_id, $timezone = "") {

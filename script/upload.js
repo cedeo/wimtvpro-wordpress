@@ -41,9 +41,7 @@ function createContentId() {
     return time + "WP" + Math.floor((Math.random() * 100) + 1);
 }
 
-
 jQuery(document).ready(function() {
-
     jQuery("#wimtvpro-upload").submit(function(event) {
         event.preventDefault();
         var progress = jQuery(".progress-bar span");

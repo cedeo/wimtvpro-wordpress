@@ -20,24 +20,22 @@ class wimtvpro_smartSync {
 
     static function sync_pending() {
         $db_pending_video_array = dbGetUserVideosId(get_option("wp_userwimtv"), "pending");
-        
         foreach ($db_pending_video_array as $db_record) {
             $error_response = "";
             // NS: We removed the "&" from error response to avoid problem with php 5.4
 //            $api_video_detail_response = apiGetDetailsVideo($db_record->contentidentifier, &$error_response);
             $api_video_detail_response = apiGetDetailsVideo($db_record->contentidentifier, $error_response);
-
             // VIDEO HAS NOT YET TRANSCODED OR NOT EXISTS
             if ($api_video_detail_response == "") {
-                $notReadyString=__("The video is not ready yet", "wimtvpro");
+//                $notReadyString = __("The video is not ready yet", "wimtvpro");
+                $notReadyString = "is not ready yet";
                 $errorBody = $error_response->body;
                 $notReady = strstr($errorBody, $notReadyString);
-                
-                if ($notReady==false){
+
+                if ($notReady == false) {
                     // VIDEO NOT FOUND IN REMOTE SERVER: delete it from local cache
                     dbDeleteVideo($db_record->contentidentifier);
-                }
-                else {
+                } else {
                     // VIDEO IS STILL TRANSCODING
                     continue;
                 }
@@ -46,7 +44,7 @@ class wimtvpro_smartSync {
             else {
                 $api_video_details = $api_video_detail_response->body;
 //                var_dump($api_video_details->status);exit;
-                $state = "";// WE DO NOT SET THIS STUFF BECAUSE WE ARE JUST UPDATING NEWLY UPLOADED VIDEOS
+                $state = ""; // WE DO NOT SET THIS STUFF BECAUSE WE ARE JUST UPDATING NEWLY UPLOADED VIDEOS
                 $status = $api_video_details->status;
                 $title = $api_video_details->title;
                 $url_thumbs = '<img src="' . $api_video_details->thumbnailUrl . '"  title="' . $title . '" class="wimtv-thumbnail" />';

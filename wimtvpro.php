@@ -3,7 +3,7 @@
   Plugin Name: WimTVPro for WP
   Plugin URI: http://wimtvpro.tv
   Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-  Version: 4.1
+  Version: 4.1.1
   Author: WimLabs
   Author URI: http://www.wimlabs.com
   License: GPLv2 or later
@@ -68,6 +68,16 @@ register_activation_hook(__FILE__, 'wimtvpro_install');
 
 // What to do when the plugin is deactivated
 register_deactivation_hook(__FILE__, 'wimtvpro_remove');
+
+
+/* THIS FUNCTION CHECK WHETHER THE PLUGIN LANGUAGE FILE EXISTS
+ * IN CASE IT DOESN'T EXIST: CREATE A COPY OF THE ENGLISH VERSION AND RENAME IT 
+ * AS LOCALIZED FILE.
+ * F.E.: If the CMS is set in french, the plugin will search for
+ * "wimtvpro-fr_FR.mo" file. If it doesn't exist it creates a new file
+ * named "wimtvpro-fr_FR.mo" by copying the content of "wimtvpro-en_US.mo"
+ */
+add_action('init', 'wimtvpro_fix_missing_langs');
 
 function wimtvpro_install() {
     /* Create a new database field */
@@ -366,6 +376,7 @@ function wimtvpro_install_jquery() {
     }
 
 //    if (isset($_GET['page']) && $_GET['page'] == "WimTV_Upload") {
+//    die(__('UPLOAD_urlLink', "wimtvpro"));
     if (isset($_GET['page']) && $_GET['page'] == __('UPLOAD_urlLink', "wimtvpro")) {
         wp_enqueue_script('wimtvproScriptUpload', plugins_url('script/upload.js', __FILE__));
     }
@@ -739,14 +750,7 @@ function wimtvpro_get_info() {
     return $plugin_folder[$plugin_file];
 }
 
-/* THIS FUNCTION CHECK WHETHER THE PLUGIN LANGUAGE FILE EXISTS
- * IN CASE IT DOESN'T EXIST: CREATE A COPY OF THE ENGLISH VERSION AND RENAME IT 
- * AS LOCALIZED FILE.
- * F.E.: If the CMS is set in french, the plugin will search for
- * "wimtvpro-fr_FR.mo" file. If it doesn't exist it creates a new file
- * named "wimtvpro-fr_FR.mo" by copying the content of "wimtvpro-en_US.mo"
- */
-add_action('init', 'wimtvpro_fix_missing_langs');
+
 function wimtvpro_fix_missing_langs() {//
     $langFolder = dirname(__FILE__) . "/languages/";
     $locale = get_locale();

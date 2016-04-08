@@ -60,7 +60,10 @@ function wimtvpro_programming() {
                 ?>
                 <h2><a href='?page=<?php _e('SCHEDULES_urlLink', "wimtvpro"); ?>' class='add-new-h2'><?php echo __('Return to list', 'wimtvpro') ?></a></h2>
                 <?php
-                echo apiProgrammingGetIframe($progID);
+                $locale = get_locale();
+                $locale_parts = split("_", $locale);
+                $locale = (sizeof($locale_parts) > 0) ? $locale_parts[0] : nul;
+                echo apiProgrammingGetIframe($progID, $locale);
 
                 break;
             default:
@@ -99,19 +102,28 @@ function wimtvpro_programming() {
                                     $titleProgramming = $prog->name;
                                 ?>
                                 <tr>
-                                    <td><?php echo $titleProgramming; ?></td>
-                                    <td><a href='?page=<?php _e('SCHEDULES_urlLink', "wimtvpro"); ?>&namefunction=modifyProgramming&title=<?php echo $titleProgramming; ?>&progId=<?php echo $prog->identifier; ?>' alt='<?php _e("Modify", "wimtvpro"); ?>' title='<?php _e("Modify", "wimtvpro"); ?>'><img src='<?php echo get_option('wp_wimtvPluginPath'); ?>images/mod.png'  alt='<?php _e("Modify", "wimtvpro"); ?>'></a>
-                                    </td>
-                                    <td><a href='?page=<?php _e('SCHEDULES_urlLink', "wimtvpro"); ?>&functionList=delete&id=<?php echo $prog->identifier; ?>' alt='<?php _e("Remove"); ?>' title='<?php _e("Remove"); ?>'><img src='<?php echo get_option('wp_wimtvPluginPath'); ?>images/remove.png'  alt='<?php _e("Remove"); ?>'></a>
-
-
+                                    <td>
+                                        <?php echo $titleProgramming; ?>
                                     </td>
                                     <td>
+                                        <a href='?page=<?php _e('SCHEDULES_urlLink', "wimtvpro"); ?>&namefunction=modifyProgramming&title=<?php echo $titleProgramming; ?>&progId=<?php echo $prog->identifier; ?>' alt='<?php _e("Modify", "wimtvpro"); ?>' title='<?php _e("Modify", "wimtvpro"); ?>'><img src='<?php echo get_option('wp_wimtvPluginPath'); ?>images/mod.png'  alt='<?php _e("Modify", "wimtvpro"); ?>'></a>
+                                    </td>
+                                    <td>
+                                        <a href='?page=<?php _e('SCHEDULES_urlLink', "wimtvpro"); ?>&functionList=delete&id=<?php echo $prog->identifier; ?>' alt='<?php _e("Remove"); ?>' title='<?php _e("Remove"); ?>'><img src='<?php echo get_option('wp_wimtvPluginPath'); ?>images/remove.png'  alt='<?php _e("Remove"); ?>'></a>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $height = get_option("wp_heightPreview");
+                                        $width = get_option("wp_widthPreview");
+                                        $shortcode = "[wimprog id=$prog->identifier width=$width height=$height]";
+                                        ?>
 
-                                        <textarea style="resize: none; width:90%;height:100%;" readonly='readonly' 
-                                                  onclick="this.focus();
-                                                          this.select();">[wimprog id="<?php echo $prog->identifier; ?>"]</textarea>
-
+                                        <textarea 
+                                            style="resize: none; width:90%;height:100%;" 
+                                            readonly='readonly' 
+                                            onclick="this.focus();this.select();"
+                                            ><?php echo $shortcode; ?>
+                                        </textarea>
                                     </td>
                                 </tr>
                                 <?php

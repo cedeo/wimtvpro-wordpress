@@ -66,7 +66,7 @@ if ($arrayjson_live) {
         $insecureMode = "&insecureMode=on";
         $skin = "";
         $logo = "";
-        
+
         $params.=$insecureMode;
         // A SKIN HAS BEEN ADDED: OVERRIDE DEFAULT SKIN PATH
         $skinData = wimtvpro_get_skin_data();
@@ -80,13 +80,16 @@ if ($arrayjson_live) {
             $params.= $logo;
         }
 
-        if ($id == "all") {
-            $embedded_code_text = "[wimlive id='$identifier' zone='$timezone']";
-        } else {
-            $embedded_code_text = apiGetLiveIframe($identifier, $params);
-        }
+//        if ($id == "all") {
+//            $embedded_code_text = "[wimlive id='$identifier' zone='$timezone']";
+//        } else {
+//            $embedded_code_text = apiGetLiveIframe($identifier, $params);
+//        }
+        $height = get_option("wp_heightPreview");
+        $width = get_option("wp_widthPreview");
+        $embedded_code_text = "[wimlive id='$identifier' zone='$timezone' width=$width height=$height]";
+
         $details_live = apiGetLive($identifier, $timezone);
-        //d($livedate);
         $livedate = json_decode($details_live);
 
         $data = $livedate->eventDateMillisec;

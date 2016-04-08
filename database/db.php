@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Written by walter at 11/11/13
  */
@@ -13,9 +14,9 @@ define("VIDEO_TABLE_NAME", $wpdb->prefix . 'wimtvpro_video');
 function getCharset() {
     global $wpdb;
     $charset_collate = "";
-    if (!empty ($wpdb->charset))
+    if (!empty($wpdb->charset))
         $charset_collate = "DEFAULT CHARACTER SET {$wpdb->charset}";
-    if (!empty ($wpdb->collate))
+    if (!empty($wpdb->collate))
         $charset_collate .= " COLLATE {$wpdb->collate}";
     return $charset_collate;
 }
@@ -33,15 +34,15 @@ function dropTables() {
 function deleteWimTVPosts() {
     global $wpdb;
 
-    $wpdb->query("DELETE FROM " .  $wpdb->posts . " WHERE post_name LIKE '%my_streaming_wimtv%' OR post_name LIKE '%wimlive_wimtv%'");
+    $wpdb->query("DELETE FROM " . $wpdb->posts . " WHERE post_name LIKE '%my_streaming_wimtv%' OR post_name LIKE '%wimlive_wimtv%'");
 }
 
 function createTables() {
     global $wpdb;
 
     $table_name = VIDEO_TABLE_NAME;
-    $charset= getCharset();
-    if ( $wp_db_version == $wp_current_db_version ) {
+    $charset = getCharset();
+    if ($wp_db_version == $wp_current_db_version) {
         $query1 = "CREATE TABLE {$table_name}
                     (
                         uid varchar(100) NOT NULL COMMENT 'User identifier',
@@ -63,11 +64,8 @@ function createTables() {
                         UNIQUE KEY mycolumn1 (contentidentifier)
                     )
                         {$charset};";
-
     } else {
-
         $query1 = "  ALTER TABLE   {$table_name}  ADD   urlThumbs text NOT NULL COMMENT 'Url thumbs video' ";
-
     }
     dbDelta($query1);
 

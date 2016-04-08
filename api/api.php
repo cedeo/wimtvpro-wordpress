@@ -84,7 +84,7 @@ class Api {
 
     function execute($request, $expectedMimeType = 'text/html', $clientLanguage = null) {
         $request->expects($expectedMimeType);
-        $request->addHeader("X-Wimtv-Pro-Plugin-Name", "drupal");
+        $request->addHeader("X-Wimtv-Pro-Plugin-Name", cms_getName());
         if ($clientLanguage)
             $request->addHeader('Accept-Language', $clientLanguage);
         else

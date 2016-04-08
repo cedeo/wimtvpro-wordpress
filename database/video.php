@@ -5,23 +5,8 @@
  */
 function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categories, $urlPlay, $title, $duration, $showtimeId, $acquired_identifier) {
     global $wpdb;
-//    $video = array("uid" => $user,
-//        "contentidentifier" => $contentId,
-//        "mytimestamp" => time(),
-//        "position" => '0',
-//        "state" => $state,
-//        "viewVideoModule" => '3',
-//        "acquiredIdentifier" => $acquired_identifier,
-//        "status" => $status,
-//        "urlThumbs" => mysql_real_escape_string($urlThumbs),
-//        "category" => $categories,
-//        "urlPlay" => mysql_real_escape_string($urlPlay),
-//        "title" => mysql_real_escape_string($title),
-//        "duration" => $duration,
-//        "showtimeidentifier" => $showtimeId);
-    
-    
-    $video = array("uid" => $user,
+    $video = array(
+        "uid" => $user,
         "contentidentifier" => $contentId,
         "mytimestamp" => time(),
         "position" => '0',
@@ -29,14 +14,15 @@ function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categori
         "viewVideoModule" => '3',
         "acquiredIdentifier" => $acquired_identifier,
         "status" => $status,
-        "urlThumbs" => $urlThumbs,
+        "urlThumbs" => isset($urlThumbs) ? $urlThumbs : "",
         "category" => $categories,
         "urlPlay" => $urlPlay,
         "title" => $title,
         "duration" => $duration,
         "showtimeidentifier" => $showtimeId);
-    
-    return $wpdb->insert(VIDEO_TABLE_NAME, $video);
+
+    $res = $wpdb->insert(VIDEO_TABLE_NAME, $video);
+    return $res;
 }
 
 function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration, $showtimeId, $categories, $contentId, $acquired_identifier) {
@@ -46,7 +32,7 @@ function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration,
 //    $urlThumbs = mysql_real_escape_string($urlThumbs);
 //    $urlPlay = mysql_real_escape_string($urlPlay);
 //    $contentId = mysql_real_escape_string($contentId);
-    
+
     $table = VIDEO_TABLE_NAME;
     return $wpdb->query("UPDATE {$table} SET state='{$state}',
                                              status='{$status}',

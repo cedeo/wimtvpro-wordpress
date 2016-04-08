@@ -3,7 +3,7 @@
   Plugin Name: WimTVPro for WP
   Plugin URI: http://wimtvpro.tv
   Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-  Version: 4.1.1
+  Version: 4.2
   Author: WimLabs
   Author URI: http://www.wimlabs.com
   License: GPLv2 or later
@@ -55,7 +55,6 @@ include_once("embedded/embeddedProgramming.php");
 
 // NS: MOVED TO "wimtvpro_fix_missing_langs()"
 //load_plugin_textdomain('wimtvpro', false, dirname(plugin_basename(__FILE__)) . '/languages/');
-
 //Aggiunta shortcodes
 add_shortcode('streamingWimtv', 'wimtvpro_shortcode_streaming');
 add_shortcode('playlistWimtv', 'wimtvpro_shortcode_playlist');
@@ -393,7 +392,7 @@ function my_custom_js() {
 	var selectCat = "' . addslashes(__("You selected", "wimtvpro")) . '";
 	var nonePayment = "' . addslashes(__('You need compile fiscal information for your account, for enabling pay per view posting. Please provide it in Monetisation section of your Settings', 'wimtvpro')) . '";
 	var gratuito = "' . addslashes(__('Do you want to publish your videos for free?', 'wimtvpro')) . '";
-	var messageSave = "' . addslashes(__('Publish', "wimtvpro")). '";
+	var messageSave = "' . addslashes(__('Publish', "wimtvpro")) . '";
 	var update = "' . addslashes(__('Update', "wimtvpro")) . '";
 	var videoproblem = "' . addslashes(__('This video has not yet been processed, wait a few minutes and try to synchronize', "wimtvpro")) . '";
 	var videoPrivacy = new Array();
@@ -411,7 +410,7 @@ function my_custom_js() {
 	 erroreFile[0] = "' . addslashes(__('Please only upload files that end in types:', "wimtvpro")) . '";
 	 erroreFile[1] = "' . addslashes(__('Please select a new file and try again.', "wimtvpro")) . '";
 	';
-    
+
     $language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
     if (substr($language, 0, 2) == 'it') {
         echo "var point =','";
@@ -590,6 +589,7 @@ function wimtvpro_shortcode_streaming($atts) {
     //Check if user is authorized to see video
     if ((($userRole == "administrator") || (in_array($idUser, $typeUser["U"])) || (in_array($userRole, $typeUser["R"])) || (array_key_exists("All", $typeUser)) || (array_key_exists("", $typeUser)))) {
         extract(shortcode_atts(array('id' => $id, 'width' => $width, 'height' => $height), $atts));
+//        var_dump($id, $width, $height);die;
         $credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
 
         $insecureMode = "&insecureMode=on";
@@ -636,6 +636,8 @@ function wimtvpro_shortcode_wimlive($atts) {
     if (isset($atts['id']) && isset($atts['zone'])) {
         $identifier = $atts["id"];
         $timezone = $atts["zone"];
+        $width = $atts["width"];
+        $height = $atts["height"];
 //        $skin = "";
 //        if (get_option('wp_nameSkin') != "") {
 //            $uploads_info = wp_upload_dir();
@@ -663,7 +665,7 @@ function wimtvpro_shortcode_wimlive($atts) {
             $logo = "&logo=" . htmlentities($skinData['logoUrl']);
         }
 
-        $params .="timezone=" . $timezone . $insecureMode . $skin . $logo;
+        $params .="&width=$width&height=$height&timezone=" . $timezone . $insecureMode . $skin . $logo;
 
         $embedded_iframe = apiGetLiveIframe($identifier, $params);
         $pageLive = $embedded_iframe;
@@ -690,9 +692,30 @@ function wimtvpro_shortcode_wimlive($atts) {
 }
 
 function wimtvpro_shortcode_programming($atts) {
-    $id = shortcode_atts(array('id' => 0), $atts);
-    $progId = $id['id'];
-    return wimtvpro_programming_embedded($progId);
+    extract(shortcode_atts(array('id' => $id, 'width' => $width, 'height' => $height), $atts));
+    
+    $skinData = wimtvpro_get_skin_data();
+    $skinStyle = "";
+    $skinLogo = "";
+    if ($skinData['styleUrl'] != "") {
+        $skinStyle = $skinData["styleUrl"];
+    }
+
+    if ($skinData['logoUrl'] != "") {
+        $skinLogo = $skinData['logoUrl'];
+    }
+
+    $height = ($height != null) ? $height : get_option("wp_heightPreview") + 100;
+    $width = ($width != null) ? $width : get_option("wp_widthPreview");
+
+    $parameters = "";
+    $parameters.="width=" . $width;
+    $parameters.="&height=" . $height;
+    $parameters.="&insecureMode=on";
+    $parameters.="&skin=" . $skinStyle;
+    $parameters.="&logo=" . $skinLogo;
+  
+    return $iframe = apiProgrammingPlayer($id, $parameters);
 }
 
 // JS scripts for specific pages
@@ -749,7 +772,6 @@ function wimtvpro_get_info() {
     $plugin_file = basename(( __FILE__));
     return $plugin_folder[$plugin_file];
 }
-
 
 function wimtvpro_fix_missing_langs() {//
     $langFolder = dirname(__FILE__) . "/languages/";

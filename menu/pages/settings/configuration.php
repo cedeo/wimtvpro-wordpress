@@ -15,17 +15,20 @@ function settings_configuration($directory) {
     if (!is_dir($directory)) {
         $directory_create = mkdir($uploads_info["basedir"] . "/skinWim");
     }
-
+    $elencoSkin[""] = "-- Base Skin --";
     if (is_dir($directory)) {
         if ($directory_handle = opendir($directory)) {
             //Read directory for skin JWPLAYER
-            $elencoSkin[""] = "-- Base Skin --";
             while (($file = readdir($directory_handle)) !== FALSE) {
-                if ((!is_dir($file)) && ($file != ".") && ($file != "..")) {
-                    $explodeFile = explode(".", $file);
-                    if ($explodeFile[1] == "zip")
-                        $elencoSkin[$explodeFile[0]] = $explodeFile[0];
+                if ((is_dir($directory . DIRECTORY_SEPARATOR . $file) && ($file != ".") && ($file != ".."))) {
+                    $elencoSkin[$file] = $file;
                 }
+//            while (($file = readdir($directory_handle)) !== FALSE) {
+//                if ((!is_dir($file)) && ($file != ".") && ($file != "..")) {
+//                    $explodeFile = explode(".", $file);
+//                    if ($explodeFile[1] == "zip")
+//                        $elencoSkin[$explodeFile[0]] = $explodeFile[0];
+//                }
             }
             closedir($directory_handle);
         }
@@ -45,7 +48,7 @@ function settings_configuration($directory) {
     <div class="wrap">
         <?php echo wimtvpro_link_help(); ?>
 
-        <h2><?php _e('SETTINGS_pageTitle', "wimtvpro"); //_e("Configuration", "wimtvpro");   ?></h2>
+        <h2><?php _e('SETTINGS_pageTitle', "wimtvpro"); //_e("Configuration", "wimtvpro");     ?></h2>
 
         <?php
         $view_page = wimtvpro_alert_reg();

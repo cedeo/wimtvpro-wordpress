@@ -23,7 +23,10 @@ function cms_getWimtvApiProductionUrl() {
 }
 
 function cms_getWimtvApiTestUrl() {
-    return "http://peer.wim.tv/wimtv-webapp/rest/";
+    return "https://peer.wim.tv/wimtv-webapp/rest/";
 }
 
+function cms_getName(){
+    return "Wordpress";
+}
 ?>

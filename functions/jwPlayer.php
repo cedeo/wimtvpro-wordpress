@@ -222,12 +222,8 @@ function configurePlayer_PlaylistJS($playlist_id) {
 
 //    ob_start();
     return $playListScript;
-//    die;
-//    return ob_get_clean();
-//var_dump(htmlentities($playListScript));die;
-    ?>
-
-    <?php if ($is_admin) { ?>
+/*    NS: QUESTA SEZIONE NON DOVREBBE ESSERE PIU' IN USO
+     if ($is_admin) { ?>
         <div style='text-align:center;'><h3><?php echo $title ?></h3>
         <?php } else { ?>
             <div style='text-align:center;width:100%;'>
@@ -265,13 +261,6 @@ function configurePlayer_PlaylistJS($playlist_id) {
         <?php
         return ob_get_clean();
 
-
-
-
-
-
-
-
 //    foreach ($player as $key => $value) {
 //        if ($value != "") {
 //            if ($key != "rtmp" && $key != "skin" && $key != "logo") {
@@ -283,5 +272,6 @@ function configurePlayer_PlaylistJS($playlist_id) {
 
 
         return $playerScript;
+  */
     }
     ?>

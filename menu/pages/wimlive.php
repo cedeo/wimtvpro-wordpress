@@ -8,7 +8,6 @@
  * TODO: questa divisione tra markup e logica può essere migliorata prendendo spunto dai templates di Drupal.
  */
 include_once('modules/wimlive.php');
-
 function wimtvpro_live() {
     $view_page = wimtvpro_alert_reg();
     if (!$view_page) {

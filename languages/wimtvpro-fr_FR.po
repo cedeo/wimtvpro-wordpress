@@ -217,12 +217,12 @@ msgstr "evenementdirect"
 
 #: ../wimtvpro.php:257 ../wimtvpro.php:257
 msgid "SCHEDULES_menuLink"
-msgstr "Programme"
+msgstr "WimCast"
 
 #: ../wimtvpro.php:257 ../wimtvpro.php:358 ../menu/pages/programming.php:61 ..
 #: menu/pages/programming.php:103 ../menu/pages/programming.php:105
 msgid "SCHEDULES_urlLink"
-msgstr "programmes"
+msgstr "WimCast"
 
 #: ../wimtvpro.php:258 ../wimtvpro.php:258
 msgid "ANALYTICS_menuLink"
@@ -683,15 +683,15 @@ msgstr "Changer la position"
 
 #: ../menu/pages/programming.php:54 ../menu/pages/programming_BAK.php:27
 msgid "New Programming"
-msgstr "Nouveau programme"
+msgstr "Nouveau WimCast"
 
 #: ../menu/pages/programming.php:57 ../menu/pages/programming_BAK.php:30
 msgid "Modify Programming"
-msgstr "Modifier la programmation"
+msgstr "Modifier la WimCast"
 
 #: ../menu/pages/programming.php:74 ../menu/pages/programming_BAK.php:69
 msgid "Programmings"
-msgstr "Programmation"
+msgstr "WimCast"
 
 #: ../menu/pages/programming.php:75 ../menu/pages/programming_BAK.php:70 ..
 #: menu/pages/wimlive.php:121
@@ -704,7 +704,7 @@ msgstr "Pas de titre"
 
 #: ../menu/pages/programming_BAK.php:42
 msgid "Give a name to this programming (not mandatory)"
-msgstr "Donnez un nom à ce programme (facultatif)"
+msgstr "Donnez un nom à ce WimCast (facultatif)"
 
 #: ../menu/pages/programming_BAK.php:44
 msgid "Send"
@@ -763,7 +763,7 @@ msgstr "L'heure est affichée selon le fuseau horaire de votre appareil"
 
 #: ../menu/pages/wimlive.php:146
 msgid "Schedule"
-msgstr "Programme"
+msgstr "WimCast"
 
 #: ../menu/pages/wimlive.php:147
 msgid "Embed Code"
@@ -892,7 +892,7 @@ msgid "SETTINGS_pageTitle"
 msgstr "Paramètres"
 
 # msgid "Programming"
-# msgstr "Schedule"
+# msgstr "WimCast"
 #: ../menu/pages/settings/configuration.php:58
 msgid "Connect to your account on WimTV"
 msgstr "Connectez-vous à votre compte sur WimTV"

@@ -148,7 +148,6 @@ function configurePlayer_PlaylistJS($playlist_id) {
 
             $response = apiGetDetailsVideo($video->contentidentifier);
             $arrayjson = json_decode($response);
-
             $playlistConfPlaylistItem = array();
             $playlistConfPlaylistItem['file'] = $arrayjson->streamingUrl->file;
             $playlistConfPlaylistItem['streamer'] = $arrayjson->streamingUrl->streamer;
@@ -156,7 +155,7 @@ function configurePlayer_PlaylistJS($playlist_id) {
             $playlistConfPlaylistItem['primary'] = "flash";
             $playlistConfPlaylistItem['rtmp'] = "{tunnelling: false, fallback: false}";
             $playlistConfPlaylistItem['image'] = $thumb_url;
-            $playlistConfPlaylistItem['title'] = str_replace("+", " ", utf8_decode($video->title));
+            $playlistConfPlaylistItem['title'] = str_replace("+", " ", utf8_decode(addslashes($video->title)));
             $playlistConfPlaylistItem['flashplayer'] = $dirJwPlayer;
             
 

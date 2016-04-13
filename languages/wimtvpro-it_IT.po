@@ -56,7 +56,7 @@ msgstr "WimLive"
 
 #: 
 msgid "SCHEDULES_menuLink"
-msgstr "Palinsesti"
+msgstr "WimCast"
 
 #: 
 msgid "ANALYTICS_menuLink"
@@ -133,7 +133,7 @@ msgstr "WimLive"
 
 #: 
 msgid "SCHEDULES_pageTitle"
-msgstr "Palinsesti"
+msgstr "WimCast"
 
 #: 
 msgid "ANALYTICS_pageTitle"
@@ -757,7 +757,7 @@ msgstr "Non si riesce a stabilire una connessione con Wimtv. Nome utente e/o pas
 
 #: 
 # msgid "Programming"
-# msgstr "Palinsesti"
+# msgstr "WimCast"
 
 #: 
 msgid "Connect to your account on WimTV"
@@ -1202,7 +1202,7 @@ msgstr "Non hai video"
 
 #: 
 msgid "Programmings"
-msgstr "Palinsesti"
+msgstr "WimCast"
 
 #: 
 msgid "Send"
@@ -1214,15 +1214,15 @@ msgstr "Salta"
 
 #: 
 msgid "Give a name to this programming (not mandatory)"
-msgstr "Scegli un nome per il palinsesto (opzionale)"
+msgstr "Scegli un nome per il WimCast (opzionale)"
 
 #: 
 msgid "Modify Programming"
-msgstr "Modifica Palinsesto"
+msgstr "Modifica WimCast"
 
 #: 
 msgid "New Programming"
-msgstr "Nuovo Palinsesto"
+msgstr "Nuovo WimCast"
 
 #: 
 msgid "Videos per page"

@@ -56,7 +56,7 @@ msgstr "WimLive"
 
 #: 
 msgid "SCHEDULES_menuLink"
-msgstr "Schedules"
+msgstr "WimCast"
 
 #: 
 msgid "ANALYTICS_menuLink"
@@ -94,7 +94,7 @@ msgstr "liveevent"
 
 #: 
 msgid "SCHEDULES_urlLink"
-msgstr "schedules"
+msgstr "wimcast"
 
 #: 
 msgid "ANALYTICS_urlLink"
@@ -132,7 +132,7 @@ msgstr "WimLive"
 
 #: 
 msgid "SCHEDULES_pageTitle"
-msgstr "Schedules"
+msgstr "WimCast"
 
 #: 
 msgid "ANALYTICS_pageTitle"
@@ -689,7 +689,7 @@ msgstr "Cannot establish a connection with Wimtv. User and/or password incorrect
 
 #: 
 # msgid "Programming"
-# msgstr "Schedule"
+# msgstr "WimCast"
 
 #: 
 msgid "Connect to your account on WimTV"
@@ -745,7 +745,7 @@ msgstr "If you broadcast directly from your web cam, click \"Live now\" icon to 
 
 #: 
 msgid "Schedule"
-msgstr "Schedule"
+msgstr "WimCast"
 
 #: 
 msgid "Tools"

@@ -15,17 +15,19 @@ if ($is_admin) {
     echo includePlaylist($id);
 }
 
-function includePlaylist($playlist_id) {
+function includePlaylist($playlist_id, $width=null, $height=null) {
+    $width = isset($width)? $width: get_option('wp_widthPreview');
+    $height = isset($height)? $height: get_option('wp_heightPreview');
+    
     ob_start();
     if ($is_admin) {
         ?>
         <div style='text-align:center;'><h3><?php echo $title ?></h3>
         <?php } else { ?>
             <div style='text-align:center;width:100%;'>
-            <?php } ?>
-            <div id='container-<?php echo $playlist_id ?>' style='margin:0;padding:0 10px;'></div>
-            <?php
-            echo configurePlayer_PlaylistJS($playlist_id);
+            <?php } 
+//            <div id='container-<?php echo $playlist_id ? >' style='margin:0;padding:0 10px;'></div>
+            echo configurePlayer_PlaylistJS($playlist_id, $width, $height);
             if ($is_admin) {
                 ?>
                 <div style='float:left; width:50%;'>

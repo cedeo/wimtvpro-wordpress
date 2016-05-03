@@ -34,7 +34,7 @@ function getConfFromDataArray($dataArray) {
     $conf = "";
     foreach ($dataArray as $key => $value) {
         if ($value != "") {
-            if ($key != "rtmp" && $key != "skin" && $key != "logo" && $key != "modes" && $key != "playlist" && $key !="listbar") {
+            if ($key != "rtmp" && $key != "skin" && $key != "logo" && $key != "modes" && $key != "playlist" && $key != "listbar") {
                 $value = "'" . $value . "'";
             }
             $conf.=$key . ": " . $value . ",";
@@ -48,21 +48,28 @@ function wimtvpro_get_skin_data() {
     $skinData["skinName"] = "";
     $skinData["styleUrl"] = "";
     $skinData["logoUrl"] = "";
+
     if (get_option('wp_nameSkin') != "") {
         // A SKIN HAS BEEN ADDED: OVERRIDE DEFAULT SKIN PATH       
         $skinData["skinName"] = get_option('wp_nameSkin');
         $uploads_info = wp_upload_dir();
 
-        $skinCssFile = $uploads_info["basedir"] . "/skinWim" . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".css";
-        if (file_exists($skinCssFile)) {
-            $skinUrl = $uploads_info["baseurl"] . "/skinWim" . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".css";
-            $skinData["styleUrl"] = htmlentities($skinUrl);
-        }
-        $logoUrl = $uploads_info["baseurl"] . "/skinWim" . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".png";
-        if (file_is_displayable_image($logoUrl)) {
-            $skinData["logoUrl"] = $logoUrl;
-//            $player['logo'] = "{file : '" . $logoUrl . "', hide : true}";
-        }
+        $skinBaseUrl = $uploads_info["baseurl"] . "/skinWim";
+        $skinBaseDir = $uploads_info["basedir"] . "/skinWim";
+    } else {
+        $skinData["skinName"] = "wimtv";
+        $skinBaseDir = WIMTV_BASEPATH . DIRECTORY_SEPARATOR . "script/skinDefault";
+        $skinBaseUrl = plugin_dir_url(dirname(__FILE__)) . "script/skinDefault";
+    }
+
+    $skinCssFile = $skinBaseDir . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".css";
+    if (file_exists($skinCssFile)) {
+        $skinUrl = $skinBaseUrl . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".css";
+        $skinData["styleUrl"] = htmlentities($skinUrl);
+    }
+    $logoUrl = $skinBaseUrl . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".png";
+    if (file_is_displayable_image($logoUrl)) {
+        $skinData["logoUrl"] = $logoUrl;
     }
     return $skinData;
 }
@@ -105,7 +112,7 @@ function configurePlayerJS($contentItem) {
     return $playerScript;
 }
 
-function configurePlayer_PlaylistJS($playlist_id) {
+function configurePlayer_PlaylistJS($playlist_id, $width, $height) {
     $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
     if (isset($_GET["isAdmin"])) {
@@ -157,7 +164,7 @@ function configurePlayer_PlaylistJS($playlist_id) {
             $playlistConfPlaylistItem['image'] = $thumb_url;
             $playlistConfPlaylistItem['title'] = str_replace("+", " ", utf8_decode(addslashes($video->title)));
             $playlistConfPlaylistItem['flashplayer'] = $dirJwPlayer;
-            
+
 
             $playlistConf["playlist"].="{";
             foreach ($playlistConfPlaylistItem as $key => $value) {
@@ -173,7 +180,7 @@ function configurePlayer_PlaylistJS($playlist_id) {
 
         $playlistConf["playlist"] .= "]";
     }
-    
+
     // A SKIN HAS BEEN ADDED: OVERRIDE DEFAULT SKIN PATH
 //    $playlistConf['listbar'] = "{position: 'right',size: 180}";
     $playlistConf['skin'] = "";
@@ -181,6 +188,10 @@ function configurePlayer_PlaylistJS($playlist_id) {
     $playlistConf['repeat'] = "always";
     $playlistConf['fallback'] = "false";
 //    $playlistConf['playlist.position'] = "right";
+
+
+    $playlistConf['width'] = isset($width) ? $width : get_option('wp_widthPreview');
+    $playlistConf['height'] = isset($height) ? $height : get_option('wp_heightPreview');
 
     $skinData = wimtvpro_get_skin_data();
     if ($skinData['styleUrl'] != "") {
@@ -193,10 +204,10 @@ function configurePlayer_PlaylistJS($playlist_id) {
 
 
     $playlistConf['primary'] = "flash";
+    $divContainerID = "container-" . $playlist_id . "-" . rand();
     $playListScript = "
             <script>jwplayer.key='2eZ9I53RjqbPVAQkIqbUFMgV2WBIyWGMCY7ScjJWMUg=';</script>
-            <script type='text/javascript'>jwplayer('container-$playlist_id').setup({";
-
+            <script type='text/javascript'>jwplayer('$divContainerID').setup({";
 
     //Check if browser is mobile
     $isApple = (bool) strpos($user_agent, 'Safari') && !(bool) strpos($user_agent, 'Chrome');
@@ -216,61 +227,64 @@ function configurePlayer_PlaylistJS($playlist_id) {
 //        $playlistConf['modes'] = "'html5'";
     }
 
-    $playListScript .= getConfFromDataArray($playlistConf);
+    $playListConf .= getConfFromDataArray($playlistConf);
+
+    $playListScript.=$playListConf;
     $playListScript .= "});</script>";
 
 //    ob_start();
-    return $playListScript;
-/*    NS: QUESTA SEZIONE NON DOVREBBE ESSERE PIU' IN USO
-     if ($is_admin) { ?>
-        <div style='text-align:center;'><h3><?php echo $title ?></h3>
-        <?php } else { ?>
-            <div style='text-align:center;width:100%;'>
-            <?php } ?>
-            <div id='container-<?php echo $playlist_id ?>' style='margin:0;padding:0 10px;'></div>
-            <script type='text/javascript'>
-                jwplayer('container-<?php echo $playlist_id ?>').setup({
-                    modes: [{type: <?php echo $mode_type ?>}],
-                    repeat: 'always',
-                    skin: '<?php echo $skin ?>',
-                    width: '100%',
-                    fallback: false,
-                    playlist: [<?php echo $playlist ?>],
-                    'playlist.position': 'right',
-                    'playlist.size': '30%'
-                });
-            </script>
-            <?php if ($is_admin) { ?>
-                <div style='float:left; width:50%;'>
-                    Embedded:
-                    <textarea style='resize: none; width:90%;height:70px;font-size:10px' readonly='readonly' onclick='this.focus();
-                        this.select();'>
-                                  <?php echo htmlentities($code) ?>
-                    </textarea>
-                </div>
-                <div style='float:left; width:50%;'>
-                    Shortcode:
-                    <textarea style='resize: none; width:90%;height:70px;font-size:20px' readonly='readonly' onclick='this.focus();
-                        this.select();'>
-                        [playlistWimtv id='<?php echo $playlist_id ?>']
-                    </textarea>
-                </div>
-            <?php } ?>
-        </div>
-        <?php
-        return ob_get_clean();
+    return "<div id='$divContainerID' ></div>" . $playListScript;
+    /*    NS: QUESTA SEZIONE NON DOVREBBE ESSERE PIU' IN USO
+      if ($is_admin) { ?>
+      <div style='text-align:center;'><h3><?php echo $title ?></h3>
+      <?php } else { ?>
+      <div style='text-align:center;width:100%;'>
+      <?php } ?>
+      <div id='container-<?php echo $playlist_id ?>' style='margin:0;padding:0 10px;'></div>
+      <script type='text/javascript'>
+      jwplayer('container-<?php echo $playlist_id ?>').setup({
+      modes: [{type: <?php echo $mode_type ?>}],
+      repeat: 'always',
+      skin: '<?php echo $skin ?>',
+      width: '100%',
+      fallback: false,
+      playlist: [<?php echo $playlist ?>],
+      'playlist.position': 'right',
+      'playlist.size': '30%'
+      });
+      </script>
+      <?php if ($is_admin) { ?>
+      <div style='float:left; width:50%;'>
+      Embedded:
+      <textarea style='resize: none; width:90%;height:70px;font-size:10px' readonly='readonly' onclick='this.focus();
+      this.select();'>
+      <?php echo htmlentities($code) ?>
+      </textarea>
+      </div>
+      <div style='float:left; width:50%;'>
+      Shortcode:
+      <textarea style='resize: none; width:90%;height:70px;font-size:20px' readonly='readonly' onclick='this.focus();
+      this.select();'>
+      [playlistWimtv id='<?php echo $playlist_id ?>']
+      </textarea>
+      </div>
+      <?php } ?>
+      </div>
+      <?php
+      return ob_get_clean();
 
-//    foreach ($player as $key => $value) {
-//        if ($value != "") {
-//            if ($key != "rtmp" && $key != "skin" && $key != "logo") {
-//                $value = "'" . $value . "'";
-//            }
-//            $playerScript.=$key . ": " . $value . ",";
-//        }
-//    }
+      //    foreach ($player as $key => $value) {
+      //        if ($value != "") {
+      //            if ($key != "rtmp" && $key != "skin" && $key != "logo") {
+      //                $value = "'" . $value . "'";
+      //            }
+      //            $playerScript.=$key . ": " . $value . ",";
+      //        }
+      //    }
 
 
-        return $playerScript;
-  */
-    }
-    ?>
+      return $playerScript;
+     */
+}
+
+?>

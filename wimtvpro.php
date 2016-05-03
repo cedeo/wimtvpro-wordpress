@@ -3,7 +3,7 @@
   Plugin Name: WimTVPro for WP
   Plugin URI: http://wimtvpro.tv
   Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-  Version: 4.2.1
+  Version: 4.3
   Author: WimLabs
   Author URI: http://www.wimlabs.com
   License: GPLv2 or later
@@ -52,6 +52,8 @@ include_once("functions/smartSync.php");
 include_once("functions/detailShowtime.php");
 include_once("embedded/embeddedPlayList.php");
 include_once("embedded/embeddedProgramming.php");
+
+define( 'WIMTV_BASEPATH', plugin_dir_path( __FILE__ ) );
 
 // NS: MOVED TO "wimtvpro_fix_missing_langs()"
 //load_plugin_textdomain('wimtvpro', false, dirname(plugin_basename(__FILE__)) . '/languages/');
@@ -621,9 +623,15 @@ function wimtvpro_shortcode_streaming($atts) {
 }
 
 function wimtvpro_shortcode_playlist($atts) {
-    $id = shortcode_atts(array('id' => 'all'), $atts);
-    $id = $id['id'];
-    return includePlaylist($id);
+    $shortcode_attributes = shortcode_atts(array('id' => 'all', 'width' => get_option('wp_widthPreview'), 'height' => get_option('wp_heightPreview')), $atts);
+    $id = $shortcode_attributes['id'];
+    $width = $shortcode_attributes['width'];
+    $height = $shortcode_attributes['height'];
+//    var_dump($shortcode_attributes);
+//    var_dump($id);
+//    var_dump($width);
+//    var_dump($height);
+    return includePlaylist($id, $width, $height);
 }
 
 function wimtvpro_shortcode_wimvod($atts) {
@@ -693,7 +701,7 @@ function wimtvpro_shortcode_wimlive($atts) {
 
 function wimtvpro_shortcode_programming($atts) {
     extract(shortcode_atts(array('id' => $id, 'width' => $width, 'height' => $height), $atts));
-    
+
     $skinData = wimtvpro_get_skin_data();
     $skinStyle = "";
     $skinLogo = "";
@@ -714,7 +722,7 @@ function wimtvpro_shortcode_programming($atts) {
     $parameters.="&insecureMode=on";
     $parameters.="&skin=" . $skinStyle;
     $parameters.="&logo=" . $skinLogo;
-  
+
     return $iframe = apiProgrammingPlayer($id, $parameters);
 }
 

@@ -160,7 +160,10 @@ function apiPublishOnShowtime($id, $parameters) {
     $request = $apiAccessor->postRequest('videos/' . $id . '/showtime');
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request);
+    //    return $apiAccessor->execute($request);
+    $lang = "it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4";
+    $response = $apiAccessor->execute($request, 'text/html', $lang);
+    return $response;
 }
 
 function apiPublishAcquiredOnShowtime($id, $acquiredId, $parameters) {
@@ -269,7 +272,7 @@ function apiGetLive($host_id, $timezone = "") {
 function apiGetLiveIframe($host_id, $params = "") {
     $apiAccessor = getApi();
     $url = $apiAccessor->liveHostsUrl . '/' . $host_id . '/embed';
-    
+
     //liveStream/{reseller}/{organizer}/hosts/{hostId}/embed 
     if (strlen($params)) {
         $url .="?" . $params;
@@ -304,9 +307,11 @@ function apiAddLive($parameters, $timezone = null) {
 
     $request->body($parameters);
 
-    $response = $apiAccessor->execute($request, 'application/json', false);
-
-
+    $lang = "it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4";
+//    $lang = "en-US,en;q=0.8,it;q=0.6";
+//    $response = $apiAccessor->execute($request, 'application/json', false);
+    $response = $apiAccessor->execute($request, 'application/json', $lang);
+//    watchdog("wimlive_apiAddLive_debug", '<pre>' . print_r($response->request, true) . '</pre>');
     return $response;
 }
 
@@ -318,7 +323,10 @@ function apiModifyLive($host_id, $parameters, $timezone = null) {
     $request = $apiAccessor->postRequest($url);
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request, 'application/json', false);
+    //    $response = $apiAccessor->execute($request, 'application/json', false);
+    $lang = "it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4";
+    $response = $apiAccessor->execute($request, 'application/json', $lang);
+    return $response;
 }
 
 function apiDeleteLive($host_id) {

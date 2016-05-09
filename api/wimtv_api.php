@@ -256,7 +256,8 @@ function apiGetLiveEvents($timezone, $activeOnly) {
     }
     $request = $apiAccessor->getRequest($url);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request, 'application/json');
+    $lang = "it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4";
+    return $apiAccessor->execute($request, 'application/json', $lang);
 }
 
 function apiGetLive($host_id, $timezone = "") {
@@ -266,7 +267,9 @@ function apiGetLive($host_id, $timezone = "") {
         $url .= '?timezone=' . $timezone;
     $request = $apiAccessor->getRequest($url);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request, 'application/json');
+    $lang = "it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4";
+    return $apiAccessor->execute($request, 'application/json', $lang);
+//    return $apiAccessor->execute($request, 'application/json');
 }
 
 function apiGetLiveIframe($host_id, $params = "") {

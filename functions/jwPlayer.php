@@ -112,14 +112,29 @@ function configurePlayerJS($contentItem) {
     return $playerScript;
 }
 
-function configurePlayer_PlaylistJS($playlist_id, $width, $height) {
+function configurePlayer_PlaylistJS($playlist_id, $width=null, $height=null) {
+//Check if browser is mobile
     $user_agent = $_SERVER['HTTP_USER_AGENT'];
-
-    if (isset($_GET["isAdmin"])) {
-        $is_admin = true;
+    $isApple = (bool) strpos($user_agent, 'Safari') && !(bool) strpos($user_agent, 'Chrome');
+    $isiPad = (bool) strpos($user_agent, 'iPad');
+    $isiPhone = (bool) strpos($user_agent, 'iPhone');
+    $isAndroid = (bool) strpos($user_agent, 'Android');
+//    var_dump($user_agent);
+//    var_dump($isiPad, $isiPhone, $isAndroid, $isApple);
+    if ($isiPad || $isiPhone || $isAndroid || $isApple) {
+        return configurePlayer_PlaylistJS_HLS($playlist_id, $width, $height);
     } else {
-        $is_admin = false;
+        return configurePlayer_PlaylistJS_FLASH($playlist_id, $width, $height);
     }
+}
+
+function configurePlayer_PlaylistJS_FLASH($playlist_id, $width, $height) {
+    $playlistConf = array();
+//    if (isset($_GET["isAdmin"])) {
+//        $is_admin = true;
+//    } else {
+//        $is_admin = false;
+//    }
 
     $playlistDBData = dbExtractSpecificPlayist($playlist_id);
     $playlistDBData = $playlistDBData[0];
@@ -151,7 +166,8 @@ function configurePlayer_PlaylistJS($playlist_id, $width, $height) {
             } else {
                 $thumbs = explode('"', $video->urlThumbs);
             }
-            $thumb_url = str_replace("\\", "", $thumbs[1]);
+            // $thumb_url = str_replace("\\", "", $thumbs[1]);
+            $thumb_url = isset($thumbs[1]) ? str_replace("\\", "", $thumbs[1]) : "";
 
             $response = apiGetDetailsVideo($video->contentidentifier);
             $arrayjson = json_decode($response);
@@ -164,8 +180,7 @@ function configurePlayer_PlaylistJS($playlist_id, $width, $height) {
             $playlistConfPlaylistItem['image'] = $thumb_url;
             $playlistConfPlaylistItem['title'] = str_replace("+", " ", utf8_decode(addslashes($video->title)));
             $playlistConfPlaylistItem['flashplayer'] = $dirJwPlayer;
-
-
+//            var_dump($playlistConfPlaylistItem);die;
             $playlistConf["playlist"].="{";
             foreach ($playlistConfPlaylistItem as $key => $value) {
                 if ($value != "") {
@@ -209,82 +224,155 @@ function configurePlayer_PlaylistJS($playlist_id, $width, $height) {
             <script>jwplayer.key='2eZ9I53RjqbPVAQkIqbUFMgV2WBIyWGMCY7ScjJWMUg=';</script>
             <script type='text/javascript'>jwplayer('$divContainerID').setup({";
 
-    //Check if browser is mobile
-    $isApple = (bool) strpos($user_agent, 'Safari') && !(bool) strpos($user_agent, 'Chrome');
-    $isiPad = (bool) strpos($user_agent, 'iPad');
-    $isiPhone = (bool) strpos($user_agent, 'iPhone');
-    $isAndroid = (bool) strpos($user_agent, 'Android');
-    $html5 = false;
-    if ($isiPad || $isiPhone || $isAndroid || $isApple) {
-        $html5 = true;
-    }
 
-    if (!$html5) {
-        $playlistConf['modes'] = "[{type:'flash',src:'" . $dirJwPlayer . "'}]";
-//        "'flash',src:'" . $dirJwPlayer . "'";
-    } else {
-        $playlistConf['modes'] = "[{type:'html5'}]";
-//        $playlistConf['modes'] = "'html5'";
-    }
+    $playlistConf['modes'] = "[{type:'flash',src:'" . $dirJwPlayer . "'}]";
 
-    $playListConf .= getConfFromDataArray($playlistConf);
-
-    $playListScript.=$playListConf;
+    $playListScript .= getConfFromDataArray($playlistConf);
     $playListScript .= "});</script>";
 
-//    ob_start();
     return "<div id='$divContainerID' ></div>" . $playListScript;
-    /*    NS: QUESTA SEZIONE NON DOVREBBE ESSERE PIU' IN USO
-      if ($is_admin) { ?>
-      <div style='text-align:center;'><h3><?php echo $title ?></h3>
-      <?php } else { ?>
-      <div style='text-align:center;width:100%;'>
-      <?php } ?>
-      <div id='container-<?php echo $playlist_id ?>' style='margin:0;padding:0 10px;'></div>
-      <script type='text/javascript'>
-      jwplayer('container-<?php echo $playlist_id ?>').setup({
-      modes: [{type: <?php echo $mode_type ?>}],
-      repeat: 'always',
-      skin: '<?php echo $skin ?>',
-      width: '100%',
-      fallback: false,
-      playlist: [<?php echo $playlist ?>],
-      'playlist.position': 'right',
-      'playlist.size': '30%'
-      });
-      </script>
-      <?php if ($is_admin) { ?>
-      <div style='float:left; width:50%;'>
-      Embedded:
-      <textarea style='resize: none; width:90%;height:70px;font-size:10px' readonly='readonly' onclick='this.focus();
-      this.select();'>
-      <?php echo htmlentities($code) ?>
-      </textarea>
-      </div>
-      <div style='float:left; width:50%;'>
-      Shortcode:
-      <textarea style='resize: none; width:90%;height:70px;font-size:20px' readonly='readonly' onclick='this.focus();
-      this.select();'>
-      [playlistWimtv id='<?php echo $playlist_id ?>']
-      </textarea>
-      </div>
-      <?php } ?>
-      </div>
-      <?php
-      return ob_get_clean();
-
-      //    foreach ($player as $key => $value) {
-      //        if ($value != "") {
-      //            if ($key != "rtmp" && $key != "skin" && $key != "logo") {
-      //                $value = "'" . $value . "'";
-      //            }
-      //            $playerScript.=$key . ": " . $value . ",";
-      //        }
-      //    }
-
-
-      return $playerScript;
-     */
 }
 
+function configurePlayer_PlaylistJS_HLS($playlist_id, $width, $height) {
+    $playlistConf = array();
+//    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+//    if (isset($_GET["isAdmin"])) {
+//        $is_admin = true;
+//    } else {
+//        $is_admin = false;
+//    }
+
+    $playlistDBData = dbExtractSpecificPlayist($playlist_id);
+    $playlistDBData = $playlistDBData[0];
+
+    $listVideo = $playlistDBData->listVideo;
+    $title = $playlistDBData->name;
+    //Read Data videos
+    $videoList = explode(",", $listVideo);
+
+    $playlist_videos = dbGetUserVideosIn(get_option("wp_userWimtv"), $videoList);
+    $sorted_videos = array();
+
+    for ($i = 0; $i < count($videoList); $i++) {
+        foreach ($playlist_videos as $record_new) {
+            if ($videoList[$i] == $record_new->contentidentifier) {
+                array_push($sorted_videos, $record_new);
+            }
+        }
+    }
+    $playlistConf["playlist"] = "";
+    if (count($sorted_videos) > 0) {
+        $playlistConf["playlist"].="[";
+
+        foreach ($sorted_videos as $video) {
+            if (!isset($video->urlThumbs)) {
+                $thumbs[1] = "";
+            } else {
+                $thumbs = explode('"', $video->urlThumbs);
+            }
+            // $thumb_url = str_replace("\\", "", $thumbs[1]);
+            $thumb_url = isset($thumbs[1]) ? str_replace("\\", "", $thumbs[1]) : "";
+
+
+            $response = apiGetDetailsVideo($video->contentidentifier);
+            $arrayjson = json_decode($response);
+            $playlistConfPlaylistItem = array();
+
+//            $playlistConfPlaylistItem['file'] = build_HLS_url($arrayjson->streamingUrl->streamer, $arrayjson->streamingUrl->file);
+            $playlistConfPlaylistItem['file'] = $arrayjson->streamingUrl->streamer;
+            $playlistConfPlaylistItem['primary'] = "html5";
+            $playlistConfPlaylistItem['fallback'] = "false";
+            $playlistConfPlaylistItem['image'] = $thumb_url;
+            $playlistConfPlaylistItem['title'] = str_replace("+", " ", utf8_decode(addslashes($video->title)));
+            $playlistConf["playlist"].="{";
+            foreach ($playlistConfPlaylistItem as $key => $value) {
+                if ($value != "") {
+                    if ($key != "rtmp" && $key != "skin" && $key != "logo") {
+                        $value = "'" . $value . "'";
+                    }
+                    $playlistConf["playlist"].=$key . ": " . $value . ",";
+                }
+            }
+            $playlistConf["playlist"] .= "},";
+        }
+
+        $playlistConf["playlist"] .= "]";
+    }
+
+    // A SKIN HAS BEEN ADDED: OVERRIDE DEFAULT SKIN PATH
+    $playlistConf['skin'] = "";
+    $playlistConf['logo'] = "";
+    $playlistConf['repeat'] = "always";
+    $playlistConf['fallback'] = "false";
+
+    $playlistConf['width'] = isset($width) ? $width : get_option('wp_widthPreview');
+    $playlistConf['height'] = isset($height) ? $height : get_option('wp_heightPreview');
+
+    $skinData = wimtvpro_get_skin_data();
+    if ($skinData['styleUrl'] != "") {
+        $playlistConf['skin'] = "{name : '" . $skinData["skinName"] . "', url : '" . $skinData['styleUrl'] . "'}";
+    }
+
+    if ($skinData['logoUrl'] != "") {
+        $playlistConf['logo'] = "{file : '" . $skinData['logoUrl'] . "', hide : true}";
+    }
+
+
+    $divContainerID = "container-" . $playlist_id . "-" . rand();
+    $playListScript = "
+            <script type='text/javascript' src='/wp-content/plugins/wimtvpro/script/jwplayer/jwplayer.js'></script>
+            <script>jwplayer.key='2eZ9I53RjqbPVAQkIqbUFMgV2WBIyWGMCY7ScjJWMUg=';</script>
+            <script type='text/javascript'>jwplayer('$divContainerID').setup({";
+
+    $playListScript .= getConfFromDataArray($playlistConf);
+
+    $playListScript .= "});</script>";
+
+//    $playListScript = "
+//            <script type='text/javascript' src='http://192.168.45.4:5573/wp-content/plugins/wimtvpro/script/jwplayer/jwplayer.js'></script>
+//            <script>jwplayer.key='2eZ9I53RjqbPVAQkIqbUFMgV2WBIyWGMCY7ScjJWMUg=';</script>        
+//            <script type='text/javascript'>jwplayer('$divContainerID').setup({
+//                playlist: [
+//                    {
+//                        file: 'http://www.wim.tv:1935/vod/10977298cth6br2gf08dhmnirt059unotb.mp4/playlist.m3u8?token=37e63b05-a392-4c75-a258-d668c70128bf',
+//                        primary: 'html5',
+//                        fallback: false,
+//                        title: 'content_field_4',
+//                    },
+//                    {
+//                        file: 'http://www.wim.tv:1935/vod/10977298cth6br2gf08dhmnirt059unotb.mp4/playlist.m3u8?token=37e63b05-a392-4c75-a258-d668c70128bf',
+//                        primary: 'html5',
+//                        fallback: false,
+//                        title: 'content_field_4',
+//                    }
+//
+//                ],
+//                repeat: 'always',
+//                fallback: false,
+//                width: 500,
+//                height: 280,
+//                }
+//            );</script> ";
+    return "<div id='$divContainerID' ></div>" . $playListScript;
+}
+
+//function build_HLS_url($streamer, $filename) {
+//    $streamer_parts = parse_url($streamer);
+//    $streamer_parts['scheme'] = "http";
+//    $streamer_parts['path'] .= "/" . $filename . "/playlist.m3u8";
+//    $result = $streamer_parts['scheme'] . "://" . $streamer_parts['host'] . ":" . $streamer_parts['port'] . $streamer_parts['path'] . "?" . $streamer_parts['query'];
+//
+//    // 'scheme' => string 'http' (length = 4)
+//    // 'host' => string 'www.wim.tv' (length = 10)
+//    // 'port' => int 1935
+//    // 'path' => string '/vod' (length = 4)
+//    // 'query' => string 'token=1330f8e5-3c37-4fcb-b43f-fc09457d84a0&iano=1'
+////    var_dump($streamer);
+//    // var_dump($filename);
+////    var_dump($streamer_parts);
+////    var_dump($result);
+////    die;
+//    return $result;
+//}
 ?>
+

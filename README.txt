@@ -113,6 +113,8 @@ Check the [Wimlabs support site](http://support.wim.tv)
 * Minor fixes
 = 4.3 =
 * Bugfix for live events scheduling at wrong times when OS of client PC was English locale. Skin and custom logo. Double click. Playlist Width and Height.
+= 4.3.1 =
+* Bugfix for American OS. Playlist on mobile.
 
 == Upgrade Notice ==
 Into version 2.0 added videos Playlist and Report. When you update insert again your wimtv user and password.
@@ -125,4 +127,4 @@ WimLabs srl
 Visit the [plugin's website](http://wimtvpro.tv)
 
 == Last updated ==
-05/05/2016
+09/05/2016

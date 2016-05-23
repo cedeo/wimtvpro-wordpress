@@ -3,7 +3,7 @@
   Plugin Name: WimTVPro for WP
   Plugin URI: http://wimtvpro.tv
   Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-  Version: 4.3.1
+  Version: 4.3.2
   Author: WimLabs
   Author URI: http://www.wimlabs.com
   License: GPLv2 or later
@@ -24,9 +24,10 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 
 // Create a term metadata table where $type = metadata type
-
 include_once("database/db.php");
 include_once("log/log.php");
 include_once("hooks.php");
@@ -53,7 +54,7 @@ include_once("functions/detailShowtime.php");
 include_once("embedded/embeddedPlayList.php");
 include_once("embedded/embeddedProgramming.php");
 
-define( 'WIMTV_BASEPATH', plugin_dir_path( __FILE__ ) );
+define('WIMTV_BASEPATH', plugin_dir_path(__FILE__));
 
 // NS: MOVED TO "wimtvpro_fix_missing_langs()"
 //load_plugin_textdomain('wimtvpro', false, dirname(plugin_basename(__FILE__)) . '/languages/');
@@ -557,16 +558,22 @@ function register_my_streaming() {
 //End Widget
 //ShortCodes
 function wimtvpro_shortcode_streaming($atts) {
-
+    if (cms_getWimtvUser() == "username") {
+        return;
+    }
     global $wpdb, $user;
     $user = wp_get_current_user();
     $idUser = $user->ID;
-    $userRole = $user->roles[0];
-
+    $userRole = sizeof($user->roles) > 0 ? $user->roles[0] : "";
+    $id = "";
+    $width = "";
+    $height = "";
     extract(shortcode_atts(array('id', 'width', 'height'), $atts));
 
     $arrayPlay = dbGetVideo($id);
-
+    if (sizeof($arrayPlay) < 1) {
+        return;
+    }
     $view_video_state = $arrayPlay[0]->viewVideoModule;
     $stateView = explode("|", $view_video_state);
 
@@ -623,22 +630,28 @@ function wimtvpro_shortcode_streaming($atts) {
 }
 
 function wimtvpro_shortcode_playlist($atts) {
+    if (cms_getWimtvUser() == "username") {
+        return;
+    }
     $shortcode_attributes = shortcode_atts(array('id' => 'all', 'width' => get_option('wp_widthPreview'), 'height' => get_option('wp_heightPreview')), $atts);
     $id = $shortcode_attributes['id'];
     $width = $shortcode_attributes['width'];
     $height = $shortcode_attributes['height'];
-//    var_dump($shortcode_attributes);
-//    var_dump($id);
-//    var_dump($width);
-//    var_dump($height);
     return includePlaylist($id, $width, $height);
 }
 
 function wimtvpro_shortcode_wimvod($atts) {
+    if (cms_getWimtvUser() == "username") {
+        return;
+    }
     return "<table class='itemsPublic'>" . wimtvpro_getVideos(TRUE, FALSE, FALSE) . "</table><div class='clear'></div>";
 }
 
 function wimtvpro_shortcode_wimlive($atts) {
+    if (cms_getWimtvUser() == "username") {
+        return;
+    }
+    $params = "";
     $pageLive = "";
     // WE ARE GETTING A SHORTAG LIKE: [wimlive id='urn:wim:tv:livestream:c9309ad5-6cce-4f20-b9aa-552efe858fe4' zone='3600000']
     if (isset($atts['id']) && isset($atts['zone'])) {
@@ -700,6 +713,12 @@ function wimtvpro_shortcode_wimlive($atts) {
 }
 
 function wimtvpro_shortcode_programming($atts) {
+    if (cms_getWimtvUser() == "username") {
+        return;
+    }
+    $id = "";
+    $width = "";
+    $height = "";
     extract(shortcode_atts(array('id' => $id, 'width' => $width, 'height' => $height), $atts));
 
     $skinData = wimtvpro_get_skin_data();

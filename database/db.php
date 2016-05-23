@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Written by walter at 11/11/13
  */
@@ -38,11 +37,11 @@ function deleteWimTVPosts() {
 }
 
 function createTables() {
-    global $wpdb;
+    global $wpdb ;//, $wp_current_db_version, $wp_db_version;
 
     $table_name = VIDEO_TABLE_NAME;
     $charset = getCharset();
-    if ($wp_db_version == $wp_current_db_version) {
+//    if ($wp_db_version == $wp_current_db_version) {
         $query1 = "CREATE TABLE {$table_name}
                     (
                         uid varchar(100) NOT NULL COMMENT 'User identifier',
@@ -64,9 +63,9 @@ function createTables() {
                         UNIQUE KEY mycolumn1 (contentidentifier)
                     )
                         {$charset};";
-    } else {
-        $query1 = "  ALTER TABLE   {$table_name}  ADD   urlThumbs text NOT NULL COMMENT 'Url thumbs video' ";
-    }
+//    } else {
+//        $query1 = "  ALTER TABLE   {$table_name}  ADD   urlThumbs text NOT NULL COMMENT 'Url thumbs video' ";
+//    }
     dbDelta($query1);
 
     $table_name2 = PLAYLIST_TABLE_NAME;

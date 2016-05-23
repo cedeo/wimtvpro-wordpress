@@ -1,8 +1,8 @@
 <?php
-
 /**
  * Written by walter at 06/11/13
  */
+
 function wimtvpro_viever_jwplayer($userAgent, $contentId, $dirJwPlayer) {
     $isApple = (bool) strpos($userAgent, 'Safari') && !(bool) strpos($userAgent, 'Chrome');
     $isiPad = (bool) strpos($userAgent, 'iPad');
@@ -112,7 +112,7 @@ function configurePlayerJS($contentItem) {
     return $playerScript;
 }
 
-function configurePlayer_PlaylistJS($playlist_id, $width=null, $height=null) {
+function configurePlayer_PlaylistJS($playlist_id, $width = null, $height = null) {
 //Check if browser is mobile
     $user_agent = $_SERVER['HTTP_USER_AGENT'];
     $isApple = (bool) strpos($user_agent, 'Safari') && !(bool) strpos($user_agent, 'Chrome');
@@ -137,6 +137,9 @@ function configurePlayer_PlaylistJS_FLASH($playlist_id, $width, $height) {
 //    }
 
     $playlistDBData = dbExtractSpecificPlayist($playlist_id);
+    if (sizeof($playlistDBData)<1){
+        return;
+    }
     $playlistDBData = $playlistDBData[0];
 
     $listVideo = $playlistDBData->listVideo;
@@ -374,5 +377,3 @@ function configurePlayer_PlaylistJS_HLS($playlist_id, $width, $height) {
 ////    die;
 //    return $result;
 //}
-?>
-

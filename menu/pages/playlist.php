@@ -29,8 +29,11 @@ function wimtvpro_playlist() {
         $playlist = dbGetUserPlaylist(get_option("wp_userwimtv"), $_GET['id']);
 
         if (count($playlist) > 0) {
-            $option = $playlist[0]->option;
-            $array_option = explode(",", $option);
+            $array_option = array();
+            if (isset($playlist[0]->option)) {
+                $option = $playlist[0]->option;
+                $array_option = explode(",", $option);
+            }
             $options = array();
             foreach ($array_option as $value) {
                 $array = explode(":", $value);
@@ -130,7 +133,7 @@ function wimtvpro_playlist() {
 
                             <td>
                                 <textarea style='resize: none; width:90%;height:70px;' readonly='readonly' onclick='this.focus();
-                                        this.select();'>[playlistWimtv id="<?php echo $record->id; ?>" width="<?php echo $width ?>" height="<?php echo $height ?>"]</textarea>
+                                                    this.select();'>[playlistWimtv id="<?php echo $record->id; ?>" width="<?php echo $width ?>" height="<?php echo $height ?>"]</textarea>
                             </td>
 
                             <td>

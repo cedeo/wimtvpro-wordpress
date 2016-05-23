@@ -14,16 +14,16 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     $state = $record_new->state;
     $position = $record_new->position;
     $status_array = explode("|", $record_new->status);
+    $duration = "";
     $urlThumbs = $record_new->urlThumbs;
     $urlPlay = $record_new->urlPlay;
     $acquider_id = $record_new->acquiredIdentifier;
     $file_name = explode("|", $record_new->mytimestamp);
     $view_video_state = $record_new->viewVideoModule;
-    $duration = "";
     $title = $record_new->title;
     $showtime_identifier = $record_new->showtimeIdentifier;
     $stateView = explode("|", $view_video_state);
-    $array = explode(",", $stateView[1]);
+    $array = isset($stateView[1]) ? explode(",", $stateView[1]) : array();
     $typeUser["U"] = array();
     $typeUser["R"] = array();
     $viewPublicVideo = FALSE;
@@ -39,7 +39,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
         $my_media .= "</tr>";
         return $my_media;
     }
-    
+
     $title = stripslashes($title);
 
     foreach ($array as $key => $value) {
@@ -82,35 +82,34 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
 
     $isfound = false;
-    
-    if ((!strstr($replace_video, 'Not Found')) || (!isset($replace_video)) || ($replace_video == "")){
+
+    if ((!isset($replace_video)) || (!strstr($replace_video, 'Not Found')) ||  ($replace_video == "")) {
         $isfound = true;
     }
-        
+
     $licenze_video = "";
-    
+
     if ($isfound != "") {
         // NS:
         // $replace_video = '<img src="' . $replace_video . '" title="' . $title . '" class="" />';
         $replace_video = stripslashes($record_new->urlThumbs);
 
-        if ($licenseType != ""){
+        if ($licenseType != "") {
             $licenze_video = '<div class="icon_licence ' . $licenseType . '"></div>';
         }
     }
 
     $wimtvpro_url = "";
-    
+
     //For Admin
     if ($isfound) {
 //        $video = "<span class='wimtv-thumbnail' >" . $replace_video . "</span>";
         $video = "<span class='wimtv-thumbnail' >" . $licenze_video . $replace_video . "</span>";
-    } 
-    else {
+    } else {
         $video = $replace_video;
         $replace_video = false;
     }
-    
+
     if ($replace_video) {
         $form_st = '
 		<div class="free">' . __("FREE OF CHARGE", "wimtvpro") . '</div>
@@ -130,11 +129,10 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
             } else {
                 $my_media .= "<tr id='" . $content_item_new . "'>";
             }
-        }
-        else{
+        } else {
             $my_media .= "<tr>";
         }
-        
+
         $form = "";
         //if ($private)
         //$action .= "<div class='thumb ui-state-default'>";
@@ -297,7 +295,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
         //$my_media .= $send .  "</div> </tr>";
         $position_new = $position;
     }
-   
+
     return $my_media;
 }
 

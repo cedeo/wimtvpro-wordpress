@@ -18,7 +18,7 @@ include_once("settings/live.php");
 include_once("settings/features.php");
 
 function wimtvpro_configure() {
-global $WIMTV_API_HOST;
+    global $WIMTV_API_HOST;
     $uploads_info = wp_upload_dir();
     if (!isset($_GET["pack"])) {
         if (!isset($_GET["update"])) {
@@ -115,9 +115,8 @@ global $WIMTV_API_HOST;
 
 
                     $response = apiGetProfile();
-//var_dump($response);die;
                     $arrayjsonst = json_decode($response);
-                    if ($arrayjsonst->paypalEmail != "") {
+                    if ($arrayjsonst!=null && $arrayjsonst->paypalEmail != "") {
                         update_option('wp_activePayment', "true");
                     } else {
                         update_option('wp_activePayment', "false");
@@ -163,7 +162,8 @@ global $WIMTV_API_HOST;
                     update_option('wp_replaceUserWimtv', '{username}');
                     update_option('wp_replaceacquiredIdentifier', '{acquiredIdentifier}');
                     update_option('wp_replaceshowtimeIdentifier', '{showtimeIdentifier}');
-                    update_option('wp_publicPage', $_POST['publicPage']);
+//                    update_option('wp_publicPage', $_POST['publicPage']);
+                    update_option('wp_publicPage', isset($_POST['publicPage']) ? $_POST['publicPage'] : "");
 
                     update_page_wimvod();
                 }

@@ -108,5 +108,3 @@ global $user,$wpdb;
         echo "Non entro";
         die();
   }
-    
-?>

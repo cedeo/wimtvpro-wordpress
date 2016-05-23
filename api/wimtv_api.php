@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Written by walter at 30/10/13
  * Updated by Netsense s.r.l. 2014-2015
@@ -17,7 +16,6 @@ global $WIMTV_API_TEST, $WIMTV_API_PRODUCTION, $WIMTV_API_HOST;
 
 $WIMTV_API_TEST = cms_getWimtvApiTestUrl();
 $WIMTV_API_PRODUCTION = cms_getWimtvApiProductionUrl();
-
 //$WIMTV_API_HOST = $WIMTV_API_TEST;
 $WIMTV_API_HOST = $WIMTV_API_PRODUCTION;
 /* * ******* */
@@ -515,4 +513,3 @@ function isConnectedToTestServer() {
 
 initApi($WIMTV_API_HOST, cms_getWimtvUser(), cms_getWimtvPwd());
 //initApi($WIMTV_API_HOST, variable_get("userWimtv"), variable_get("passWimtv"));
-?>

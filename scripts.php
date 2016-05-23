@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  Questo file viene chiamato via Http,e fornisce funzionalità diverse in base al parametro GET 'namefunction' passato.
  */
@@ -495,4 +494,3 @@ switch ($function) {
         //echo "Non entro";
         die();
 }
-?>

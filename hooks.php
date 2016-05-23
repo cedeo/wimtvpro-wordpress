@@ -1,5 +1,4 @@
 <?php
-
 include_once("api/wimtv_api.php");
 include_once("api/analytics_api.php");
 
@@ -110,4 +109,3 @@ function wimtvpro_media_menu_handle() {
 }
 
 add_action('media_upload_wimtvpro', 'wimtvpro_media_menu_handle');
-?>

@@ -3,7 +3,7 @@
   Plugin Name: WimTVPro for WP
   Plugin URI: http://wimtvpro.tv
   Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-  Version: 4.3.2
+  Version: 4.3.3
   Author: WimLabs
   Author URI: http://www.wimlabs.com
   License: GPLv2 or later
@@ -26,7 +26,6 @@
  */
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
-
 // Create a term metadata table where $type = metadata type
 include_once("database/db.php");
 include_once("log/log.php");
@@ -568,7 +567,7 @@ function wimtvpro_shortcode_streaming($atts) {
     $id = "";
     $width = "";
     $height = "";
-    extract(shortcode_atts(array('id', 'width', 'height'), $atts));
+    extract(shortcode_atts(array('id' => $id, 'width' => $width, 'height' => $height), $atts));
 
     $arrayPlay = dbGetVideo($id);
     if (sizeof($arrayPlay) < 1) {
@@ -576,8 +575,12 @@ function wimtvpro_shortcode_streaming($atts) {
     }
     $view_video_state = $arrayPlay[0]->viewVideoModule;
     $stateView = explode("|", $view_video_state);
-
-    $array = explode(",", $stateView[1]);
+    $array = array();
+    if (isset($stateView[1])) {
+        $array = explode(",", $stateView[1]);
+    } else {
+        $array[] = "";
+    }
     $typeUser["U"] = array();
     $typeUser["R"] = array();
     $viewPublicVideo = FALSE;

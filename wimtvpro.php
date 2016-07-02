@@ -3,7 +3,7 @@
   Plugin Name: WimTVPro for WP
   Plugin URI: http://wimtvpro.tv
   Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-  Version: 4.3.3
+  Version: 4.3.4
   Author: WimLabs
   Author URI: http://www.wimlabs.com
   License: GPLv2 or later
@@ -625,7 +625,8 @@ function wimtvpro_shortcode_streaming($atts) {
 // Here in wordpress it works. In drupal we had to change the returned
 // iframe on-the-fly, because simply addig an outer div with proper
 // W and H parameters was not sufficient
-        return "<div style='text-align:center;height:" . $height . "px;width:" . $width . "px'>" . $response . "</div>";
+//        return "<div style='text-align:center;height:" . $height . "px;width:" . $width . "px'>" . $response . "</div>";
+        return $response;
 //	  return "<div style='text-align:center'>" . $response . "</div>";
     } else {
         return "<p>You don't have permission to see the video</p>";

@@ -107,11 +107,12 @@ function wimtvpro_configure() {
 //                    initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
                     initApi(cms_getWimtvApiUrl(), cms_getWimtvUser(), cms_getWimtvPwd());
 
-                    if (get_option("wp_sandbox") == "No") {
-                        initAnalytics("http://www.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
-                    } else {
-                        initAnalytics("http://peer.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
-                    }
+                    initAnalytics(cms_getWimtvStatsApiUrl(), get_option("wp_userwimtv"), null);
+//                    if (get_option("wp_sandbox") == "No") {
+//                        initAnalytics("http://www.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
+//                    } else {
+//                        initAnalytics("http://peer.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
+//                    }
 
 
                     $response = apiGetProfile();

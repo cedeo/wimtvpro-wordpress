@@ -40,10 +40,11 @@ function analyticsGetPacket() {
     return $apiAccessor->execute($request);
 }
 
-if (get_option("wp_sandbox") == "No") {
-    initAnalytics("http://stats.wim.tv/api/", get_option("wp_userwimtv"), null);
-} else {
-    initAnalytics("http://peer.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
-}
+initAnalytics(cms_getWimtvStatsApiUrl(), get_option("wp_userwimtv"), null);
+//if (get_option("wp_sandbox") == "No") {
+//    initAnalytics("http://stats.wim.tv/api/", get_option("wp_userwimtv"), null);
+//} else {
+//    initAnalytics("http://peer.wim.tv:3131/api/", get_option("wp_userwimtv"), null);
+//}
 
 ?>

@@ -1,5 +1,5 @@
 <?php
-
+include_once("wimtv_api.php");
 /**
  * Written by Netsense s.r.l. 2015
  * 
@@ -25,6 +25,22 @@ function cms_getWimtvApiProductionUrl() {
 function cms_getWimtvApiTestUrl() {
     return "https://peer.wim.tv/wimtv-webapp/rest/";
 }
+
+function cms_getWimtvStatsApiUrl() {
+    $statsApiUrl = isConnectedToTestServer()? cms_getWimtvStatsApiTestUrl():cms_getWimtvStatsApiProductionUrl();
+    return $statsApiUrl;
+}
+
+
+function cms_getWimtvStatsApiProductionUrl() {
+    return "http://www.wim.tv:3131/api/";
+}
+
+function cms_getWimtvStatsApiTestUrl() {
+    return "http://peer.wim.tv:3131/api/";
+}
+
+
 
 function cms_getName(){
     return "Wordpress";

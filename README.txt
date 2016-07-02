@@ -2,10 +2,10 @@
 Contributors: WimLabs
 Tags: video, plugin, admin, media, live, on demand, streaming, playlist, web, tv, webtv, gallery, embed, channel, broadcast, stream, manage, wimtv, wimtvpro, player
 Requires at least: 3.4
-Tested up to: 4.4.2
+Tested up to: 4.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 4.3.3
+Stable tag: 4.3.4
 
 WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
 
@@ -119,6 +119,8 @@ Check the [Wimlabs support site](http://support.wim.tv)
 * Fix for PHP notice message change in recent wp versions, unexpected ouput characters, headers already sent and login issues.
 = 4.3.3 =
 * Fix disappearing shortcode on latest WP 4.5.2 release
+= 4.3.4 =
+* Analytics API endpoints fix
 
 == Upgrade Notice ==
 Into version 2.0 added videos Playlist and Report. When you update insert again your wimtv user and password.
@@ -131,4 +133,4 @@ WimLabs srl
 Visit the [plugin's website](http://wimtvpro.tv)
 
 == Last updated ==
-31/05/2016
+02/07/2016

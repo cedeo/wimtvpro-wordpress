@@ -1,7 +1,7 @@
 <?php
 /**
  * Written by walter at 30/10/13
- * Updated by Netsense s.r.l. 2014-2015
+ * Updated by Netsense s.r.l. 2014-2016
  */
 include_once("api.php");
 include_once("wimtv_api_cmsspecific.php");
@@ -11,11 +11,13 @@ use \Httpful\Mime;
 use \Httpful\Request;
 
 /* * *** API SETTINGS **** */
-//NS
 global $WIMTV_API_TEST, $WIMTV_API_PRODUCTION, $WIMTV_API_HOST;
-
+/** RETRIEVE API URLs  FOR BOTH "TEST" and "PRODUCTION"**/
+// PLEASE DO NOT CHANGE
 $WIMTV_API_TEST = cms_getWimtvApiTestUrl();
 $WIMTV_API_PRODUCTION = cms_getWimtvApiProductionUrl();
+
+/** SET ACTIVE API URL: "TEST" OR "PRODUCTION"**/
 //$WIMTV_API_HOST = $WIMTV_API_TEST;
 $WIMTV_API_HOST = $WIMTV_API_PRODUCTION;
 /* * ******* */
@@ -511,5 +513,5 @@ function isConnectedToTestServer() {
     return ($WIMTV_API_HOST === $WIMTV_API_TEST);
 }
 
-initApi($WIMTV_API_HOST, cms_getWimtvUser(), cms_getWimtvPwd());
+initApi(cms_getWimtvApiUrl(), cms_getWimtvUser(), cms_getWimtvPwd());
 //initApi($WIMTV_API_HOST, variable_get("userWimtv"), variable_get("passWimtv"));

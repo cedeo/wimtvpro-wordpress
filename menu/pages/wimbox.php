@@ -143,7 +143,8 @@ function wimtvpro_wimbox() {
         jQuery(document).ready(function() {
 
             jQuery(".icon_download").click(function() {
-                var id = jQuery(this).attr("id").split("|");
+//                var id = jQuery(this).attr("id").split("|");
+                var id = jQuery(this).parent().parent().attr("id").split("|");
                 var uri = url_pathPlugin + "scripts.php?namefunction=downloadVideo&id=" + id[0];
                 jQuery("body").append("<iframe src=\"" + uri + "\" style=\"display:none;\" />");
             });

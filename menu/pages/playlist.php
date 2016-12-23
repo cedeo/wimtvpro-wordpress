@@ -23,6 +23,7 @@ function wimtvpro_playlist() {
     if ($nameFunction == "modPlaylist") {
         $linkReturn = "<a href='" . $_SERVER['REQUEST_URI'] . "&namefunction=listPlaylist' class='add-new-h2'>" . __('Return to list', 'wimtvpro') . "</a> ";
         if (isset($_POST["modPlaylist"]) && $_POST["modPlaylist"] == "true") {
+            
             dbUpdatePlaylist($_GET["id"], $_POST["listVideo"], $_POST["namePlaylist"]);
             $updated = true;
         }

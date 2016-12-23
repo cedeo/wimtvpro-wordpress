@@ -1,8 +1,8 @@
 <?php
+
 /**
  * Written by walter at 06/11/13
  */
-
 function wimtvpro_viever_jwplayer($userAgent, $contentId, $dirJwPlayer) {
     $isApple = (bool) strpos($userAgent, 'Safari') && !(bool) strpos($userAgent, 'Chrome');
     $isiPad = (bool) strpos($userAgent, 'iPad');
@@ -80,16 +80,15 @@ function configurePlayerJS($contentItem) {
     $response = apiGetDetailsVideo($contentItem);
     $arrayjson = json_decode($response);
 
-    $player['file'] = $arrayjson->streamingUrl->file;
-    $player['streamer'] = $arrayjson->streamingUrl->streamer;
+
+    $player['file'] = $arrayjson->file;
+    $player['streamer'] = $arrayjson->streamer;
     $player['type'] = "rtmp";
     $player['primary'] = "flash";
     $player['rtmp'] = "{tunnelling: false, fallback: false}";
-
-
     $player['width'] = get_option("wp_widthPreview");
     $player['height'] = get_option("wp_heightPreview");
-    $player['image'] = $arrayjson->thumbnailUrl;
+    $player['image'] = __("API_URL", "wimtvpro") . 'asset/thumbnail/' . $arrayjson->resource->thumbnailId;
 
     $player['skin'] = "";
     $player['logo'] = "";
@@ -112,7 +111,159 @@ function configurePlayerJS($contentItem) {
     return $playerScript;
 }
 
+function configurePlayerJSByJson($arrayjson, $width, $height,$id = null,$thumbnailId = null) {
+    
+    $player = array();
+//    $response = apiGetDetailsVideo($contentItem);
+//    $arrayjson = json_decode($response);
+    
+    $dirJwPlayer = plugin_dir_url(dirname(__FILE__)) . "script/jwplayer/player.swf";
+    $player['file'] = $arrayjson->file;
+    $player['streamer'] = $arrayjson->streamer;
+    $player['type'] = "rtmp";
+    $player['primary'] = "flash";
+    $player['rtmp'] = "{tunnelling: false, fallback: false}";
+    if (isset($width)) {
+        $player['width'] = $width;
+    } else {
+        $player['width'] = get_option("wp_widthPreview");
+    }
+    if (isset($height)) {
+        $player['height'] = $height;
+    } else {
+        $player['height'] = get_option("wp_heightPreview");
+    }
+//    $player['width'] = get_option("wp_widthPreview");
+//    $player['height'] = get_option("wp_heightPreview");
+   
+    $player['image'] = __("API_URL", "wimtvpro") . 'asset/thumbnail/' . $arrayjson->resource->thumbnailId;
+   
+    $player['flashplayer'] = $dirJwPlayer;
+
+    $player['skin'] = "";
+    $player['logo'] = "";
+
+    // A SKIN HAS BEEN ADDED: OVERRIDE DEFAULT SKIN PATH
+    $skinData = wimtvpro_get_skin_data();
+    if ($skinData['styleUrl'] != "") {
+        $player['skin'] = "{name : '" . $skinData["skinName"] . "', url : '" . $skinData['styleUrl'] . "'}";
+    }
+
+    if ($skinData['logoUrl'] != "") {
+        $player['logo'] = "{file : '" . $skinData['logoUrl'] . "', hide : true}";
+    }
+
+
+//    $player['width'] = isset($width) ? $width : get_option('wp_widthPreview');
+//    $player['height'] = isset($height) ? $height : get_option('wp_heightPreview');
+
+    $divContainerID = "container-" . rand();
+    $playerScript = "
+            <script>jwplayer.key='2eZ9I53RjqbPVAQkIqbUFMgV2WBIyWGMCY7ScjJWMUg=';</script>
+            <script type='text/javascript'>jwplayer('" . $divContainerID . "').setup({";
+
+
+//    $playerScript['modes'] = "[{type:'flash',src:'" . $dirJwPlayer . "'}]";
+
+    $playerScript .= getConfFromDataArray($player);
+
+
+    $playerScript .= "});</script>";
+
+//if(!isset($arrayjson)){
+//    return         '<div id="pay_video'.$id.'" style="display:none;margin:0px 0px 10px 0px;" ><div id="videoPAYVod'.$id.'"  style="width:'.$width.'px;height:'.$height.'px;">'
+//             . '<img id="icon_play_vod'.$id.'" src="'.site_url().'/wp-content/plugins/wimtvpro/images/play.png" style="max-width:10%;z-index: 10;display: block;position: relative;top: 55%;left: 45%;" />'
+//            . '<img id="icon_thumb_play_vod'.$id.'" src="'.__("API_URL","wimtvpro").'asset/thumbnail/'.$thumbnailId.'" style="width:'.$width.'px;height:'.$height.'px;z-index: -10;" />'
+//           
+//            . '</div>'
+//                      . '</div>';
+//       
+//   
+//}else{
+
+    return "<div style='width: " . $width . "; height: " . $height . ";' id='$divContainerID' ></div>" . $playerScript;
+//}
+//    return "<div style='width: " . "458px" . "; "  . ";' id='$divContainerID' ></div>" . $playerScript;
+}
+
+function configurePlayerJSForLive($channelId, $arrayjson = null, $width, $height, $trackingId = null) {
+
+    $response = null;
+    if (isset($trackingId)) {
+        $params = array(
+            'trackingId' => $trackingId
+        );
+
+        $response = apiPlayOnAirLiveEventInChannels($channelId, $params);
+        $arrayjson = json_decode($response);
+       
+    }
+
+
+
+
+    $player = array();
+//    $response = apiGetDetailsVideo($contentItem);
+//    $arrayjson = json_decode($response);
+
+    $dirJwPlayer = plugin_dir_url(dirname(__FILE__)) . "script/jwplayer/player.swf";
+    $player['file'] = $arrayjson->file;
+    $player['streamer'] = $arrayjson->streamer;
+    $player['type'] = "rtmp";
+    $player['primary'] = "flash";
+    $player['rtmp'] = "{tunnelling: false, fallback: false}";
+    if (isset($width)) {
+        $player['width'] = $width;
+    } else {
+        $player['width'] = get_option("wp_widthPreview");
+    }
+    if (isset($height)) {
+        $player['height'] = $height;
+    } else {
+        $player['height'] = get_option("wp_heightPreview");
+    }
+//    $player['width'] = get_option("wp_widthPreview");
+//    $player['height'] = get_option("wp_heightPreview");
+    $player['image'] = __("API_URL", "wimtvpro") . 'asset/thumbnail/' . $arrayjson->thumbnailId;
+    $player['flashplayer'] = $dirJwPlayer;
+
+    $player['skin'] = "";
+    $player['logo'] = "";
+
+    // A SKIN HAS BEEN ADDED: OVERRIDE DEFAULT SKIN PATH
+    $skinData = wimtvpro_get_skin_data();
+    if ($skinData['styleUrl'] != "") {
+        $player['skin'] = "{name : '" . $skinData["skinName"] . "', url : '" . $skinData['styleUrl'] . "'}";
+    }
+
+    if ($skinData['logoUrl'] != "") {
+        $player['logo'] = "{file : '" . $skinData['logoUrl'] . "', hide : true}";
+    }
+
+
+//    $player['width'] = isset($width) ? $width : get_option('wp_widthPreview');
+//    $player['height'] = isset($height) ? $height : get_option('wp_heightPreview');
+
+    $divContainerID = "container-" . rand();
+    $playerScript = "
+            <script>jwplayer.key='2eZ9I53RjqbPVAQkIqbUFMgV2WBIyWGMCY7ScjJWMUg=';</script>
+            <script type='text/javascript'>jwplayer('" . $divContainerID . "').setup({";
+
+
+//    $playerScript['modes'] = "[{type:'flash',src:'" . $dirJwPlayer . "'}]";
+
+    $playerScript .= getConfFromDataArray($player);
+
+
+    $playerScript .= "});</script>";
+
+
+
+    return "<div style='width: " . $width . "; height: " . $height . ";'id='$divContainerID' >" . $playerScript . "</div>";
+}
+
 function configurePlayer_PlaylistJS($playlist_id, $width = null, $height = null) {
+
 //Check if browser is mobile
     $user_agent = $_SERVER['HTTP_USER_AGENT'];
     $isApple = (bool) strpos($user_agent, 'Safari') && !(bool) strpos($user_agent, 'Chrome');
@@ -120,7 +271,9 @@ function configurePlayer_PlaylistJS($playlist_id, $width = null, $height = null)
     $isiPhone = (bool) strpos($user_agent, 'iPhone');
     $isAndroid = (bool) strpos($user_agent, 'Android');
 //    var_dump($user_agent);
-//    var_dump($isiPad, $isiPhone, $isAndroid, $isApple);
+//    var_dump($isiPad, $isiPhone, $isAndroid, $isApple);die;
+//    return configurePlayer_PlaylistJS_HLS($playlist_id, $width, $height);
+
     if ($isiPad || $isiPhone || $isAndroid || $isApple) {
         return configurePlayer_PlaylistJS_HLS($playlist_id, $width, $height);
     } else {
@@ -129,6 +282,7 @@ function configurePlayer_PlaylistJS($playlist_id, $width = null, $height = null)
 }
 
 function configurePlayer_PlaylistJS_FLASH($playlist_id, $width, $height) {
+
     $playlistConf = array();
 //    if (isset($_GET["isAdmin"])) {
 //        $is_admin = true;
@@ -137,7 +291,8 @@ function configurePlayer_PlaylistJS_FLASH($playlist_id, $width, $height) {
 //    }
 
     $playlistDBData = dbExtractSpecificPlayist($playlist_id);
-    if (sizeof($playlistDBData)<1){
+
+    if (sizeof($playlistDBData) < 1) {
         return;
     }
     $playlistDBData = $playlistDBData[0];
@@ -148,11 +303,12 @@ function configurePlayer_PlaylistJS_FLASH($playlist_id, $width, $height) {
     $videoList = explode(",", $listVideo);
 
     $playlist_videos = dbGetUserVideosIn(get_option("wp_userWimtv"), $videoList);
+
     $sorted_videos = array();
 
     for ($i = 0; $i < count($videoList); $i++) {
         foreach ($playlist_videos as $record_new) {
-            if ($videoList[$i] == $record_new->contentidentifier) {
+            if ($videoList[$i] == $record_new->boxId) {
                 array_push($sorted_videos, $record_new);
             }
         }
@@ -172,18 +328,22 @@ function configurePlayer_PlaylistJS_FLASH($playlist_id, $width, $height) {
             // $thumb_url = str_replace("\\", "", $thumbs[1]);
             $thumb_url = isset($thumbs[1]) ? str_replace("\\", "", $thumbs[1]) : "";
 
-            $response = apiGetDetailsVideo($video->contentidentifier);
+            $response = apiPlayWimVodItem($video->showtimeIdentifier);
+
+
+//$response = apiGetDetailsVideo($video->contentidentifier);
+//            $response = apiGetDetailsVideo($video->contentidentifier);
             $arrayjson = json_decode($response);
+//             $url_thumbs = '<img src="http://52.19.105.240:8080/wimtv-server/asset/thumbnail/'.$arrayjson->resource->thumbnailId.'"  title="'.$arrayjson->resource->title.'" class="wimtv-thumbnail" />';
             $playlistConfPlaylistItem = array();
-            $playlistConfPlaylistItem['file'] = $arrayjson->streamingUrl->file;
-            $playlistConfPlaylistItem['streamer'] = $arrayjson->streamingUrl->streamer;
+            $playlistConfPlaylistItem['file'] = $arrayjson->file;
+            $playlistConfPlaylistItem['streamer'] = $arrayjson->streamer;
             $playlistConfPlaylistItem['type'] = "rtmp";
             $playlistConfPlaylistItem['primary'] = "flash";
             $playlistConfPlaylistItem['rtmp'] = "{tunnelling: false, fallback: false}";
-            $playlistConfPlaylistItem['image'] = $thumb_url;
+            $playlistConfPlaylistItem['image'] = __("API_URL", "wimtvpro") . 'asset/thumbnail/' . $arrayjson->resource->thumbnailId;
             $playlistConfPlaylistItem['title'] = str_replace("+", " ", utf8_decode(addslashes($video->title)));
             $playlistConfPlaylistItem['flashplayer'] = $dirJwPlayer;
-//            var_dump($playlistConfPlaylistItem);die;
             $playlistConf["playlist"].="{";
             foreach ($playlistConfPlaylistItem as $key => $value) {
                 if ($value != "") {
@@ -194,6 +354,27 @@ function configurePlayer_PlaylistJS_FLASH($playlist_id, $width, $height) {
                 }
             }
             $playlistConf["playlist"] .= "},";
+
+
+//            $playlistConfPlaylistItem['file'] = $arrayjson->streamingUrl->file;
+//            $playlistConfPlaylistItem['streamer'] = $arrayjson->streamingUrl->streamer;
+//            $playlistConfPlaylistItem['type'] = "rtmp";
+//            $playlistConfPlaylistItem['primary'] = "flash";
+//            $playlistConfPlaylistItem['rtmp'] = "{tunnelling: false, fallback: false}";
+//            $playlistConfPlaylistItem['image'] = $thumb_url;
+//            $playlistConfPlaylistItem['title'] = str_replace("+", " ", utf8_decode(addslashes($video->title)));
+//            $playlistConfPlaylistItem['flashplayer'] = $dirJwPlayer;
+////            var_dump($playlistConfPlaylistItem);die;
+//            $playlistConf["playlist"].="{";
+//            foreach ($playlistConfPlaylistItem as $key => $value) {
+//                if ($value != "") {
+//                    if ($key != "rtmp" && $key != "skin" && $key != "logo") {
+//                        $value = "'" . $value . "'";
+//                    }
+//                    $playlistConf["playlist"].=$key . ": " . $value . ",";
+//                }
+//            }
+//            $playlistConf["playlist"] .= "},";
         }
 
         $playlistConf["playlist"] .= "]";
@@ -258,7 +439,7 @@ function configurePlayer_PlaylistJS_HLS($playlist_id, $width, $height) {
 
     for ($i = 0; $i < count($videoList); $i++) {
         foreach ($playlist_videos as $record_new) {
-            if ($videoList[$i] == $record_new->contentidentifier) {
+            if ($videoList[$i] == $record_new->boxId) {
                 array_push($sorted_videos, $record_new);
             }
         }
@@ -276,17 +457,35 @@ function configurePlayer_PlaylistJS_HLS($playlist_id, $width, $height) {
             // $thumb_url = str_replace("\\", "", $thumbs[1]);
             $thumb_url = isset($thumbs[1]) ? str_replace("\\", "", $thumbs[1]) : "";
 
+            $response = apiPlayWimVodItem($video->showtimeIdentifier);
 
-            $response = apiGetDetailsVideo($video->contentidentifier);
+
+//$response = apiGetDetailsVideo($video->contentidentifier);
+//            $response = apiGetDetailsVideo($video->contentidentifier);
             $arrayjson = json_decode($response);
+//             $url_thumbs = '<img src="http://52.19.105.240:8080/wimtv-server/asset/thumbnail/'.$arrayjson->resource->thumbnailId.'"  title="'.$arrayjson->resource->title.'" class="wimtv-thumbnail" />';
             $playlistConfPlaylistItem = array();
-
-//            $playlistConfPlaylistItem['file'] = build_HLS_url($arrayjson->streamingUrl->streamer, $arrayjson->streamingUrl->file);
-            $playlistConfPlaylistItem['file'] = $arrayjson->streamingUrl->streamer;
+            $playlistConfPlaylistItem['file'] = $arrayjson->streamer;
             $playlistConfPlaylistItem['primary'] = "html5";
             $playlistConfPlaylistItem['fallback'] = "false";
-            $playlistConfPlaylistItem['image'] = $thumb_url;
+            $playlistConfPlaylistItem['image'] = __("API_URL", "wimtvpro") . 'asset/thumbnail/' . $arrayjson->resource->thumbnailId;
             $playlistConfPlaylistItem['title'] = str_replace("+", " ", utf8_decode(addslashes($video->title)));
+
+//            $response = apiGetDetailsVideo($video->contentidentifier);
+//            $arrayjson = json_decode($response);
+//            
+//            
+//            
+//   vecchio         $playlistConfPlaylistItem = array();
+//
+////            $playlistConfPlaylistItem['file'] = build_HLS_url($arrayjson->streamingUrl->streamer, $arrayjson->streamingUrl->file);
+//            $playlistConfPlaylistItem['file'] = $arrayjson->streamingUrl->streamer;
+//            $playlistConfPlaylistItem['primary'] = "html5";
+//            $playlistConfPlaylistItem['fallback'] = "false";
+//            $playlistConfPlaylistItem['image'] = $thumb_url;
+//            $playlistConfPlaylistItem['title'] = str_replace("+", " ", utf8_decode(addslashes($video->title)));
+
+
             $playlistConf["playlist"].="{";
             foreach ($playlistConfPlaylistItem as $key => $value) {
                 if ($value != "") {

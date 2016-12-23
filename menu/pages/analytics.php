@@ -13,6 +13,15 @@ include_once("modules/graph.php");
 
 function wimtvpro_report() {
 
+    
+
+
+
+
+ $response = apiGetPacketProfile();
+    $packet_user_json = json_decode($response);
+
+     
     global $user;
     $view_page = wimtvpro_alert_reg();
     $megabyte = 1024 * 1024;
@@ -79,35 +88,84 @@ function wimtvpro_report() {
             $namePacket = $currentPacket->name;
         else
             $namePacket = $currentPacket->error;
+        
+        
+    $licenseName = $packet_user_json->licenseName;
+   $free = array(
+        
+        'bandPercent' => 5,
+        'storagePercent' => 1,
+    );
+    
+    $entry = array(
+       
+        'bandPercent' => 30,
+        'storagePercent' => 8,
+    );
+    $basic = array(
 
-        $traffic_of = " of " . $currentPacket->band_human;
-        $storage_of = " of " . $currentPacket->storage_human;
+        'bandPercent' => 80,
+        'storagePercent' => 20,
+    );
+ 
+    $professional = array(
+  
+        'bandPercent' => 250,
+        'storagePercent' => 65,
+    );
+    
+    $business = array(
+ 
+        'bandPercent' => 800,
+        'storagePercent' => 200,
+    );
+    
+    $packet_json = array(
+        'Free' => $free,
+        'Entry' => $entry,
+        'Basic' => $basic,
+        'Professional' => $professional,
+        "Business" => $business
+    );
+   
+    $license = $packet_json[$licenseName];
+    $str = str_replace('http://', 'http://cache.', $str);
+        $band = str_replace(',',".",$packet_user_json->bandPercent);
+        $storage =str_replace(',',".",$packet_user_json->storagePercent);
+        $traffic_of = " of " . $license['bandPercent'] ." GB" ;
+        $storage_of = " of " . $license['storagePercent'] . " GB";
 
-        $traffic_bar = "<div class='progress'><div class='bar' style='width:" . $commercialPacket_json->traffic->percent . "%'>" . $commercialPacket_json->traffic->percent_human . "%</div></div>";
-        $storage_bar = "<div class='progress'><div class='bar' style='width:" . $commercialPacket_json->storage->percent . "%'>" . $commercialPacket_json->storage->percent_human . "%</div></div>";
+        $traffic_bar = "<div class='progress'><div class='bar' style='width:" . $band . "%'>" . $band  . "%</div></div>";
+        $storage_bar = "<div class='progress'><div class='bar' style='width:" . $storage . "%'>" . $storage . "%</div></div>";
 
-        $byteToMb = "<b>" . $commercialPacket_json->traffic->current_human . '</b>' . $traffic_of . $traffic_bar;
-        $byteToMbS = "<b>" . $commercialPacket_json->storage->current_human . '</b>' . $storage_of . $storage_bar;
+        $byteToMb = "<b>" . $band . ' % </b>' . $traffic_of . $traffic_bar;
+        $byteToMbS = "<b>" . $storage. ' % </b>' . $storage_of . $storage_bar;
+        
+     
+
+
+
+ 
     }
 
-    $response = analyticsGetStreams($from_tm, $to_tm);
-    $arrayStreams = json_decode($response);
-
-    $streams = serializeStatistics($arrayStreams);
-
-    foreach ($streams as $stream) {
-        foreach ($stream->views_expanded as $value) {
-            if (isset($dateNumber[$value->date_human]))
-                $dateNumber[$value->date_human] = $dateNumber[$value->date_human] + 1;
-            else
-                $dateNumber[$value->date_human] = 1;
-
-            if (isset($dateTraffic[$value->date_human]))
-                array_push($dateTraffic[$value->date_human], $value->traffic);
-            else
-                $dateTraffic[$value->date_human] = array($value->traffic);
-        }
-    }
+//    $response = analyticsGetStreams($from_tm, $to_tm);
+//    $arrayStreams = json_decode($response);
+//
+//    $streams = serializeStatistics($arrayStreams);
+//
+//    foreach ($streams as $stream) {
+//        foreach ($stream->views_expanded as $value) {
+//            if (isset($dateNumber[$value->date_human]))
+//                $dateNumber[$value->date_human] = $dateNumber[$value->date_human] + 1;
+//            else
+//                $dateNumber[$value->date_human] = 1;
+//
+//            if (isset($dateTraffic[$value->date_human]))
+//                array_push($dateTraffic[$value->date_human], $value->traffic);
+//            else
+//                $dateTraffic[$value->date_human] = array($value->traffic);
+//        }
+//    }
     ?>
 
 
@@ -134,8 +192,7 @@ function wimtvpro_report() {
 
     <div class='wrap'>
         <?php echo wimtvpro_link_help(); ?>
-        <h2>Report user Wimtv <?php echo $user ?></h2>
-        <h3 id='changeTitle'><?php echo $title_user ?></h3>
+
 
         <div class="registration" id="fr_custom_date" style="<?php echo $style_date ?>">
             <form method="post">
@@ -151,62 +208,18 @@ function wimtvpro_report() {
         <p><?php echo __("You commercial packet", "wimtvpro") ?>:
             <b><?php echo $namePacket ?></b> - <a href='?page=<?php _e('SETTINGS_urlLink', "wimtvpro") ?>&pack=1&return=<?php _e('ANALYTICS_urlLink', "wimtvpro") ?>'><?php echo __("Change", "wimtvpro") ?></a>
         </p>
-        <?php if ($traffic == "") { ?>
-            <p><?php echo __("You did not generate any traffic in this period", "wimtvpro") ?></p>
-        <?php } else { ?>
+        <?php //if ($traffic == "") { ?>
+            <p><?php //echo __("You did not generate any traffic in this period", "wimtvpro") ?></p>
+        <?php //} else { ?>
             <p><?php echo __("Traffic", "wimtvpro") . ": " . $byteToMb ?></p>
             <p><?php echo __("Storage space", "wimtvpro") . ": " . $byteToMbS ?></p>
-            <div class="summary"><div class="tabs">
-                    <span id="stream" class="active"><?php echo __("Streams", "wimtvpro") ?></span>
-                    <span id="graph"><?php _e("Chart", "wimtvpro") ?></span>
-                </div>
-                <div id="view_stream" class="view">
-                    <h3><?php echo $title_streams; ?></h3>
-                    <table class="wp-list-table widefat fixed posts" style="text-align:center;">
-                        <tr>
-                            <th class="manage-column column-title">Video</th>
-                            <th class="manage-column column-title"><?php echo __("Viewers", "wimtvpro") ?></th>
-                            <th class="manage-column column-title"><?php echo __("Activate Viewers", "wimtvpro") ?></th>
-                            <th class="manage-column column-title"><?php echo __("Max viewers", "wimtvpro") ?></th>
-                        </tr>
-                        <?php foreach ($streams as $stream) { ?>
-                            <tr class='alternate'>
-                                <td class='image'><?php echo $stream->thumb ?></td>
-                                <td>
-                                    <b><?php echo __("Total", "wimtvpro") . ": " . $stream->views . " " . __("Viewers", "wimtvpro") ?></b>
-                                    <div class="wp-list-table">
-                                        <table class='wp-list-table'>
-                                            <tr>
-                                                <th class='manage-column column-title' style='font-size:10px;'><?php echo __("Date", "wimtvpro") ?></th>
-                                                <th class='manage-column column-title' style='font-size:10px;'><?php echo __("Duration", "wimtvpro") ?></th>
-                                                <th class='manage-column column-title' style='font-size:10px;'><?php echo __("Traffic", "wimtvpro") ?></th>
-                                            </tr>
-                                            <?php foreach ($stream->views_list as $value) { ?>
-                                                <tr>
-                                                    <td style='font-size:10px;'><?php echo $value->date_human ?></td>
-                                                    <td style='font-size:10px;'><?php echo $value->duration ?>s</td>
-                                                    <td style='font-size:10px;'><?php echo $value->traffic ?></td>
-                                                </tr>
-                                            <?php } ?>
-                                        </table>
-                                    </div>
-                                </td>
-                                <td><?php echo $stream->viewers ?></td>
-                                <td><?php echo $stream->max_viewers ?></td>
-                            </tr>
-
-                            <?php
-                        }
-                        ?>
-                    </table>
-                    <div class='clear'>
-                    </div>
-                </div>
+        
+            
 
 
                 <?php
                 writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic);
-            }
+//            }
             echo "</div>";
         }
         ?>

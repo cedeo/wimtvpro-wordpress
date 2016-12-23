@@ -7,12 +7,13 @@
  * TODO: questa divisione tra markup e logica può essere migliorata prendendo spunto dai templates di Drupal.
  */
 function wimtvpro_upload() {
+
     $view_page = wimtvpro_alert_reg();
     if (!$view_page){
         die();
     }
     $serverActiveFile = ini_get("file_uploads");
-    $category = wimtvpro_readOptionCategory();
+
     
     if ($serverActiveFile!=1) {
         echo '<div class="error"><p><strong>';
@@ -38,6 +39,10 @@ function wimtvpro_upload() {
                     <input type="file" id="edit-videofile" name="videoFile" size="60" class="form-file required" />
                 </p>
                 <p>
+                    <label for="edit-thumbnailfile"><?php echo _e("Select thumbnail","wimtvpro")  ?></label>
+                    <input type="file" id="edit-thumbnailfile" name="thumbnailFile" size="60" class="form-file" />
+                </p>
+                <p>
                     <label for="edit-titlefile"><?php _e("Title"); ?> *</label>
                     <input type="text" id="edit-titlefile" name="titlefile" value="" size="100" maxlength="200" class="form-text required" />
                 </p>
@@ -47,29 +52,31 @@ function wimtvpro_upload() {
                     <!--NS: We have reduced number of columns-->
                     <textarea id="edit-descriptionfile" name="descriptionfile" cols="110" rows="5"></textarea>
                 </p>
-
-                <p>
-                    <label for="edit-videocategory">
-                        <?php _e("Category","wimtvpro");?> - <?php _e("Subcategory","wimtvpro");?>
-                    </label>
+                 <p id="parag_tags">
+                    <label for="edit-tags"><?php echo "Tag" ?> </label>
                     <br/>
-                    <select onchange="viewCategories(this);" multiple="multiple"
-                            name="videoCategory[]" id="edit-videocategory"
-                            size="15" class="form-select">
-                        <?php echo $category; ?>
-                    </select>
-                    <br/>
-                    (<?php _e("Multiselect with CTRL","wimtvpro");?>)
-                </p>
-
-                <p class='description' id='addCategories'></p>
+                    <!--NS: We have reduced number of columns-->
+                    <input type="text" id="edit-titlefile" name="video[]" value="" size="10" maxlength="200" class="form-text required" />
+              
+                 
+                               </p>
+                <input type="button" id="add_tag"  style="font-size:15px" value="<?php echo __("Add another tag","wimtvpro")?>"> <i class="fa fa-plus-square"></i></input>
                 <input type="hidden" name="wimtvpro_upload" value="Y" />
                 <input type="hidden" name="namefunction" id="nameFunction" value="uploadFile" />
                 <?php submit_button(__("Upload","wimtvpro"),"primary classupload") ?>
             </div>
         </div>
     </form>
+   <script>
 
+        jQuery("#add_tag").click(function() {
+           
+                jQuery('#parag_tags').append('<br><input type="text" id="edit-titlefile" name="video[]" value="" size="10" maxlength="200" class="form-text required" />');
+           
+
+        });
+
+    </script>
 <?php
 }
 ?>

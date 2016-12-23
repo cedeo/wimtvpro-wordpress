@@ -10,11 +10,13 @@
  */
 function wimtvpro_register($name, $surname, $email, $username, $password, $password_repeat, $sex, $sandbox) {
 
+
     // NS: Currently 'sandbox' is always set to "No" because dropdown selection 
     // of test vs production server has been disabled
     // (see "menu/pages/settings/configuration.php")
     if ($sandbox == "No") {
-        update_option('wp_basePathWimtv', 'https://www.wim.tv/wimtv-webapp/rest/');
+        update_option('wp_basePathWimtv', __('API_URL', "wimtvpro"));
+//        update_option('wp_basePathWimtv', 'https://www.wim.tv/wimtv-webapp/rest/');
     } else {
         update_option('wp_basePathWimtv', 'http://peer.wim.tv/wimtv-webapp/rest/');
     }
@@ -29,23 +31,23 @@ function wimtvpro_register($name, $surname, $email, $username, $password, $passw
     if (($error == 0) && (isset($_POST['reg_acceptEula'])) &&
             ($name != "") && ($surname != "") &&
             ($email != "") && ($username != "") && ($password != "") &&
-            ($password_repeat != "") && ($sex != "")) {
-
-        $post = array('acceptEula' => $_POST['reg_acceptEula'],
-            'name' => $name,
-            "surname" => $surname,
+            ($password_repeat != "")) {
+//'acceptEula' => $_POST['reg_acceptEula'],
+        $post = array(
+            'firstName' => $name,
+            "lastName" => $surname,
             "email" => $email,
-            "username" => $username,
+            "userCode" => $username,
             "password" => $password,
-            "role" => "webtv",
-            "sex" => $sex,
-            "dateOfBirth" => "01/01/1900");
+            "passwordConfirm" => $password,
+            "conditionsAccepted" => 'true'
+        );
 
         $response = apiRegistration($post);
         $arrayjsonst = json_decode($response);
 
         if ($arrayjsonst) {
-            if ($arrayjsonst->result == "SUCCESS") {
+            if ($response->code == 201) {
                 $page = __('SETTINGS_urlLink', "wimtvpro") . "&pack=1";
 //                window.location = "admin.php?page=WimTvPro&pack=1";
                 echo '
@@ -58,6 +60,8 @@ function wimtvpro_register($name, $surname, $email, $username, $password, $passw
                 update_option('wp_userwimtv', $_POST['reg_Username']);
                 update_option('wp_passwimtv', $_POST['reg_Password']);
                 update_option('wp_registration', 'TRUE');
+                update_option('wp_access_token', '');
+                update_option('wp_refresh_token', '');
 
                 // NS: AFTER USER CREATION IMMEDIATLY SET VISIBILITY OF VIDEOS IN WIMVOD TO PUBLIC
                 //if (isset($_POST['reg_Password']) && isset($_POST['reg_Password'])) {
@@ -66,9 +70,10 @@ function wimtvpro_register($name, $surname, $email, $username, $password, $passw
                 //    $response = apiEditProfile($dati);
                 //}
             } else {
-                foreach ($arrayjsonst->messages as $message) {
-                    $testoErrore = $message->field . " : " . $message->message . "<br/>";
-                }
+//                foreach ($arrayjsonst->message as $message) {
+//                    $testoErrore = $message->field . " : " . $message->message . "<br/>";
+//                }
+                $testoErrore = $arrayjsonst->message . "<br/>";
                 $error++;
             }
         } else {

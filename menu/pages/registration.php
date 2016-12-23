@@ -8,12 +8,30 @@
 include_once('modules/registration.php');
 
 function wimtvpro_registration() {
+//    var_dump(__('API_URL', "wimtvpro"));exit;
+//    
+////    $response = apiTestToken();
+//            $post = array(            
+//  "password" => "nstest2",
+//  "userCode"=>"nstest2",
+//  "firstName" => "nstest2",
+//  "lastName" => "nstest2",
+//  "email" => "nstest2@test.it",
+//  "passwordConfirm" => "nstest2",
+//  "conditionsAccepted" => true
+//    );
+//            var_dump($post);
+//        $response = apiRegistration($post);
+//        $arrayjsonst = json_decode($response);
+//        
+        
+//
+//    var_dump($arrayjsonst);die("CIAO");
     $registration = isset($_POST['register']) ? $_POST['register'] : "";
     $sandbox = isset($_POST['sandbox']) ? $_POST['sandbox'] : "";
     $reg_name = isset($_POST['reg_name']) ? $_POST['reg_name'] : "";
     $reg_surname = isset($_POST['reg_Surname']) ? $_POST['reg_Surname'] : "";
     $reg_email = isset($_POST['reg_Email']) ? $_POST['reg_Email'] : "";
-    $reg_sex = isset($_POST['reg_sex']) ? $_POST['reg_sex'] : "";
     $reg_username = isset($_POST['reg_Username']) ? $_POST['reg_Username'] : "";
     $reg_password = isset($_POST['reg_Password']) ? $_POST['reg_Password'] : "";
     $reg_password_r = isset($_POST['reg_RepeatPassword']) ? $_POST['reg_RepeatPassword'] : "";
@@ -34,7 +52,7 @@ function wimtvpro_registration() {
         <h4><?php _e("Personal Info","wimtvpro");?></h4>
         <table class="form-table">
             <tr>
-                <th><label for="edit-name"><?php _e("First Name");?><span class="form-required" title="">*</span></label></th>
+                <th><label for="edit-name"><?php _e("First Name","wimtvpro");?><span class="form-required" title="">*</span></label></th>
                 <td><input type="text" id="edit-name" name="reg_name" value="<?php echo $reg_name ?>" size="40" maxlength="200"/></td>
             </tr>
             <tr>
@@ -44,17 +62,6 @@ function wimtvpro_registration() {
             <tr>
                 <th><label for="edit-Email">Email<span class="form-required" title="">*</span></label></th>
                 <td><input type="text" id="edit-Email" name="reg_Email" value="<?php echo $reg_email ?>" size="80" maxlength="200"/></td>
-            </tr>
-
-            <tr>
-                <th><label for="edit-sex"><?php _e("Gender","wimtvpro");?><span class="form-required" title="">*</span></label></th>
-                <td>
-                    <select id="edit-sex" name="reg_sex" class="form-select">
-                        <option value="M" <?php if ( $reg_sex=="M") echo "selected='selected'" ?>>M</option>
-                        <option value="F" <?php if ( $reg_sex=="F") echo "selected='selected'" ?>>F</option>
-                    </select>
-
-                </td>
             </tr>
 
 
@@ -67,8 +74,8 @@ function wimtvpro_registration() {
 					<th><label for="edit-sandbox">Please select "no" to use the plugin on the WimTV server. Select "yes" to try the service only on test server</label></th>
 					<td>
 						<select id="edit-sandbox" name="sandbox" class="form-select">
-						<option value="No" <?php if (get_option("wp_sandbox")=="No") echo "selected='selected'" ?>>No</option>
-						<option value="Yes" <?php if (get_option("wp_sandbox")=="Yes") echo "selected='selected'" ?>>Yes, for Developer or Test</option>
+						<option value="No" <?php //if (get_option("wp_sandbox")=="No") echo "selected='selected'" ?>>No</option>
+						<option value="Yes" <?php// if (get_option("wp_sandbox")=="Yes") echo "selected='selected'" ?>>Yes, for Developer or Test</option>
 						</select>
 					</td>
 				</tr-->
@@ -90,20 +97,21 @@ function wimtvpro_registration() {
 
             <tr>
                 <?php
-                if ($sandbox=="No") {
-                    $baseWimtv = "https://www.wim.tv/";
-                } else {
-                    $baseWimtv = "http://peer.wim.tv:8080/";
-                }
+//                if ($sandbox=="No") {
+//                    $baseWimtv = "http://52.19.105.240:8080/wimtv-server/";
+////                    $baseWimtv = "https://www.wim.tv/";
+//                } else {
+//                    $baseWimtv = "http://peer.wim.tv:8080/";
+//                }
 
 
                 ?>
                 <th><label for="edit-acceptEula"><?php _e("Terms of Service","wimtvpro");?><span class="form-required" title="">*</span></label></th>
                 <td>
                     <div class="description"><input type="checkbox" id="edit-acceptEula" name="reg_acceptEula" value="true" <?php if (isset($_POST['reg_acceptEula'])) echo "checked='checked'"; ?>/> <?php _e("I have read and agree to WimTV","wimtvpro");?>
-                        <a class="termsLink" href="<?php echo $baseWimtv; ?>wimtv-webapp/term.do"><?php _e("Terms of Service","wimtvpro"); ?></a>
+                        <a class="termsLink" href="http://new.wim.tv/#/condizioni_di_servizio"><?php _e("Terms of Service","wimtvpro"); ?></a>
                         and
-                        <a class="termsLink" href="<?php echo $baseWimtv; ?>wimtv-webapp/privacy.do"><?php _e("Privacy Policies","wimtvpro");?></a></div>
+                        <a class="termsLink" href="http://new.wim.tv/#/privacy_policy"><?php _e("Privacy Policies","wimtvpro");?></a></div>
                 </td>
 
             </tr>

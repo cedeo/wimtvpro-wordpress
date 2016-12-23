@@ -21,6 +21,7 @@ class Api {
     public $password = null;
     private static $instance;
     private static $analytics;
+    public $language = "it";
 
     function __construct($host, $username, $password) {
         $this->host = $host;
@@ -96,6 +97,53 @@ class Api {
             //trigger_error($exception->getMessage(), E_USER_NOTICE);
             $result = "";
         }
+        return $result;
+    }
+
+    function executeRequest($request, $expectedMimeType = 'text/html', $clientLanguage = null, $progress = null,$private = false,$timezone = null) {
+   
+   
+        
+        if($private){
+        $request->addHeader("Authorization", "Bearer ".get_option('wp_access_token'));
+     }
+
+        $request->expects($expectedMimeType);
+        if(isset($timezone)){
+        $request->addHeader("X-Wimtv-timezone", "3600000");
+        }
+
+        if (isset($progress)) {
+            $request->addHeader("X-Wimtv-progressbarId", $progress);
+//             $request->addHeader("Content-Type", "multipart/form-data");
+        }
+        
+        
+        $request->addHeader("Accept", "application/json");
+
+
+        $request->addHeader("Content-Type", "application/json");
+//        $request->addHeader("Content-Type", "multipart/form-data");
+        
+
+        if ($clientLanguage){
+            $request->addHeader('Accept-Language', $clientLanguage);
+        }else if($language){
+            $request->addHeader('Accept-Language', $_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+        }else{
+//            $request->addHeader('Accept-Language', $_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+        }
+//      var_dump("PREPARE");
+        $request->_curlPrep();
+//       var_dump($request);die;
+        try {
+            $result = $request->send();
+        } catch (\Exception $exception) {
+
+            //trigger_error($exception->getMessage(), E_USER_NOTICE);
+            $result = "";
+        }
+
         return $result;
     }
 

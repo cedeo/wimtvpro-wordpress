@@ -17,7 +17,24 @@ function wimtvpro_wimbox() {
     if (!$view_page) {
         die();
     }
-
+    
+//  $params = array(
+//  'public' => 'true',
+//  'licenseType' => 'FREE'
+//
+//      );
+//
+//    
+//    apiDeleteWimboxItem("AAA");
+//  NS2016 Test apiGetWimboxItem("aaa");
+//  NS2016 Test    $parameters = array(
+//    "description" => "Description Test Pets",
+//    "title" => "Pets 1",
+//    "tags" => [ "tagtest" ],
+////  "thumbnailId" : "f57c8488-4aac-4d2e-af07-32ae1f935f71"
+//    );
+    
+//  NS2016 Test  apiUpdateWimboxItem("aaa",$parameters);exit;
     $sql_order = "";
     $sql_where = "";
     // NS: USING "GET" METHOD INSTEAD OF "POST"
@@ -29,7 +46,7 @@ function wimtvpro_wimbox() {
     $adminPage = isset($_GET['page']) ? $_GET['page'] : "";
     
     $orderTitleVideo = isset($_GET['ordertitleVideo']) ? $_GET['ordertitleVideo'] : "";
-    $orderdateVideo = isset($_GET['orderdateVideo']) ? $_GET['orderdateVideo'] : "";
+// NS2016   $orderdateVideo = isset($_GET['orderdateVideo']) ? $_GET['orderdateVideo'] : "";
 
     if ($titleVideo != "") {
         $queryStart = "title";
@@ -42,12 +59,13 @@ function wimtvpro_wimbox() {
         $sql_order = " title " . $orderTitleVideo;
         $orderdateVideo = "";
     }
-    if ($orderdateVideo != "") {
-        $orderTitleVideo = "";
-        $sql_order .= " mytimestamp " . $orderdateVideo;
-    }
+//  NS2016  if ($orderdateVideo != "") {
+//        $orderTitleVideo = "";
+//        $sql_order .= " mytimestamp " . $orderdateVideo;
+//    }
 
     $videos = wimtvpro_getVideos(FALSE, TRUE, FALSE, '', $sql_where, $sql_order);
+    
     ?>
 
     <!----- HTML ----->
@@ -58,7 +76,7 @@ function wimtvpro_wimbox() {
             <?php _e("Here you find all videos you have uploaded. If you wish to post one of these videos on your site, move it to WimVod by clicking the corresponding icon", "wimtvpro"); ?>
         </p>
 
-        <div class='action'><span class='icon_sync0 button-primary' title='Synchronize'><?php _e("Synchronize", "wimtvpro"); ?></span></div>
+        <div class='action'><span class='icon_sync_box button-primary' title='Synchronize'><?php _e("Synchronize", "wimtvpro"); ?></span></div>
 
         <?php if ($videos != "") { ?>
             <form method="get" action="#">
@@ -130,6 +148,8 @@ function wimtvpro_wimbox() {
                     <th style='width:15%'>Download</th>
                     <th style='width:15%'><?php echo __("Preview") ?></th>
                     <th style='width:15%'><?php echo __("Remove") ?></th>
+                    <th style='width:15%'><?php echo __("Edit") ?></th>
+                    <th style='width:15%'></th>
                 </tr>
             </thead>
             <tbody>
@@ -152,13 +172,27 @@ function wimtvpro_wimbox() {
 
             jQuery("a.viewThumb").click(function() {
                 var url = jQuery(this).attr("id");
-                jQuery(this).colorbox({href: url});
+                jQuery(this).colorbox({href: url,width: '530px',scrolling: false,
+                onComplete: function() {
+                    jQuery(this).colorbox.resize();            
+                }});
             });
 
+
+            jQuery("a.editVideoMetadati").click(function() {
+                var url = jQuery(this).attr("id");
+                jQuery(this).colorbox({href: url,width: '530px',
+                onComplete: function() {
+                    jQuery(this).colorbox.resize();            
+                }});
+            });
             jQuery("a.wimtv-thumbnail").click(function() {
                 if (jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").length) {
                     var url = jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").attr("id");
-                    jQuery(this).colorbox({href: url});
+                    jQuery(this).colorbox({href: url, width: '530px',scrolling: false,
+                onComplete: function() {
+                    jQuery(this).colorbox.resize();              
+                }});
                 }
             });
 

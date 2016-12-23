@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  Questo file viene chiamato via Http,e fornisce funzionalità diverse in base al parametro GET 'namefunction' passato.
  */
@@ -6,9 +7,10 @@ global $user, $wpdb;
 include("../../../wp-load.php");
 include_once("api/api.php");
 
-header('Content-type: application/json');
-
+//header('Content-type: application/json');
+//var_dump("CIAOOO init2");exit;
 $url_video = get_option("wp_basePathWimtv") . get_option("wp_urlVideosDetailWimtv");
+
 $credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
 $table_name = $wpdb->prefix . 'wimtvpro_video';
 
@@ -21,7 +23,6 @@ $function = "";
 $id = "";
 $acid = "";
 $ordina = "";
-
 if (isset($_GET['namefunction']))
     $function = $_GET["namefunction"];
 else if (isset($_POST['namefunction']))
@@ -56,39 +57,54 @@ switch ($function) {
         $ccType = "";
         $pricePerView = "";
         $pricePerViewCurrency = "";
-
-        if (isset($_GET['licenseType']))
+        $param = array();
+        if (isset($_GET['licenseType'])) {
             $licenseType = $_GET['licenseType'];
+            $param['licenseType'] = $licenseType;
+        }
         if (isset($_GET['paymentMode']))
             $paymentMode = $_GET['paymentMode'];
-        if (isset($_GET['ccType']))
+        if (isset($_GET['ccType'])) {
             $ccType = $_GET['ccType'];
-        if (isset($_GET['pricePerView']))
+            $param['ccType'] = $ccType;
+        }
+        if (isset($_GET['pricePerView'])) {
             $pricePerView = $_GET['pricePerView'];
+            $param['pricePerView'] = $pricePerView;
+        }
         if (isset($_GET['pricePerViewCurrency']))
             $pricePerViewCurrency = $_GET['pricePerViewCurrency'];
 
-        $param = array('licenseType' => $licenseType,
-            'paymentMode' => $paymentMode,
-            'ccType' => $ccType,
-            'pricePerView' => $pricePerView,
-            'pricePerViewCurrency' => $pricePerViewCurrency
-        );
+//      NS2016 Commentato  $param = array('licenseType' => $licenseType,
+//            'paymentMode' => $paymentMode,
+//            'ccType' => $ccType,
+//            'pricePerView' => $pricePerView,
+//            'pricePerViewCurrency' => $pricePerViewCurrency
+//        );
+//        $param = array(
+//            'public' => 'false', //opzionale, Whether the WimVod item has to be visible in public pages or not. 
+//            'licenseType' => $licenseType,
+//            'paymentMode' => $paymentMode,
+//            'ccType' => $ccType,
+//            'bundleId' => "",
+//            'pricePerView' => $pricePerView,
+//            'pricePerViewCurrency' => $pricePerViewCurrency
+//        );
+
+        $param['public'] = 'false';
 
         $response = apiPublishOnShowtime($id, $param);
 
-        if ($response) {
-            $state = "showtime";
-        }
+
         $array_response = json_decode($response);
 
+        if ($response->code == 201) {
 
-        if ($array_response->result == "SUCCESS") {
-            dbUpdateVideoState($id, $state, $array_response->showtimeIdentifier);
+            dbUpdateVideoStateByBox($id, $state, $array_response->vodId,$array_response->licenseType,$array_response->pricePerView);
         }
 
 
-        echo $response;
+        echo $response->code;
 
         die();
         break;
@@ -141,10 +157,10 @@ switch ($function) {
          * Rimuove un video da WimVod (lo toglie dallo showtime).
          */
         dbSetVideoPosition($id, "0", "");
+        //$stid
+        $response = apiDeleteFromShowtime($stid);
 
-        $response = apiDeleteFromShowtime($id, $stid);
-
-        echo $response;
+        echo $response->code;
         die();
         break;
 
@@ -179,7 +195,16 @@ switch ($function) {
          * Richiede che venga passato anche come parametro GET 'titleLive'.
          * Crea e ritorna l'url del video live con titolo passato.
          */
-        $response = apiCreateUrl(urlencode($_GET['titleLive']));
+       
+        $params = array(
+            'base' => $_GET['titleLive']
+        );
+       
+        $response = apiCreateStreamUrl($params);
+//        var_dump($response->code, json_decode($response));
+//        exit;
+//        $response = apiCreateUrl(urlencode($_GET['titleLive']));
+        $json = json_decode($response);
         echo $response;
         break;
 
@@ -217,11 +242,21 @@ switch ($function) {
          * Rimuove il video con host_id corrispondente al parametro 'id' da wim.tv.
          */
         //connect at API for upload video to wimtv
+
         $response = apiDeleteVideo($id);
         $arrayjsonst = json_decode($response);
-        if ($arrayjsonst->result == "SUCCESS")
-            dbDeleteVideo($id);
-        echo $response;
+        if ($response->code == 204){
+        dbDeleteVideo($id);
+        
+        }
+        $json = json_decode($response);
+    $array = array();
+    $array['code'] = $response->code;
+    if(isset($json->message)){
+    $array['message'] = $json->message;
+    }
+    
+        echo json_encode($array);
         break;
 
     case "getUsers":
@@ -277,17 +312,68 @@ switch ($function) {
 
         die();
         break;
+    case "UpdateMetadati":
 
+        $boxId = $_POST['boxId'];
+        $videoTags = $_POST['video'];
+        $title = $_POST['titlefile'];
+        $description = $_POST['descriptionfile'];
+        $thumbnailId = $_POST['thumbnailId'];
+
+        $params = array(
+            'title' => $title,
+            'description' => $description,
+        );
+        if (isset($thumbnailId)) {
+            $params['thumbnailId'] = $thumbnailId;
+        }
+        if (sizeof($videoTags) >= 1 && $videoTags[0] != "") {
+
+            $tags = array();
+            if (isset($videoTags)) {
+                foreach ($videoTags as $tag) {
+                    if ($tag != "") {
+                        array_push($tags, $tag);
+                    }
+                }
+            }
+            $params['tags'] = $tags;
+        }
+
+        $response = apiUpdateWimboxItem($boxId, $params);
+
+        if ($response->code == 200) {
+            $array_json = json_decode($response);
+            if (isset($array_json->vodId)) {
+                $vodId = $array_json->vodId;
+            }
+            
+//            if(isset($array_json->thumbnailId)){
+//                $path = __("API_URL", "wimtvpro");
+//             $url_thumbs = '<img src="' . $path. 'asset/thumbnail/'.$array_json->thumbnailId. '"  title="' . $title . '" class="wimtv-thumbnail" />';
+//            
+//            }else{
+//             $url_thumbs = '<img src="' . '/wp-content/plugins/wimtvpro/images/empty.jpg"' . '"  title="' . $title . '" class="wimtv-thumbnail" />';
+//            }
+         dbUpdateMetadati($array_json->title,$array_json->boxId);
+//            $res = dbUpdateVideo($array_json->state, $array_json->status, $array_json->title, $urlThumbs, null, $array_json->duration, $vodId, $array_json->boxId, $array_json->contentId, $array_json->thumbnailId, $array_json->source, $array_json->vodCount);
+//             var_dump("CI SIAMOOOOO",$res);die;
+            }
+        echo $response->code;
+        break;
     case "uploadFile":
+
+
         /**
          * Esegue l'upload di un video su wim.tv.
          */
         $sizefile = filesize($_FILES['videoFile']['tmp_name']);
-//        var_dump($_FILES);
-//        print "<hr>";
-//        var_dump("sizefile is: " . $sizefile . "<br>");
+
 
         $urlfile = @$_FILES['videoFile']['tmp_name'];
+
+//         $dati["BBB"] = $urlfile;
+//    echo json_encode($dati);die;
         $uploads_info = wp_upload_dir();
         $directory = $uploads_info["basedir"] . "/videotmp";
         if (!is_dir($directory)) {
@@ -302,6 +388,32 @@ switch ($function) {
             } else {
 //                echo "FILE COPY FAILED";
             }
+
+
+            $sizefile_thumbnail = filesize($_FILES['thumbnailFile']['tmp_name']);
+//        var_dump($_FILES);
+//        print "<hr>";
+//        var_dump("sizefile is: " . $sizefile . "<br>");
+
+            $urlfile_thumb = @$_FILES['thumbnailFile']['tmp_name'];
+//        $dati["AAAA"] = $urlfile_thumb;
+//    echo json_encode($dati);die;
+            $uploads_info_thum = wp_upload_dir();
+            $directory_thum = $uploads_info_thum["basedir"] . "/imgtmp";
+            if (!is_dir($directory_thum)) {
+                $directory_create = mkdir($uploads_info_thum["basedir"] . "/imgtmp");
+            }
+            $unique_temp_filename_thumb = "";
+            if ($urlfile_thumb != "") {
+                $unique_temp_filename_thumb = $directory_thum . "/" . time() . '.' . preg_replace('/.*?\//', '', "tmp");
+                $unique_temp_filename_thumb = str_replace("\\", "/", $unique_temp_filename_thumb);
+            }
+
+            if (@move_uploaded_file($urlfile_thumb, $unique_temp_filename_thumb)) {
+//                echo "FILE HAS BEEN COPIED TO: " . $unique_temp_filename;
+            } else {
+//                echo "FILE COPY FAILED";
+            }
         } else {
             echo '<div class="error"><p><strong>';
             echo 'The server where your Wordpress is installed does not support upload of large (bigger than 2GB) files. 
@@ -312,9 +424,13 @@ switch ($function) {
         $error = 0;
         $titlefile = $_POST['titlefile'];
         $descriptionfile = $_POST['descriptionfile'];
-        $video_category = $_POST['videoCategory'];
-        $contentIdentifier = $_POST['uploadIdentifier'];
+//        $video_category = $_POST['videoCategory'];
 
+        $contentIdentifier = $_POST['uuid'];
+        $videoTags = $_POST['video'];
+
+//  $v4uuid = UUID::v4();
+//        $uuid = $_POST[$v4uuid];
         // Required
         if (strlen(trim($titlefile)) == 0) {
             echo '<div class="error"><p><strong>';
@@ -333,27 +449,54 @@ switch ($function) {
 
             $category_tmp = array();
             $subcategory_tmp = array();
-            $post = array("file" => $unique_temp_filename,
-                "title" => $titlefile,
-                "description" => $descriptionfile,
-                'uploadIdentifier' => $contentIdentifier);
 
-            if (count($video_category) > 0) {
-                $id = 0;
-                foreach ($video_category as $cat) {
-                    $subcat = explode("|", $cat);
-                    if ($subcat[0] != "") {
-                        $post['category[' . $id . ']'] = $subcat[0];
-                        $post['subcategory[' . $id . ']'] = $subcat[1];
-                        $id++;
-                    }
+            $thumbnailId = "";
+            if (isset($_FILES['thumbnailFile'])) {
+                $post = array(
+                    'thumbnail' => $unique_temp_filename_thumb
+                );
+                $response = apiUploadThumb($post);
+                if ($response->code == 201) {
+                    $arrayjsonst = json_decode($response);
+                    $thumbnailId = $arrayjsonst->thumbnailId;
                 }
             }
 
-            $response = apiUpload($post);
+            
+                $tags = array();
+            if (sizeof($videoTags) >= 1 && $videoTags[0] != "") {
+
+
+                if (isset($videoTags)) {
+                    foreach ($videoTags as $tag) {
+                        if ($tag != "") {
+                            array_push($tags, $tag);
+                           
+                        }
+                    }
+                }
+
+//                $post['tag'] = $tags;
+            }
+            
+            $post = array(
+                "file" => $unique_temp_filename,
+                "title" => $titlefile,
+                "description" => $descriptionfile
+//                'contentIdentifier' => $contentIdentifier
+            );
+            if ($thumbnailId != "") {
+                $post['thumbnailId'] = $thumbnailId;
+            }
+
+//            var_dump($videoTags);
+        
+
+            $response = apiUpload($post,$tags,$contentIdentifier);
             $arrayjsonst = json_decode($response);
 
-            if (isset($arrayjsonst->contentIdentifier)) {
+
+            if (isset($arrayjsonst->boxId)) {
                 echo '<div class="updated"><p><strong>';
                 _e("Upload successful", "wimtvpro");
                 $handle = opendir($directory);
@@ -363,7 +506,11 @@ switch ($function) {
                 closedir($handle);
                 echo '</strong></p></div>';
                 $status = 'OWNED|' . $_FILES['videoFile']['name'];
-                dbInsertVideo(get_option("wp_userwimtv"), $arrayjsonst->contentIdentifier, "", $status, $arrayjsonst->urlThumbs, "", "", $titlefile, "", "", "");
+//                  $src = "http://52.19.105.240:8080/wimtv-server/asset/thumbnail/".$arrayjsonst->thumbnailId;
+//                $url_thumbs = '<img src="' . $src . '"  title="' . $title . '" class="wimtv-thumbnail" />';
+                $url_thumbs = '<img src="' . '/wp-content/plugins/wimtvpro/images/empty.jpg"' . '"  title="' . $title . '" class="wimtv-thumbnail" />';
+
+                dbInsertVideo(get_option("wp_userwimtv"), $arrayjsonst->contentId, "", $arrayjsonst->status, $url_thumbs, $arrayjsonst->boxId, "", $arrayjsonst->title, "", "", "", $arrayjsonst->source, $arrayjsonst->vodCount);
             } else {
                 $error++;
                 echo '<div class="error"><p><strong>';
@@ -402,10 +549,12 @@ switch ($function) {
         break;
 
     case "uploadThumb":
+
         /**
          * Esegue l'upload di una thumbnail su wim.tv.
          */
         $urn = $_POST['urn'];
+
         $maxFileSize = 300000;
         $sizefile = filesize($_FILES['fileThumb']['tmp_name']);
 
@@ -418,6 +567,7 @@ switch ($function) {
         if (!is_dir($directory)) {
             $directory_create = mkdir($uploads_info["basedir"] . "/videotmp");
         }
+
         $unique_temp_filename_full = "";
         $unique_temp_filename = "";
         if ($urlfile != "") {
@@ -426,6 +576,7 @@ switch ($function) {
             $unique_temp_filename = time() . '.' . preg_replace('/.*?\//', '', $ext);
             $unique_temp_filename_full = $directory . "/" . $unique_temp_filename;
             $unique_temp_filename_full = str_replace("\\", "/", $unique_temp_filename_full);
+
             if (@move_uploaded_file($urlfile, $unique_temp_filename_full)) {
 //                echo "FILE HAS BEEN COPIED TO: " . $unique_temp_filename;
             } else {
@@ -448,25 +599,53 @@ switch ($function) {
             //UPLOAD THUMB TO WIMTV
             set_time_limit(0);
             // NS: WE HAVE TO SPECIFY BOTH LOCAL FILENAME AND DESTINATION FILENAME
-            $post = array("file" => $unique_temp_filename_full . ";filename=" . $unique_temp_filename,
-                "itemId" => $urn,
-            );
+//      NS2016      $post = array("file" => $unique_temp_filename_full . ";filename=" . $unique_temp_filename,
+//                "itemId" => $urn,
+//            );
 
+            $post = array(
+                'thumbnail' => $unique_temp_filename_full
+            );
             $response = apiUploadThumb($post);
             $arrayjsonst = json_decode($response);
 
-            if (isset($arrayjsonst->stored)) {
+//            $boxId = dbSelectVideosByContentId();
 
-                if ($arrayjsonst->stored == true) {
-                    $videos = dbGetVideo($urn);
-                    $title = (isset($videos[0]) && $videos[0]->title != null) ? $videos[0]->title : "";
-                    // NEWLY ADDED THUMB HAS BEEN CORRECTLY STORED: INSERT THE NEW THUMB-URL TO LOCAL DB
-                    $newThumbHTML = '<img src="' . $arrayjsonst->url . '"  title="' . $title . '" class="wimtv-thumbnail" />';
-                    dbUpdateVideoThumb($urn, $newThumbHTML);
-                }
+            if ($response->code == 201) {
+                $videos = dbGetVideo($urn);
+                $title = (isset($videos[0]) && $videos[0]->title != null) ? $videos[0]->title : "";
+                $video_get = apiGetWimboxItem($videos[0]->boxId);
+                $arrayjson_video = json_decode($video_get);
+
+                $params = array(
+                    'thumbnailId' => $arrayjsonst->thumbnailId,
+                    'description' => $arrayjson_video->description,
+                    'tags' => $arrayjson_video->tags,
+//                    'thumbnailId' => '17d63fa7-0017-41e0-83f7-726810814e62',
+                    'title' => $title
+                );
+
+
+                $return = json_decode(apiUpdateWimboxItem($videos[0]->boxId, $params));
+
+                // NEWLY ADDED THUMB HAS BEEN CORRECTLY STORED: INSERT THE NEW THUMB-URL TO LOCAL DB
+                $newThumbHTML = '<img src="' . $return->thumbnailId . '"  title="' . $title . '" class="wimtv-thumbnail" />';
+                dbUpdateVideoThumb($urn, $newThumbHTML);
+                dbUpdateVideoThumbnailId($urn, $arrayjsonst->thumbnailId);
             }
 
-            echo $response;
+//            if (isset($arrayjsonst->stored)) {
+//
+//                if ($arrayjsonst->stored == true) {
+//                    $videos = dbGetVideo($urn);
+//                    $title = (isset($videos[0]) && $videos[0]->title != null) ? $videos[0]->title : "";
+//                    // NEWLY ADDED THUMB HAS BEEN CORRECTLY STORED: INSERT THE NEW THUMB-URL TO LOCAL DB
+//                    $newThumbHTML = '<img src="' . $arrayjsonst->url . '"  title="' . $title . '" class="wimtv-thumbnail" />';
+//                    dbUpdateVideoThumb($urn, $newThumbHTML);
+//                }
+//            }
+
+            echo $response->code;
         }
         break;
 

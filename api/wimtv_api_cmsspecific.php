@@ -13,6 +13,22 @@ function cms_getWimtvPwd() {
     return get_option("wp_passwimtv");
 }
 
+function cms_getWimtvClientId() {
+    return get_option("wp_client_id");
+}
+
+function cms_getWimtvSecretKey() {
+    return get_option("wp_secret_key");
+}
+
+function cms_getWimtvAccessToken() {
+    return get_option("wp_access_token");
+}
+
+function cms_getWimtvRefreshToken() {
+    return get_option("wp_refresh_token");
+}
+
 function cms_getWimtvApiUrl() {
     global $WIMTV_API_HOST;
     return $WIMTV_API_HOST;

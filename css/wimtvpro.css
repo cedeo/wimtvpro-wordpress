@@ -146,7 +146,10 @@ table.items   .icon_remove {
     background: transparent url('../images/remove.png') no-repeat center center;
 
 }
+table.items   .icon_edit {
+    background: transparent url('../images/mod.png') no-repeat center center;
 
+}
 table.items   .icon_viewVideo {
     background: transparent url('../images/viewThumb.png') no-repeat center center;
 }
@@ -163,6 +166,10 @@ table.items  .icon_download {
     display:block; width:32px; height:43px;
 }
 table.items  .icon_downloadNone {
+    background: transparent url('../images/downloadNone.png') no-repeat center center;
+}
+
+table.items  .icon_download_Nactive {
     background: transparent url('../images/downloadNone.png') no-repeat center center;
 }
 
@@ -373,7 +380,7 @@ div.empty {
 /*table td.image{position:relative;}*/
 
 table td.image img{
-    /*width:160px;*/ 
+    width:200px;
     height:100px; 
     position: relative;
 }
@@ -497,7 +504,7 @@ div#view_graph div.cols div.col div.countview .barTraffic{
 
 span.wimtv-thumbnail img{
     /*width:100%;*/
-    background:#fff url('../images/empty.jpg') no-repeat center center;
+    // background:#fff url('../images/empty.jpg') no-repeat center center;
     margin-left: auto !important;
     margin-right: auto !important;
 }
@@ -615,6 +622,7 @@ table.items_playlist tr img {
     width: 100px; height:80px;
 }
 table.items_playlist .icon_remove{display:none!important;}
+table.items_playlist .icon_edit{display:none!important;}
 table.items_playlist .headerBox{display:none!important;}
 table.items_playlist .title{font-size:10px; width:100px; height:24px;}
 
@@ -729,7 +737,11 @@ button.wimtv-thumbnail-reset-disabled{
 }
 
 .icon-transcoding{
-    width:130px;
+    /*    width:130px;*/
+    background: transparent url('../images/empty.jpg');
+    width: 200px;
+    height: 100px;
+    position: relative;
 }
 /*#tableLive th, td{
     text-align: center;
@@ -745,3 +757,5 @@ button.wimtv-thumbnail-reset-disabled{
     padding: 2px;
     margin-top: 5px;
 }
+
+

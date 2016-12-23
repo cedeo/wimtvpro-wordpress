@@ -14,13 +14,14 @@ function wimtvpro_submenu($view_page) {
     $submenu = "<ul class='subsubsub'>";
     $submenu .= "<li><a href='admin.php?page=".$wp_page_qs."' class='config'>" . __("Configuration", "wimtvpro") . "</a> |";
     if ($view_page) {
-        $submenu .= "<li><a href='admin.php?page=".$wp_page_qs."&pack=1' class='packet'>" . __("Pricing", "wimtvpro") . "</a> |";
-        $submenu .= "<li><a href='admin.php?page=".$wp_page_qs."&update=1' class='payment'>" . __("Monetisation", "wimtvpro") . "</a> |";
-        $submenu .= "<li><a href='admin.php?page=".$wp_page_qs."&update=2' class='live'>" . __('Live', "wimtvpro") . "</a> |";
-        $submenu .= "<li><a href='admin.php?page=".$wp_page_qs."&update=3' class='user'>" . __("Personal Info", "wimtvpro") . "</a> |";
+        $submenu .= "<li><a  href='admin.php?page=".$wp_page_qs."&pack=1' class='packet'>" . __("Pricing", "wimtvpro") . "</a> |";
+        $submenu .= "<li><a  href='admin.php?page=".$wp_page_qs."&update=1'>" . __("Profile","wimtvpro") . "</a> |";
+//        $submenu .= "<li><a href='admin.php?page=".$wp_page_qs."&update=1' class='payment'>" . __("Monetisation", "wimtvpro") . "</a> |";
+//        $submenu .= "<li><a  href='admin.php?page=".$wp_page_qs."&update=2' class='live'>" . __('Live', "wimtvpro") . "</a> |";
+//        $submenu .= "<li><a  href='admin.php?page=".$wp_page_qs."&update=3' class='user'>" . __("Personal Info", "wimtvpro") . "</a> |";
         
         // NS: Disabling "Features Page"
-        $submenu .= "<li><a href='admin.php?page=".$wp_page_qs."&update=4' class='other'>" . __("Features", "wimtvpro") . "</a> ";
+//        $submenu .= "<li><a id='update4' href='admin.php?page=".$wp_page_qs."&update=4' class='other'>" . __("Features", "wimtvpro") . "</a> ";
     }
     $submenu .= "</ul>";
     return $submenu;

@@ -21,6 +21,7 @@ $code = $_GET['c'];
 if (strlen($code) > 0) {
     $contentItem = $_GET['c'];
     $streamItem = $_GET['s'];
+    $wimbox = $_GET['box'];
     $showtime = json_decode(wimtvpro_detail_showtime(true, $streamItem));
 
     $insecureMode = "&insecureMode=on";
@@ -41,28 +42,34 @@ if (strlen($code) > 0) {
     $width = get_option("wp_widthPreview");
 
     $parametersGet = "get=1&width=" . $width . "&height=" . $height . $insecureMode . $skin . $logo;
-    $response = apiGetPlayerShowtime($showtime->{"contentId"}, $parametersGet);
+//    $response = apiGetPlayerShowtime($showtime->{"contentId"}, $parametersGet);
+    
+    if(isset($wimbox)){
+         $response = apiPlayWimboxItem($streamItem);
+    }else {
+//     $response = apiPlayWimVodItem($streamItem);
+     $response = apiPreviewWimVodItem($streamItem);
+  
+    }
+    
+         $response_jw = configurePlayerJSByJson(json_decode($response),$width,$height);
+
     ?>
 
     <div style='text-align:center;'>
-        <?php echo $response ?>
-        <h3><?php echo $showtime->{"title"} ?></h3>
+        <?php echo $response_jw ?>
+             <?php 
+             if(isset($wimbox)){
+                 $arrayjson = json_decode($response);
+             ?> 
+             <h3><?php  echo $arrayjson->resource->title ?></h3>
+
+             <?php } else {
+               ?>
+        <h3><?php  echo $showtime->{"title"} ?></h3>
         <p>[<?php echo $showtime->{"duration"} ?>] <?php echo $showtime->{"description"} ?></p>
-        <?php if (count($showtime->{"categories"})) { ?>
-            <br/><?php echo __("Categories", "wimtvpro"); ?><br/>
-            <?php foreach ($showtime->{"categories"} as $index => $category) { ?>
-                <i><?php echo $category->categoryName ?>:</i>
-                <?php
-                foreach ($category->subCategories as $key => $subCategory) {
-                    echo $subCategory->categoryName . ", ";
-                }
-                ?>
-                <br/>
-            <?php } ?>
-        </p>
-        </div>
-        <?php
-    }
-}
+       </div>
+             <?php }
+             }
 ?>
 

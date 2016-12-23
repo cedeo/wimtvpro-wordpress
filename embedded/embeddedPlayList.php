@@ -8,6 +8,7 @@ if (isset($_GET["isAdmin"])&& isset($_GET["id"])) {
 }
 
 function includePlaylist($playlist_id, $width = null, $height = null) {
+
     $is_admin  =isset($_GET["isAdmin"]);
 //    if (isset($_GET["isAdmin"])) {
 //        $is_admin = true;
@@ -23,16 +24,24 @@ function includePlaylist($playlist_id, $width = null, $height = null) {
 //    } else {
 //        $is_admin = false;
 //    }
+    
+   
     $width = isset($width) ? $width : get_option('wp_widthPreview');
     $height = isset($height) ? $height : get_option('wp_heightPreview');
-
+//$width = 500;
+//$height = 280;
+//var_dump("AAA");exit;
     ob_start();
     if ($is_admin) {
+        
         $parse_uri = explode('index.php', $_SERVER['SCRIPT_FILENAME']);
+      
 //        $parse_uri = explode('wp-content', $_SERVER['SCRIPT_FILENAME']);
 //        $url_include = $parse_uri[0] . '/wp-load.php';       
-        $url_include = $parse_uri[0] . 'wp-load.php';
-        require_once($url_include);
+        $url_include = $parse_uri[0] . '/wp-load.php';
+             
+        require_once("../../../../wp-load.php");
+//    var_dump($url_include);exit; 
         ?>
         <div style='text-align:center;'><h3><?php echo $title ?></h3>
     <?php } else { ?>
@@ -40,6 +49,7 @@ function includePlaylist($playlist_id, $width = null, $height = null) {
             <?php
         }
 //            <div id='container-<?php echo $playlist_id ? >' style='margin:0;padding:0 10px;'></div>
+
         echo configurePlayer_PlaylistJS($playlist_id, $width, $height);
         if ($is_admin) {
             ?>

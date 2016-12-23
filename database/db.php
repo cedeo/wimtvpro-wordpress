@@ -1,6 +1,7 @@
 <?php
 /**
  * Written by walter at 11/11/13
+ * Updated by Netsense s.r.l. 2016
  */
 require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
 include_once('playlist.php');
@@ -42,27 +43,52 @@ function createTables() {
     $table_name = VIDEO_TABLE_NAME;
     $charset = getCharset();
 //    if ($wp_db_version == $wp_current_db_version) {
-        $query1 = "CREATE TABLE {$table_name}
+      $query1 = "CREATE TABLE {$table_name}
                     (
                         uid varchar(100) NOT NULL COMMENT 'User identifier',
+                        boxId varchar(100) NOT NULL COMMENT 'BoxId Video',
                         contentidentifier varchar(100) NOT NULL COMMENT 'Contentidentifier Video',
+                        showtimeIdentifier varchar(100) NOT NULL COMMENT 'VodId Video',
                         state varchar(100) NOT NULL COMMENT 'Showtime or no',
                         filename varchar(100) NOT NULL COMMENT 'Filename and extention',
                         status varchar(100) NOT NULL COMMENT 'OWNED-ACQUIRED-PERFORMING',
-                        acquiredIdentifier varchar(100) NOT NULL,
                         mytimestamp int(11) NOT NULL COMMENT 'My timestamp',
                         position int(11) NOT NULL COMMENT 'Position video user',
                         viewVideoModule varchar(100) NOT NULL COMMENT 'View video into page or block',
                         urlThumbs text NOT NULL COMMENT 'Url thumbs video',
                         urlPlay text NOT NULL COMMENT 'Url player video',
-                        category text NOT NULL COMMENT 'Category and subcategory video[Json]',
                         title varchar(100) NOT NULL COMMENT 'Title videos',
                         duration varchar(10) NOT NULL COMMENT 'Duration videos',
-                        showtimeIdentifier varchar(100) NOT NULL COMMENT 'showtimeIdentifier videos',
+                        thumbnailId varchar(100) NOT NULL COMMENT 'thumbnailId videos',
+                        source varchar(100) NOT NULL COMMENT 'Source ',
+                        licenseType varchar(100) NOT NULL COMMENT 'License Type WimVod ',
+                        price_per_view int(11) NOT NULL COMMENT 'Price per view WimVod',
+                        vodCount int(11) NOT NULL COMMENT 'Publications Video in WimVod',
                         PRIMARY KEY (contentidentifier),
                         UNIQUE KEY mycolumn1 (contentidentifier)
                     )
-                        {$charset};";
+       {$charset};";
+//        $query1 = "CREATE TABLE {$table_name}
+//                    (
+//                        uid varchar(100) NOT NULL COMMENT 'User identifier',
+//                        contentidentifier varchar(100) NOT NULL COMMENT 'Contentidentifier Video',
+//                        state varchar(100) NOT NULL COMMENT 'Showtime or no',
+//                        filename varchar(100) NOT NULL COMMENT 'Filename and extention',
+//                        status varchar(100) NOT NULL COMMENT 'OWNED-ACQUIRED-PERFORMING',
+//                        acquiredIdentifier varchar(100) NOT NULL,
+//                        mytimestamp int(11) NOT NULL COMMENT 'My timestamp',
+//                        position int(11) NOT NULL COMMENT 'Position video user',
+//                        viewVideoModule varchar(100) NOT NULL COMMENT 'View video into page or block',
+//                        urlThumbs text NOT NULL COMMENT 'Url thumbs video',
+//                        urlPlay text NOT NULL COMMENT 'Url player video',
+//                        category text NOT NULL COMMENT 'Category and subcategory video[Json]',
+//                        title varchar(100) NOT NULL COMMENT 'Title videos',
+//                        duration varchar(10) NOT NULL COMMENT 'Duration videos',
+//                        showtimeIdentifier varchar(100) NOT NULL COMMENT 'showtimeIdentifier videos',
+//                        PRIMARY KEY (contentidentifier),
+//                        UNIQUE KEY mycolumn1 (contentidentifier)
+//                    )
+//                        {$charset};";
 //    } else {
 //        $query1 = "  ALTER TABLE   {$table_name}  ADD   urlThumbs text NOT NULL COMMENT 'Url thumbs video' ";
 //    }
@@ -82,4 +108,3 @@ function createTables() {
 
     dbDelta($query2);
 }
-

@@ -176,7 +176,7 @@ function getEditThumbnailControl($identifier, $liveThumbnail = "", $isEnabled = 
             "</button>";
     $ctrl .= "<input type='file' style='display:none;' accept='.png,.jpg'/>";
     $ctrl .= "<br/>";
-    $ctrl .= "<button class='$isEnabledResetButtonCSS' $isLive $isEnabledTag><img src='" . plugins_url('/images/remove2.png', __FILE__) . "'> Reset</button>";
+//    $ctrl .= "<button class='$isEnabledResetButtonCSS' $isLive $isEnabledTag><img src='" . plugins_url('/images/remove2.png', __FILE__) . "'> Reset</button>";
     $ctrl .="</span>";
 
     if ($liveThumbnail != "") {

@@ -6,6 +6,7 @@
  * Queste funzioni servono per autogenerare la pagina con i video presenti in WimVod.
  */
 function update_page_wimvod(){
+
     if (get_option("wp_publicPage")=="Yes"){
         global $wpdb;
         $post_id  = $wpdb->get_var("SELECT max(ID) FROM $wpdb->posts WHERE post_name LIKE 'my_streaming_wimtv%'");

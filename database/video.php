@@ -2,30 +2,37 @@
 
 /**
  * Written by walter at 11/11/13
+ * Updated by Netsense s.r.l. 2016
  */
-function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $categories, $urlPlay, $title, $duration, $showtimeId, $acquired_identifier) {
+function dbInsertVideo($user, $contentId, $state, $status, $urlThumbs, $boxId, $urlPlay, $title, $duration, $vodId, $thumbnailId, $source, $vodCount) {
     global $wpdb;
+
     $video = array(
         "uid" => $user,
+        "boxId" => $boxId,
         "contentidentifier" => $contentId,
         "mytimestamp" => time(),
         "position" => '0',
         "state" => $state,
         "viewVideoModule" => '3',
-        "acquiredIdentifier" => $acquired_identifier,
+//        "acquiredIdentifier" => "acquired_identifier",
         "status" => $status,
         "urlThumbs" => isset($urlThumbs) ? $urlThumbs : "",
-        "category" => $categories,
-        "urlPlay" => $urlPlay,
+
+        "urlPlay" => "urlPlay",
         "title" => $title,
-        "duration" => $duration,
-        "showtimeidentifier" => $showtimeId);
+        "duration" => "00:50",
+        "showtimeIdentifier" => $vodId,
+        "thumbnailId" => $thumbnailId,
+        "source" => $source,
+        "vodCount" => $vodCount);
 
     $res = $wpdb->insert(VIDEO_TABLE_NAME, $video);
+
     return $res;
 }
 
-function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration, $showtimeId, $categories, $contentId, $acquired_identifier) {
+function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration, $vodId, $boxId, $contentId, $thumbnailId, $source, $vodCount) {
     global $wpdb;
 
 //    $title = mysql_real_escape_string($title);
@@ -39,11 +46,41 @@ function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration,
                                              title='{$title}',
                                              urlThumbs='{$urlThumbs}',
                                              urlPlay='{$urlPlay}',
-											 acquiredIdentifier = '{$acquired_identifier}',
                                              duration='{$duration}',
-                                             showtimeidentifier='{$showtimeId}',
-                                             category='{$categories}'
+                                             showtimeIdentifier='{$vodId}',
+                                             boxId='{$boxId}',
+                                             thumbnailId='{$thumbnailId}',
+                                             source='{$source}',
+                                             vodCount='{$vodCount}'
                                          WHERE contentidentifier='{$contentId}'");
+}
+
+function dbUpdateMetadati($title,$boxId) {
+    global $wpdb;
+
+    $table = VIDEO_TABLE_NAME;
+    return $wpdb->query("UPDATE {$table} SET 
+                                             title='{$title}'
+                                         WHERE boxId='{$boxId}'");
+}
+
+function dbUpdateVideoVod($licenseType,$pricePerView,$boxId) {
+    global $wpdb;
+    $table = VIDEO_TABLE_NAME;
+    return $wpdb->query("UPDATE {$table} SET 
+                                             licenseType='{$licenseType}',
+                                             price_per_view='{$pricePerView}'
+                                         WHERE boxId='{$boxId}'");
+}
+
+function dbUpdateVodId($vodId, $boxId) {
+
+    global $wpdb;
+    $table = VIDEO_TABLE_NAME;
+    return $wpdb->query("UPDATE {$table} SET showtimeIdentifier='{$vodId}',
+                                             boxId='{$boxId}',
+                                             state='showtime'
+                                         WHERE boxId='{$boxId}'");
 }
 
 function dbUpdateVideoThumb($contentId, $urlThumbs) {
@@ -55,19 +92,40 @@ function dbUpdateVideoThumb($contentId, $urlThumbs) {
     return $wpdb->query($query);
 }
 
-function dbUpdateVideoState($contentId, $state, $showtimeId = null) {
+function dbUpdateVideoThumbnailId($contentId, $thumbnailId) {
+    global $wpdb;
+    $table = VIDEO_TABLE_NAME;
+    $query = "UPDATE {$table} SET thumbnailId='{$thumbnailId}' WHERE contentidentifier='{$contentId}'";
+    return $wpdb->query($query);
+}
+
+function dbUpdateVideoStateByBox($boxId, $state, $vodId = null,$licenseType,$pricePerView) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
     $set = "SET state='{$state}'";
-    if ($showtimeId)
-        $set .= ", showtimeidentifier='{$showtimeId}'";
+    if ($vodId)
+        $set .= ", showtimeidentifier='{$vodId}'";
+        $set .= ", licenseType='{$licenseType}'";
+        if($licenseType == "PAY_PER_VIEW"){
+             $set .= ", price_per_view='{$pricePerView}'";
+        }
+//    return $wpdb->query("UPDATE {$table} {$set} WHERE contentidentifier='{$contentId}'");
+    return $wpdb->query("UPDATE {$table} {$set} WHERE boxId='{$boxId}'");
+}
+
+function dbUpdateVideoState($boxId, $state, $vodId = null) {
+    global $wpdb;
+    $table = VIDEO_TABLE_NAME;
+    $set = "SET state='{$state}'";
+    if ($vodId)
+        $set .= ", showtimeidentifier='{$vodId}'";
     return $wpdb->query("UPDATE {$table} {$set} WHERE contentidentifier='{$contentId}'");
 }
 
 function dbDeleteVideo($contentIdentifier) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
-    return $wpdb->query("DELETE FROM {$table} WHERE contentidentifier='{$contentIdentifier}'");
+    return $wpdb->query("DELETE FROM {$table} WHERE boxId='{$contentIdentifier}'");
 }
 
 function dbGetVideo($contentIdentifier) {
@@ -89,20 +147,23 @@ function dbSetViewVideoModule($contentId, $state) {
     return $wpdb->query("UPDATE {$table} {$set} WHERE contentidentifier='{$contentId}'");
 }
 
-function dbSetVideoPosition($contentId, $position, $state = null) {
+function dbSetVideoPosition($boxId, $position, $state = null) {
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
     $set = "SET position='{$position}'";
     if ($state)
         $set .= ", state='{$state}'";
-    return $wpdb->query("UPDATE {$table} {$set} WHERE contentidentifier='{$contentId}'");
+    return $wpdb->query("UPDATE {$table} {$set} WHERE boxId='{$boxId}'");
 }
 
 function dbGetUserVideosId($user, $filter = "") {
+
     global $wpdb;
     $table = VIDEO_TABLE_NAME;
+    $filter = "";
     switch ($filter) {
         case "":
+
             $query = "SELECT contentidentifier FROM {$table} WHERE uid='{$user}'";
             break;
         case "pending":
@@ -112,7 +173,6 @@ function dbGetUserVideosId($user, $filter = "") {
             $query = "SELECT contentidentifier FROM {$table} WHERE uid='{$user}'";
             break;
     }
-
     return $wpdb->get_results($query);
 }
 
@@ -159,7 +219,8 @@ function dbGetUserVideos($user, $showtime, $public, $offset = 0, $rows = 0, $whe
 
 function dbBuildVideosIn($listVideos, $in = true) {
     if (count($listVideos)) {
-        $where = " AND contentidentifier ";
+        //        $where = " AND contentidentifier ";
+        $where = " AND boxId ";
         if (!$in)
             $where .= "NOT";
         $where .= " IN (";
@@ -174,14 +235,34 @@ function dbBuildVideosIn($listVideos, $in = true) {
     return "";
 }
 
+function dbSelectVideosByBoxId($boxId) {
+    global $wpdb;
+    $table = VIDEO_TABLE_NAME;
+    $query = "SELECT * FROM {$table} WHERE boxId='{$boxId}'";
+
+    return $wpdb->get_results($query);
+}
+
+function dbSelectVideosByContentId($contentid) {
+    global $wpdb;
+    $table = VIDEO_TABLE_NAME;
+    $query = "SELECT boxId FROM {$table} WHERE contentidentifier='{$contentid}'";
+
+    return $wpdb->get_results($query);
+}
+
+
 function dbGetUserVideosIn($user, $listVideos, $showtime = false, $playlist = true) {
     global $wpdb;
     $and_showtime = "";
     if ($showtime) {
         $and_showtime .= "AND state='showtime'";
     }
+
     $table = VIDEO_TABLE_NAME;
     $where = dbBuildVideosIn($listVideos, $playlist);
+
     $query = "SELECT * FROM {$table} WHERE uid='{$user}' {$and_showtime} {$where}";
+
     return $wpdb->get_results($query);
 }

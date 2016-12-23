@@ -9,6 +9,7 @@
  * TODO: questa divisione tra markup e logica può essere migliorata prendendo spunto dai templates di Drupal.
  */
 function settings_configuration($directory) {
+  
     $elencoSkin = array();
     $uploads_info = wp_upload_dir();
 
@@ -86,7 +87,7 @@ function settings_configuration($directory) {
                         <th><label for="edit-uploadskin"><?php _e("upload a new skin for your player", "wimtvpro"); ?></label></th>
                         <td><input type="file" id="edit-uploadskin" name="files[uploadSkin]" size="100" class="form-file" />
                             <div class="description"><?php
-                                echo __("Only .zip files are supported Save wp-content/uploads/skinWim to a public URL", "wimtvpro") . "<br/>" .
+                                echo __("Only .zip files are supported.","wimtvpro"). "<br/>" .
                                 __("To use the skin of your choice, copy the", "wimtvpro") . " <a href='http://plugins.longtailvideo.com/crossdomain.xml' target='_new'>crossdomain.xml</a> " . __("file to the root directory (e.g. http://www.mysite.com). You can do it all via FTP  (e.g. FileZilla, Classic FTP, etc).", "wimtvpro") . " <a href='http://www.adobe.com/devnet/adobe-media-server/articles/cross-domain-xml-for-streaming.html'>" . __("More information", "wimtvpro") . "</a>";
                                 ?>
                             </div>

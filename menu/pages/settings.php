@@ -16,11 +16,13 @@ include_once("settings/monetization.php");
 include_once("settings/personal.php");
 include_once("settings/live.php");
 include_once("settings/features.php");
+include_once("settings/user_settings.php");
 
 function wimtvpro_configure() {
     global $WIMTV_API_HOST;
     $uploads_info = wp_upload_dir();
     if (!isset($_GET["pack"])) {
+
         if (!isset($_GET["update"])) {
             $directory = $uploads_info["basedir"] . "/skinWim";
             $styleReg = "display:none";
@@ -103,6 +105,7 @@ function wimtvpro_configure() {
 
                     update_option('wp_userwimtv', $_POST['userWimtv']);
                     update_option('wp_passwimtv', $_POST['passWimtv']);
+                    update_option('wp_registration', 'TRUE');
 
 //                    initApi(get_option("wp_basePathWimtv"), get_option("wp_userwimtv"), get_option("wp_passwimtv"));
                     initApi(cms_getWimtvApiUrl(), cms_getWimtvUser(), cms_getWimtvPwd());
@@ -117,7 +120,8 @@ function wimtvpro_configure() {
 
                     $response = apiGetProfile();
                     $arrayjsonst = json_decode($response);
-                    if ($arrayjsonst!=null && $arrayjsonst->paypalEmail != "") {
+                    
+                    if ($arrayjsonst != null && $arrayjsonst->paypalEmail != "") {
                         update_option('wp_activePayment', "true");
                     } else {
                         update_option('wp_activePayment', "false");
@@ -125,14 +129,16 @@ function wimtvpro_configure() {
 
                     // NS: DISATTIVATO CHECK SU $_POST['sandbox']
                     // if (($_POST['sandbox'] != get_option('wp_sandbox')) && (($_POST['userWimtv'] == "username") && ($_POST['passWimtv'] == "password"))) {
+
                     if ((($_POST['userWimtv'] == "username") && ($_POST['passWimtv'] == "password"))) {
                         update_option('wp_registration', 'FALSE');
                         update_option('wp_userwimtv', 'username');
                         update_option('wp_passwimtv', 'password');
                     } else {
 
-
                         if (count($arrayjsonst) > 0) {
+                            update_option('wp_access_token', '');
+                            update_option('wp_refresh_token', '');
                             echo '<div class="updated"><p><strong>';
                             _e('Update successful', "wimtvpro");
                             echo '</strong></p></div>';
@@ -176,72 +182,175 @@ function wimtvpro_configure() {
 
             if (isset($_POST['wimtvpro_update']) && $_POST['wimtvpro_update'] == 'Y') {
                 //UPDATE INFORMATION
-
+//                var_dump($dati);exit;
+//                if(strlen($dati['finance']['vatNumber']) == 0 || strlen($dati['finance']['vatNumber']) == 11 ){
                 foreach ($_POST as $key => $value) {
                     if ($value == "")
                         unset($_POST[$key]);
                     //$key = str_replace("Uri","URI",$key);
                     $dati[$key] = $value;
                 }
+                $company = $dati['affiliate2'];
+           
                 unset($dati['wimtvpro_update']);
                 unset($dati['submit']);
                 unset($dati['submit']);
                 unset($dati['affiliate2']);
                 unset($dati['affiliateConfirm2']);
-                $response = apiEditProfile($dati);
-//                var_dump($dati);
-//                print("<hr>");
-//                var_dump($response);
-                $arrayjsonst = json_decode($response);
+                
 
-                if ($dati['paypalEmail'] != "")
-                    update_option('wp_activePayment', "true");
-                else
-                    update_option('wp_activePayment', "false");
+//                $profile = array(
+//                'email' => 'nstest1@test.it',
+//                'firstName' => 'nstest1',
+//                'lastName' => 'nstest1'
+//                );
+//                $post = array();
+//                if(isset($dati['livePassword'])){
+//                $post = array(
+//                    'profile' => $profile,
+//                    'features' => $dati
+//                );
+//                }
+//                 if(isset($dati['billingAddress'])){
+//                $post = array(
+//                    'profile' => $profile,
+//                    'finance' => $dati
+//                );
+//                }
+//                 if(isset($dati['facebookUrl'])){
+//                $post = $dati;
+//                }
+//
+//                $urlfile_thumb = @$_FILES['thumbnailFile']['tmp_name'];
+//                
+//                $uploads_info_thum = wp_upload_dir();
+//                $directory_thum = $uploads_info_thum["basedir"] . "/imgtmp";
+//                if (!is_dir($directory_thum)) {
+//                    $directory_create = mkdir($uploads_info_thum["basedir"] . "/imgtmp");
+//                }
+//                $unique_temp_filename_thumb = "";
+//                if ($urlfile_thumb != "") {
+//                    $unique_temp_filename_thumb = $directory_thum . "/" . time() . '.' . preg_replace('/.*?\//', '', "tmp");
+//                    $unique_temp_filename_thumb = str_replace("\\", "/", $unique_temp_filename_thumb);
+//                
+//
+//                if (@move_uploaded_file($urlfile_thumb, $unique_temp_filename_thumb)) {
+////                echo "FILE HAS BEEN COPIED TO: " . $unique_temp_filename;
+//                } else {
+////                echo "FILE COPY FAILED";
+//                }
+//} else {
+//            echo '<div class="error"><p><strong>';
+//            echo 'The server where your Wordpress is installed does not support upload of large (bigger than 2GB) files. 
+//                    Try to set both <code>upload_max_filesize=0</code> and <code>post_max_size=0</code> in your php.ini file.';
+//            echo '</strong></p></div>';
+//            die();
+//        }
 
-                if ($arrayjsonst->result == "SUCCESS") {
-                    echo '<div class="updated"><p><strong>';
-                    _e("Update successful", "wimtvpro");
-                    echo '</strong></p></div>';
-                } else {
-                    $testoErrore = "";
-                    foreach ($arrayjsonst->messages as $message) {
-                        $testoErrore .= $message->field . " : " . $message->message . "<br/>";
-                    }
-                    echo '<div class="error"><p><strong>' . $testoErrore . '</strong></p></div>';
+
+                if (strlen($dati['vatNumber']) == 0 || strlen($dati['finance']['vatNumber']) == 11) {
+                if(strlen($dati['vatNumber']) == 11){
+                    $dati['finance']['vatNumber'] = $dati['vatNumber'];
                 }
+                
+                  if($company){
+                        $company_array = array(
+                            'companyName' => $dati['companyName'],
+                            'companyConfirm' => $dati['companyConfirm']
+                        );
+                        
+                        $dati['finance']['companyName'] = $company_array['companyName'];
+                        $dati['finance']['companyConfirm'] = $company_array['companyConfirm'];
+                    }
+                    
+                    $dati_post = array(
+                        'finance' => $dati['finance'],
+                        'profile' => $dati['profile'],
+                        'features' => $dati['features']
+                    );
 
-                foreach ($dati as $key => $value) {
-                    $key = str_replace("URI", "Uri", $key);
+                 
+
+//                 $thumbnailId = "";
+//            if (isset($_FILES['thumbnailFile'])) {
+//                $post = array(
+//                    'thumbnail' => $unique_temp_filename_thumb
+//                );
+//                $response = apiUploadThumb($post);
+//                if ($response->code == 201) {
+//                    $arrayjsonst = json_decode($response);
+//                    $thumbnailId = $arrayjsonst->thumbnailId;
+//                }
+//            }
+//            
+//                if($thumbnailId !=""){
+//                    $dati_post['thumbnailId'] = $thumbnailId;
+//                }
+                  
+                    $response = apiEditProfile($dati_post);
+
+                    $arrayjsonst = json_decode($response);
+//                    var_dump($arrayjsonst,$response->code);die;
+//var_dump($arrayjsonst);
+                    if ($dati['paypalEmail'] != "")
+                        update_option('wp_activePayment', "true");
+                    else
+                        update_option('wp_activePayment', "false");
+
+                    if ($response->code == 200) {
+                        echo '<div class="updated"><p><strong>';
+                        _e("Update successful", "wimtvpro");
+                        echo '</strong></p></div>';
+                    } else {
+                        $testoErrore = "Inserire tutti i campi!";
+//                 NS2016   foreach ($arrayjsonst->errors as $message) {
+////                        $testoErrore .= $message->field . " : " . $message->message . "<br/>";
+//                         $testoErrore .= $message. "<br/>";
+//                    }
+//                    echo '<div class="error"><p><strong>' . $testoErrore . '</strong></p></div>';
+                        if (isset($arrayjsonst->message)) {
+                            echo '<div class="error"><p><strong>' . $arrayjsonst->message . '</strong></p></div>';
+                        } else {
+                            echo '<div class="error"><p><strong>' . $testoErrore . '</strong></p></div>';
+                        }
+                    }
+
+                    foreach ($dati as $key => $value) {
+                        $key = str_replace("URI", "Uri", $key);
+                    }
+                } else {
+                    echo '<div class="error"><p><strong>' . __("VatNumber must be 11 characters!", "wimtvpro") . '</strong></p></div>';
                 }
             }
-
             //Read
             $response = apiGetProfile();
+
             $dati = json_decode($response, true);
 
-            switch ($_GET['update']) {
-                case "1": //Monetization
-                    settings_monetization($dati);
-                    break;
-
-                case "2": //Live
-                    settings_live($dati);
-                    break;
-
-                case "3": //Personal
-                    settings_personal($dati);
-                    break;
-
-//                NS: Disabling "Features Page"
-                case "4": //Features
-                    settings_features($dati);
-                    break;
-            }
+            user_settings_configuration($dati);
+//            switch ($_GET['update']) {
+//                case "1": //Monetization
+//                    settings_monetization($dati);
+//                    break;
+//
+//                case "2": //Live
+//                    settings_live($dati);
+//                    break;
+//
+//                case "3": //Personal
+//                    settings_personal($dati);
+//                    break;
+//
+////                NS: Disabling "Features Page"
+//                case "4": //Features
+//                    settings_features($dati);
+//                    break;
+//            }
 
             echo "</div>";
         }
     } else {
+
         settings_prices();
     }
 }

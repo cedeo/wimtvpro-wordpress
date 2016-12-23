@@ -3,7 +3,7 @@
   Plugin Name: WimTVPro for WP
   Plugin URI: http://wimtvpro.tv
   Description: WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
-  Version: 4.3.4
+  Version: 5.0
   Author: WimLabs
   Author URI: http://www.wimlabs.com
   License: GPLv2 or later
@@ -125,6 +125,11 @@ function wimtvpro_setting() {
     register_setting('profilewimtvpro-group', 'wp_email');
     register_setting('profilewimtvpro-group', 'wp_social');
     register_setting('configwimtvpro-group', 'wp_wimtvPluginPath');
+    register_setting('configwimtvpro-group', 'wp_client_id');
+    register_setting('configwimtvpro-group', 'wp_secret_key');
+    register_setting('configwimtvpro-group', 'wp_access_token');
+    register_setting('configwimtvpro-group', 'wp_refresh_token');
+    register_setting('configwimtvpro-group', 'wp_public_access_token');
 
     add_option('wp_registration', 'FALSE');
     add_option('wp_userwimtv', 'username');
@@ -146,7 +151,11 @@ function wimtvpro_setting() {
     add_option('wp_wimtvPluginPath', plugin_dir_url(__FILE__));
     add_option('wp_supportLink', 'http://support.wim.tv/?cat=5');
     add_option('wp_supportPage', 'http://support.wim.tv/?p=');
-
+    add_option('wp_client_id', 'wp');
+    add_option('wp_secret_key', 'f6fd7549-5d2a-43e0-85bd-add81613dcd2');
+    add_option('wp_access_token', '');
+    add_option('wp_refresh_token', '');
+    add_option('wp_public_access_token', '');
     // NS: WE SET HERE DEFAULT API BASE URL
     // IF WE CANNOT DETECT THE API BASE URL, JUST SET IT AS THE DEFAULT WIM.TV
     $wp_basePathWimtv = (__('API_URL', "wimtvpro") != 'API_URL') ? __('API_URL', "wimtvpro") : 'https://www.wim.tv/wimtv-webapp/rest/';
@@ -192,6 +201,12 @@ function wimtvpro_remove() {
     delete_option('wp_supportLink');
     delete_option('wp_supportPage');
     delete_option('wp_wimtvPluginPath');
+    delete_option('wp_client_id');
+    delete_option('wp_secret_key');
+    delete_option('wp_access_token');
+    delete_option('wp_refresh_token');
+    delete_option('wp_public_access_token');
+
     deleteWimTVPosts();
 }
 
@@ -266,9 +281,10 @@ function wimtvpro_menu_by_capability($parent_slug, $capability) {
     add_submenu_page($parent_slug, __('PLAYLIST_menuLink', "wimtvpro"), __('PLAYLIST_menuLink', "wimtvpro"), $capability, __('PLAYLIST_urlLink', "wimtvpro"), 'wimtvpro_playlist');
     add_submenu_page($parent_slug, __('WIMLIVE_menuLink', "wimtvpro"), __('WIMLIVE_menuLink', "wimtvpro"), $capability, __('WIMLIVE_urlLink', "wimtvpro"), 'wimtvpro_live');
 
-
     add_submenu_page($parent_slug, __('SCHEDULES_menuLink', "wimtvpro"), __('SCHEDULES_menuLink', "wimtvpro"), $capability, __('SCHEDULES_urlLink', "wimtvpro"), 'wimtvpro_programming');
     add_submenu_page($parent_slug, __('ANALYTICS_menuLink', "wimtvpro"), __('ANALYTICS_menuLink', "wimtvpro"), $capability, __('ANALYTICS_urlLink', "wimtvpro"), 'wimtvpro_Report');
+
+
 
 //    add_submenu_page(__('SETTINGS_urlLink', "wimtvpro"), __('SETTINGS_menuLink', "wimtvpro"), __('SETTINGS_menuLink', "wimtvpro"), "edit_others_posts", __('SETTINGS_urlLink', "wimtvpro"), 'wimtvpro_configure');
 //    if ((get_option("wp_registration") == FALSE) || ((get_option("wp_userwimtv") == "username") && get_option("wp_passwimtv") == "password")) {
@@ -396,7 +412,8 @@ function my_custom_js() {
 	var gratuito = "' . addslashes(__('Do you want to publish your videos for free?', 'wimtvpro')) . '";
 	var messageSave = "' . addslashes(__('Publish', "wimtvpro")) . '";
 	var update = "' . addslashes(__('Update', "wimtvpro")) . '";
-	var videoproblem = "' . addslashes(__('This video has not yet been processed, wait a few minutes and try to synchronize', "wimtvpro")) . '";
+	var videoproblem = "' . addslashes(__('you can not download', "wimtvpro")) . '";
+        var videodownloadno = "' . addslashes(__('This video has not yet been processed, wait a few minutes and try to synchronize', "wimtvpro")) . '";
 	var videoPrivacy = new Array();
 	 videoPrivacy[0] = "' . addslashes(__('Select who can see the video', "wimtvpro")) . '";
 	 videoPrivacy[1] = "' . addslashes(__('Everybody', "wimtvpro")) . '";
@@ -552,84 +569,225 @@ function register_my_streaming() {
     register_widget("myStreaming");
 }
 
-//add_action('widgets_init', 'register_personal_date');
-//add_action('widgets_init', 'register_my_streaming');
-//End Widget
-//ShortCodes
+
+function wimtvpro_post_localStorage($value,$id) {
+
+    echo '
+        <script type="text/javascript">
+
+        jQuery(document).ready(function() {
+    ';
+
+
+    echo 'var url_pathPlugin ="' . plugin_dir_url(__FILE__) . '";';
+
+    echo '
+var value = localStorage.getItem("'.$value.'")
+   if (localStorage.getItem("infiniteScrollEnabled") === null) {
+  //...
+}
+    ';
+   
+    echo '
+var ourLocation = document.URL;';
+	
+    echo '
+   
+	//window.location.assign(window.location + "&timezone="+timezone);';
+    // NS: We POST the param "cliTimezoneName" to let CMS server know the client timezone.
+    echo '
+
+	jQuery.ajax({
+			context: this,
+			url:  url_pathPlugin + "embedded/embedded_shortcode_streaming.php",
+			type: "POST",
+			dataType: "html",
+			async: false,
+			data: "a=1",
+			success: function(response) {
+';
+
+ 
+
+    echo '
+			},
+	});
+});
+</script>
+';
+die;
+  
+
+    echo '
+			},
+	});
+});
+</script>
+';
+}
 function wimtvpro_shortcode_streaming($atts) {
+
     if (cms_getWimtvUser() == "username") {
         return;
     }
-    global $wpdb, $user;
+
+  
+   
+
+
+
+    global $wp, $wpdb, $user;
+    $uploads_info = wp_upload_dir();
+
+
+
     $user = wp_get_current_user();
     $idUser = $user->ID;
     $userRole = sizeof($user->roles) > 0 ? $user->roles[0] : "";
     $id = "";
     $width = "";
     $height = "";
+
     extract(shortcode_atts(array('id' => $id, 'width' => $width, 'height' => $height), $atts));
 
-    $arrayPlay = dbGetVideo($id);
-    if (sizeof($arrayPlay) < 1) {
-        return;
+   
+//    $details_video = apiGetDetailsShowtime($id);
+    $details_video = apiGetDetailsShowtimePublic($id);
+   
+    $json_details = json_decode($details_video);
+
+    $licenseType = $json_details->licenseType;
+   
+    $thumbnailId = $json_details->thumbnailId;
+    $title = $json_details->title;
+    $pricePerView = null;
+    if(isset($json_details->pricePerView)){
+        $pricePerView = $json_details->pricePerView;
     }
-    $view_video_state = $arrayPlay[0]->viewVideoModule;
-    $stateView = explode("|", $view_video_state);
-    $array = array();
-    if (isset($stateView[1])) {
-        $array = explode(",", $stateView[1]);
-    } else {
-        $array[] = "";
+    $current_url = home_url(add_query_arg(array(), $wp->request));
+
+    $response_jw = "";
+
+
+    if ($licenseType == "FREE" || $licenseType == "CREATIVE_COMMONS") {
+     
+        $response = apiPlayWimVodItemPublic($id);
+      return   $response_jw = configurePlayerJSByJson(json_decode($response), $width, $height,$id,$thumbnailId);
+        
     }
-    $typeUser["U"] = array();
-    $typeUser["R"] = array();
-    $viewPublicVideo = FALSE;
-    foreach ($array as $key => $value) {
-        $var = explode("-", $value);
-        if ($var[0] == "U") {
-            array_push($typeUser["U"], $var[1]);
-        } elseif ($var[0] == "R") {
-            array_push($typeUser["R"], $var[1]);
-        }
-        else
-            $typeUser[$var[0]] = "";
-        if (($var[0] == "All") || ($var[0] == "")) {
-            $viewPublicVideo = TRUE;
-        }
-    }
+ 
 
-    //Check if user is authorized to see video
-    if ((($userRole == "administrator") || (in_array($idUser, $typeUser["U"])) || (in_array($userRole, $typeUser["R"])) || (array_key_exists("All", $typeUser)) || (array_key_exists("", $typeUser)))) {
-        extract(shortcode_atts(array('id' => $id, 'width' => $width, 'height' => $height), $atts));
-//        var_dump($id, $width, $height);die;
-        $credential = get_option("wp_userwimtv") . ":" . get_option("wp_passwimtv");
+        if ($licenseType == "PAY_PER_VIEW") {
+// $response_jw = configurePlayerJSByJson(json_decode($response), $width, $height,$id,$thumbnailId);
+// return  $response_jw;
+   
+            ob_start();
+include 'embedded/embedded_shortcode_wimvod.php';
 
-        $insecureMode = "&insecureMode=on";
-        $skin = "";
-        $logo = "";
-        // A SKIN HAS BEEN ADDED: OVERRIDE DEFAULT SKIN PATH
-        $skinData = wimtvpro_get_skin_data();
-        if ($skinData['styleUrl'] != "") {
-            $skin = "&skin=" . htmlentities($skinData['styleUrl']);
-        }
+$output = ob_get_clean();
 
-        if ($skinData['logoUrl'] != "") {
-            $logo = "&logo=" . htmlentities($skinData['logoUrl']);
-        }
+return $output;
+//     include_once 'embedded/embedded_shortcode_wimvod.php';
+    
+//              $res =   '<div id="pay_video'.$id.'" style="display:none;margin:0px 0px 10px 0px;" ><div id="videoPAYVod'.$id.'"  style="width:'.$width.'px;height:'.$height.'px;">'
+//             . '<img id="icon_play_vod'.$id.'" src="'.site_url().'/wp-content/plugins/wimtvpro/images/play.png" style="max-width:10%;z-index: 10;display: block;position: relative;top: 55%;left: 45%;" />'
+//            . '<img id="icon_thumb_play_vod'.$id.'" src="'.__("API_URL","wimtvpro").'asset/thumbnail/'.$thumbnailId.'" style="width:'.$width.'px;height:'.$height.'px;z-index: -10;" />'
+//           
+//            . '</div>'
+//                      . '</div>';
+//
+//    
+//           $res .=  " <script> "
+//              
+//            ." if (localStorage.getItem('".$id."') === null) {"
+//                  
+//                   .'var url_pathPlugin ="' . plugin_dir_url(__FILE__) . '";'
+//                   ."var ourLocation = document.URL;"
+//               ."    jQuery.ajax({
+//			context: this,
+//			url:  url_pathPlugin + 'embedded'+'/embedded_shortcode_streaming.php',
+//			type: 'POST',
+//			dataType: 'html',
+//			async: false,
+//                        data : 'name_action=PAY&current_url='+ourLocation+'&id='+'".$id."&price=".$pricePerView."',"
+//                  .  "success: function(response) {"
+//                   . "var json = jQuery.parseJSON(response);"
+//                   . "var url = json.url;"
+//                   . "var trackingId = json.trackingId;"
+//                   ."localStorage.setItem('".$id."',trackingId);"
+//                   . "jQuery('div#pay_video".$id."').css('display','block');"
+//                   . "jQuery('img#icon_play_vod".$id."').click(function(){"
+//                   . "jQuery.colorbox({width: '400px',
+//                            height:'100px',
+//                             onComplete: function() {
+//                             jQuery(this).colorbox.resize();   
+//                              jQuery('a#paga_".$id."').attr('href',url);
+//                              },
+//                                onLoad: function() {
+//                                    jQuery('#cboxClose').remove();
+//                                   
+//                                },
+//                               
+//                            html:'<h2>" .__('Event fee','wimtvpro') .'</br>'. str_replace("'","\'",__("The event has a cost of","wimtvpro")).$pricePerView."€ </br>". "</h2><h2><a id=\"paga_".$id."\">Paga</a> | <a onClick=\"jQuery(this).colorbox.close();\" href=\"#\">" . "Cancel" . "</a></h2>'
+//                          
+//                             
+//                         });"
+//                 
+//                   . "});"
+//                  
+//                  
+//                        . "}"
+//                   ."});"
+//                   ."}else{"
+//                     ."var track = localStorage.getItem('".$id."');"
+//                     .'var url_pathPlugin ="' . plugin_dir_url(__FILE__) . '";'
+//                   ."var ourLocation = document.URL;"
+//               ."    jQuery.ajax({
+//			context: this,
+//			url: url_pathPlugin + 'embedded'+'/embedded_shortcode_streaming.php',
+//			type: 'POST',
+//			dataType: 'html',
+//			async: false,
+//                        data : 'name_action=PLAY&current_url='+ourLocation+'&thumbnailId=".$thumbnailId."&price=".$pricePerView."&height='+'".$height."&width='+'".$width."&id='+'".$id."&trackingId='+track".","
+//                  .  "success: function(response) {"
+//                                . "var json = jQuery.parseJSON(response);"
+//                                
+//                      .  "if(json.result === 'PLAY'){"
+//                                . "var res = json.res_html;"        
+//                      .  "jQuery('div#play_".$id."').html(res);"
+//                                . "}else{"
+//                                . ""
+//                                . ""
+//                                . "localStorage.removeItem('".$id."');"
+//                                ."localStorage.setItem('".$id."',json.trackingId);"
+//                                .  "jQuery('div#pay_video".$id."').css('display','block');"
+//                                 . "var url = json.url;"
+//                                 . "jQuery('img#icon_play_vod".$id."').click(function(){"
+//                   . "jQuery.colorbox({width: '400px',
+//                            height:'100px',
+//                             onComplete: function() {
+//                             jQuery(this).colorbox.resize();   
+//                              jQuery('a#paga_".$id."').attr('href',url);
+//                              },
+//                                onLoad: function() {
+//                                    jQuery('#cboxClose').remove();
+//                                   
+//                                },
+//                               
+//                            html:'<h2>" .__('Event fee','wimtvpro') .'</br>'. str_replace("'","\'",__("The event has a cost of","wimtvpro")).$pricePerView."€ </br>".  "</h2><h2><a id=\"paga_".$id."\">Paga</a> | <a onClick=\"jQuery(this).colorbox.close();\" href=\"#\">" . "Cancel" . "</a></h2>'
+//                           
+//                         });"
+//                   ." "
+//                   . "});"
+//                  
+//                     . "}"
+//                    . "}"
+//                   ."});"
+//                   . "}"
+//                   . '</script>';
+//                    
+//               return $res;         
 
-        $params = "get=1&width=" . $width . "&height=" . $height . $insecureMode . $skin . $logo;
-        $response = apiGetPlayerShowtime($id, $params);
-        wp_reset_query();
-
-// NS: changed outer div to include width and heigth
-// Here in wordpress it works. In drupal we had to change the returned
-// iframe on-the-fly, because simply addig an outer div with proper
-// W and H parameters was not sufficient
-//        return "<div style='text-align:center;height:" . $height . "px;width:" . $width . "px'>" . $response . "</div>";
-        return $response;
-//	  return "<div style='text-align:center'>" . $response . "</div>";
-    } else {
-        return "<p>You don't have permission to see the video</p>";
     }
 }
 
@@ -652,17 +810,41 @@ function wimtvpro_shortcode_wimvod($atts) {
 }
 
 function wimtvpro_shortcode_wimlive($atts) {
+
     if (cms_getWimtvUser() == "username") {
         return;
     }
+
+    
+    global $wp;
+    $uploads_info = wp_upload_dir();
+    $directoryCookie = $uploads_info["basedir"] . "/cookieWim";
+
+    if (!is_dir($directoryCookie)) {
+        $directory_create = mkdir($uploads_info["basedir"] . "/cookieWim");
+    }
+    $id_random = null;
+    if(isset($_GET['return_success'])){
+        $id_random = $_GET['return_success'];
+       
+    }else{
+         $id_random = rand();
+    }
+    
+  
+    $fileCookie = "cookies_" . get_option("wp_userWimtv") . "_" . "WimLive" .$id_random. ".txt";
+
+
     $params = "";
     $pageLive = "";
     // WE ARE GETTING A SHORTAG LIKE: [wimlive id='urn:wim:tv:livestream:c9309ad5-6cce-4f20-b9aa-552efe858fe4' zone='3600000']
-    if (isset($atts['id']) && isset($atts['zone'])) {
+//    if (isset($atts['id']) && isset($atts['zone'])) {
+    if (isset($atts['id'])) {
         $identifier = $atts["id"];
-        $timezone = $atts["zone"];
+//        $timezone s= $atts["zone"];
         $width = $atts["width"];
         $height = $atts["height"];
+        $timezone = $atts["timezone"];
 //        $skin = "";
 //        if (get_option('wp_nameSkin') != "") {
 //            $uploads_info = wp_upload_dir();
@@ -690,29 +872,195 @@ function wimtvpro_shortcode_wimlive($atts) {
             $logo = "&logo=" . htmlentities($skinData['logoUrl']);
         }
 
-        $params .="&width=$width&height=$height&timezone=" . $timezone . $insecureMode . $skin . $logo;
 
-        $embedded_iframe = apiGetLiveIframe($identifier, $params);
-        $pageLive = $embedded_iframe;
+//        if (isset($_GET['return_success'])) {
+//
+//           $f = fopen($directoryCookie . "/" . $fileCookie, "r");
+//
+//               $trackingId = fread($f,36);
+//             
+//               fclose($f);
+////              $params = array( 
+////          'trackingId' => $trackingId
+////            );
+//              
+//            $pageLive = configurePlayerJSForLive($identifier, null, $width, $height,$trackingId);
+//        }
+
+//        if (isset($_GET['return_error'])) {
+//
+//            $pageLive = __("Error payement", "wimtvpro");
+//        }
+//        if (isset($_GET['payement_deny'])) {
+//
+//            $pageLive = __("Impossible to see the video","wimtvpro");
+//        }
+
+
+//        $params .="&width=$width&height=$height&timezone=" . $timezone . $insecureMode . $skin . $logo;
+
+//        if (!isset($_GET['return_success']) && !isset($_GET['return_error'])) {
+            $params = array(
+                "channelId" => $identifier,
+                "pageSize" => "20",
+                "pageIndex" => "0"
+            );
+
+
+//            $response = apiSearchLiveEventsPublic($params, $timezone);
+//            
+//            $json_events = json_decode($response);
+//            var_dump("QUAAA2",$json_events);
+//            $thumbnailId = $json_events->thumbnailId;
+//            $eventId = null;
+//            $paymentMode = null;
+//            foreach ($json_events->items as $event) {
+////        var_dump($event->paymentMode,$event->onAir,$event->eventId);
+//      
+//                if ($event->onAir) {
+//                    $eventId = $event->eventId;
+//                    $paymentMode = $event->paymentMode;
+//                }
+//            }
+//            if (isset($eventId)) {
+            
+        $response = apiPlayOnAirLiveEventInChannels($identifier);
+        $array_json = json_decode($response);
+//       
+        $eventId = $array_json->resource->eventId;
+    
+        if($array_json->result == "PAYMENT_REQUIRED"){
+           
+//              $current_url = home_url(add_query_arg(array(), $wp->request));
+//
+//                    $params_pay = array(
+//                        "embedded" => false,
+//                        "mobile" => false,
+//                        "returnUrl" => $current_url . "/?return_success=".$id_random,
+//                        "cancelUrl" => $current_url . "/?return_error=false"
+//                    );
+//              
+//                    $response_pay = apiPayForPlayLiveEventPublic($eventId, $params_pay);
+//
+//                    $response_json_pay = json_decode($response_pay);
+//              
+            $pricePerView = $array_json->resource->pricePerView;
+          
+            ob_start();
+include 'embedded/embedded_shortcode_wimlive.php';
+
+$output = ob_get_clean();
+
+return $output;
+//    $res =  "<div id='play_".$identifier."'></div>";
+//                 '<div id="pay_video'.$eventId.'" style="display:none;"><div id="videoPAYVod"  style="width:'.$width.'px;height:'.$height.'px;">'
+//                 . '<div id="pay_video'.$eventId.'"  style="width:'.$width.'px;height:'.$height.'px;">'
+//             . '<img id="icon_play'.$eventId.'" src="'.site_url().'/wp-content/plugins/wimtvpro/images/play.png" style="max-width:10%;z-index: 10;display: block;position: relative;top: 55%;left: 45%;" />'
+//            . '<img id="icon_thumb_play'.$identifier.'" src="'.site_url().'/wp-content/plugins/wimtvpro/images/background.jpg" style="width:'.$width.'px;height:'.$height.'px;z-index: -10;" />'
+//           
+//            . '</div>'
+//          ."</div>"
+//           ." <script> "
+//              
+//            ." if (localStorage.getItem('".$eventId."') === null) {"
+//                  
+//                   .'var url_pathPlugin ="' . plugin_dir_url(__FILE__) . '";'
+//                   ."var ourLocation = document.URL;"
+//               ."    jQuery.ajax({
+//			context: this,
+//			url:  url_pathPlugin + 'embedded'+'/embedded_shortcode_live.php',
+//			type: 'POST',
+//			dataType: 'html',
+//			async: false,
+//                        data : 'name_action=PAY&current_url='+ourLocation+'&id='+'".$eventId."&price=".$pricePerView."',"
+//                  .  "success: function(response) {"
+//                   . "var json = jQuery.parseJSON(response);"
+//                   . "var url = json.url;"
+//                   . "var trackingId = json.trackingId;"
+//                   ."localStorage.setItem('".$eventId."',trackingId);"
+//                   . "jQuery('div#pay_video".$eventId."').css('display','inline-block');"
+//                   . "jQuery('img#icon_play".$eventId."').click(function(){"
+//                   . "jQuery.colorbox({width: '400px',
+//                            height:'100px',
+//                             onComplete: function() {
+//                             jQuery(this).colorbox.resize();   
+//                              jQuery('a#paga_".$eventId."').attr('href',url);
+//                              },
+//                                onLoad: function() {
+//                                    jQuery('#cboxClose').remove();
+//                                   
+//                                },
+//                               
+//                            html:'<h2>" .__('Event fee','wimtvpro') .'</br>'. str_replace("'","\'",__("The event has a cost of","wimtvpro")).$pricePerView."€ </br>". "</h2><h2><a id=\"paga_".$eventId."\">".__("Pay to Paypal","wimtvpro")."</a> | <a onClick=\"jQuery(this).colorbox.close();\" href=\"#\">" . __("Cancel","wimtvpro") . "</a></h2>'
+//                          
+//                             
+//                         });"
+//                  
+//                   . "});"
+//                   . ""
+//                  
+//          . "}"
+//                   ."});"
+//                   ."}else{"
+//                     ."var track = localStorage.getItem('".$eventId."');"
+//                     .'var url_pathPlugin ="' . plugin_dir_url(__FILE__) . '";'
+//                   ."var ourLocation = document.URL;"
+//               ."    jQuery.ajax({
+//			context: this,
+//			url: url_pathPlugin + 'embedded'+'/embedded_shortcode_live.php',
+//			type: 'POST',
+//			dataType: 'html',
+//			async: false,
+//                        data : 'name_action=PLAY&current_url='+ourLocation+'&timezone=".$timezone."&price=".$pricePerView."&height='+'".$height."&width='+'".$width."&channelId='+'".$identifier."&id='+'".$eventId."&trackingId='+track".","
+//                  .  "success: function(response) {"
+//                                . "var json = jQuery.parseJSON(response);"
+//                                
+//                      .  "if(json.result === 'PLAY'){"
+//                                . "var res = json.res_html;"        
+//                      .  "jQuery('div#play_".$identifier."').html(res);"
+//                                . "}else{"
+//                                . ""
+//                                . ""
+//                                . "localStorage.removeItem('".$eventId."');"
+//                                ."localStorage.setItem('".$eventId."',json.trackingId);"
+//                                .  "jQuery('div#pay_video".$eventId."').css('display','inline-block');"
+//                                 . "var url = json.url;"
+//                                 . "jQuery('img#icon_play".$eventId."').click(function(){"
+//                   . "jQuery.colorbox({width: '400px',
+//                            height:'100px',
+//                             onComplete: function() {
+//                             jQuery(this).colorbox.resize();   
+//                              jQuery('a#paga_".$eventId."').attr('href',url);
+//                              },
+//                                onLoad: function() {
+//                                    jQuery('#cboxClose').remove();
+//                                   
+//                                },
+//                               
+//                            html:'<h2>" .__('Event fee','wimtvpro') .'</br>'. str_replace("'","\'",__("The event has a cost of","wimtvpro")).$pricePerView."€ </br>" . "</h2><h2><a id=\"paga_".$eventId."\">".__("Pay to Paypal","wimtvpro")."</a> | <a onClick=\"jQuery(this).colorbox.close();\" href=\"#\">" . __("Cancel","wimtvpro") . "</a></h2>'
+//                          
+//                             
+//                         });"
+//                   ." "
+//                   . "});"
+//                  
+//                                . "}"
+//                           
+//                  . "}"
+//                   ."});"
+//                   . "}"
+//                   . '</script>';
+        
+
+return $res;
+                } else if($array_json->result == "PLAY"){
+                
+     
+                    $pageLive = configurePlayerJSForLive($identifier,$array_json, $width, $height);
+                }
+
     }
-    // WE ARE GETTING A SHORTAG LIKE: [wimlive]
-    else {
-        $embeddedLive = plugins_url('embedded/embeddedLive.php', __FILE__);
-        $pageLive = "<script>
-                        jQuery(document).ready(function(){
-                            jQuery.ajax({
-				context: this,
-				url:  '" . $embeddedLive . "',
-				type: 'GET',
-				dataType: 'html',
-				async: false,
-				success: function(response) {
-						jQuery('.entry-content').append(response);
-				},
-                            });
-                         });
-                    </script>";
-    }
+
     return $pageLive;
 }
 

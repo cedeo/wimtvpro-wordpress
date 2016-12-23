@@ -12,8 +12,8 @@ jQuery(document).ready(function() {
 //            jQuery(elem).colorbox({href: url, width: '50%', height: 'auto'});
             jQuery(elem).colorbox({
                 href: url,
-                width: 'auto',
-                height: 'auto',
+                width: '530',
+                scrolling: false,
                 onComplete: function() {
                     jQuery(elem).colorbox.resize();
                 }});
@@ -23,13 +23,14 @@ jQuery(document).ready(function() {
     }
 
     function callSync(elem) {
-//        alert(url_pathPlugin);return;
+    
         jQuery.ajax({
             url: url_pathPlugin + "sync.php",
             dataType: "json",
             data: {sync: true, showtime: jQuery("table.items").attr("id"), getvideocount: true},
             type: "GET",
             beforeSend: function() {
+
                 jQuery(".loaderTable").show();
                 jQuery("form#formVideo").hide();
                 jQuery("table.items").hide();
@@ -40,13 +41,29 @@ jQuery(document).ready(function() {
                 initEditThumbControls();
             },
             success: function(response) {
+
                 jQuery("form#formVideo").show();
                 jQuery("table.items").show();
                 console.log(response);
                 jQuery("#videoCount").html(response.videocount);
                 jQuery("table.items tbody").html(response.tablebody);
                 jQuery("a.viewThumb").click(function() {
-                    jQuery(this).colorbox({href: jQuery(this).attr("id")});
+                    jQuery(this).colorbox({href: jQuery(this).attr("id"), width: "530px",
+//                height: 'auto',
+                onComplete: function() {
+                    jQuery(this).colorbox.resize();
+//                    alert(document.getElementById("container-" + id).width);
+//                    var videoObjectContainerName = "container-" + id;
+//                    var width = jQuery(videoObjectContainerName.width());                  
+                }});
+                });
+                jQuery("a.editVideoMetadati").click(function() {
+                    jQuery(this).colorbox({href: jQuery(this).attr("id"), width: "530px",
+//                height: 'auto',
+                onComplete: function() {
+                    jQuery(this).colorbox.resize();
+               
+                }});
                 });
                 jQuery("span.wimtv-thumbnail").click(function() {
                     viewVideo(this);
@@ -59,28 +76,31 @@ jQuery(document).ready(function() {
                 jQuery(".icon_AcqRemoveshowtime,.icon_Removeshowtime,.icon_RemoveshowtimeInto").click(function() {
                     callRemoveShowtime(jQuery(this));
                 });
-                jQuery(".free,.cc,.ppv").click(function() {
+                jQuery(".free,.cc,.ppv,.cbundle").click(function() {
                     callPutShowtime(jQuery(this));
                 });
                 jQuery(".icon_remove").click(function() {
                     callRemoveVideo(jQuery(this));
                 });
+          
                 jQuery('.icon_playlist').click(function() {
                     callInsertIntoPlayList(jQuery(this));
                 });
 
                 if (elem != "") {
-                    callviewVideothumbs(jQuery(elem));
+                   // callviewVideothumbs(jQuery(elem));
                 }
             },
             error: function(response) {
+console.log(response);
                 jQuery("ul.items").html(response);
             }
         });
     }
 
     function callRemoveVideo(element) {
-        title = element.closest("tr").children("td").children("b").html();
+        title = element.closest("tr").children("td").children("b").children("span").html();
+
         message = WP_TRANSLATE.remove_video_confirm_message.replace("__TITLE__", title);
         if (confirm(message))
         {
@@ -100,10 +120,15 @@ jQuery(document).ready(function() {
                     jQuery(".loading").remove();
                 },
                 success: function(response) {
-                    var result = response.result;
-                    if (result == "SUCCESS") {
+
+
+                //var json = jQuery.parseJSON(response);
+
+                    if (response.code == 204) {
+                     alert("Video eliminato");
+                    }else {
                         alert(response.message);
-                    }
+                        }
                     location.reload();
                 },
                 error: function(request, error) {
@@ -113,6 +138,42 @@ jQuery(document).ready(function() {
         }
     }
 
+/*
+ function callEditVideo(element) {
+        title = element.closest("tr").children("td").children("b").html();
+ 
+            jQuery.ajax({
+                context: this,
+                url: url_pathPlugin + "scripts.php",
+                type: "GET",
+                dataType: "json",
+                async: false,
+                data: "namefunction=EditVideo&id=" + element.parent().parent().attr("id"),
+                beforeSend: function() {
+                    element.parent("tr").children(".icon").hide();
+                    element.parent().append("<span class='loading'></span>");
+                },
+                complete: function() {
+                    element.parent("tr").children(".icon").show();
+                    jQuery(".loading").remove();
+                },
+                success: function(response) {
+                
+                    if (response == 200) {
+                     alert("Video modificato");
+                    }else {
+                        alert("ERRORE");
+                        }
+                    location.reload();
+                },
+                error: function(request, error) {
+                    alert(request.responseText);
+                }
+            })
+        
+    }
+
+*/
     function callviewVideothumbs(element) {
         var id = element.parent().parent("tr").attr("id");
         jQuery(".icon_viewVideo").colorbox({
@@ -253,7 +314,8 @@ jQuery(document).ready(function() {
     }
 
     function putST(element, namefunction, licenseType, paymentMode, ccType, pricePerView, pricePerViewCurrency, changeClass, coId, id) {
-        jQuery.ajax({
+    
+ jQuery.ajax({
             context: this,
             url: url_pathPlugin + "scripts.php",
             type: "GET",
@@ -273,14 +335,14 @@ jQuery(document).ready(function() {
                 jQuery(".form_save").hide();
             },
             success: function(response) {
-                var result = response.result;
+                var result = response;
 
-                if (result == "SUCCESS") {
+                if (result == 201) {
                     jQuery.colorbox.close();
                     callSync("");
 
                 } else {
-                    var message = response.messages[0].field + ":" + response.messages[0].message;
+                    var message = response.error;
                     jQuery(this).parent().hide();
                     jQuery(this).parent().parent().children(".loader").show();
                     jQuery(".loading").hide();
@@ -322,6 +384,10 @@ jQuery(document).ready(function() {
                     text = '<form id="amount"><input type="text" name="amount" class="amount" value="00" maxlength="4"/>' + point + '<input type="text" name="amount_cent" class="amount_cent" value="00" maxlength="2"/>';
                     text += 'Euro<input type="hidden" name="currency" class="currency" value="EUR">';
                     text += '<br/><br/><span class="form_save button-primary">' + messageSave + '</span><span class="loading" style="display:none;"></span></form>';
+                }else if (thisclass.indexOf("cbundle") >= 0) {
+                    text = '<form id="amount"><input type="text" name="amount" class="amount" value="00" maxlength="4"/>' + point + '<input type="text" name="amount_cent" class="amount_cent" value="00" maxlength="2"/>';
+                    text += 'Euro<input type="hidden" name="currency" class="currency" value="EUR">';
+                    text += '<br/><br/><span class="form_save button-primary">' + messageSave + '</span><span class="loading" style="display:none;"></span></form>';
                 }
                 return text;
             },
@@ -348,16 +414,21 @@ jQuery(document).ready(function() {
                         coId = element.parent().parent().parent("tr").children("td").children(".icon_AcquPutshowtime").attr("id");
                     }
                     if (thisclass.indexOf("free") >= 0) {
-                        licenseType = "TEMPLATE_LICENSE";
-                        paymentMode = "FREEOFCHARGE";
+                        licenseType = "FREE";
+                       // paymentMode = "FREEOFCHARGE";
                     } else if (thisclass.indexOf("cc") >= 0) {
                         licenseType = "CREATIVE_COMMONS";
                         ccType = jQuery(this).parent().parent().children(".selected").attr("id");
                     } else if (thisclass.indexOf("ppv") >= 0) {
-                        licenseType = "TEMPLATE_LICENSE";
-                        paymentMode = "PAYPERVIEW";
+                        licenseType = "PAY_PER_VIEW";
+                       // paymentMode = "PAYPERVIEW";
                         pricePerView = jQuery(".amount").val() + point + jQuery(".amount_cent").val();
                         pricePerViewCurrency = jQuery(".currency").val();
+                    }else if (thisclass.indexOf("cbundle") >= 0) {
+                        licenseType = "CONTENT_BUNDLE";
+                       // paymentMode = "PAYPERVIEW";
+                        //pricePerView = jQuery(".amount").val() + point + jQuery(".amount_cent").val();
+                        //pricePerViewCurrency = jQuery(".currency").val();
                     }
 
                     putST(element, namefunction, licenseType, paymentMode, ccType, pricePerView, pricePerViewCurrency, changeClass, coId, id);
@@ -397,25 +468,30 @@ jQuery(document).ready(function() {
 
             },
             success: function(response) {
-                var result = response.result;
-                if (result == "SUCCESS") {
+console.log(response);
+                 var result = response
+                if (result == 204) {
                     callSync("");
                 } else {
                     element.parent().hide();
                     element.parent().parent().children(".loader").show();
-                    alert(response.messages[0].message);
+                    alert(response.error);
                 }
             },
             error: function(request, error) {
+
                 alert(request.responseText);
             }
         });
     }
 
-    jQuery(".icon_sync0").click(function() {
+    jQuery(".icon_sync_box").click(function() {
         callSync(this);
     });
-    jQuery(".free,.cc,.ppv").click(function() {
+  jQuery(".icon_sync_vod").click(function() {
+        callSync(this);
+    });
+    jQuery(".free,.cc,.ppv,.cbundle").click(function() {
         callPutShowtime(jQuery(this));
     });
     jQuery(".icon_Putshowtime,.icon_AcquPutshowtime").click(function() {
@@ -428,6 +504,7 @@ jQuery(document).ready(function() {
         callviewVideothumbs(jQuery(this));
     });
     jQuery(".icon_remove").click(function() {
+
         callRemoveVideo(jQuery(this));
     });
 
@@ -443,9 +520,11 @@ jQuery(document).ready(function() {
                 titleLive: jQuery("#edit-name").val()
             },
             success: function(response) {
+
                 var json = jQuery.parseJSON(response);
                 var result = json.result;
-                if (result == "SUCCESS") {
+                jQuery("#edit-url").attr("value", json.streamPath);
+             /*   if (result == "SUCCESS") {
                     jQuery("#edit-url").attr("readonly", "readonly");
                     jQuery("#edit-url").attr("value", json.liveUrl);
                     jQuery(this).hide();
@@ -471,10 +550,10 @@ jQuery(document).ready(function() {
                             }
                         });
                     });
-                }
+                }*/
             },
             error: function(request, error) {
-                alert(request.responseText);
+                alert('Error');
             }
         });
     });
@@ -509,6 +588,27 @@ jQuery(document).ready(function() {
                     + (fileTypes.join(" ."))
                     + "\n\n" + erroreFile[1]);
             jQuery("input[name=\"files[videoFile]\"]").val("");
+        }
+    });
+
+   jQuery("input#edit-thumbnailfile").change(function() {
+        fileName = jQuery(this).val();
+        fileTypes = ["", "png", "jpg"];
+        if (!fileName) {
+            return;
+        }
+
+        dots = fileName.split(".");
+        // get the part AFTER the LAST period.
+        fileType = "." + dots[dots.length - 1];
+
+        if (fileTypes.join(".").indexOf(fileType.toLowerCase()) != -1) {
+            return true;
+        } else {
+            alert(erroreFile[0] + " \n\n"
+                    + (fileTypes.join(" ."))
+                    + "\n\n" + erroreFile[1]);
+            jQuery("input[name=\"files[thumbnailFile]\"]").val("");
         }
     });
     jQuery("ul.itemsPublic li a").colorbox();
@@ -702,7 +802,12 @@ jQuery(document).ready(function() {
     jQuery(".icon_downloadNone").click(function() {
         alert(videoproblem);
     });
-});
+
+  jQuery(".icon_download_Nactive").click(function() {
+        alert(videodownloadno);
+    });
+
+
 
 function initEditThumbControls() {
 
@@ -762,37 +867,38 @@ function initEditThumbControls() {
             type: "POST",
             async: true,
             enctype: 'multipart/form-data',
-//            xhr: function() {
-//                var xhr = new window.XMLHttpRequest();
-//                xhr.upload.addEventListener("progress", this.progresso, false);
-//                return xhr;
-//            },
+
             beforeSend: function() {
                 // SHOW AJAX-LOADER IMAGE INSIDE THE BUTTON
                 inputFileUploadElement.parent().children(".wimtv-thumbnail-upload").children("img").attr("src", url_pathPlugin + "images/ajax-loader.gif")
             },
             success: function(response) {
-                // ALL IS OK!
-                // response.stored or response.url
-                if (response.stored === true) {
-                    var newUrl = response.url + '?' + Math.random();
-                    thumbEl = inputFileUploadElement.parent().parent().parent("tr").children(".image").children("span").children('img');
-                    thumbEl.attr("src", newUrl);
-                }
-                else {
+console.log(response);
+
+            if (response == 201) {
+               
+                    callSync("");
+
+                }else{
                     alert("Sorry, cannot store thumbnail. Please try again.");
-                }
+                     }
+                // ALL IS OK!
+              
             },
             error: function(request, error) {
+   alert("ERROREEE");
                 // AN ERROR OCCURRED!        
                 alert("Sorry, an error occurred:\n" + request.responseText);
 //                jQuery("#message").html(request.responseText);
             },
             complete: function(response) {
+            
                 // AFTER SUCCESS OR ERROR DO:
                 // RESET IMAGE BUTTON
+
                 inputFileUploadElement.parent().children(".wimtv-thumbnail-upload").children("img").attr("src", url_pathPlugin + "images/add_16x16.png");
-            }
+                
+ }
         });
     }
 
@@ -1124,3 +1230,6 @@ function isDaylightSavings() {
 //});
 
 
+
+
+});

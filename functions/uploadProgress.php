@@ -10,5 +10,11 @@ include_once("../../../../wp-load.php");
 include_once("../api/wimtv_api.php");
 
 $contentIdentifier = $_GET['contentIdentifier'];
+//$contentIdentifier = $_GET['uuid'];
 
-echo apiGetUploadProgress($contentIdentifier);
+$response =  apiGetUploadProgress($contentIdentifier);
+
+$array_json = json_decode($response);
+
+
+echo $array_json->value;

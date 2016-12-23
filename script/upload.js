@@ -16,14 +16,17 @@ function ProgressLoop(contentId) {
                     url: url_pathPlugin + "functions/uploadProgress.php?contentIdentifier=" + loop.contentIdentifier,
                     type: "GET",
                     success: function(response) {
-                        var json = jQuery.parseJSON(response);
-                        loop.progress = json['percentage'];
+                        
+                        //var json = jQuery.parseJSON(response);
+                       // loop.progress = json['value'];
+                        loop.progress = response;
                         var progress = 50 + loop.progress / 2;
                         console.log(progress);
                         jQuery('.progress-bar span').css("width", progress + "%");
                         jQuery(".progress-bar span").html(progress + "%");
                     },
                     error: function(request, error) {
+
                         loop.stop();
                     }
                 });
@@ -37,8 +40,25 @@ function ProgressLoop(contentId) {
 }
 
 function createContentId() {
-    var time = new Date().getTime();
-    return time + "WP" + Math.floor((Math.random() * 100) + 1);
+  //  var time = new Date().getTime();
+  //  return time + "WP" + Math.floor((Math.random() * 100) + 1);
+function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
+function uuid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
 }
 
 jQuery(document).ready(function() {
@@ -55,11 +75,19 @@ jQuery(document).ready(function() {
         jQuery.each(jQuery('#edit-videofile')[0].files, function(i, file) {
             formData.append('videoFile', file);
         });
+
+   jQuery.each(jQuery('#edit-thumbnailfile')[0].files, function(i, file) {
+            formData.append('thumbnailFile', file);
+        });
         $inputs.each(function(index, element) {
             formData.append(jQuery(this).attr("name"), jQuery(this).attr("value"));
         });
-        var contentId = createContentId();
-        formData.append('uploadIdentifier', contentId);
+     //   var contentId = createContentId();
+      //  formData.append('uploadIdentifier', contentId);
+var contentId = createContentId();
+
+
+        formData.append('uuid', contentId);
         var progressLoop = new ProgressLoop(contentId);
         jQuery.ajax({
             url: url_pathPlugin + "scripts.php",
@@ -112,6 +140,7 @@ jQuery(document).ready(function() {
                 progressLoop.stop();
             },
             error: function(request, error) {
+console.log(request);
                 progressLoop.stop();
                 jQuery(".progress-bar").hide();
                 jQuery("#message").html(request.responseText);
@@ -120,6 +149,7 @@ jQuery(document).ready(function() {
         });
 
     });
+
 
 });
 

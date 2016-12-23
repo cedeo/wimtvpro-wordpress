@@ -13,7 +13,7 @@ function wimtvpro_getVideos($showtime = FALSE, $private = TRUE, $insert_into_pag
 
 //    NS: CALL  smartSync FUNCTION ON "pending" VIDEOS TO CHECK WHETHER
 //    THEY HAVE BEEN ALREADY TRANSCODED
-    wimtvpro_smartSync::sync("pending");
+//   NS2016 momentaneo wimtvpro_smartSync::sync("pending");
 
     $replace_content = get_option("wp_replaceContentWimtv");
 
@@ -35,9 +35,9 @@ function wimtvpro_getVideos($showtime = FALSE, $private = TRUE, $insert_into_pag
     }
 
     $resultCount = dbGetVideosCount(get_option("wp_userwimtv"), $showtime_only, $public, $sql_where);
+
     $array_count = $resultCount[0]->count;
 
-//    $rows = 10;
     $rows = (isset($_GET['rowsperpage'])) ? $_GET['rowsperpage'] : 10;
     $current_page = isset($_GET['paged']) ? $_GET['paged'] : "";
     $current = (intval($current_page)) ? intval($current_page) : 1;
@@ -47,20 +47,22 @@ function wimtvpro_getVideos($showtime = FALSE, $private = TRUE, $insert_into_pag
 
     // NS: RETRIEVE DATA FROM WordPress DB
     $array_videos_new_wp = dbGetUserVideos(get_option("wp_userwimtv"), $showtime_only, $public, $offset, $rows, $sql_where, $sql_order);
-    $details_st = apiGetShowtimes();
-    $arrayjSonST = json_decode($details_st);
-    $stLicense = array();
-    if (isset($arrayjSonST)) {
-        foreach ($arrayjSonST->items as $st) {
-            $stLicense[$st->showtimeIdentifier] = $st->licenseType;
-        }
-    }
+
+//  NS2016  $details_st = apiGetShowtimes();
+//    $arrayjSonST = json_decode($details_st);
+//    $stLicense = array();
+//    if (isset($arrayjSonST)) {
+//        foreach ($arrayjSonST->items as $st) {
+//            $stLicense[$st->showtimeIdentifier] = $st->licenseType;
+//        }
+//    }
     $position_new = 1;
 
 //    NS:
     //Con posizione
     if (count($array_videos_new_wp) > 0) {
         foreach ($array_videos_new_wp as $record_new) {
+     
 //            var_dump($record_new->status);
             $my_media .= wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page, $stLicense, FALSE);
         }
@@ -71,7 +73,6 @@ function wimtvpro_getVideos($showtime = FALSE, $private = TRUE, $insert_into_pag
       $my_media .= wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$stLicense);
       }
       } */
-
 
 
     if ($number_page > 1) {

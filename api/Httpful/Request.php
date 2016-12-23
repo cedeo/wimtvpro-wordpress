@@ -198,7 +198,6 @@ class Request
     {
         if (!$this->hasBeenInitialized())
             $this->_curlPrep();
-
         $result = curl_exec($this->_ch);
 
         $response = $this->buildResponse($result);
@@ -384,17 +383,21 @@ class Request
     public function attach($files)
     {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        
         foreach ($files as $key => $file) {
             $mimeType = finfo_file($finfo, $file);
             if (function_exists('curl_file_create')) {
+                  
                 $this->payload[$key] = curl_file_create($file, $mimeType);
             } else {
+               
                 $this->payload[$key] = '@' . $file;
 	            if ($mimeType) {
 		            $this->payload[$key] .= ';type=' . $mimeType;
 	            }
             }
         }
+        
         $this->sendsType(Mime::UPLOAD);
         return $this;
     }
@@ -890,6 +893,7 @@ class Request
 
         // https://github.com/nategood/httpful/issues/84
         // set Content-Length to the size of the payload if present
+
         if (isset($this->payload)) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $this->serialized_payload);
             if (!$this->isUpload()) {
@@ -1183,4 +1187,4 @@ class Request
     {
         return self::init(Http::OPTIONS)->uri($uri);
     }
-}
+            }

@@ -10,7 +10,7 @@ msgstr ""
 # START OF WHITELABEL CUSTOMIZATION
 #: 
 msgid "API_URL"
-msgstr "https://www.wim.tv/wimtv-webapp/rest/"
+msgstr "http://api.wim.tv:8080/wimtv-server/"
 
 #: 
 msgid "APP_NAME"
@@ -22,7 +22,7 @@ msgstr "http://www.wim.tv"
 
 #: 
 msgid "HELP_LINK_URL"
-msgstr "http://support.wim.tv/?cat=5"
+msgstr "http://support.wim.tv/wimtvpro-wordpress/"
 
 # menu items
 
@@ -189,8 +189,8 @@ msgid "Please, set the duration of your event"
 msgstr "Please set the duration of your event"
 
 #: 
-msgid "If you want to index your event on %d, and in WimView app, select \"Public\""
-msgstr "If you want to index your event on %d, and in WimView (WimTV mobile app) select \"Public\""
+msgid "If you want to index your event, select \"Public\""
+msgstr "If you want to index your event, select \"Public\""
 
 #: 
 msgid "Update successful"
@@ -249,12 +249,10 @@ msgid "To use the skin of your choice, copy the"
 msgstr "To use a skin of your choice, copy the"
 
 #: 
-#, fuzzy
 msgid "Only .zip files are supported."
 msgstr "Only .zip files are supported."
 
 #: 
-#, fuzzy
 msgid "file to the root directory (e.g. http://www.mysite.com). You can do it via FTP (e.g. FileZilla, Classic FTP, etc). "
 msgstr "file to the root directory (e.g. http://www.mysite.com). You can do it  via FTP (e.g. FileZilla, Classic FTP, etc). Open your FTP client and identify the root directory of your site. This is the folder titled or beginning with www - and this is where you need to move the crossdomain.xml file"
 
@@ -572,7 +570,7 @@ msgstr "Change Date"
 
 #: 
 msgid "You commercial packet"
-msgstr "The Storage and Bandwidth Package you subscribed"
+msgstr "The Storage and Bandwidth Package you subscribed to"
 
 #: 
 msgid "You did not generate any traffic in this period"
@@ -721,7 +719,7 @@ msgstr "Live stream event organisation"
 
 #: 
 msgid "Select if you want to organise live evants and collaborate with an Event Reseller for their distribution."
-msgstr "Select if you want to organise live evants and collaborate with Event Resellers for their distribution."
+msgstr "Select if you want to organise live events and collaborate with Event Resellers for their distribution."
 
 #: 
 msgid "video title"
@@ -740,8 +738,8 @@ msgid "You selected"
 msgstr "You selected"
 
 #: 
-msgid "Use WimTV encoding software. Broadcast directly from your webcam, by simply clicking the icon \"Live now\". By clicking “Live now” icon, the producer will open in a new browser tab. Keep it open during the whole transmission."
-msgstr "If you broadcast directly from your web cam, click \"Live now\" icon to open the WimTV producer will open in a new browser tab. Remeber to keep it open during the whole transmission."
+msgid "Use WimTV encoding software."
+msgstr "Use WimTV encoding software. Broadcast directly from your webcam, by simply clicking the icon \"Live now\". By clicking “Live now” icon, the producer will open in a new browser tab. Keep it open during the whole transmission."
 
 #: 
 msgid "Schedule"
@@ -797,7 +795,7 @@ msgstr "Other information"
 
 #: 
 msgid "If, before the end of the month, you"
-msgstr "If before the end of the month you consume"
+msgstr "If before the end of the month your consumption"
 
 #: 
 msgid "reach 80% level you will be notified"
@@ -916,6 +914,13 @@ msgid "Start date"
 msgstr "Start date"
 
 #: 
+msgid "End date"
+msgstr "End date"
+
+#: 
+msgid "End time"
+msgstr "End time"
+#: 
 msgid "Time zone"
 msgstr "Time zone"
 
@@ -937,7 +942,7 @@ msgstr "Please add title"
 
 #: 
 msgid "You must write a price for your event (or free of charge)."
-msgstr "Please enter price for your event (or select free of charge)."
+msgstr "Please enter the price of your event (or select free of charge)."
 
 #: 
 msgid "Insert successful"
@@ -1021,7 +1026,7 @@ msgstr "."
 
 #: 
 msgid "Attention! Your server does not support upload of files, please modify your server settings with file_uploads = On."
-msgstr "Beware! Your server does not support upload of files, please modify your server settings by setting file_uploads = On."
+msgstr "Beware! Your server does not support file upload, please modify your server settings by setting file_uploads = On."
 
 #: 
 msgid "You must upload a file"
@@ -1029,7 +1034,7 @@ msgstr "Please upload a file"
 
 #: 
 msgid "The server where your Wordpress is installed does not support upload of files exceeding %d. If you want to upload videos larger than %d, please modify your server settings. WimTV supports up to 2GB file size per upload."
-msgstr "The server where your Wordpress instance is installed does not support upload of files exceeding %d. If you want to upload videos larger than %d, please modify your server settings. WimTV supports upload of video files up to 2GB."
+msgstr "The server where your Wordpress instance is installed does not support upload of files exceeding %d. If you want to upload videos larger than %d, please modify your server settings. WimTV supports upload of video files up to 4GB."
 
 #: 
 msgid "This video has not yet been processed, wait a few minutes and try to synchronize"
@@ -1049,7 +1054,7 @@ msgstr "To create a playlist click + and then the pencil under Modify. The video
 
 #: 
 msgid "Please only upload files that end in types:"
-msgstr "Please only upload files of the following types:"
+msgstr "You can only upload files of the following types:"
 
 #: 
 msgid "Please select a new file and try again."
@@ -1061,7 +1066,7 @@ msgstr "Hours of transmission"
 
 #: 
 msgid "Assuming video+audio encoded at 1 Mbps"
-msgstr "Assuming that video+audio payload is 1 Mbps"
+msgstr "Assuming that the video+audio payload is 1 Mbps"
 
 #: 
 msgid "Affiliation"
@@ -1069,7 +1074,7 @@ msgstr "Affiliation"
 
 #: 
 msgid "Are you affiliate to the following company?"
-msgstr "Are you affiliate to a company?"
+msgstr "Are you affiliated to a company?"
 
 #: 
 msgid "Company Name"
@@ -1093,7 +1098,7 @@ msgstr "VAT Code"
 
 #: 
 msgid "Time is shown according to timezone of your device"
-msgstr "Time is shown according to timezone of your device"
+msgstr "Time is shown according to your device's timezone"
 
 #: 
 msgid "Shortcode to post all videos:"
@@ -1134,3 +1139,115 @@ msgstr ""
 #: 
 msgid "You are removing video with title:\n\n\t__TITLE__\n\nAre you sure ?"
 msgstr ""
+
+#: 
+msgid "Enter all fields!"
+msgstr "Enter all fields!"
+
+#: 
+msgid "Edit"
+msgstr "Edit"
+
+#:
+msgid "Download"
+msgstr "Download"
+
+
+#:
+msgid "VatNumber must be 11 characters!"
+msgstr "Vat Number must have 11 characters!"
+
+#:
+msgid "Channel events"
+msgstr "Channel events"
+
+#:
+msgid "Set live password"
+msgstr "To add events you have to set the password!"
+
+#:
+msgid "Monetization"
+msgstr "Monetization"
+
+#:
+msgid "Country"
+msgstr "Country"
+
+
+#:
+msgid "Transcoding notification"
+msgstr "Transcoding notification"
+
+#:
+msgid "Want receive email notification for every video transcoded correctly?"
+msgstr "Do you want to receive an email notification for each video transcoded correctly?"
+
+
+#:
+msgid "Select thumbnail"
+msgstr "Select thumbnail"
+
+#:
+msgid "Add another tag"
+msgstr "Add another tag"
+
+#:
+msgid "Streaming Base URL"
+msgstr "Streaming Base URL"
+
+#:
+msgid "Streaming URL"
+msgstr "Streaming URL" 
+
+
+#:
+msgid "you can not download"
+msgstr "You cannot download!"
+
+#:
+msgid "Profile"
+msgstr "Profile"
+
+#:
+msgid "file to the root directory (e.g. http://www.mysite.com). You can do it all via FTP  (e.g. FileZilla, Classic FTP, etc)."
+msgstr "file to the root directory (e.g. http://www.mysite.com). You can do it all via FTP  (e.g. FileZilla, Classic FTP, etc)."
+
+
+#:
+msgid "Transcoding Video"
+msgstr "Transcoding Video"
+
+#:
+msgid "Error payement"
+msgstr "Payement Error"
+
+
+#:
+msgid "You sure you want to pay?"
+msgstr "You sure you want to pay?"
+
+
+#:
+msgid "Impossible to see the video"
+msgstr "Impossible to see the video"
+
+#:
+msgid "License"
+msgstr "License"
+
+#:
+msgid "The event has a cost of"
+msgstr "The event has a cost of "
+
+#:
+msgid "Event fee"
+msgstr "Event fee. "
+
+
+#:
+msgid "Pay to Paypal"
+msgstr "Pay to Paypal"
+
+#:
+msgid "Cancel"
+msgstr "Cancel"

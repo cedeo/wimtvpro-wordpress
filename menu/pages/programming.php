@@ -6,6 +6,8 @@
  * TODO: questa divisione tra markup e logica può essere migliorata prendendo spunto dai templates di Drupal.
  */
 function wimtvpro_programming() {
+    echo "<h3><b>Coming Soon</b></h3>";return;
+    
 //    if (!isConnectedToTestServer()) {
 //        $imgUrl = get_option('wp_wimtvPluginPath') . "images/postit_blank.png";
 //        $textMessage_EN = "<center><b>Currently not available</b></center>

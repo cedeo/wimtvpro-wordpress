@@ -5,33 +5,38 @@ global $wp, $wp_query, $wp_the_query, $wp_rewrite, $wp_did_header;
 
 
 $current_user = wp_get_current_user();
-
+//var_dump($current_user);exit;
 header('Content-type: text/html');
-if (!$current_user->exists()) {
-    echo "Non abilitato alla pagina";
-} else {
+//if (!$current_user->exists()) {
+//    echo "Non abilitato alla pagina";
+//} else {
     wp_enqueue_script('swfObject', plugins_url('script/swfObject/swfobject.js', dirname(__FILE__)));
     $id = $_GET['id'];
     update_option('wp_liveNow', $id);
 
     $response = apiGetProfile();
     $dati = json_decode($response, true);
-    $passwordLive = $dati['liveStreamPwd'];
+    $passwordLive = $dati['features']['livePassword'];
+    $response_event = apiGetLiveEvent($id);
+    $arrayjson_live = json_decode($response_event);
 
-    $embedded = apiEmbeddedLive($id);
-    $arrayjson_live = json_decode($embedded);
-    $url = $arrayjson_live->url;
-    $title = $arrayjson_live->name;
-
-    $stream_url = explode("/", $url);
-    $stream_name = $stream_url[count($stream_url) - 1];
-    $url = "";
-    for ($i = 1; $i < count($stream_url) - 1; $i++) {
-        $url .= $stream_url[$i] . "/";
-    }
-    $url = $stream_url[0] . "/" . $url;
-
-    $url = substr($url, 0, -1);
+    $stream_name = $arrayjson_live->channel->streamPath;
+    $url = $arrayjson_live->channel->streamingBaseUrl;
+//    $embedded = apiEmbeddedLive($id);
+//    $arrayjson_live = json_decode($embedded);
+//    $url = $arrayjson_live->url;
+//    $title = $arrayjson_live->name;
+//
+//    $stream_url = explode("/", $url);
+//    $stream_name = $stream_url[count($stream_url) - 1];
+//    $url = "";
+//    for ($i = 1; $i < count($stream_url) - 1; $i++) {
+//        $url .= $stream_url[$i] . "/";
+//    }
+//    $url = $stream_url[0] . "/" . $url;
+//
+//    $url = substr($url, 0, -1);
+//    var_dump($stream_name,$url);exit;
     ?>
 
 
@@ -62,7 +67,7 @@ if (!$current_user->exists()) {
 
 
                 <script type="text/javascript">
-                    function initSwf() {
+                 function initSwf() {
                         var url_pathPlugin = "<?php echo plugin_dir_url(dirname(__FILE__)); ?>";
                         var xiSwfUrlStr = url_pathPlugin + "script/swfObject/playerProductInstall.swf";
                         console.log(xiSwfUrlStr);
@@ -99,5 +104,5 @@ if (!$current_user->exists()) {
         </body>
 
         <?php
-    }
+//    }
     ?>

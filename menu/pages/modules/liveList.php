@@ -5,22 +5,30 @@ include("../../../../../../wp-load.php");
 $userpeer = get_option("wp_userWimtv");
 $timezone = isset($_POST['timezone_']) ? $_POST['timezone_'] : "";
 $cliTimezoneName = isset($_POST['cliTimezoneName']) ? $_POST['cliTimezoneName'] : "";
-
+$channelId = isset($_POST['array']) ? $_POST['array'] : "";
 //var_dump($cliTimezoneName);die;
 $type = $_POST['type'];
 $id = $_POST['id'];
 $onlyActive = $_POST['onlyActive'];
 header('Content-type: text/html');
 
-$json = apiGetLiveEvents($timezone, $onlyActive);
-$arrayjson_live = json_decode($json);
+//$json = apiGetLiveEvents($timezone, $onlyActive);
+//$arrayjson_live = json_decode($json);
 
-//var_dump($arrayjson_live);die;
+$params = array(
+    "channelId" => $channelId,
+    "pageSize" => "20",
+    "pageIndex" => "0"
+);
+$response = apiSearchLiveEvents($params);
+
+$arrayjson_live = json_decode($response);
+
 $count = -1;
 $output = "";
 
-if ($arrayjson_live) {
-    foreach ($arrayjson_live->{"hosts"} as $key => $value) {
+if ($arrayjson_live->items) {
+    foreach ($arrayjson_live->{"items"} as $key => $value) {
         $count++;
         $name = $value->name;
         if (isset($value->url))

@@ -27,11 +27,11 @@ function settings_prices() {
     if (!is_dir($directoryCookie)) {
         $directory_create = mkdir($uploads_info["basedir"] . "/cookieWim");
     }
-//  var_dump("CIAOOOO");die;
+
     if(isset($_GET['success_url'])){
         $fileCookie = "cookies_" . get_option("wp_userWimtv") . "_" . $_GET['success_url'] . ".txt";
            $f = fopen($directoryCookie . "/" . $fileCookie, "r");
-//              var_dump($f,$directoryCookie . "/" . $fileCookie, "r");die;
+
                $trackingId = fread($f,36);
              
                fclose($f);
@@ -40,7 +40,7 @@ function settings_prices() {
                  'trackingId' => $trackingId
  
              );
-//             $response = apiUpgradePacket($data['name'],$params_upgrade);
+
              $response = apiUpgradePacket($_GET['success_url'],$params_upgrade);
                $arrayjsonst = json_decode($response);
         if ($response->code == 200) {
@@ -99,11 +99,11 @@ function settings_prices() {
         $redirect_url = urlencode($my_page);
         $cookiejar = $directoryCookie . "/" . $fileCookie;
         $response = "";
-//       var_dump("Siamo QUIII",$data['name']);
+
         if($data['name'] == "Free"){
-//             var_dump("Eccoci");
+
             $response = apiDowngradePacket();
-//            var_dump("Eccoci here",$response);
+
             
         }else{
             
@@ -121,14 +121,7 @@ function settings_prices() {
               fwrite($f, $trackingId);
                fclose($f);
 
-           
-
-//        if (!is_file($directoryCookie . "/" . $fileCookie)) {
-//           
-//            $f = fopen($directoryCookie . "/" . $fileCookie, "w");
-//            fwrite($f, $trackingId);
-//            fclose($f);
-//        }
+ 
               echo "
                      <script>
                           jQuery(document).ready(function() {
@@ -139,54 +132,7 @@ function settings_prices() {
                       ";
           
 
-//             $params_upgrade = array(
-//                 'trackingId' => $response_json->trackingId
-// 
-//             );
-//             $response = apiUpgradePacket($data['name'],$params_upgrade);
-//            var_dump("PLAYYYY",$response);
-//var_dump("UPGRADEEE",$response_json,$response->code);die;
-
-    
         }
-//            $arrayjsonst = json_decode($response);
-//        if ($response->code == 200) {
-//
-//            echo "
-//                     <script>
-//                          jQuery(document).ready(function() {
-//                            jQuery.colorbox({width: '200px',
-//                            height:'100px',
-//                             onComplete: function() {
-//                             jQuery(this).colorbox.resize();            
-//                              },
-//                                onLoad: function() {
-//                                    jQuery('#cboxClose').remove();
-//                                },
-//                                html:'<h2>" . "Activated" . "</h2></br><h2><a href=\"" . $my_page . "\">OK</a> </h2>'
-//                            })
-//                         });
-//                     </script>
-//                      ";
-//        } else {
-//              echo "
-//                     <script>
-//                          jQuery(document).ready(function() {
-//                            jQuery.colorbox({
-//                            width: '200px',
-//                            height:'100px',
-//                             onComplete: function() {
-//                              jQuery(this).colorbox.resize();            
-//                             },
-//                                onLoad: function() {
-//                                    jQuery('#cboxClose').remove();
-//                                },
-//                                html:'<h2>" . $arrayjsonst->message . "</h2></br><h2> <a onClick=\"jQuery(this).colorbox.close();\" href=\"#\">" ."OK" . "</a></h2>'
-//                            })
-//                         });
-//                     </script>
-//                      ";
-//        }
     }
 
 
@@ -203,8 +149,10 @@ function settings_prices() {
 
 
     $licenseName = $packet_user_json->licenseName;
+    $daysToExpiration = null;
+    if(isset($packet_user_json->daysToExpiration)){
     $daysToExpiration = $packet_user_json->daysToExpiration;
-
+    }
 
     $free = array(
         'price' => 0,
@@ -253,7 +201,7 @@ function settings_prices() {
         "Business" => $business
     );
     
-//    var_dump($packet_json);exit;
+
     ?>
     <div class='empty'></div>
     <h4><?php echo __("Use of WimTV requires subscription to a monthly storage and bandwidth package", "wimtvpro") ?></h4>
@@ -291,7 +239,9 @@ function settings_prices() {
                 <td><?php echo __("Hours of Transmission", "wimtvpro") ?>(*)</td>
                 <?php
                 foreach ($packet_json as $a) {
+                    if(isset($a['streamingAmount'])){
                     echo "<td>" . $a['streamingAmount'] . "</td>";
+                    }
                 }
                 ?>
             </tr>
@@ -307,13 +257,14 @@ function settings_prices() {
                 <td></td>
                 <?php
                 foreach ($packet_json as $a) {
-                    //echo "<td>" . $a->dayDuration . " - " . $a->id . "</td>";
+                   
                     echo "<td>";
                     if ($licenseName == $a['licenseName']) {
 
                         echo "<img  src='" . plugins_url('../../../images/check.png', __FILE__) . "' title='Checked'><br/>";
-                        if ($a['licenseName'] != "Free")
+                        if ($a['licenseName'] != "Free"){
                             echo $daysToExpiration . " " . __("day left", "wimtvpro");
+                        }
                     }
                     else {
                         echo "<a href='?page=" . __('SETTINGS_urlLink', "wimtvpro") . "&pack=1";

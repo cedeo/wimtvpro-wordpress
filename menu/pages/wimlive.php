@@ -45,7 +45,7 @@ function wimtvpro_live() {
             $name = "";
             $public = false;
             $description = "";
-            $streampath = "";
+            $streamPath = "";
             break;
 
         case "modifyChannel":
@@ -93,7 +93,12 @@ function wimtvpro_live() {
             $name = "";
             $payperview = "0";
             $channelId = $_GET['channelId'];
-    
+            $publicEvent = false;
+            $recordEvent = false;
+            $giornoStart = null;
+            $oraStart = null;
+            $giornoEnd = null;
+            $oraEnd = null;
             break;
 
         case "modifyLive":
@@ -117,7 +122,7 @@ function wimtvpro_live() {
 
             $publicEvent = $arraydati->publicEvent;
             $recordEvent = $arraydati->recordEvent;
-            $publicEvent = $arraydati->publicEvent;
+           
             $giornoStart = $arraydati->eventDate->date;
             $oraStart = $arraydati->eventDate->time;
             $giornoEnd = $arraydati->endDate->date;

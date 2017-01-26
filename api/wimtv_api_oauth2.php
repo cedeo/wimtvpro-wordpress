@@ -236,7 +236,7 @@ class OAuth2 {
         $http_headers['Accept'] = 'application/json';
         $http_headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
-        return $this->executeRequest($token_endpoint, $parameters, self::HTTP_METHOD_POST, $http_headers, self::HTTP_FORM_CONTENT_TYPE_APPLICATION,$parameters['grant_type']);
+        return $this->executeRequest($token_endpoint, $parameters, self::HTTP_METHOD_POST, $http_headers, self::HTTP_FORM_CONTENT_TYPE_APPLICATION, $parameters['grant_type']);
     }
 
     /**
@@ -386,8 +386,8 @@ class OAuth2 {
      * @param int    $form_content_type HTTP form content type to use
      * @return array
      */
-    private function executeRequest($url, $parameters = array(), $http_method = self::HTTP_METHOD_GET, array $http_headers = null, $form_content_type = self::HTTP_FORM_CONTENT_TYPE_MULTIPART,$grant_type) {
-  $type = $grant_type;
+    private function executeRequest($url, $parameters = array(), $http_method = self::HTTP_METHOD_GET, array $http_headers = null, $form_content_type = self::HTTP_FORM_CONTENT_TYPE_MULTIPART, $grant_type) {
+        $type = $grant_type;
         $curl_options = array(
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_SSL_VERIFYPEER => true,
@@ -457,35 +457,26 @@ class OAuth2 {
         $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
         if ($curl_error = curl_error($ch)) {
             throw new Exception($curl_error, Exception::CURL_ERROR);
+            curl_close($ch);
         } else {
             $json_decode = json_decode($result, true);
         }
         curl_close($ch);
-//        var_dump($json_decode['access_token']);exit;
-//        return array(
-//            'result' => (null === $json_decode) ? $result : $json_decode,
-//            'code' => $http_code,
-//            'content_type' => $content_type
-//        );
-//        var_dump(isset($json_decode['error']), $json_decode['error'] == "invalid_grant");exit;
-//        if (isset($json_decode['error']) && $json_decode['error'] == "invalid_grant") {
-//            $apiPublic = getApiOPublic();
-//            $parameters = array();
-//            $parameters['username'] = "nstest1";
-//            $parameters['password'] = "nstest1";
-//            $json_decode = $apiPublic->getToken($parameters, "password");
-//          
-//            
-//        }
-if($type == "password" || $type == "refresh_token"){
-        update_option('wp_access_token', $json_decode['access_token']);
-        update_option('wp_refresh_token', $json_decode['refresh_token']);
-}
 
-if($type == "client_credentials"){
-        update_option('wp_public_access_token', $json_decode['access_token']);
-      
-}
+        if ($type == "password" || $type == "refresh_token") {
+            if (isset($json_decode['access_token'])) {
+                update_option('wp_access_token', $json_decode['access_token']);
+            }
+            if (isset($json_decode['refresh_token'])) {
+                update_option('wp_refresh_token', $json_decode['refresh_token']);
+            }
+        }
+
+        if ($type == "client_credentials") {
+            if (isset($json_decode['access_token'])) {
+                update_option('wp_public_access_token', $json_decode['access_token']);
+            }
+        }
 
         $json_decode = $this->resultGetAccessToken($json_decode);
 //        update_option('wp_access_token', $json_decode['access_token']);
@@ -495,10 +486,11 @@ if($type == "client_credentials"){
     }
 
     public function resultGetAccessToken($json_decode) {
+        
         if (isset($json_decode['error'])) {
-         
+
             if ($json_decode['error'] == "invalid_grant" && $json_decode['error_description'] == "Bad credentials") {
-   
+
 
                 update_option('wp_registration', 'FALSE');
                 update_option('wp_userwimtv', 'username');
@@ -507,7 +499,7 @@ if($type == "client_credentials"){
                 return;
             } else
             if ($json_decode['error'] == "invalid_grant") {
-          
+
                 $apiPublic = getApiOPublic();
                 $parameters = array();
                 $parameters['username'] = get_option('wp_userwimtv');
@@ -528,7 +520,7 @@ if($type == "client_credentials"){
             } else if ($json_decode['error'] == "access_denied") {
                 $apiPublic = getApiOPublic();
                 $parameters = array();
-         
+
 
                 $parameters['username'] = get_option('wp_userwimtv');
                 $parameters['password'] = get_option('wp_passwimtv');

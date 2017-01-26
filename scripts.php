@@ -100,7 +100,7 @@ switch ($function) {
 
         if ($response->code == 201) {
 
-            dbUpdateVideoStateByBox($id, $state, $array_response->vodId,$array_response->licenseType,$array_response->pricePerView);
+            dbUpdateVideoStateByBox($id, $state, $array_response->vodId, $array_response->licenseType, $array_response->pricePerView);
         }
 
 
@@ -195,11 +195,16 @@ switch ($function) {
          * Richiede che venga passato anche come parametro GET 'titleLive'.
          * Crea e ritorna l'url del video live con titolo passato.
          */
+        $title = $_GET['titleLive'];
+        if (isset($title)) {
+
+            $title = str_replace(" ", "", $title);
+        }
        
         $params = array(
-            'base' => $_GET['titleLive']
+            'base' => $title
         );
-       
+
         $response = apiCreateStreamUrl($params);
 //        var_dump($response->code, json_decode($response));
 //        exit;
@@ -245,17 +250,16 @@ switch ($function) {
 
         $response = apiDeleteVideo($id);
         $arrayjsonst = json_decode($response);
-        if ($response->code == 204){
-        dbDeleteVideo($id);
-        
+        if ($response->code == 204) {
+            dbDeleteVideo($id);
         }
         $json = json_decode($response);
-    $array = array();
-    $array['code'] = $response->code;
-    if(isset($json->message)){
-    $array['message'] = $json->message;
-    }
-    
+        $array = array();
+        $array['code'] = $response->code;
+        if (isset($json->message)) {
+            $array['message'] = $json->message;
+        }
+
         echo json_encode($array);
         break;
 
@@ -347,7 +351,7 @@ switch ($function) {
             if (isset($array_json->vodId)) {
                 $vodId = $array_json->vodId;
             }
-            
+
 //            if(isset($array_json->thumbnailId)){
 //                $path = __("API_URL", "wimtvpro");
 //             $url_thumbs = '<img src="' . $path. 'asset/thumbnail/'.$array_json->thumbnailId. '"  title="' . $title . '" class="wimtv-thumbnail" />';
@@ -355,10 +359,10 @@ switch ($function) {
 //            }else{
 //             $url_thumbs = '<img src="' . '/wp-content/plugins/wimtvpro/images/empty.jpg"' . '"  title="' . $title . '" class="wimtv-thumbnail" />';
 //            }
-         dbUpdateMetadati($array_json->title,$array_json->boxId);
+            dbUpdateMetadati($array_json->title, $array_json->boxId);
 //            $res = dbUpdateVideo($array_json->state, $array_json->status, $array_json->title, $urlThumbs, null, $array_json->duration, $vodId, $array_json->boxId, $array_json->contentId, $array_json->thumbnailId, $array_json->source, $array_json->vodCount);
 //             var_dump("CI SIAMOOOOO",$res);die;
-            }
+        }
         echo $response->code;
         break;
     case "uploadFile":
@@ -462,8 +466,8 @@ switch ($function) {
                 }
             }
 
-            
-                $tags = array();
+
+            $tags = array();
             if (sizeof($videoTags) >= 1 && $videoTags[0] != "") {
 
 
@@ -471,14 +475,13 @@ switch ($function) {
                     foreach ($videoTags as $tag) {
                         if ($tag != "") {
                             array_push($tags, $tag);
-                           
                         }
                     }
                 }
 
 //                $post['tag'] = $tags;
             }
-            
+
             $post = array(
                 "file" => $unique_temp_filename,
                 "title" => $titlefile,
@@ -490,9 +493,9 @@ switch ($function) {
             }
 
 //            var_dump($videoTags);
-        
 
-            $response = apiUpload($post,$tags,$contentIdentifier);
+
+            $response = apiUpload($post, $tags, $contentIdentifier);
             $arrayjsonst = json_decode($response);
 
 

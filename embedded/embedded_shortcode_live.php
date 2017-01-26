@@ -113,7 +113,7 @@ $arrayjson = json_decode($response);
 
 }
 if($arrayjson->result == "PLAY"){
-$pageLive = configurePlayerJSForLive($channelId, $arrayjson, $width, $height,null);
+$pageLive = configurePlayerJSForLive($channelId, $arrayjson, $width, $height);
 $elements = array(
 'result' => 'PLAY',
  'res_html' => $pageLive

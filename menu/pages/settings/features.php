@@ -8,8 +8,7 @@
  * TODO: questa divisione tra markup e logica può essere migliorata prendendo spunto dai templates di Drupal.
  */
 function settings_features($dati) {
-//    $view_page = wimtvpro_alert_reg();
-//    $submenu = wimtvpro_submenu($view_page);
+
     $page_name = "";
     if (isset($dati['profile']['pageTitle'])) {
         $page_name = $dati['profile']['pageTitle'];
@@ -23,10 +22,7 @@ function settings_features($dati) {
         $transcoderNotifyEnabled = $dati['features']['transcoderNotifyEnabled'];
     }
 
-    //"liveStreamPwd": "-- pwd per il live di wim.tv --",
-    //"liveStreamEnabled": "-- abilita live true|false --"
-    //eventResellerEnabled": "-- abilita event reselling true|false --",
-    //"eventOrganizerEnabled": "-- abilita event organizing true|false --",
+
 
     ?>
     <script type="text/javascript">
@@ -51,26 +47,12 @@ function settings_features($dati) {
             });
         });
     </script>
-    <?php // echo  wimtvpro_link_help();?>
+ 
    
-    <?php echo str_replace("other","current",$submenu) ?>
-    <div class="clear"></div>  <!--<form enctype="multipart/form-data" action="<?php //echo add_query_arg($_GET)?>" method="post" id="configwimtvpro-group" accept-charset="UTF-8">-->
-<!--        <table class="form-table">
-            <tr>
-                <th><label for="edit-name"><?php //echo __("Index and show public videos on WimTV","wimtvpro") ?> (<a href="<?php// _e('APP_HOME_LINK_URL', "wimtvpro"); ?>" target="new"><?php// _e('APP_HOME_LINK_URL', "wimtvpro"); ?></a>)</label></th>
-                <td>
-                    <select id="edit-hidePublicShowtimeVideos" name="hidePublicShowtimeVideos" class="form-select">
-                        <option value="false"
-                            <?php //if ( $dati['hidePublicShowtimeVideos']=="false") echo 'selected="selected"'?>><?php //echo __("Yes") ?></option>
-                        <option value="true"
-                            <?php// if ( $dati['hidePublicShowtimeVideos']=="true") echo 'selected="selected"'?>>No</option>
-                    </select>
-                </td>
-            </tr>
-        </table>-->
+   
+    <div class="clear"></div>  
 
-        <table id="viewPage"
-            <?php //if ( $dati['hidePublicShowtimeVideos']=="true") echo ' style="display:none; "'?> class="form-table">
+        <table id="viewPage" class="form-table">
             <tr>
                 <td colspan="2"><h4><?php echo __("WimTV Page","wimtvpro") ?></h4></td>
             </tr>
@@ -102,9 +84,7 @@ function settings_features($dati) {
        </table>
 
         <input type="hidden" name="wimtvpro_update" value="Y" />
-        <?php //submit_button(__("Update","wimtvpro")) ?>
-    <!--</form>-->
-
+       
 <?php
 }
 ?>

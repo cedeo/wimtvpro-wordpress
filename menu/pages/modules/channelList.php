@@ -10,12 +10,11 @@ include("../../../../../../wp-load.php");
 
 //include_once("../api/api.php");
 $userpeer = get_option("wp_userWimtv");
-//$timezone = isset($_POST['timezone_']) ? $_POST['timezone_'] : "";
-//$cliTimezoneName = isset($_POST['cliTimezoneName']) ? $_POST['cliTimezoneName'] : "";
-//var_dump($cliTimezoneName);die;
-$type = $_POST['type'];
-$id = $_POST['id'];
-$onlyActive = $_POST['onlyActive'];
+
+//$type = $_POST['type'];
+$type = "table";
+//$id = $_POST['id'];
+//$onlyActive = $_POST['onlyActive'];
 header('Content-type: text/html');
 $timezone = $_POST['timezone_'];
 
@@ -29,12 +28,10 @@ $params = array(
     "pageSize" => "20",
     "pageIndex" => "0"
 );
-$response = apiSearchLiveChannels($params,$timezone);
+$response = apiSearchLiveChannels($params, $timezone);
 $arrayjson_channel = json_decode($response);
 
-//$json = apiGetLiveEvents($timezone, $onlyActive);
-//$arrayjson_live = json_decode($json);
-//var_dump($arrayjson_live);die;
+
 $count = -1;
 $output = "";
 if ($arrayjson_channel) {
@@ -52,9 +49,9 @@ if ($arrayjson_channel) {
         $channelId = $value->channelId;
         $streamingBaseUrl = $value->streamingBaseUrl;
         $streamPath = $value->streamPath;
-        $description = $value->description;
+
         $name = $value->name;
-        $thumbnailId = $value->thumbnailId;
+
         $params = array(
             "channelId" => $channelId,
             "pageSize" => "20",
@@ -62,11 +59,9 @@ if ($arrayjson_channel) {
         );
 
 
-        $response = apiSearchLiveEvents($params,$timezone);
+        $response = apiSearchLiveEvents($params, $timezone);
 
         $array_live = json_decode($response);
-
-//        $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();" style="width: 100%">' . $embedded_code_text . '</textarea>';
 
 
         $image = '<img src="' . '/wp-content/plugins/wimtvpro/images/empty.jpg"' . '"  title="' . $name . '" class="wimtv-thumbnail" />';
@@ -75,9 +70,9 @@ if ($arrayjson_channel) {
             $image = '<img src="' . __('API_URL', 'wimtvpro') . 'asset/thumbnail/' . $thumbnailId . '"  title="' . $name . '" class="wimtv-thumbnail" />';
         }
 
-         $height = get_option("wp_heightPreview");
-            $width = get_option("wp_widthPreview");
-      $embedded_code_text = '[wimlive id="'.$channelId.'" width="'.$width.'" height="' .$height.'" timezone="'.$timezone.'" ]';
+        $height = get_option("wp_heightPreview");
+        $width = get_option("wp_widthPreview");
+        $embedded_code_text = '[wimlive id="' . $channelId . '" width="' . $width . '" height="' . $height . '" timezone="' . $timezone . '" ]';
         $output .= '<div class="panel">
 			<div class="panel-heading">
 				<h3 class="panel-title ">
@@ -86,43 +81,37 @@ if ($arrayjson_channel) {
                                         
                                         <div class="col-sm-2" style="height:100%;margin-top:30px;margin-bottom: 10px;"> 
                                         <a data-toggle="collapse" data-parent="#accordion" href="#panel-feeds-settings' . $count . '">'
-                 . __("Channel events","wimtvpro") . '</a> 
+                . __("Channel events", "wimtvpro") . '</a> 
                 
                      </div>
                                         <div class="col-sm-6" style="height:100%;">' .
-               
                 '</br><span>' . $name . '</span></br>' .
-                '<span>' . __("Streaming Base URL","wimtvpro").': ' .  $streamingBaseUrl .'</span></br>' .
-                '<span>' . __("Streaming URL","wimtvpro").': ' .    $streamPath . '</span>' .
-                
+                '<span>' . __("Streaming Base URL", "wimtvpro") . ': ' . $streamingBaseUrl . '</span></br>' .
+                '<span>' . __("Streaming URL", "wimtvpro") . ': ' . $streamPath . '</span>' .
                 ' </div>';
-              $output .= '<div class="col-sm-2">';
-               $output .=  '<textarea readonly="readonly" onclick="this.focus(); this.select();" style="width:100%;margin-top:30px;">' . $embedded_code_text . '</textarea>';
-               $output .= '</div>';
-              $output .=  '  <div class="col-xs-1">' .
-               
+        $output .= '<div class="col-sm-2">';
+        $output .= '<textarea readonly="readonly" onclick="this.focus(); this.select();" style="width:100%;margin-top:30px;">' . $embedded_code_text . '</textarea>';
+        $output .= '</div>';
+        $output .= '  <div class="col-xs-1">' .
                 "<a href='?page=" . __("WIMLIVE_urlLink", "wimtvpro") . "&namefunction=modifyChannel&id=" . $channelId . "' title='" . __("Modify") . "' ><img style='margin-top:30px;' src='" . get_option('wp_wimtvPluginPath') . "images/mod.png" . "' alt='" . __("Modify") . "'/>"
                 . '</a> </div>';
-               $output .=  '  <div class="col-xs-1">' .
-                "<a href='?page=" . __("WIMLIVE_urlLink", "wimtvpro") . "&namefunction=deleteChannel&id=" . $channelId . "' title='" . __("Remove") . "'><img style='margin-top:30px;' src='" . get_option('wp_wimtvPluginPath') . "images/remove.png" . "' alt='" . __("Remove") . "'/>" 
-               
+        $output .= '  <div class="col-xs-1">' .
+                "<a href='?page=" . __("WIMLIVE_urlLink", "wimtvpro") . "&namefunction=deleteChannel&id=" . $channelId . "' title='" . __("Remove") . "'><img style='margin-top:30px;' src='" . get_option('wp_wimtvPluginPath') . "images/remove.png" . "' alt='" . __("Remove") . "'/>"
                 . ' </a></div>';
-               
 
-                  
-              $output .= '</div>';
-                      
-                           $output .=  '
+
+
+        $output .= '</div>';
+
+        $output .= '
                                         
                                         </div>
 	                	</h3>
 			</div>';
-                  
-			$output .= '<div id="panel-feeds-settings' . $count . '" class="panel-collapse collapse">
+
+        $output .= '<div id="panel-feeds-settings' . $count . '" class="panel-collapse collapse">
                             <div class="panel-body">';
-        
-//                                 <th> echo __("Embed Code", "wimtvpro") </th>  
-// $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();" style="width: 100%">' . $embedded_code_text . '</textarea>';
+
 
         if ($array_live) {
 
@@ -156,8 +145,6 @@ if ($arrayjson_channel) {
             $output .= "<a  href='admin.php?page=" . $wp_page_qs . "&update=1'>" . __("Set live password") . "</a>";
         }
         $output .='</div>';
-
-//            $output .= '</div>';
     }
     $output .= '</td> </tr>';
 }
@@ -166,22 +153,6 @@ if ($count < 0) {
 }
 
 echo $output;
-
-/* Takes a GMT offset (in hours) and returns a timezone name */
-
-//function get_offset_to_name($offset) {
-////    $offset *= 3600; // convert hour offset to seconds
-//    $abbrarray = timezone_abbreviations_list();
-//    foreach ($abbrarray as $abbr) {
-//        foreach ($abbr as $city) {
-//            if ($city['offset'] == $offset) {
-//                return $city['timezone_id'];
-//            }
-//        }
-//    }
-//
-//    return FALSE;
-//}
 
 function getListLiveEvents($arrayjson_live) {
 
@@ -210,19 +181,7 @@ function getListLiveEvents($arrayjson_live) {
 
             $identifier = $value->eventId;
             $channelId = $value->channel->channelId;
-//        $skin = "";
-//        if (get_option('wp_nameSkin') != "") {
-//            $uploads_info = wp_upload_dir();
-//            $directory = $uploads_info["baseurl"] . "/skinWim";
-//
-//            $nomeFilexml = wimtvpro_searchFile($uploads_info["basedir"] . "/skinWim/" . get_option('wp_nameSkin') . "/wimtv/", "xml");
-//            $skin = "&skin=" . $directory . "/" . get_option('wp_nameSkin') . "/wimtv/" . $nomeFilexml;
-//        }
-//
-//        $params = "timezone=" . $timezone;
-//        if ($skin != "") {
-//            $params.="&amp;skin=" . $skin;
-//        }
+
 
             $insecureMode = "&insecureMode=on";
             $skin = "";
@@ -241,11 +200,7 @@ function getListLiveEvents($arrayjson_live) {
                 $params.= $logo;
             }
 
-//        if ($id == "all") {
-//            $embedded_code_text = "[wimlive id='$identifier' zone='$timezone']";
-//        } else {
-//            $embedded_code_text = apiGetLiveIframe($identifier, $params);
-//        }
+
             $height = get_option("wp_heightPreview");
             $width = get_option("wp_widthPreview");
             $embedded_code_text = "[wimlive id='$identifier' width=$width height=$height]";
@@ -255,22 +210,6 @@ function getListLiveEvents($arrayjson_live) {
 
 
 
-            // NS: We use the POSTed value "cliTimeOffset" to calculate local
-            // client timezone taking into account whether the client is in daylight 
-            // savings or not. We do that in js by using a custom function (isDaylightSavings())
-            // (see wimtvpro.js)
-//        $cliTimeOffset = $_POST['cliTimeOffset'];
-//        $timezoneName = timezone_name_from_abbr("", $cliTimeOffset, 0);
-//        $timezoneName = get_offset_to_name($cliTimeOffset);
-//        if ($timezoneName != false) {
-//        $cliTimezone = new DateTimeZone($cliTimezoneName);
-//        $start->setTimezone($cliTimezone);
-//        }
-            //$urlPeer = "http://peer.wim.tv:8080/wimtv-webapp/rest";
-            //$embedded_code = htmlentities(curl_exec($ch_embedded));
-            //$embedded_code_text = '<iframe id="com-wimlabs-player" name="com-wimlabs-player" src="' . $urlPeer . '/liveStreamEmbed/' . $identifier . '/player?width=692&height=440" style="min-width: 692px; min-height: 440px;"></iframe>';
-
-//            $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();" style="width: 100%">' . $embedded_code_text . '</textarea>';
 
             if ($type == "table") {
                 //Check Live is now
@@ -279,19 +218,12 @@ function getListLiveEvents($arrayjson_live) {
                 $inizio = $value->eventDate->date . ' | ' . $value->eventDate->time;
                 $fine = $value->endDate->date . ' | ' . $value->endDate->time;
                 $output .="<tr><td>" . $name . "</td>";
-//                $output .="<td>" . $name . "</td>";
-//                $output .="<td>" . $name . "</td>";
-//                $output .="<td>" . $name . "</td>";
-//                $output .="<td>" . $name . "</td>";
-//                $output .="<td>" . $name . "</td>";
-//                $output .="<td>" . $name . "</td>";
-//                $output .= '</tr>';
-//                if ($identifier == get_option("wp_liveNow"))
+
                 if ($liveIsNow == true)
                     $file = "live_rec.gif";
                 else
                     $file = "webcam.png";
-//
+
                 if ($liveIsNow) {
                     $output .= "<td><a  target='page_newTab' href='" . get_option('wp_wimtvPluginPath')
                             . "embedded/live_webproducer.php?id=" . $identifier . "' class='clickWebProducer' id='"
@@ -303,10 +235,9 @@ function getListLiveEvents($arrayjson_live) {
                 $output .= "<td>" . $payment_mode . "</td>";
                 $output .= "<td>" . $inizio . "</td>";
                 $output .= "<td>" . $fine . "</td>";
-//                $output .= "<td>" . $embedded_code . "</td>";
+
                 $output .= "<td> ";
 
-//            $output .="<a href='?page=WimLive&namefunction=modifyLive&id=" . $identifier . "&timezone=" . $timezoneOffset . "' alt='" . __("Modify")
                 $output .="<a href='?page=" . __("WIMLIVE_urlLink", "wimtvpro") . "&namefunction=modifyLive&id=" . $identifier . "&channelId=" . $channelId . "' alt='" . __("Modify")
                         . "'   title='" . __("Modify", "wimtvpro") . "'><img src='" . get_option('wp_wimtvPluginPath') . "images/mod.png"
                         . "'  alt='" . __("Modify", "wimtvpro") . "'></a>";
@@ -330,7 +261,7 @@ function getListLiveEvents($arrayjson_live) {
 /* Takes a GMT offset (in hours) and returns a timezone name */
 
 function get_offset_to_name($offset) {
-//    $offset *= 3600; // convert hour offset to seconds
+
     $abbrarray = timezone_abbreviations_list();
     foreach ($abbrarray as $abbr) {
         foreach ($abbr as $city) {

@@ -9,8 +9,7 @@
  */
 function settings_personal($dati,$type = 'hidden') {
   
-//    $view_page = wimtvpro_alert_reg();
-//    $submenu = wimtvpro_submenu($view_page);
+
     $facebookUri = isset($dati['profile']['facebookUrl']) ? $dati['profile']['facebookUrl'] : "";
     $twitterUri = isset($dati['profile']['twitterContact']) ? $dati['profile']['twitterContact'] : "";
     $linkedInUri = isset($dati['profile']['linkedinUrl']) ? $dati['profile']['linkedinUrl'] : "";
@@ -31,8 +30,7 @@ function settings_personal($dati,$type = 'hidden') {
     
 
 
-    <?php echo str_replace("user","current",$submenu) ?>
-
+    
     <div class="clear"></div><!--<form enctype="multipart/form-data" action="<?php //echo add_query_arg($_GET)?>" method="post" id="configwimtvpro-group" accept-charset="UTF-8">-->
         <h4><?php __("Personal Info","wimtvpro") ?></h4>
         <table class="form-table">
@@ -47,28 +45,7 @@ function settings_personal($dati,$type = 'hidden') {
                 <th><label for="edit-Email">Email<span class="form-required" title="">*</span></label></th>
                 <td><input type="text" id="edit-email" name="profile[email]" value="<?php echo $email  ?>" size="80" maxlength="200"/></td>
             </tr>
-<!--            <tr>
-                    <th><label for="edit-thumbnailfile"><?php //echo "Select thumbnail"  ?></label></th>
-                   <td> <input type="file" id="edit-thumbnailfile" name="thumbnailFile" size="60" class="form-file" /></td>
-                </tr>-->
-<!--            <tr>
-                <th><label for="sex"><?php //echo __("Gender","wimtvpro")  ?><span class="form-required" title="">*</span></label></th>
-                <td>
-                    <select id="edit-sex" name="sex" class="form-select">
-                        <option value="M" <?php //if ( $dati['sex']=="M") echo 'selected="selected"' ?>>M</option>
-					    <option value="F" <?php// if ( $dati['sex']=="F") echo 'selected="selected"';?>>F</option>
-                    </select>
-                </td>
-            </tr>-->
-<!--            <tr>
-                <th>
-                    <label for="dateOfBirth"><?php //echo __("Date of Birth","wimtvpro")  ?></label>
-                </th>
-                <td>
-                    <input  type="text" class="pickadate" id="edit-giorno" name="dateOfBirth" value="<?php //echo $dati['dateOfBirth']  ?>" size="10" maxlength="10">
-                    <div class="description">dd/mm/yy</div>
-                </td>
-            </tr>-->
+
         </table>
         <h4><?php __("Social networks","wimtvpro")  ?></h4>
         <table class="form-table">
@@ -95,9 +72,7 @@ function settings_personal($dati,$type = 'hidden') {
         </table>
         <div class="hidden_value"></div>
         <input type="hidden" name="wimtvpro_update" value="Y" />
-    <?php //submit_button(__("Update","wimtvpro")) ?>
-
-    <!--</form>-->
+ 
 <?php
 }
 ?>

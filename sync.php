@@ -67,7 +67,7 @@ if ($array_json_videos == NULL) {
             $status = $video["status"];
 //        NS2016    $acquired_identifier = isset($video["relationId"]) ? $video["relationId"] : "";
             $title = $video["title"];
-
+                $urlVideo = null;
             if (isset($video["streamingUrl"])) {
                 $urlVideo = $video["streamingUrl"]->streamer . "$$";
                 $urlVideo .= $video["streamingUrl"]->file . "$$";
@@ -123,19 +123,25 @@ if ($array_json_videos == NULL) {
 //                } else {
 //                    $pos_wimtv = "";
 //                }
+                
+                  if(!isset($duration)){
+                        $duration= null;
+                    }
 
                 if (!$trovato) {
 
                     dbInsertVideo(get_option("wp_userwimtv"), $content_item, $pos_wimtv, $status, $url_thumbs, $boxId, $urlVideo, $title, $duration, $showtime_identifier, $thumbnailId, $source, $vodCount);
                 } else {
-
+                  
                     dbUpdateVideo($pos_wimtv, $status, $title, $url_thumbs, $urlVideo, $duration, $showtime_identifier, $boxId, $content_item, $thumbnailId, $source, $vodCount);
                 }
 
                 if (isset($values_st)) {
                     foreach ($values_st as $key => $value) {
-
-                        dbUpdateVideoVod($value->licenseType,$value->pricePerView,$value->boxId);
+                        $licenseType = $value->licenseType;
+                        $pricePerView = $value->pricePerView;
+                        $boxId = $value->boxId;
+                        dbUpdateVideoVod($licenseType,$pricePerView,$boxId);
                     }
                 }
             }

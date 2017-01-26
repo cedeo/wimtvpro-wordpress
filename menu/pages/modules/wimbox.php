@@ -64,7 +64,8 @@ function wimtvpro_getVideos($showtime = FALSE, $private = TRUE, $insert_into_pag
         foreach ($array_videos_new_wp as $record_new) {
      
 //            var_dump($record_new->status);
-            $my_media .= wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page, $stLicense, FALSE);
+//            $my_media .= wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page, $stLicense, FALSE);
+            $my_media .= wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page, null, FALSE);
         }
     }
     //Position 0

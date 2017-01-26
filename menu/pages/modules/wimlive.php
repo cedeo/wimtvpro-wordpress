@@ -32,12 +32,7 @@ function wimtvpro_elencoChannel($type) {
     ';
     // NS: We POST the param "cliTimezoneName" to let CMS server know the client timezone.
     echo '
-//        var cliTimeOffset=new Date().getTimezoneOffset()*(-60);
-//        if (isDaylightSavings()){
-//            cliTimeOffset -= 3600;
-//        }
-// data: "type=' . $type . '&timezone =" + timezone  + "&id=' . $identifier . '&onlyActive=' . $onlyActive . '&cliTimeOffset="+ cliTimeOffset + "&cliTimezoneName="+ cliTimezoneName,        
-  
+
 	jQuery.ajax({
 			context: this,
 			url:  url_pathPlugin + "channelList.php",
@@ -82,12 +77,7 @@ function wimtvpro_elencoLive($type, $identifier, $onlyActive = true, $array_live
 	//window.location.assign(window.location + "&timezone="+timezone);';
     // NS: We POST the param "cliTimezoneName" to let CMS server know the client timezone.
     echo '
-//        var cliTimeOffset=new Date().getTimezoneOffset()*(-60);
-//        if (isDaylightSavings()){
-//            cliTimeOffset -= 3600;
-//        }
-// data: "type=' . $type . '&timezone =" + timezone  + "&id=' . $identifier . '&onlyActive=' . $onlyActive . '&cliTimeOffset="+ cliTimeOffset + "&cliTimezoneName="+ cliTimezoneName,        
-    
+
 	jQuery.ajax({
 			context: this,
 			url:  url_pathPlugin + "liveList.php",

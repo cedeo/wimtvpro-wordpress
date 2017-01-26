@@ -66,7 +66,6 @@ jQuery(document).ready(function() {
             async: false,
             data: 'name_action=PLAY&current_url=' + ourLocation + '&thumbnailId=' + thumbnailId + '&price=' + pricePerView + '&height=' + height + '&width=' + width + '&id=' + vid + '&trackingId=' + track,
             success: function(response) {
-                
                 var json = jQuery.parseJSON(response);
 
                 if (json.result === 'PLAY') {

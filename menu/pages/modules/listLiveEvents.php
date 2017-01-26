@@ -3,27 +3,16 @@
 function gfghdfetListLiveEvents($arrayjson_live){
 
 $userpeer = get_option("wp_userWimtv");
-//$timezone = isset($_POST['timezone_']) ? $_POST['timezone_'] : "";
-//$cliTimezoneName = isset($_POST['cliTimezoneName']) ? $_POST['cliTimezoneName'] : "";
 
-//var_dump($cliTimezoneName);die;
-//$type = $_POST['type'];
-//$id = $_POST['id'];
-//$onlyActive = $_POST['onlyActive'];
 $type = 'table';
-//header('Content-type: text/html');
 
-//$json = apiGetLiveEvents($timezone, $onlyActive);
-//$arrayjson_live = json_decode($json);
 
 $params = array(
     "channelId" => $channelId,
     "pageSize" => "20",
     "pageIndex" => "0"
 );
-//$response = apiSearchLiveEvents($params);
-//
-//$arrayjson_live = json_decode($response);
+
 
 $count = -1;
 $output = "";
@@ -58,19 +47,7 @@ if ($arrayjson_live->items) {
 
         $identifier = $value->identifier;
 
-//        $skin = "";
-//        if (get_option('wp_nameSkin') != "") {
-//            $uploads_info = wp_upload_dir();
-//            $directory = $uploads_info["baseurl"] . "/skinWim";
-//
-//            $nomeFilexml = wimtvpro_searchFile($uploads_info["basedir"] . "/skinWim/" . get_option('wp_nameSkin') . "/wimtv/", "xml");
-//            $skin = "&skin=" . $directory . "/" . get_option('wp_nameSkin') . "/wimtv/" . $nomeFilexml;
-//        }
-//
-//        $params = "timezone=" . $timezone;
-//        if ($skin != "") {
-//            $params.="&amp;skin=" . $skin;
-//        }
+
 
         $insecureMode = "&insecureMode=on";
         $skin = "";
@@ -89,11 +66,7 @@ if ($arrayjson_live->items) {
             $params.= $logo;
         }
 
-//        if ($id == "all") {
-//            $embedded_code_text = "[wimlive id='$identifier' zone='$timezone']";
-//        } else {
-//            $embedded_code_text = apiGetLiveIframe($identifier, $params);
-//        }
+
         $height = get_option("wp_heightPreview");
         $width = get_option("wp_widthPreview");
         $embedded_code_text = "[wimlive id='$identifier' zone='$timezone' width=$width height=$height]";
@@ -124,10 +97,7 @@ if ($arrayjson_live->items) {
         $timeToStart = $livedate->timeToStart;
         $timeLeft = $livedate->timeLeft;
 
-        //$urlPeer = "http://peer.wim.tv:8080/wimtv-webapp/rest";
-        //$embedded_code = htmlentities(curl_exec($ch_embedded));
-        //$embedded_code_text = '<iframe id="com-wimlabs-player" name="com-wimlabs-player" src="' . $urlPeer . '/liveStreamEmbed/' . $identifier . '/player?width=692&height=440" style="min-width: 692px; min-height: 440px;"></iframe>';
-
+      
         $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();" style="width: 100%">' . $embedded_code_text . '</textarea>';
         if ($type == "table") {
             //Check Live is now

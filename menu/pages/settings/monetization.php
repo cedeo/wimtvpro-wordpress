@@ -28,30 +28,7 @@ $link = "admin.php?page=config&update1";
         $style="style='display:none'";
     }
     
-    
-    /*
-     * 
-    "paypalEmail": "-- indirizzo email account Pay Pal --",
-    "companyName": "-- nome azienda --",
-    "affiliateConfirm": "-- hai i diritti legali per operare come affiliato dell&#65533;azienza --",
-    "vatCode": "-- P. iva --",
-    "taxCode": "-- CF --",
-    "billingAddress": {
-        "street": "-- via  --",
-        "city": "-- citt&#65533; --",
-        "state": "-- provincia --",
-        "zipCode": "-- cap --"
-        }
-    */
-
-//    ?>
-	<?php // echo  wimtvpro_link_help();?>
-    <!--<h2>//<?php //echo __("Monetisation","wimtvpro")  ?></h2>-->
-    <?php //echo str_replace("payment","current",$submenu) ?>
-<!--    <div class="clear"></div>
-	<p>-->
-    <?php// _e("Please complete the following fields if you wish to make financial transactions on Wim.tv (e.g. buy or sell videos, post pay per view videos or bundles). You may wish to fill your data now or do it later by returning in this section of your Settings.","wimtvpro") ?>
-    <!--</p>-->
+    ?>
     <script>
         jQuery(document).ready(function() {
 
@@ -103,13 +80,13 @@ if (!jQuery("#edit-affiliate").is(':checked')) {
                                } ?> />
                 <td>
             </tr>
-            <tr class="affiliateTr" <?php echo  $style ?> >
+            <tr class="affiliateTr" >
                 <th><label for="companyName"><?php echo __("Company Name","wimtvpro")  ?></label></th>
                 <td>
                     <input type="text" id="edit-companyName" name="companyName" value="<?php echo $companyName  ?>"  size="80" maxlength="20" />
                 </td>
             </tr>
-			<tr class="affiliateTr" <?php echo  $style ?> >
+			<tr class="affiliateTr"  >
                 <th><label for="companyConfirm"><?php echo __("Have you the legal right of acting as an affiliate to the preceeding company?","wimtvpro")  ?></label></th>
                 <td>
                     <input type="checkbox" id="edit-affiliateConfirm"

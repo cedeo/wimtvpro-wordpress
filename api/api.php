@@ -128,8 +128,10 @@ class Api {
 
         if ($clientLanguage){
             $request->addHeader('Accept-Language', $clientLanguage);
-        }else if($language){
+        }else if(isset($language)){
+            if($language){
             $request->addHeader('Accept-Language', $_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+            }
         }else{
 //            $request->addHeader('Accept-Language', $_SERVER["HTTP_ACCEPT_LANGUAGE"]);
         }

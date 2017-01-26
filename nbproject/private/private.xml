@@ -3,30 +3,32 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/functions/listDownload.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/modules/listLiveEvents.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/api/wimtv_api_oauth2.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/modules/registration.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/registration.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/settings/monetization.php</file>
             <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/script/wimtvpro.js</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/wimtvpro.php</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/embedded/embedded_shortcode_wimvod.php</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/api/api.php</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/languages/wimtvpro-es_ES.po</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/embedded/embedded_shortcode_live.php</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/api/wimtv_public_api.php</file>
             <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/languages/wimtvpro-it_IT.po</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/api/wimtv_public_api.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/settings/features.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/settings/personal.php</file>
             <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/sync.php</file>
             <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/analytics.php</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/languages/wimtvpro-fr_FR.po</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/README.txt</file>
             <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/wimbox.php</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/api/wimtv_private_api.php</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/script/colorbox/css/colorbox.css</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/css/wimtvpro.css</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/scripts.php</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/wimvod.php</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/functions/uploadProgress.php</file>
-            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/script/upload.js</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/settings/live.php</file>
             <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/languages/wimtvpro-en_US.po</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/modules/wimlive.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/functions/jwPlayer.php</file>
             <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/embedded/embedded.php</file>
             <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/api/wimtv_api.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/api/api.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/wimlive.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/settings.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/settings/prices.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/modules/channelList.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/api/wimtv_private_api.php</file>
+            <file>file:/var/www/html/wordpress/wp-content/plugins/wimtvpro/menu/pages/modules/wimbox.php</file>
         </group>
     </open-files>
 </project-private>

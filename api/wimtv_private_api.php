@@ -147,6 +147,7 @@ class WimTvPrivate {
 
         $result = $apiAccessor->executeRequest($request, null, $apiAccessor->language, null, true);
         $arrayjsonst = json_decode($result, true);
+        
         $apiOAuth2 = getApiOAuth2();
         if ($apiOAuth2->resultGetAccessToken($arrayjsonst)) {
             $apiAccessor->getRequest('api/user/me');

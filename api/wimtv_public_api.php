@@ -176,7 +176,7 @@ class WimTvPublic {
 
     function apiCreateStreamUrl($params) {
 
-        $public_token = $this->getToken(array(), "client_credentials");
+        $this->getToken(array(), "client_credentials");
         $apiAccessor = getApi();
         $request = $apiAccessor->getRequest('api/public/live/streampath?base=' . $params['base'] . '&access_token=' . get_option('wp_public_access_token'));
 //        $request->body(json_encode($params));

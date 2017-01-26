@@ -129,7 +129,7 @@ function wimtvpro_report() {
     );
    
     $license = $packet_json[$licenseName];
-    $str = str_replace('http://', 'http://cache.', $str);
+//    $str = str_replace('http://', 'http://cache.', $str);
         $band = str_replace(',',".",$packet_user_json->bandPercent);
         $storage =str_replace(',',".",$packet_user_json->storagePercent);
         $traffic_of = " of " . $license['bandPercent'] ." GB" ;

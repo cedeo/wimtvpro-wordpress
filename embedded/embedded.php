@@ -21,9 +21,15 @@ $code = $_GET['c'];
 if (strlen($code) > 0) {
     $contentItem = $_GET['c'];
     $streamItem = $_GET['s'];
+    $wimbox = null;
+    if(isset($_GET['box'])){
     $wimbox = $_GET['box'];
+    }
     $showtime = json_decode(wimtvpro_detail_showtime(true, $streamItem));
-
+    $description = null;
+    if(isset($showtime->{"description"})){
+        $description = $showtime->{"description"};
+    }
     $insecureMode = "&insecureMode=on";
     $skin = "";
     $logo = "";
@@ -67,7 +73,7 @@ if (strlen($code) > 0) {
              <?php } else {
                ?>
         <h3><?php  echo $showtime->{"title"} ?></h3>
-        <p>[<?php echo $showtime->{"duration"} ?>] <?php echo $showtime->{"description"} ?></p>
+        <p>[<?php echo $showtime->{"duration"} ?>] <?php echo $description ?></p>
        </div>
              <?php }
              }

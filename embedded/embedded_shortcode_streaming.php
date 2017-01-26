@@ -63,7 +63,7 @@ if ($name_function == "PAY") {
     $width = $_POST['width'];
     $height = $_POST['height'];
     if ($response_json_play->result == "PLAY") {
-        $result_jw = configurePlayerJSByJson($response_json_play, $width, $height,null,null);
+        $result_jw = configurePlayerJSByJson($response_json_play, $width, $height);
     } else {
         $thumbnailId = $_POST['thumbnailId'];
         $pricePerView = $_POST['price'];
@@ -105,7 +105,6 @@ if ($name_function == "PAY") {
         $elements['url'] = $url;
         $elements['trackingId'] = $trackingId;
     }
-
 //   echo $elements;
     echo json_encode($elements);
 }

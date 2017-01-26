@@ -48,8 +48,9 @@ function settings_configuration($directory) {
     ?>
     <div class="wrap">
         <?php echo wimtvpro_link_help(); ?>
-
-        <h2><?php _e('SETTINGS_pageTitle', "wimtvpro"); //_e("Configuration", "wimtvpro");     ?></h2>
+ <h2><?php _e('CURRENTLY THE PLUGIN MAY SHOW INSTABILITIES', "wimtvpro"); ?></h2>
+ <h2><?php _e('SHOULD THIS HAPPEN YOU CAN TAKE ADVANTAGE', "wimtvpro"); ?><a target="_blank" href="http://www.wim.tv">http://www.wim.tv</a> <?php _e('WIMTV OFFERS SOME ADDITIONAL FEATURES', "wimtvpro"); ?></h2>
+        <h2><?php _e('SETTINGS_pageTitle', "wimtvpro");     ?></h2>
 
         <?php
         $view_page = wimtvpro_alert_reg();
@@ -109,49 +110,7 @@ function settings_configuration($directory) {
                     </tr>
 
                 </table>
-                <!-- </div> -->
-                <?php /* NS: HIDE ADDITIONAL OPTIONS
-                 * 
-                  <!-- Comment/uncomment this to lock/unlock sandbox features -->
-                  <h4><?php _e("Other information" ,"wimtvpro"); ?></h4>
-                  <input type="hidden" value="No" name="sandbox">
-                  <table class="form-table">
-                  <tr>
-                  <th><label for="edit-sandbox">Please select "no" to use the plugin on the WimTV server. Select "yes" to try the service only on test server</label></th>
-                  <td>
-                  <select id="edit-sandbox" name="sandbox" class="form-select">
-                  <option value="No" <?php if (get_option("wp_sandbox")=="No") echo "selected='selected'" ?>>No</option>
-                  <option value="Yes" <?php if (get_option("wp_sandbox")=="Yes") echo "selected='selected'" ?>>Yes, for Developer or Test</option>
-                  </select>
-                  </td>
-                  </tr>
-
-                  <tr>
-                  <th><label for="edit-publicPage"><?php _e('Would you like to add the "Share" button in the video player?',"wimtvpro");?></label></th>
-                  <td>
-                  <select id="edit-publicPage" name="publicPage" class="form-select">
-                  <option value="No" <?php if (get_option("wp_shareVideo")=="No") echo "selected='selected'" ?>>No</option>
-                  <option value="Yes" <?php if (get_option("wp_shareVideo")=="Yes") echo "selected='selected'" ?>><?php _e("Yes"); ?></option>
-                  </select>
-
-                  </td>
-                  </tr>
-
-                  <tr>
-                  <th><label for="edit-publicPage"><?php _e("Would you like to add a public WimVod Page to your site?","wimtvpro");?></label></th>
-                  <td>
-                  <select id="edit-publicPage" name="publicPage" class="form-select">
-                  <option value="No" <?php if (get_option("wp_publicPage")=="No") echo "selected='selected'" ?>>No</option>
-                  <option value="Yes" <?php if (get_option("wp_publicPage")=="Yes") echo "selected='selected'" ?>><?php _e("Yes"); ?></option>
-                  </select>
-
-                  </td>
-                  </tr>
-
-                  </table>
-
-                 */
-                ?>
+           
                 <input type="hidden" value="No" name="sandbox">
 
 

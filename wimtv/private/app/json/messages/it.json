@@ -1,0 +1,774 @@
+{
+	"lang": {
+		"seo": {
+			"TITLE": "WimTV - La tua pagina privata",
+			"DESCRIPTION": "Con WimTV  puoi creare la tua Web TV personale e realizzare in modo semplice il tuo canale di distribuzione video online."
+		},
+		"privatepage": {
+			"MONETISATION": "Monetizzazione",
+			"MONETISATION-TEXT": "Inserisci la tua email di PayPal per abilitare le licenze pay per view:",
+			"PAYPAL-EMAIL": {
+				"SUCCESS-UPDATE": "Email di Paypal correttamente aggiornata",
+				"FAILURE-UPDATE": "Impossibile aggiornare l'Email di Paypal"
+			},
+			"SAVE": "Salva",
+			"USAGE": "Utilizzo",
+			"STORAGE": "Storage",
+			"STORAGE-USED": "Utilizzato",
+			"BANDWIDTH": "Banda",
+			"BANDWIDTH-USED": "Consumata",
+			"DAYS-LEFT": "gg",
+			"CHANGE-PACKAGE": "Cambia pacchetto",
+			"PROFILE": "Profilo",
+			"LANGUAGE": "Lingua",
+			"ENGLISH": "English",
+			"FRENCH": "Français",
+			"SPANISH": "Español",
+			"PORTUGUES": "Português",
+			"ITALIAN": "Italiano",
+			"SUPPORT": "Sito di supporto",
+			"FIND-US": "Ci trovi anche su:"
+		},
+		"dashboard": {
+			"WELCOME": "Benvenuto",
+			"UPLOAD-WIMBOX": "Carica un nuovo video",
+			"MANAGE-WIMBOX": "Gestisci i tuoi video",
+			"MANAGE-WIMVOD": "Gestisci i video pubblicati",
+			"WATCH-WIMVOD": "Guarda la tua Web TV",
+			"CREATE-WIMLIVE": "Crea un nuovo evento live",
+			"MANAGE-WIMLIVE": "Lista degli eventi live",
+			"CREATE-WIMCHANNEL": "Crea un nuovo canale live",
+			"MANAGE-WIMCHANNEL": "Lista dei canali live",
+			"CREATE-WIMCAST": "Crea un nuovo palinsesto",
+			"MANAGE-WIMCAST": "Lista dei palinsesti",
+			"MANAGE-WIMBUNDLE": "Gestisci Abbonamenti",
+			"WATCH-WIMBUNDLE": "Guarda i tuoi abbonamenti",
+			"CONTACT-TITLE": "Contatti",
+			"CONTACT-INTRO": "La tua opinione è importante",
+			"NEW-PROPOSAL": "Che servizio vorresti avere qui?",
+			"HELP": "Hai bisogno di assistenza?"
+		},
+		"wimmarket" : {
+			"WELCOME": "Acquista un video dal video market",
+			"WIMTRADE-BUTTON": "Vendi i tuoi video su WimMarket",
+			"FREE": "Free",
+      "PAY_PER_VIEW": "Cash per view",
+      "SPOT_PRICE": "Spot price",
+      "REVENUE_SHARING": "Revenue sharing",
+      "CREATIVE_COMMONS": "Creative Commons",
+			"PREVIEW": "Anteprima di 15 secondi",
+			"WARNING" : "Warning",
+			"SUCCESS-ACQUIRED" : "Video acquisito con successo. Il video è ora disponibile in WimBox",
+			"DESCRIPTION": "Descrizione",
+			"LICENSE": "Licenza",
+			"DOWNLOAD": "Possibilità di scaricarlo",
+			"DOWNLOAD-YES": "Si",
+			"DOWNLOAD-NO": "No",
+			"DURATION": "Durata",
+			"DURATION-DAYS": "Giorni",
+			"DURATION-MONTHS": "Mesi",
+			"DURATION-YEARS": "Anni",
+			"DURATION-UNLIMITED": "Nessun limite",
+			"ALL-LICENSE": "Tutti i tipi di licenza",
+			"BUY-VIDEO": "Acquista",
+			"SUCCESS-BOUGHT" : "Ottimo, hai acquistato il video.",
+      "PRICE" : "Prezzo",
+      "SELLER" : "Venditore",
+      "EARNING-REVENUE": "Revenue",
+			"HELP-BUTTON": "Come funzionano le licenze?",
+			"SPOT-PRICE-DESCRIPTION": "Puoi usare liberamente il video acquisito al prezzo indicato nella licenza per pubblicarlo on demand o in un abbonamento",
+			"FREE-DESCRIPTION": "Caso particolare del precedente. Puoi usare liberamente il video acquisito per pubblicarlo on demand o in un abbonamento",
+			"REVENUE-SHARING-DESCRIPTION": "ogni volta che un tuo cliente paga per il video pubblicato, il venditore sul market incassa la percentuale indicata nella licenza. Un video acquisito in revenue sharing non può essere usato per un abbonamento",
+			"PAYPERVIEW-DESCRIPTION": "Ogni volta che un tuo cliente paga per il video pubblicato, il venditore sul market incassa la somma indicata nella licenza. Un video acquisito in pay per view non può essere usato per un abbonamento",
+			"CREATIVECOMMONS-DESCRIPTION": "Puoi utilizzare il video acquisito secondo quanto prescritto dalla specifica licenza Creative Commons",
+			"CLOSE": "Chiudi"
+		},
+		"wimtrade": {
+			"DAYS": "Giorni",
+			"MONTHS" : "Mesi",
+			"YEARS" : "Anni",
+			"WELCOME" : "Vendi i tuoi video ad altre Web TV",
+			"MANAGE": "Metti in vendita o acquista video",
+			"BUY": "Acquista video dal video market",
+			"WIMMARKET-BUTTON": "Acquista video da WimMarket",
+			"WIMBOX-VIDEOS": "I tuoi video in WimBox",
+			"WIMMARKET-VIDEOS": "I tuoi video in vendita sul market",
+			"REMOVE-BUTTON" : "Rimuovi",
+			"ADD-BUTTON": "Metti in vendita",
+			"CANCEL-BUTTON" : "Cancella",
+			"LICENSE-TYPE": "Scegli la licenza da assegnare al video",
+			"CC-LICENSE": "Tipo di licenza Creative Commons",
+			"DURATION": "Durata della licenza",
+			"DURATION-UNIT": "Durata in giorni, mesi o anni",
+			"DOWNLOAD": "Vuoi permettere all'acquirente di scaricare il video dopo l'acquisto?",
+			"ACTIVATION-PRICE" : "Prezzo di attivazione",
+			"PRICE-PER-VIEW" : "Guadagno dalla singola visualizzazione in pay per view",
+			"EARNING-PERCENTAGE" : "Percentuale di guadagno dalla singola visualizzazione in pay per view",
+			"MESSAGES" : {
+				"FAILURE-SELL-TO-MARKET":"C'è stato un errore durante la messa in vendita del video. Riprova."
+			}
+		},
+		"wimbundle": {
+			"BUNDLE" : "Abbonamenti",
+			"WELCOME": "Pubblica gruppi di video in abbonamento",
+			"VIDEO-IN-BUNDLE": "Video nell'abbonamento",
+			"MANAGE-VIDEOS-IN-BUNDLE": "Gestisci i video nell'abbonamento",
+			"NEW-BUNDLE": {
+				"TITLE": "Nuovo Abbonamento",
+				"NAME": "Nome",
+				"DESCRIPTION": "Descrizione",
+				"PRICE": "Prezzo",
+				"DURATION": "Durata",
+				"DURATION-UNIT": "Durata in giorni, mesi o anni",
+				"ERROR": "Impossibile creare un nuovo abbonamento",
+				"SUCCESS": "Abbonamento creato con successo"
+			},
+			"EDIT-BUNDLE": {
+				"EDIT": "Modifica",
+				"TITLE": "Modifica Abbonamento",
+				"SAVE": "Aggiorna",
+				"SUCCESS": "Modifica avvenuta con successo",
+				"FAILURE": "Impossibile completare la modifica"
+			},
+			"NO-BUNDLE-AVAILABLE": "Nessun abbonamento disponibile",
+			"UNABLE-FETCHING-BUNDLES": "Impossibile recuperare gli abbonamenti",
+			"update" : {
+				"SUCCESS" : "Aggiornamento dell'abbonamento avvenuto con successo"
+			},
+			"single": {
+				"BOX-VIDEOS": "Video di WimBox",
+				"ADD": {
+					"SUCCESS": "Video Aggiunto all'abbonamento con successo",
+					"ERROR": "Impossibile aggiungere il video all'abbonamento",
+					"ALREADY-EXIST": "Il video è già stato aggiunto all'abbonamento, impossibile aggiungerne un secondo",
+					"NOT-READY": "Il video non è pronto",
+					"TEXT": "Aggiungi all'abbonamento"
+				},
+				"REMOVE" : {
+					"SUCCESS": "Video Rimosso dall'abbonamento con successo",
+					"ERROR": "Impossibile rimuovere il video dall'abbonamento",
+					"TEXT": "Rimuovi dall'abbonamento"
+				},
+				"UNABLE-FETCHING-VIDEOS": "Impossibile recuperare i video dell'utente",
+				"UNABLE-FETCHING-BUNDLE": "Impossibile recuperare l'abbonamento"
+			},
+			"MODAL-REMOVE-TITLE": "Rimozione abbonamento",
+			"MODAL-REMOVE-TEXT": "Vuoi rimuovere questo abbonamento?",
+			"SAVE": "Salva",
+			"DELETE":{
+				"ERROR": "Errore durante la cancellazione del video",
+				"FINISH": "Cancellazione conclusa con successo"
+			},
+			"DURATION": {
+				"DAYS": "Giorni",
+				"MONTHS": "Mesi",
+				"YEARS": "Anni"
+			}
+		},
+		"wimbox": {
+			"SAVED" : "Update",
+			"NOT-SAVED" : "Non aggiornato",
+			"TAGS": "Tag",
+			"WELCOME": "Carica e gestisci i tuoi video",
+			"SYNCH-TITLE": "Clicca per sincronizzare i video transcodificati in WimBox",
+			"SYNCH-BUTTON": "Aggiorna",
+			"UPLOAD-TITLE": "Carica uno o più video nel tuo archivio",
+			"UPLOAD-BUTTON": "Carica video",
+			"QUERY-SEARCH": "Cerca",
+			"SELECT-FILES": "Seleziona i file da caricare (max 4 GB per file)",
+			"SELECT-FILES-BUTTON": "Scegli uno o più file",
+			"SELECT-FILES-INFO": "Premi il tasto 'Ctrl' per selezionare più file",
+			"VIDEO-TITLE": "Titolo",
+			"NOT-PUBLISHED": "Non pubblicato",
+			"ALREADY-PUBLISHED": "Già pubblicato",
+			"VIDEO-DESCRIPTION": "Descrizione",
+			"VIDEO-ADS": "Pubblicità",
+			"VIDEO-ADS-INFO": "Seleziona se si tratta di un video pubblicitario",
+			"VIDEO-CATEGORY": "Categoria",
+			"VIDEO-RIGHTS": "Ho i diritti per pubblicare il/i video su WimTV",
+			"VIDEO-UPLOAD": "Upload",
+			"TRANSCODING": "Il video è in transcodifica.",
+			"TRANSCODING-ERROR": "Errore durante la transcodifica del video. Elimina il video e prova di nuovo",
+			"TABLE-VIDEO-TITLE": "Video",
+			"TABLE-STATUS-TITLE": "Stato",
+			"TABLE-DESCRIPTION-TITLE": "Descrizione",
+			"TABLE-TAGS-TITLE": "Tags",
+			"TABLE-TAGS-ELEMENT": "Inserisci i tag del video",
+			"TABLE-CATEGORY-TITLE": "Categoria",
+			"TABLE-EDIT-TITLE": "Modifica",
+			"TABLE-DOWNLOAD-TITLE": "Download",
+			"TABLE-DELETE-TITLE": "Cancella",
+			"UPLOAD-IMAGE": "Carica un'immagine da utilizzare come thumbnail",
+			"MODAL-DELETE-CONFIRM": "Vuoi eliminare definitivamente il video?",
+			"MODAL-DELETE-CANCEL": "Annulla",
+			"MODAL-DELETE-YES": "Sì, cancella",
+			"EDIT-INFO": "Modifica metadati",
+			"PUBLISH-INPUT": "Pubblica in WimVod",
+			"PUBLISH-TITLE": "Pubblica il tuo video su WimVod e sulla tua Web TV",
+			"PUBLISH-SET": " Imposta la licenza del video:",
+			"PROFESSIONAL-LICENSE": "Licenza Professionale",
+			"CC-LICENSE": "Licenza Creative Commons",
+			"PAY-PER-VIEW": "Seleziona se vuoi pubblicare il video in Pay Per View. Devi aver inserito sul tuo profilo la tua email di PayPal per pubblicare il video in Pay Per View.",
+			"PAY-PER-VIEW-INFO": "Inserisci il prezzo in €",
+			"PUBLIC": "Pubblico",
+			"PRIVATE": "Privato (visibile solo tramite Iframe)",
+			"PUBLISH-BUTTON": "Pubblica",
+			"SAVE-BUTTON": "Salva",
+			"PUBLISH-BUTTON-INFO": "Pubblica il video! Potrai gestire i video pubblicati nella sezione WimVod e vedere i relativi codici Iframe",
+			"DOWNLOAD-INFO": "Scarica il video",
+			"DELETE-INFO": "Cancella il video",
+			"GETTING-VIDEOS": "Aggiornamento dei video",
+			"INPUT-TEXT-MAX": "Hai superato il numero massimo di caratteri consentiti.",
+			"MISSING-PAYPAL-EMAIL": "Non hai ancora inserito la tua email di PayPal nei dati del tuo profilo, impossibile pubblicare il video a pagamento",
+			"MISSING-BILLING-INFO": "Non hai compilato tutti i dati di fatturazione. Inseriscili nel tuo profilo",
+			"NO-VIDEO-AVAILABLE": "Nessun video presente",
+			"LOADING-VIDEOS": "Caricamento dei Video...",
+			"FINALIZING-UPLOAD": "Conclusione dell'Upload...",
+			"UPLOADING-DONOT-CLOSE": "Upload in corso, non chiudere la pagina",
+			"UPLOAD-LIMIT-REACHED": "Raggiunto lo spazio disponibile. Impossibile effettuare nuovi upload",
+			"ACQUIRED-FROM-MARKET": "Acquistato dal market",
+			"UPLOADED-ON": "Caricato il",
+      "ACQUIRED": "Acquistato da",
+			"DOWNLOAD": {
+				"ERROR": "Unable to download the video",
+				"SUCCESS": "The Download opens in new tab / window"
+			},
+			"UPLOAD":{
+				"PROGRESS" : "Caricamento in corso",
+				"FINISH": "Upload concluso con successo. Il video sarà disponibile in WimBox a breve",
+				"ERROR": "Errore durante l'upload"
+			},
+			"DELETE":{
+				"ERROR": "Errore durante la cancellazione del video",
+				"FINISH": "Cancellazione conclusa con successo"
+			},
+			"EDIT":{
+				"ERROR": "Errore durante la modifica del video",
+				"FINISH": "Modifica del video conclusa con successo"
+			},
+			"GETPAGE": {
+				"ERROR": "Errore durante il caricamento dei video",
+				"FINISH": "Lista dei video caricata con successo"
+			},
+			"UPLOADPROGRESS": {
+				"ERROR": "Errore nella richiesta della progress bar"
+			},
+			"PREVIEW-ERROR": "Impossibile riprodurre l'anteprima",
+			"PUBLISH": {
+				"ERROR": "Errore durante la pubblicazione del video",
+				"FINISH": "Pubblicazione su WimVod avvenuta con successo"
+			},
+			"boxlist": {
+				"addto": {
+					"BRIDGET": "Aggiungi a WimBridge",
+					"VIDEO-BRIDGET": "Aggiungi al video bridget"
+				},
+				"addedTo": {
+					"BRIDGET": "Aggiunto a WimBridge",
+					"VIDEO-BRIDGET": "Aggiunto al video bridget"
+				}
+			}
+		},
+		"wimvod": {
+			"WELCOME": "Pubblica i tuoi video gratis o a pagamento",
+			"TABLE-VIDEO-TITLE": "Video",
+			"TABLE-DESCRIPTION-TITLE": "Descrizione",
+			"TABLE-CATEGORY-TITLE": "Categoria",
+			"TABLE-REMOVE-TITLE": "Rimuovi da WimVod",
+			"TABLE-REMOVE-INFO": "Rimuovi dai video pubblicati. Il video resterà in archivio in WimBox",
+			"PUBLIC": "Pubblico",
+			"MAKE-PRIVATE": "Rendi privato",
+			"PRIVATE": "Privato",
+			"MAKE-PUBLIC": "Rendi pubblico",
+			"TABLE-IFRAME-TITLE": "Iframe",
+			"MODAL-REMOVE-TITLE": "Vuoi rimuovere il video dai video pubblicati?",
+			"MODAL-REMOVE-TEXT": "Vuoi rimuovere il video dai video pubblicati? Il video resterà disponibile nel tuo WimBox.",
+			"MODAL-REMOVE-CANCEL": "Annulla",
+			"MODAL-REMOVE-CONFIRM": "Sì, rimuovi",
+			"EMBED-CODE": "Codice da incorporare",
+			"LICENSE-FREE": "Gratuito",
+			"GETVIDEOS": {
+				"ERROR": "Errore durante il caricamento dei video",
+				"FINISH": "Lista dei video caricata con successo"
+			},
+			"EDIT": {
+				"FINISH": "Modifica effettuata con successo",
+				"ERROR": "Errore durante la modifica del video"
+			},
+			"DELETE":{
+				"ERROR": "Errore durante la cancellazione del video",
+				"FINISH": "Cancellazione conclusa con successo"
+			},
+			"PREVIEW-ERROR": "Impossibile riprodurre l'anteprima"
+		},
+		"webtv": {
+			"SEND": "Invia",
+			"CHAT-SEND": "Invia un messaggio"
+		},
+		"wimlive":{
+			"WELCOME": "I tuoi eventi Live",
+			"NEW": "Crea un nuovo live",
+			"THUMBNAIL": "Thumbnail dell'evento",
+			"NEW-INFO": "Crea un nuovo evento da trasmettere in diretta streaming",
+			"NEW-LIVE": "Nuovo evento live",
+			"TITLE": "Titolo",
+			"SELECT-PAY-PER-VIEW": "Seleziona se vuoi che l'evento sia in Pay Per View",
+			"PRICE": "Inserisci il prezzo in €",
+			"CHANGE-CODE": "Cambia codice",
+			"URL": "Streaming url",
+			"GET-URL": "Crea Url",
+			"GET-URL-INFO": "Potrai utilizzare la streaming url per trasmettere l'evento tramite un software di encoding video come Adobe Flash Media Live Encoder o Wirecast",
+			"AVAILABLE-CHANNELS": "Canali disponibili",
+			"TIME-ZONE": "Fuso orario",
+			"DATE": "Data e ora di inizio",
+			"END-DATE": "Data e ora finale",
+			"TIME": "Orario di inizio",
+			"HOURS": "Ore",
+			"MINUTES": "Minuti",
+			"DURATION": "Durata dell'evento",
+			"DURATION-TEXT": "Durata indicata in ore/minuti. Seleziona:",
+			"PUBLIC": "Rendi pubblico",
+			"PUBLIC-INFO": "Rendi pubblico l'evento sulla tua Web TV. Se lo mantieni privato sarà visibile solo nelle pagine web dove pubblicherai l'iframe",
+			"RECORDING": "Registra l'evento",
+			"RECORDING-INFO": "Registra l'evento sul tuo WimBox. IMPORTANTE: La bontà del file registrato dipende fortemente dalla qualità/stabilità della connessione a disposizione. Se non si é sicuri della stabilità della connessione, consigliamo di registrare la trasmissione in locale per poi caricarla successivamente",
+			"CREATE-EVENT": "Crea evento",
+			"TABLE-TITLE": "Titolo",
+			"CHANNEL-TITLE": "Canale",
+			"TABLE-PRICE": "Prezzo",
+			"TABLE-SCHEDULING": "Programmazione",
+			"TABLE-IFRAME": "Iframe",
+			"TABLE-PRODUCER": "Trasmetti",
+			"TABLE-EDIT": "Edit",
+			"TABLE-DELETE": "Cancella",
+			"PRODUCER-BUTTON-INFO": "Clicca qui per trasmettere l'evento!",
+			"EDIT-BUTTON-INFO": "Modifica i dati dell'evento",
+			"DELETE-BUTTON-INFO": "Cancella l'evento",
+			"UPDATE-EVENT": "Aggiorna evento",
+			"MODAL-DELETE-TITLE": "Vuoi eliminare l'evento?",
+			"MODAL-DELETE-TEXT": "Vuoi eliminare questo evento?",
+			"MODAL-DELETE-CANCEL": "Annulla",
+			"MODAL-DELETE-CONFIRM": "Sì, elimina",
+			"PRODUCER-PAGE-WELCOME": "Tieni aperta questa pagina per tutta la durata della trasmissione",
+			"PRODUCER-PAGE-INFO": "Clicca 'Consenti' per trasmettere. Cliccando successivamente con il tasto destro del mouse sul player è possibile visualizzare le Impostazioni.",
+			"PRODUCER-PAGE-PREVIEW": "Visualizza un'anteprima della trasmissione",
+			"CREATE-EVENT-SUCCESS": "Il tuo evento è stato creato correttamente",
+			"VIDEO-RIGHTS": "Ho i diritti per effettuare lo stream dell'evento",
+			"CHAT-WELCOME": "Clicca qui per abilitare la chat in tempo reale sul tuo evento",
+			"ENABLE-CHAT": "Abilita Chat",
+			"DISABLE-CHAT": "Disabilita Chat",
+			"LIVE-TOO-LONG": "Durata massima consentita: 24 ore",
+			"PRODUCER":{
+				"ERROR": "Errore durante il caricamento del producer"
+			},
+			"GETLIVES":{
+				"ERROR": "Errore durante il caricamento dei live"
+			},
+			"GETSTREAMINGURL":{
+				"ERROR": "Errore durante il caricamento della url di streaming. Abilita nel tuo profilo la funzionalità di live streaming e inserisci una password relativa."
+			},
+			"NEWLIVE":{
+				"ERROR": "Errore durante la creazione del live"
+			},
+			"GETIFRAME":{
+				"ERROR": "Errore durante la creazione dell'iframe"
+			},
+			"DELETE":{
+				"ERROR": "Errore durante la cancellazione del live"
+			},
+			"GETLIVEBYID":{
+				"ERROR": "Errore durante il caricamento del live"
+			},
+			"UPDATE":{
+				"ERROR": "Errore durante la modifica del live"
+			}
+		},
+		"wimpay":{
+			"CHECK":{
+				"ERROR": "Errore durante il controllo dello stato del pagamento",
+				"WAIT": "Sto processando la richiesta di pagamento.... attendere..."
+			},
+			"REQUEST":{
+				"ERROR": "Errore durante la richiesta di pagamento"
+			}
+		},
+		"wimchannel":{
+			"WELCOME": "Trasmetti gratis e a pagamento i tuoi eventi live",
+			"NEW": "Crea nuovo canale",
+			"CLOSE": "Chiudi",
+			"NO-CHANNEL-AVAILABLE": "Nessun canale presente",
+			"NEW-CHANNEL": "Nuovo Canale",
+			"NEW-INFO": "Crea un nuovo canale in cui inserire eventi live",
+			"EDIT-CHANNEL": "Salva modifiche",
+			"NAME": "Nome",
+			"DESCRIPTION": "Descrizione",
+			"URL": "Streaming Url",
+			"GET-URL-INFO": "Ottieni Url.",
+			"GET-URL": "Ottieni nome Url",
+			"CREATE-CHANNEL": "Crea Canale",
+			"PUBLIC": "Rendi pubblico",
+			"IS-PUBLIC-DESCRIPTION": "Seleziona se vuoi indicizzare il canale sul sito WimTV",
+			"CHANNEL-EVENTS": "Eventi del canale",
+			"NO-CHANNEL-EVENTS": "Nessun evento programmato",
+			"TABLE-TITLE": "Nome Canale",
+			"TABLE-URL": "Url del canale",
+			"TABLE-DESCRIPTION": "Descrizione del Canale",
+			"TABLE-VIDEO-NUMBER": "Numero Video",
+			"EMBED-CODE": "Codice da incorporare",
+			"MODAL-GET-IFRAME": "Codice da incorporare",
+			"MODAL-GET-IFRAME-CANCEL": "Chiudi",
+			"EVENT-LIST": "Lista di eventi nel canale",
+			"ADD-EVENT": "Aggiungi evento",
+			"EVENT-ARCHIVE": "Eventi in archivio",
+			"EDIT-BUTTON-INFO": "Modifica i dati del canale",
+			"DELETE-BUTTON-INFO": "Cancella il canale",
+			"MODAL-DELETE-TITLE": "Elimina:",
+			"MODAL-DELETE-TEXT": "Sei sicuro?",
+			"MODAL-DELETE-CANCEL": "Annulla",
+			"MODAL-DELETE-CONFIRM": "Sì, elimina",
+			"MODAL-UPDATE-CONFIRM": "Aggiorna evento",
+			"MODAL-UPDATE-CANCEL": "Annulla",
+			"TITLE": "Titolo",
+			"TIME-ZONE": "Fuso orario",
+			"PUBLIC-INFO": "Rendi pubblico l'evento sulla tua Web TV. Se lo mantieni privato sarà visibile solo nelle pagine web dove pubblicherai l'iframe",
+			"RECORDING": "Registra l'evento",
+			"RECORDING-INFO": "Registra l'evento sul tuo WimBox. IMPORTANTE: La bontà del file registrato dipende fortemente dalla qualità/stabilità della connessione a disposizione. Se non si é sicuri della stabilità della connessione, consigliamo di registrare la trasmissione in locale per poi caricarla successivamente",
+			"UPDATE-EVENT": "Aggiorna evento",
+			"PRODUCER-START": "Inizia a trasmettere!",
+			"CLOSE-PREVIEW": "Chiudi anteprima",
+			"OPEN-PREVIEW": "Apri anteprima",
+			"MESSAGES": {
+				"SUCCESSFUL-EDIT-CHANNEL": "Modifica del canale completata con successo",
+				"SUCCESSFUL-DELETE-CHANNEL": "Cancellazione del canale completata con successo",
+				"SUCCESSFUL-EDIT-LIVE": "Modifica del live completata con successo",
+				"SUCCESSFUL-DELETE-LIVE": "Cancellazione del live completata con successo",
+				"FAILURE-EDIT-CHANNEL": "Impossibile modificare il canale",
+				"FAILURE-DELETE-CHANNEL": "Impossibile cancellare il canale",
+				"FAILURE-EDIT-LIVE": "Impossibile modificare il live",
+				"FAILURE-DELETE-LIVE": "Impossibile cancellare il live",
+				"FAILURE-DELETE-CHANNEL-EXIST-LIVE": "Impossibile cancellare un canale con eventi live. Cancellare prima gli eventi live che appartengono al canale.",
+				"SUCCESSFUL-ADD-LIVE": "Creazione del live completata con successo",
+				"SUCCESSFUL-ADD-CHANNEL": "Creazione del canale completata con successo",
+				"FAILURE-ADD-LIVE": "Impossibile creare il live",
+				"FAILURE-ADD-CHANNEL": "Impossibile creare il canale",
+				"FAILURE-GET-LIVE-LIST": "Impossibile recuperare gli eventi del canale",
+				"FAILURE-GET-CHANNELS": "Impossibile recuperare la lista dei canali",
+				"UNABLE-TO-FETCH-STREAM-URL": "Impossibile recuperare l'url per lo streaming"
+			}
+		},
+		"wimcast":{
+			"WELCOME": "Trasmetti palinsesti video come in televisione",
+			"MANAGE": "Lista dei tuoi palinsesti",
+			"DAILY": "La tua programmazione di oggi",
+			"NEW": "Crea un nuovo palinsesto",
+			"CLOSE": "Chiudi",
+			"BACK": "Torna a WimCast",
+			"INFO-URL": "Puoi trasmettere in diretta tramite software di encoding esterni, come Open Broadcaster Studio o Wirecast, utilizzando la Streaming Url e il nome Stream",
+			"MANAGE-SCHEDULE": "Gestisci la programmazione",
+			"MONTHLY-INFO": "Calendario mensile del tuo palinsesto",
+			"MONTHLY-SELECT": "Seleziona un giorno del calendario per inserire video on demand o eventi live alla programmazione",
+			"MONTHLY-SELECT-INFO": "Puoi copiare ed incollare la programmazione di uno o più giorni. Seleziona nel calendario i giorni da copiare, clicca il tasto 'Copia', seleziona i giorni in cui desideri copiarli e clicca 'Incolla'.",
+			"MONTHLY-SELECT-DELETE": "Elimina",
+			"MONTHLY-SELECT-COPY": "Copia",
+			"MONTHLY-SELECT-PASTE": "Incolla",
+			"MONTHLY-SUCCESS": "Modifica del palinsesto avvenuta con successo",
+			"MONTHLY-ERROR": "Errore nella modifica del palinsesto",
+			"CAST-ERROR": "Errore nel caricamento del palinsesto",
+			"CASTS-ERROR": "Errore nel caricamento dei palinsesti",
+			"CAST-NEW-SUCCESS": "Palinsesto creato con successo",
+			"CAST-NEW-ERROR": "Errore nella creazione del palinsesto",
+			"CAST-DELETE-SUCCESS": "Palinsesto cancellato correttamente",
+			"CAST-DELETE-ERROR": "Errore nella cancellazione del palinsesto",
+			"CAST-LIVE-ERROR": "Impossibile recuperare gli eventi del palinsesto",
+			"DELETE-CAST-CONFIRM": "Sei sicuro di voler eliminare il palinsesto?",
+			"NO-CASTS-AVAILABLE": "Nessun palinsesto presente",
+			"DELETE-FROM": "Vuoi eliminare i giorni dal",
+			"DELETE-TO": "al",
+			"NEW-CAST": {
+				"TITLE": "Nuovo Palinsesto",
+				"NAME": "Nome",
+				"DESCRIPTION": "Descrizione",
+				"STREAM-PATH": "Streaming Url",
+				"SAVE": "Salva"
+			},
+			"QUERY-SEARCH": "Cerca",
+			"NEW-CAST-LIVE": {
+				"NAME": "Nome evento",
+				"DESCRIPTION": "Descrizione",
+				"STREAM-PATH": "Streaming Url",
+				"SAVE": "Salva"
+			},
+			"daily": {
+				"VIDEOS": "Video on demand",
+				"LIVES": "Eventi live",
+				"BACK-CALENDAR": "Torna al calendario mensile",
+				"BOX-VIDEOS" : "Video Disponibili in WimBox",
+				"TIMELINE": "Timeline giornaliera",
+				"TIMELINE-DESCRIPTION": "Trascina sulla timeline tramite drag and drop i video on demand o gli eventi live da aggiungere alla programmazione giornaliera. Puoi zoommare nella timeline tramite lo scroll del mouse.",
+				"SAVE-PROGRAMMING": "Salva programmazione",
+				"PREVIEW-CHANNEL": "Guarda il palinsesto",
+				"ADD-LIVE": "Eventi live del palinsesto",
+				"ADD-NEW-LIVE":  "Aggiungi un evento live",
+				"ADD": {
+					"TEXT": "Aggiungi al palinsesto",
+					"DRAG-TEXT": "Trascina il video per aggiungerlo nella timeline",
+					"NOT-READY": "Video non disponibile"
+				}
+			}
+		},
+		"analytics":{
+			"ADVANCED-ANALYTICS": "Statistiche avanzate",
+			"WELCOME": "Le statistiche dei tuoi video",
+			"VOD-ANALYTICS": "Statistiche dei video on demand",
+			"LIVE-ANALYTICS": "Statistiche degli eventi live",
+			"CURRENT-MONTH": "Mese corrente",
+			"CHANGE-DATE": "Cambia Data",
+			"FROM": "Dal",
+			"TO": "Al",
+			"APPLY-FILTER": "Applica filtro",
+			"TOTAL": "Totale",
+			"USED": "utilizzato",
+			"CONSUMED": "consumata nel mese",
+			"COMPLETE": "Completo",
+			"ACTIVE-PACKAGE": "Hai attivo il pacchetto",
+			"CHANGE-PACKAGE": "Cambia pacchetto",
+			"VOD": "Video On Demand",
+			"LIVE": "Eventi live",
+			"LIVE-SCHEDULE": "Live e Palinsesti",
+			"TABLE-VIDEO": "Video",
+			"TABLE-VIEWS": "Visualizzazioni",
+			"TABLE-TRAFFIC": "Traffico generato",
+			"VIEWS": "Visualizzazioni",
+			"TRAFFIC": "Traffico Generato",
+			"ACTIVE-VIEWER": "Visualizzatori attivi",
+			"MAX-VIEWER": "Max visualizzatori contemporanei",
+			"DATE": "Data",
+			"DURATION": "Durata",
+			"GENERATED-TRAFFIC": "Traffico generato",
+			"DETAILS": "Dettagli",
+			"NO-STATS": "Non ci sono statistiche",
+			"USAGE": {
+				"ERROR": "Caricamento delle statistiche dell'utente fallito"
+			},
+			"STREAMS": {
+				"ERROR": "Caricamento delle statistiche degli streams fallito"
+			},
+			"TYPE": "Raggruppa per",
+			"TYPE-DURATION": {
+				"HOURS": "Ore",
+				"DAYS": "Giorni",
+				"WEEKS": "Settimane",
+				"MONTHS": "Mesi"
+			}
+		},
+
+		"wimbridget": {
+			"YOUR-VIDEOS": "Gestisci i tuoi video bridget",
+			"MANAGE-IMAGES": "Gestisci le immagini",
+			"EDIT-METADATA": "Modifica i metadati del video bridget",
+			"VIDEO": "Video",
+			"IMAGES": "Immagini",
+			"LAYOUT-TYPE": "Tipo di layout",
+			"BRIDGETS-LIST": "Lista dei bridget",
+			"MODAL-DELETE-CONFIRM": "Vuoi eliminare definitivamente il bridget?",
+			"MODAL-DELETE-ALL-CONFIRM": "Vuoi eliminare definitivamente tutti i bridget?",
+			"videos": {
+				"add": {
+					"SUCCESS": "Video messo in coda con successo",
+					"FAILURE": "Impossibile aggiungere il video"
+				},
+				"remove": {
+					"SUCCESS": "Video rimosso con successo",
+					"FAILURE": "Impossibile rimuovere il video"
+				}
+			},
+			"asset": {
+				"EDIT":{
+					"TITLE-ERROR": "Il titolo è obbligatorio"
+				}
+			},
+			"NO-VIDEOS-BRIDGET-AVAILABLE": "Nessun video bridget disponibile.",
+			"LOAD-NEW-VIDEO-MESSAGE": "Seleziona un video dal pannello 'Video di WimBox' per iniziare a creare i tuoi video bridget",
+			"WELCOME": "Crea video interattivi e navigabili",
+			"AVAILABLE-VIDEOS": "Seleziona un video tra quelli che hai già caricato in WimBridge",
+			"AVAILABLE-IMAGES": "Seleziona un'immagine tra quelle che hai già caricato in WimBridge",
+			"ADD-IMAGE": "Aggiungi una nuova immagine",
+			"ADD-VIDEO": "Aggiungi un nuovo video",
+			"ADD-ASSET": "Aggiungi",
+			"CLOSE-ADDING": "Chiudi",
+			"BRIDGETS-EDITOR": "Modifica del bridget",
+			"image": {
+				"TITLE": "Titolo",
+				"DESCRIPTION": "Descrizione",
+				"TAGS": "Tags",
+				"UPLOAD-IMAGE": "Scegli l'immagine",
+				"WELCOME": "Gestisci le tue immagini",
+				"BUTTON-UPLOAD": "Carica l'immagine",
+				"MODAL-DELETE-CONFIRM": "Vuoi eliminare definitivamente l'immagine?",
+				"LIST": {
+					"FINISH": "Lista delle immagini caricata con successo",
+					"ERROR": "Errore durante il caricamento della lista delle immagini",
+					"NO-IMAGES-AVAILABLE": "Nessuna immagine disponibile"
+				},
+				"CREATE": {
+					"FINISH": "Caricamento dell'immagine avvenuto con successo",
+					"ERROR": "Errore durante caricamento dell'immagine"
+				},
+				"DELETE": {
+					"FINISH": "Cancellazione dell'immagine avvenuta con successo",
+					"ERROR": "Errore durante la cancellazione dell'immagine"
+				},
+				"PATCH": {
+					"FINISH": "Modifica dell'immagine avvenuta con successo",
+					"ERROR": "Errore durante la modifica dell'immagine"
+				}
+			},
+			"video": {
+				"WELCOME": "Gestisci i tuoi video per wimbridge",
+				"LIST": {
+					"FINISH": "Lista dei video caricata con successo",
+					"ERROR": "Errore durante il caricamento della lista dei video"
+				},
+				"CREATE": {
+					"WARNING": "Import del video in corso...",
+					"FINISH": "Video importato con successo",
+					"ERROR": "Errore durante l'import del video"
+				},
+				"DELETE": {
+					"FINISH": "Cancellazione del video avvenuta con successo",
+					"ERROR": "Errore durante la cancellazione del video"
+				},
+				"PATCH": {
+					"FINISH": "Modifica del video avvenuta con successo",
+					"ERROR": "Errore durante la modifica del video"
+				}
+			},
+			"bridget": {
+				"DELETE": {
+					"FINISH": "Cancellazione del bridget avvenuta con successo",
+					"ERROR": "Errore durante la cancellazione del bridget"
+				},
+				"CREATE": {
+					"TITLE-ERROR": "Il titolo è obbligatorio",
+					"FINISH": "Salvataggio del bridget avvenuto con successo",
+					"ERROR": "Errore durante il salvataggio del bridget"
+				},
+				"LIST": {
+					"FINISH": "Lista dei bridget caricata con successo",
+					"ERROR": "Errore durante il caricamento della lista dei bridget"
+				},
+				"PATCH": {
+					"FINISH": "Modifica del bridget avvenuta con successo",
+					"ERROR": "Errore durante la modifica del bridget"
+				},
+				"BUTTON-SAVE": "Salva bridget",
+				"LAYOUT": "Layout",
+				"CHANGE-DESTINATION": "Cambia contenuto",
+				"CLEAR-ALL": "Cancella tutto",
+				"ADD": "Aggiungi",
+				"TITLE": "Titolo",
+				"DESCRIPTION": "Descrizione",
+				"TAGS": "Tags",
+				"BUTTON-UPLOAD": "Salva Bridget",
+				"BUTTON-UNDO": "Annulla",
+				"BUTTON-CHANGE-THUMB": "Cambia Thumbnail",
+				"BUTTON-CHOOSE-THUMB": "Scegli Thumbnail",
+				"LOADING-VIDEO": "Video in caricamento",
+				"WELCOME": "Lista delle immagini disponibili",
+				"START": "Inizio",
+				"END": "Fine",
+				"ERROR-VIDEO": "Errore nel caricamento del video"
+			},
+			"BRIDGET-EDITOR": "Bridget Editor",
+			"CREATOR-PLAYER": {
+				"SHOT-NAVIGATION": "Navigazione",
+				"NEXT-SHOT": "shot successivo",
+				"PREV-SHOT": "shot precedente",
+				"PLAY-BETWEEN": "fai play dello shot",
+				"PREVIEW": "anteprima"
+			}
+		},
+		"userprofile":{
+			"SETTING-WEBTV": "Impostazioni Web TV",
+			"PERSONAL-DATA": "Dati personali",
+			"MONETISATION": "Monetizzazione",
+			"PACKAGE": "Pacchetto",
+			"UPLOAD-IMAGE": "Carica un'immagine",
+			"WEBTV-NAME": "Nome della Web TV",
+			"WEBTV-DESCRIPTION": "Descrizione Web TV",
+			"WEBTV-WIMLIVE": "Abilita le dirette streaming di WimLive. E' necessario inserire una password (può essere la stessa dell’utente).",
+			"WEBTV-WIMLIVE-PASSWORD": "Password per servizio WimLive",
+			"VIDEO-NOTIFICATION": "Vuoi ricevere una mail di notifica per ogni video transcodificato correttamente?",
+			"SHOW-VIDEOS": "Mostra i video sulle pagine pubbliche di WimTV (se deselezionato i video si vedranno solo tramite gli Iframe)",
+			"NAME": "Nome",
+			"SURNAME": "Cognome",
+			"EMAIL": "Email",
+			"BIRTH": "Data di nascita",
+			"PAYPAL-INFO": "Inserisci la tua email di PayPal per abilitare le licenze pay per view",
+			"PAYPAL-EMAIL": "Email di PayPal",
+			"BILLING-INFO": "Dati di fatturazione",
+			"VAT-CODE": "Partita IVA",
+			"TAX-CODE": "Codice fiscale",
+			"BILLING-ADDRESS": "Indirizzo di fatturazione",
+			"BILLING-CITY": "Città",
+			"BILLING-ZIPCODE": "CAP",
+			"BILLING-STATE": "Provincia",
+			"BILLING-COUNTRY": "Nazione",
+			"AFFILIATION-COMPANY": "Sei un'azienda?",
+			"COMPANY-NAME": "Nome azienda",
+			"COMPANY-RIGHTS": "Hai i diritti per operare come affiliato dell'azienda?",
+			"PACKAGE-INFO": "Prova WimTV con il pacchetto Free senza limiti di tempo, oppure scegli la soluzione più adatta alle tue esigenze selezionando un pacchetto delle dimensioni (in GByte) di storage e banda desiderate.",
+			"GB-STORAGE": "GB di Storage",
+			"GB-BANDWIDTH": "GB di Banda",
+			"HOURS": "ore di trasmissione*",
+			"ACTIVE": "Attivo",
+			"SELECT-PACKAGE": "Seleziona",
+			"PRICE-ENTRY": "€ 10 al mese",
+			"PRICE-BASIC": "€ 20 al mese",
+			"PRICE-PROFESSIONAL": "€ 60 al mese",
+			"PRICE-BUSINESS": "€ 180 al mese",
+			"DISCOUNTS": "Sconti del 10%, 20% o 30% se attivi pacchetti per 3, 6 o 12 mesi",
+			"CONTACT-US": "Contattaci per un'offerta personalizzata",
+			"PRICE-TAX": "I prezzi della tabella sono IVA esclusa.",
+			"HOURS-INFO": "* Le ore riportate sono indicative e si riferiscono a trasmissioni effettuate con encoding a 1mbps.",
+			"SAVE": "Salva",
+			"UNDO": "Annulla",
+			"UPDATE": {
+				"FINISH": "Aggiornamento del profilo utente concluso con successo",
+				"ERROR": "Aggiornamento del profilo utente fallito"
+			},
+			"GET": {
+				"ERROR": "Impossibile ottenere i dati del profilo utente"
+			},
+			"CHANGEIMAGE": {
+				"ERROR": "Errore durante il caricamento dell'immagine"
+			},
+			"CHANGE-PASSWORD-SAVE": "Salva",
+			"CHANGE-PASSWORD-CANCEL": "Annulla",
+			"CHANGE-PASSWORD": "Cambia Password",
+			"OLD-PASSWORD": "Password Attuale",
+			"NEW-PASSWORD": "Nuova Password",
+			"CONFIRM-PASSWORD": "Conferma la nuova Password",
+			"MESSAGES": {
+				"SUCCESSFUL-CHANGED-PASSWORD": "Password aggiornata con successo",
+				"FAILURE-CHANGE-PASSWORD": "Impossibile cambiare la password",
+				"MISSING-LIVEPASSWORD": "Password per il live non impostata, farlo nel <a href='#/userprofile'>pannello dell'utente </a>",
+				"PAYMENT-FAILED": "Impossibile completare il pagamento",
+				"DOWNGRADE-FAILED": "Impossibile completare il downgrade",
+				"DOWNGRADE-COMPLETED": "Impossibile completare il downgrade"
+			}
+		},
+		"LICENSE": {
+			"FREE": "Gratuita",
+			"CREATIVE_COMMONS": "Creative Commons",
+			"PAY_PER_VIEW": "Pay Per View",
+			"CONTENT_BUNDLE": "Abbonamento"
+		},
+		"formValidation": {
+			"REQUIRED": "Obbligatorio",
+			"MIN-LENGTH": "Troppo corto",
+			"MAX-LENGTH": "Troppo lungo",
+			"INVALID-EMAIL": "Email non valida",
+			"NOT-CONGRUENT": "Incongruente"
+		}
+	}
+}

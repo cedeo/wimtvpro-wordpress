@@ -1,0 +1,189 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-red">
+				<div class="panel-heading">
+					<div class="panel-intro flex flex-row between sec-center flex-wrap flex-wrap">
+						<div class="col-md-8">
+							<h3>
+								<i class="fa fa-calendar"></i>
+								WimCast
+								<small class="small-private display-none-mobile"> | {{'lang.wimcast.WELCOME' | translate}}</small>
+							</h3>
+						</div>
+						<div class="col-md-4">
+							<form class="search-form">
+								<input name="inputSearch"
+									   id="inputSearch"
+									   type="text"
+									   ng-model="vm.querySearchString"
+									   ng-model-options="{debounce: 500}"
+									   ng-change="vm.getCastChannels()"
+									   ng-maxlength="50"
+									   class="form-control input-search"
+									   placeholder="{{'lang.wimbox.QUERY-SEARCH' | translate}}">
+								<span class="glyphicon glyphicon-remove search-icon" ng-if="vm.querySearchString.length > 0" ng-click="vm.querySearchString = ''; vm.getCastChannels();"></span>
+								<span class="glyphicon glyphicon-search search-icon" ng-if="!vm.querySearchString"></span>
+							</form>
+						</div>
+						<div class="col-md-12 margin-5">
+							<button type="button" class="btn btn-default" title="Help" ng-click="$root.showHelp('cast')">
+								<i class="fa fa-info-circle" aria-hidden="true"></i> Help
+							</button>
+							<button class="btn btn-primary" type="button" ng-click="vm.createNew = !vm.createNew">
+								<span ng-if="vm.createNew"><i class="fa fa-close"></i> {{'lang.wimcast.CLOSE' | translate}}</span>
+								<span ng-if="!vm.createNew" title="{{'lang.wimcast.NEW' | translate}}"><i class="fa fa-add"></i><i class="fa fa-plus" aria-hidden="true"></i> {{'lang.wimcast.NEW' | translate}}</span>
+							</button>
+						</div>
+					</div>
+
+					<!-- New Cast-Channel collapse -->
+					<div uib-collapse="!vm.createNew" class="new-collapse">
+						<div class="panel-body upload-drop-zone">
+							<form class="container-fluid" ng-submit="vm.saveChannel()">
+								<div class="row">
+									<legend>{{'lang.wimcast.NEW-CAST.TITLE' | translate}}</legend>
+								</div>
+								<!-- NAME -->
+								<div class="row form-group flex flex-row between sec-center flex-wrap">
+									<label class="required col-xs-12 col-md-4">{{'lang.wimcast.NEW-CAST.NAME' | translate}}</label>
+									<div class="col-xs-12 col-sm-8">
+										<input class="form-control" type="text" name="name" ng-model="vm.newCast.name" placeholder="{{'lang.wimcast.NEW-CAST.NAME' | translate}}">
+									</div>
+								</div>
+								<!-- DESCRIPTION -->
+								<div class="row form-group flex flex-row between sec-center flex-wrap">
+									<label class="required col-xs-12 col-md-4">{{'lang.wimcast.NEW-CAST.DESCRIPTION' | translate}}</label>
+									<div class="col-xs-12 col-sm-8">
+										<input class="form-control" type="text" name="description" ng-model="vm.newCast.description" placeholder="{{'lang.wimcast.NEW-CAST.DESCRIPTION' | translate}}">
+									</div>
+								</div>
+								<!-- STREAM-PATH -->
+								<div class="row form-group flex flex-row between sec-center flex-wrap">
+									<div class="col-xs-12 col-md-4">
+										<label class="required">{{'lang.wimcast.NEW-CAST.STREAM-PATH' | translate}}</label>
+										<p><small>{{'lang.wimcast.INFO-URL' | translate}}</small></p>
+									</div>
+									<div class="col-xs-12 col-sm-8">
+										<div class="input-group form-inline">
+											<input name="streamPath" placeholder="{{'lang.wimcast.NEW-CAST.STREAM-PATH' | translate}}" class="form-control" type="text" ng-model="vm.newCast.streamPath" ng-required="true">
+											<span class="input-group-btn">
+												<button class="btn btn-secondary btn-secondary-live" type="button" ng-click="vm.getStreamPath(vm.newCast)"
+													title="{{'lang.wimchannel.GET-URL-INFO' | translate}}">{{'lang.wimchannel.GET-URL' | translate}}</button>
+											</span>
+										</div>
+									</div>
+								</div>
+								<!-- THUMBNAIL -->
+								<profile-thumbnail editable="true" object="vm.newCast"></profile-thumbnail>
+
+								<div class="row margin-10 flex-row-center-center">
+									<button type="submit" class="btn btn-primary">{{'lang.wimcast.NEW-CAST.SAVE' | translate}}</button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<!-- /end New Cast-Channel collapse -->
+				</div>
+				<!-- /fine panel-heading -->
+
+				<div class="panel-body">
+					<div class="text-center">
+						<div ng-if="!vm.channels" class="container-fluid">
+							<div class="spinner"></div>
+						</div>
+						<div ng-if="vm.channels">
+							<h4 ng-if="vm.channels.length === 0">{{'lang.wimcast.NO-CASTS-AVAILABLE' | translate}}</h4>
+							<div ng-repeat="cast in vm.channels" class="flex-row-center-center flex-wrap margin-bottom-10" style="text-decoration:none;">
+								<!-- VIEW -->
+								<div class="thumbnail-item col-xs-12 wimbox-contents flex flex-wrap" ng-if="!cast.editing && !cast.deleting">
+									<profile-thumbnail class="col-xs-12 col-md-3" object="cast" editable="false"></profile-thumbnail>
+									<div class="col-xs-12 col-md-3 flex flex-column center sec-center">
+										<h4><strong>{{cast.name}}</strong></h4>
+										<p>{{cast.description}}</p>
+									</div>
+									<div class="col-xs-12 col-md-4 flex flex-column around sec-center">
+										<a href="#/wimcast/{{cast.channelId}}" class="btn btn-success white margin-5">
+											<i class="fa fa-calendar"></i>
+											{{'lang.wimcast.MANAGE-SCHEDULE' | translate}}</a>
+									</div>
+									<div class="col-xs-12 col-md-2 flex flex-column center">
+										<div class="action-buttons" ng-if="!cast.editing && !cast.deleting">
+											<button type="button" ng-click="$event.preventDefault(); $event.stopPropagation(); vm.editing(cast, true);" class="btn btn-success">
+															<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+											</button>
+											<button class="btn btn-danger" type="button" ng-click="$event.preventDefault(); $event.stopPropagation(); cast.deleting = true;">
+												<i class="fa fa-trash-o"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+
+								<!-- EDIT -->
+								<div class="wimbox-contents col-xs-12" ng-if="cast.editing">
+									<div class="row">
+										<legend>{{cast.name}}</legend>
+									</div>
+									<profile-thumbnail class="col-xs-12 col-sm-4" object="cast.editing" editable="true"></profile-thumbnail>
+									<div class="col-xs-12 col-sm-8 flex flex-column around sec-start" ng-if="cast.editing">
+										<!-- NAME -->
+										<div class="col-xs-12 form-group flex flex-row between sec-center flex-wrap">
+											<label class="required col-xs-12 col-md-4">{{'lang.wimcast.NEW-CAST.NAME' | translate}}</label>
+											<div class="col-xs-12 col-md-8">
+												<input class="form-control" type="text" name="name" ng-model="cast.editing.name" placeholder="{{'lang.wimcast.NEW-CAST.NAME' | translate}}">
+											</div>
+										</div>
+										<!-- DESCRIPTION -->
+										<div class="col-xs-12 form-group flex flex-row between sec-center flex-wrap">
+											<label class="required col-xs-12 col-md-4">{{'lang.wimcast.NEW-CAST.DESCRIPTION' | translate}}</label>
+											<div class="col-xs-12 col-md-8">
+												<input class="form-control" type="text" name="description" ng-model="cast.editing.description" placeholder="{{'lang.wimcast.NEW-CAST.DESCRIPTION' | translate}}">
+											</div>
+										</div>
+										<!-- STREAM-PATH -->
+										<div class="col-xs-12 form-group flex flex-row between sec-center flex-wrap">
+											<div class="col-xs-12 col-md-4">
+												<label class="required">{{'lang.wimcast.NEW-CAST.STREAM-PATH' | translate}}</label>
+												<p><small>{{'lang.wimcast.INFO-URL' | translate}}</small></p>
+											</div>
+											<div class="col-xs-12 col-md-8">
+												<div class="input-group form-inline">
+													<input name="streamPath" placeholder="{{'lang.wimcast.NEW-CAST.STREAM-PATH' | translate}}" class="form-control" type="text" ng-model="cast.editing.streamPath" ng-required="true">
+													<span class="input-group-btn">
+													<button class="btn btn-secondary btn-secondary-live" type="button" ng-click="vm.getStreamPath(cast.editing)" title="{{'lang.wimchannel.GET-URL-INFO' | translate}}">{{'lang.wimchannel.GET-URL' | translate}}</button>
+												</span>
+												</div>
+											</div>
+										</div>
+										<div class="action-buttons col-xs-12 flex flex-row flex-wrap around">
+											<button type="button" ng-click="vm.editing(cast, false);" class="btn btn-default" title="{{'lang.userprofile.UNDO' | translate}}">{{'lang.userprofile.UNDO' | translate}}</button>
+											<button class="btn btn-success" type="button" ng-click="vm.edit(cast);" title="{{'lang.userprofile.SAVE' | translate}}">{{'lang.userprofile.SAVE' | translate}}</button>
+										</div>
+									</div>
+								</div>
+
+								<!-- DELETE -->
+								<div class="wimbox-contents col-xs-12" ng-if="cast.deleting">
+									<profile-thumbnail class="col-xs-4" object="cast" editable="false"></profile-thumbnail>
+									<div class="col-xs-8 height-100 flex flex-column between sec-center" style="height: 128px;">
+										<h4><strong>{{cast.name}}</strong>: {{'lang.wimcast.DELETE-CAST-CONFIRM' | translate}}</h4>
+										<div class="action-buttons col-xs-12 flex flex-row around">
+											<button type="button" ng-click="cast.deleting = false;"
+															class="btn btn-default" title="{{'lang.userprofile.UNDO' | translate}}">{{'lang.userprofile.UNDO' | translate}}
+											</button>
+											<button class="btn btn-danger" type="button" ng-click="vm.delete(cast)"
+															title="{{'lang.wimcast.MONTHLY-SELECT-DELETE' | translate}}">{{'lang.wimcast.MONTHLY-SELECT-DELETE' | translate}}
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

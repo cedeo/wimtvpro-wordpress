@@ -1,0 +1,256 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<div id="drag-container">
+				<!-- HEADER -->
+				<div class="panel panel-red">
+					<div class="panel-heading">
+						<div class="panel-intro flex flex-row between flex-wrap">
+							<div class="col-xs-12">
+								<h3>
+									<i class="fa fa-calendar"></i>
+									WimCast
+									<small class="small-private display-none-mobile">| {{vm.castChannel.name}} | {{vm.dailyInfo.targetDate}}</small>
+								</h3>
+							</div>
+							<div class="col-xs-12 flex flex-row start flex-wrap">
+								<button type="button" class="btn btn-default margin-5" title="Help" ng-click="$root.showHelp('cast')">
+									<i class="fa fa-info-circle" aria-hidden="true"></i> Help
+								</button>
+								<a href="#/wimcast/{{vm.castChannel.channelId}}" class="btn btn-default margin-5">
+									<i class="fa fa-calendar"></i>
+									{{'lang.wimcast.daily.BACK-CALENDAR' | translate}}</a>
+							</div>
+						</div>
+					</div>
+
+					<div id="body-content" class="panel-body panel-body-cast">
+						<div class="text-center">
+							<div class="flex-row-center-center flex-wrap wimbox-contents">
+								<div class="col-xs-12 col-sm-3 image-profile image-medium" style="background-image: url('{{getThumbnailUrl(vm.castChannel.thumbnailId)}}');"></div>
+								<div class="col-xs-12 col-sm-9 flex flex-row center sec-center flex-wrap">
+									<div class="col-xs-12 col-sm-12 col-md-6">
+										<h4><strong>{{vm.castChannel.name}}</strong></h4>
+										<p>{{vm.castChannel.description}}</p>
+									</div>
+									<div class="col-xs-12 col-sm-6 col-md-6 padding-top-10 margin-bottom-5">
+                    <textarea onclick="this.focus(); this.select();" style="width:100%" ng-bind-html="getIframe('cast', vm.castChannel.channelId)">
+                    </textarea>
+									</div>
+								</div>
+							</div>
+							<div class="flex flex-row-between-center flex-wrap margin-5">
+								<div class="col-xs-12 col-sm-2">
+									<a class="btn btn-default" href="{{vm.yesterdayLink}}"><i class="fa fa-chevron-left" aria-hidden="true"></i> {{vm.yesterdayParsed}}</a>
+								</div>
+								<div class="col-xs-12 col-sm-8">
+									<legend class="margin-top-10">{{'lang.wimcast.daily.TIMELINE' | translate}}: {{vm.dailyInfo.targetDate}}</legend>
+								</div>
+								<div class="col-xs-12 col-sm-2">
+									<a class="btn btn-default" href="{{vm.tomorrowLink}}">{{vm.tomorrowParsed}} <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+								</div>
+							</div>
+							<div class="flex flex-row-between-center flex-wrap">
+								<div class="col-xs-12">
+									<p class="text-left">{{'lang.wimcast.daily.TIMELINE-DESCRIPTION' | translate}}</p>
+								</div>
+							</div>
+							<div class="menu-timeline flex flex-wrap flex-row start">
+								<button type="button" class="btn btn-default" id="zoomIn"><i class="fa fa-search-plus" aria-hidden="true"></i></button>
+								<button type="button" class="btn btn-default" id="zoomOut"><i class="fa fa-search-minus" aria-hidden="true"></i></button>
+								<button type="button" class="btn btn-default" id="moveLeft"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+								<button type="button" class="btn btn-default" id="moveRight"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+								<button type="button" class="btn btn-success" title="salva" ng-click="vm.saveProgramming()">
+									<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+									{{'lang.wimcast.daily.SAVE-PROGRAMMING' | translate}}
+								</button>
+							</div>
+							<div id="dailyProgramming">
+							</div>
+							<!--<div id="actionHandlers" class="action-bar flex flex-row around">-->
+								<!--<div class="draggable">-->
+									<!--<div id="delete" class="btn btn-danger">Delete</div>-->
+								<!--</div>-->
+								<!--<div class="draggable">-->
+									<!--<div id="duplicate" class="btn btn-default">Duplicate<span class="hidden type">DUPLICATE</span></div>-->
+								<!--</div>-->
+							<!--</div>-->
+						</div>
+						<!-- BUTTON-TAB-SWITCH -->
+						<!--<div class="flex flex-row center sec-center flex-wrap">-->
+							<!--<button class="btn btn-default btn-lg margin-5" ng-class="{'btn-primary': vm.showTab === 'video'}" ng-click="vm.showTab = 'video'">{{'lang.wimcast.daily.VIDEOS' | translate}}</button>-->
+							<!--<button class="btn btn-default btn-lg margin-5" ng-class="{'btn-warning': vm.showTab === 'live'}" ng-click="vm.showTab = 'live'">{{'lang.wimcast.daily.LIVES' | translate}}</button>-->
+						<!--</div>-->
+					</div>
+				</div>
+
+				<!-- BOX-LIST -->
+				<box-list inner-class="col-xs-6 col-sm-4 col-md-3 col-lg-2" wim-cast="true" wim-cast-callback="vm.draggable()" page-size="vm.boxPageSize" ng-show="vm.showTab === 'video'"></box-list>
+
+				<!-- LIVE-LIST -->
+				<div class="panel panel-yellow" ng-show="vm.showTab === 'live'">
+					<!-- Header -->
+					<div class="panel-heading">
+						<div class="panel-intro">
+							<div class="row">
+								<div class="col-xs-12 flex flex-row between flex-wrap">
+									<h3>{{'lang.wimcast.daily.ADD-LIVE' | translate}}</h3>
+									<button class="btn btn-default margin-5" ng-click="vm.createNewLive = !vm.createNewLive">
+										<span ng-if="vm.createNewLive">
+											<i class="fa fa-times" aria-hidden="true"></i>
+											{{'lang.wimchannel.CLOSE' | translate}}
+										</span>
+										<span ng-if="!vm.createNewLive">
+											<i class="fa fa-plus" aria-hidden="true"></i>
+											{{'lang.wimcast.daily.ADD-NEW-LIVE' | translate}}
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- New Cast-Live collapse -->
+					<div uib-collapse="!vm.createNewLive">
+						<div class="panel-body upload-drop-zone">
+							<form class="container-fluid" ng-submit="vm.createLive()">
+								<!-- NAME -->
+								<div class="row form-group flex-row-between-center">
+									<label class="required col-xs-12 col-md-4">{{'lang.wimcast.NEW-CAST-LIVE.NAME' | translate}}</label>
+									<div class="col-xs-12 col-sm-8">
+										<input class="form-control" type="text" name="name" ng-model="vm.newCast.name" placeholder="{{'lang.wimcast.NEW-CAST-LIVE.NAME' | translate}}">
+									</div>
+								</div>
+								<!-- DESCRIPTION -->
+								<div class="row form-group flex-row-between-center">
+									<label class="required col-xs-12 col-md-4">{{'lang.wimcast.NEW-CAST-LIVE.DESCRIPTION' | translate}}</label>
+									<div class="col-xs-12 col-sm-8">
+										<input class="form-control" type="text" name="description" ng-model="vm.newCast.description" placeholder="{{'lang.wimcast.NEW-CAST-LIVE.DESCRIPTION' | translate}}">
+									</div>
+								</div>
+								<div class="row form-group flex flex-row between sec-center flex-wrap">
+										<div class="col-xs-12 col-md-4">
+											{{'lang.wimcast.INFO-URL' | translate}}
+										</div>
+									<div class="col-xs-12 col-sm-8">
+										<strong>Streaming URL</strong>: rtmp://streaming.wim.tv:80/programming <br>
+										<strong>Stream</strong>: <span>{{vm.castChannel.streamPath}}</span>
+									</div>
+								</div>
+								<!-- THUMBNAIL -->
+								<div class="image-profile image-medium" ng-class="{'force-image-change' : getThumbnailUrl(vm.newCast.thumbnailId) === defaultThumbnail}" style="background-image: url('{{getThumbnailUrl(vm.newCast.thumbnailId)}}');">
+									<div ng-if="vm.newCast.updatingThumbnail" class="image-loading">
+										<div class="snake-spinner"></div>
+									</div>
+									<div ng-if="vm.newCast.updatingThumbnailError && !vm.newCast.updatingThumbnail" class="image-loading" ng-click="vm.updatingProfileImageError = false">
+										<span class="glyphicon glyphicon-exclamation-sign"></span>
+									</div>
+									<button ng-if="!vm.newCast.updatingThumbnail && !vm.newCast.updatingThumbnailError" class="image-change" type="file" ngf-select="vm.changeCastThumbnail($file, $invalidFiles, vm.newCast)" accept="image/*">{{'lang.userprofile.UPLOAD-IMAGE' | translate}}</button>
+								</div>
+
+
+								<div class="row margin-10 flex-row-center-center">
+									<button type="submit" class="btn btn-primary">{{'lang.wimcast.NEW-CAST-LIVE.SAVE' | translate}}</button>
+								</div>
+							</form>
+						</div>
+					</div>
+					<!-- /end New Cast-Live collapse -->
+					<div class="panel-body">
+						<div class="container-fluid text-center">
+							<!-- Stream List -->
+							<div class="container-fluid text-center">
+								<div>
+									<div class="row flex-row-start-center flex-wrap">
+
+										<div class="flex flex-row between sec-center flex-wrap wimbox-contents">
+												<div class="col-xs-12 col-md-6">
+													{{'lang.wimcast.INFO-URL' | translate}}
+												</div>
+											<div class="col-xs-12 col-sm-6">
+												<strong>Streaming URL</strong>: rtmp://streaming.wim.tv:80/programming <br>
+												<strong>Stream</strong>: <span>{{vm.castChannel.streamPath}}</span>
+											</div>
+										</div>
+
+										<div ng-repeat="video in vm.streams.items" class="col-xs-6 col-md-4 col-lg-3">
+											<div ng-show="!video.editing && !video.deleting">
+												<div class="box-item draggable">
+													<span class="hidden duration">0:25</span>
+													<span class="hidden type">LIVE</span>
+													<span class="hidden boxId">{{video.streamId}}</span>
+													<span class="hidden title">{{video.name}}</span>
+													<div class="relative">
+														<div class="thumbnail card">
+															<div class="overlay-container">
+																<div class="image-profile image-medium" style="background-image: url('{{$root.getThumbnailUrl(video.thumbnailId)}}');">
+																</div>
+																<div class="caption">
+																	<h3>{{video.name}}</h3>
+																	<p>{{video.description}}</p>
+																</div>
+																<div class="absolute overlay overlay-move flex-column-center-center">
+																	<span><i class="fa fa-arrows fa-3x" aria-hidden="true"></i><br/>{{'lang.wimcast.daily.ADD.TEXT' | translate}}</span>
+																</div>
+															</div>
+															<div class="actions flex flex-row between">
+																<button class="btn btn-success" ng-click="vm.editDelete('editing', video, true)"><i class="fa fa-edit"></i></button>
+																<button class="btn btn-danger" ng-click="vm.editDelete('deleting', video, true)"><i class="fa fa-remove"></i></button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="relative" ng-if="video.editing">
+												<div class="thumbnail card">
+													<div class="image-profile image-medium" ng-class="{'force-image-change' : getThumbnailUrl(video.editing.thumbnailId) === defaultThumbnail}" style="background-image: url('{{getThumbnailUrl(video.thumbnailId)}}');">
+														<div ng-if="vm.newCast.updatingThumbnail" class="image-loading">
+															<div class="snake-spinner"></div>
+														</div>
+														<div ng-if="video.updatingThumbnailError && !video.updatingThumbnail" class="image-loading" ng-click="video.updatingProfileImageError = false">
+															<span class="glyphicon glyphicon-exclamation-sign"></span>
+														</div>
+														<button ng-if="!video.updatingThumbnail && !video.updatingThumbnailError" class="image-change" type="file" ngf-select="vm.changeCastThumbnail($file, $invalidFiles, video)" accept="image/*">{{'lang.userprofile.UPLOAD-IMAGE' | translate}}</button>
+													</div>
+													<input class="form-control margin-bottom-10" type="text" name="name" ng-model="video.editing.name" placeholder="{{'lang.wimcast.NEW-CAST-LIVE.NAME' | translate}}">
+													<input class="form-control" type="text" name="name" ng-model="video.editing.description" placeholder="{{'lang.wimcast.NEW-CAST-LIVE.DESCRIPTION' | translate}}">
+													<div class="flex flex-row between flex-wrap">
+														<button class="btn btn-default margin-5" ng-click="vm.editDelete('editing', video, false)">{{'lang.userprofile.UNDO' | translate}}</button>
+														<button class="btn btn-success margin-5" ng-click="vm.streamEdit(video.editing)">{{'lang.wimcast.NEW-CAST.SAVE' | translate}}</button>
+													</div>
+												</div>
+											</div>
+
+											<div class="relative" ng-if="video.deleting">
+												<div class="thumbnail card">
+													<h3>{{'lang.wimlive.MODAL-DELETE-TITLE' | translate}}</h3>
+													<button class="btn btn-default" ng-click="vm.editDelete('deleting', video, false)">{{'lang.userprofile.UNDO' | translate}}</button>
+													<button class="btn btn-danger" ng-click="vm.streamDelete(video.deleting)">{{'lang.wimcast.MONTHLY-SELECT-DELETE' | translate}}</button>
+												</div>
+											</div>
+
+										</div>
+									</div>
+									<!-- Streams Pagination buttons -->
+									<ul ng-if="vm.streams.totalCount > vm.boxPageSize"
+											ng-model="vm.boxPageIndex"
+											ng-change="vm.loadBoxVideos()"
+											uib-pagination boundary-links="true"
+											class="pagination-sm"
+											items-per-page="vm.boxPageSize"
+											max-size="5"
+											total-items="vm.streams.totalCount"
+											class="pagination-sm"
+											previous-text="&lsaquo;"
+											next-text="&rsaquo;"
+											first-text="&laquo;"
+											last-text="&raquo;"></ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

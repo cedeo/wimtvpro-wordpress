@@ -1,0 +1,380 @@
+<div id="page-wrapper">
+  <div class="row padding-top-20">
+    <div class="col-lg-12">
+      <h4 ng-show="errors.producer.message" class="alert-message alert-message-danger">{{errors.producer.message}}</h4>
+      <h4 ng-show="errors.getLives.message" class="alert-message alert-message-danger">{{errors.getLives.message}}</h4>
+      <h4 ng-show="errors.getStreamingUrl.message" class="alert-message alert-message-danger">{{errors.getStreamingUrl.message}}</h4>
+      <h4 ng-show="errors.newLive.message" class="alert-message alert-message-danger">{{errors.newLive.message}}</h4>
+      <h4 ng-show="errors.getIframe.message" class="alert-message alert-message-danger">{{errors.getIframe.message}}</h4>
+  <!--<h4 ng-show="errors.delete.message" class="alert-message alert-message-danger">{{errors.delete.message}}</h4>-->
+      <h4 ng-show="errors.updateLive.message" class="alert-message alert-message-danger">{{errors.updateLive.message}}</h4>
+      <div class="panel panel-yellow">
+        <div class="panel-heading">
+          <div class="panel-intro">
+            <div class="row">
+              <div class="col-xs-8">
+                <h3>
+                  <i class="fa fa-video-camera"></i>
+                  WimLive
+                  <small class="small-private display-none-mobile"> | {{'lang.wimlive.WELCOME' | translate}}</small>
+                </h3>
+              </div>
+              <div class="col-xs-4">
+                <div class="pull-right margin-top-10">
+                  <button class="btn btn-primary" type="button" ng-click="newliveCollapse = !newliveCollapse" title="{{'lang.wimlive.NEW-INFO' | translate}}">
+                    {{'lang.wimlive.NEW' | translate}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div uib-collapse="!newliveCollapse" class="new-collapse">
+            <div class="panel-body upload-drop-zone">
+              <form ng-submit="createLive()" class="form-horizontal" name="createlive">
+                <fieldset>
+                  <legend>{{'lang.wimlive.NEW-LIVE' | translate}}</legend>
+                    <div class="row">
+                      <div class="form-group form-group-live">
+                        <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.TITLE' | translate}}<span class="required"> * </span></label>
+                          <div class="col-md-4 col-sm-6 col-xs-8">
+                            <div class="input-group">
+                              <input  name="Titolo" class="form-control"  type="text" ng-model="newlive.name" ng-required="true">
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group form-group-live">
+                          <label class="col-md-2 col-sm-12 col-xs-12">Pay per view</label>
+                          <div class="col-md-4 col-sm-12 col-xs-12">
+                            <input type="checkbox" ng-model="newlive.paymentMode" ng-true-value="'PAY_PER_VIEW'" ng-false-value="'FREE'"> {{'lang.wimlive.SELECT-PAY-PER-VIEW' | translate}} </br>
+                            <div ng-if="newlive.paymentMode == 'PAY_PER_VIEW'" class="well well-live-pay">
+                              <div class="input-group">
+                              {{'lang.wimlive.PRICE' | translate}} <input type="text" class="form-control form-control-live" ng-model="newlive.pricePerView" placeholder="{{'lang.wimlive.PRICE' | translate}}" ng-required="true">
+                              </div>
+                              <!--<div class="input-group">
+                                <input type="text" class="form-control form-control-live" readonly ng-model="newlive.paymentCode" ng-init="newlive.paymentCode=$root.generateUUID();">
+                                <span class="input-group-btn">
+                                  <button class="btn btn-secondary btn-secondary-live" type="button" ng-click="newlive.paymentCode=$root.generateUUID();">
+                                {{'lang.wimlive.CHANGE-CODE' | translate}}
+                                </button>
+                                </span>
+                              </div>-->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  <div class="row">
+                    <div class="form-group form-group-live">
+                      <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.AVAILABLE-CHANNELS' | translate}} <span class="required"> * </span> </label>
+                      <div class="col-md-4 col-sm-11 col-xs-11">
+                        <div class="input-group">
+                          <select ng-model="newlive.channel" class="form-control" ng-required="true">
+                            <option ng-repeat="channel in availableChannels" value="{{channel.channelId}}">{{channel.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="form-group form-group-live">
+                      <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.TIME-ZONE' | translate}} <span class="required"> * </span> </label>
+                      <div class="col-md-4 col-sm-11 col-xs-11">
+                        <div class="input-group">
+                          <select ng-model="newlive.eventTimeZone" class="form-control" ng-required="true">
+                            <option ng-repeat="timezone in $root.TIMEZONE" value="{{timezone.value}}">{{timezone.text}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                    <div class="row">
+                      <div class="form-group form-group-live">
+                        <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.DATE' | translate}} <span class="required"> * </span> </label>
+                          <div class="col-md-4 col-sm-11 col-xs-11">
+                            <div class="input-group">
+                              <input  name="Data"  class="form-control"  type="date" ng-model="tmpDate" ng-change="newlive.eventDate.date = formatEventDate(tmpDate)" ng-required="true">
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group form-group-live">
+                        <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.TIME' | translate}} <span class="required"> * </span> </label>
+                          <div class="col-md-4 col-sm-11 col-xs-11">
+                            <div class="row">
+                                <div class="col-md-6">
+                                  <strong>{{'lang.wimlive.HOURS' | translate}} </strong>
+                                  <select ng-model="newlive.eventHour" class="form-control margin-bottom-5" ng-required="true">
+                                   <option ng-repeat="hour in hours" value="{{hour}}">{{hour}}</option>
+                                 </select>
+                                </div>
+                                <div class="col-md-6">
+                                 <strong>{{'lang.wimlive.MINUTES' | translate}} </strong>
+                                 <select ng-model="newlive.eventMinute" class="form-control" ng-required="true">
+                                   <option ng-repeat="minute in minutes" value="{{minute}}">{{minute}}</option>
+                                 </select>
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group form-group-live">
+                        <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.DURATION' | translate}} <span class="required"> * </span> </label>
+                          <div class="col-md-6 col-sm-11 col-xs-11">
+                            <div class="row">
+                              <div class="col-md-4">
+                                <div class="input-group">
+                                  <input class="form-control" type="number" ng-model="newlive.duration"  min="1" ng-required="true"> {{'lang.wimlive.DURATION-TEXT' | translate}}
+                                  <input type="checkbox" ng-model="newlive.durationUnit" ng-true-value="'Hour'" ng-false-value="'Minute'">  {{newlive.durationUnit}}</br>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group form-group-live">
+                        <label class="col-md-2 col-sm-3 col-xs-3" title="{{'lang.wimlive.PUBLIC-INFO' | translate}}">{{'lang.wimlive.PUBLIC' | translate}} </label>
+                          <div class="col-md-4 col-sm-3 col-xs-3">
+                            <input type="checkbox" name="Rendi pubblico"  title="{{'lang.wimlive.PUBLIC-INFO' | translate}}">
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group form-group-live">
+                        <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.RECORDING' | translate}}</label>
+                          <div class="col-md-4 col-sm-3 col-xs-3">
+                            <input type="checkbox" name="Rendi pubblico" title="{{'lang.wimlive.RECORDING-INFO' | translate}}">
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group form-group-live">
+                        <label class="col-md-2 control-label"></label>
+                        <div class="col-md-6  col-sm-12 col-xs-12">
+                          <input class="btn btn-warning btn-warning-live" type="submit" value="{{'lang.wimlive.CREATE-EVENT' | translate}}">
+                          <h4 ng-show="liveCreated" class="margin-top-10 alert-message alert-message-success"> {{'lang.wimlive.CREATE-EVENT-SUCCESS' | translate}}</h4>
+                        </div>
+                      </div>
+                    </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+          </div>
+
+          <div class="panel-body">
+            <div class="container-fluid text-center">
+              <div class="row margin-top-10 wimbox-titles">
+                <strong>
+                    <div class="col-md-2 col-sm-4">{{'lang.wimlive.TABLE-TITLE' | translate}}</div>
+                    <div class="col-md-3 col-sm-4">{{'lang.wimlive.CHANNEL-TITLE' | translate}}</div>
+                    <div class="col-md-2 col-sm-1">{{'lang.wimlive.TABLE-SCHEDULING' | translate}}</div>
+                    <div class="col-md-2 col-sm-3">{{'lang.wimlive.TABLE-IFRAME' | translate}}</div>
+                    <div class="col-md-1 col-sm-1">{{'lang.wimlive.TABLE-PRODUCER' | translate}}</div>
+                    <div class="col-md-1 col-sm-1">{{'lang.wimlive.TABLE-EDIT' | translate}}</div>
+                    <div class="col-md-1 col-sm-1">{{'lang.wimlive.TABLE-DELETE' | translate}}</div>
+                  </strong>
+              </div>
+
+              <div>
+                <div ng-repeat="live in lives" class="row wimbox-contents margin-top-10">
+                  <div class="col-md-2 col-sm-12 padding-top-5">
+                    <strong>{{live.name}}</strong>
+                    <div ng-show="live.pricePerView">{{live.pricePerView+' '+live.ccy}}</div>
+                    <div ng-show="!live.pricePerView">Free</div>
+                  </div>
+                  <div class="col-md-3 col-sm-12 padding-top-5">
+                    <strong>{{live.channel.name}}</strong><br />
+                    <span>{{live.channel.url}}</span>
+                  </div>
+                  <div class="col-md-2 col-sm-6 padding-top-5">
+                    {{live.eventDate.date}}</br>
+                    {{live.eventDate.time}}</br>
+                    {{live.endDate.date}}</br>
+                    {{live.endDate.time}}
+                  </div>
+                  <div class="col-md-2 col-sm-6 padding-top-5 margin-bottom-5"  ng-init="getIframe(live); live.showPreview=false; live.showUpdate=false">
+                    <textarea id="embed-code" onclick="this.focus(); this.select();" style="width:100%">{{live.iframe || ''}}</textarea>
+                  </div>
+                  <div class="col-md-1 col-sm-4 padding-top-5 margin-bottom-5">
+                    <a title="{{'lang.wimlive.PRODUCER-BUTTON-INFO' | translate}}" ui-sref="stateProducer({hostId: live.eventId})" target="_blank" class="btn btn-info white" title="{{'lang.wimlive.PRODUCER-INFO' | translate}}"><i class="fa fa-video-camera"></i></a>
+                  </div>
+                  <div class="col-md-1 col-sm-4 padding-top-5 margin-bottom-5">
+                    <ga-live-modal
+                          template="updateLive.html"
+                          obj="live"
+                          window-class="update-modal-container">
+                          <button type="button" class="btn btn-success" title="{{'lang.wimlive.EDIT-BUTTON-INFO' | translate}}">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          </button>
+                    </ga-live-modal>
+                  </div>
+                  <div class="col-md-1 col-sm-4 padding-top-5 margin-bottom-5">
+                    <ga-live-modal
+                      template="removeModal.html"
+                      obj="live"
+                      window-class="remove-modal-container">
+                      <button class="btn btn-danger btn-info" type="button" title="{{'lang.wimlive.DELETE-BUTTON-INFO' | translate}}">
+                        <i class="fa fa-trash-o"></i>
+                      </button>
+                    </ga-live-modal>
+                  </div>
+                </div>
+                <!-- Pagination buttons -->
+                <!--<ul ng-show="lives.length > itemsPerPage" ng-model="currentPage" uib-pagination boundary-links="true"-->
+                  <!--class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"-->
+                  <!--total-items="totalItems"  class="pagination-sm" items-per-page="itemsPerPage"></ul>-->
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        <!-- end panel -->
+      </div>
+    </div>
+    <!-- end row -->
+
+  <div>
+    <!-- ui-bootstrap modal updateLive -->
+    <script type="text/ng-template" id="updateLive.html">
+      <div class='modal-header'>
+       <button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='close()'>
+          <span aria-hidden='true'>&times;</span>
+       </button>
+       <h4 class='modal-title'>{{obj.name}}</h4>
+      </div>
+      <div class='modal-body'>
+        <form ng-submit="wimLiveScope.updateLive(obj)" class="form-horizontal" >
+          <div class="row">
+            <div class="form-group form-group-live">
+              <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.TITLE' | translate}}<span class="required"> * </span></label>
+                <div class="col-md-4 col-sm-6 col-xs-8">
+                  <div class="input-group">
+                    <input  name="Titolo" class="form-control"  type="text" ng-model="obj.name" ng-required="true">
+                  </div>
+                </div>
+              </div>
+          </div>
+            <div class="row">
+              <div class="form-group form-group-live">
+                <label class="col-md-2 col-sm-12 col-xs-12">Pay per view</label>
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                  <input type="checkbox" ng-model="obj.paymentMode" ng-true-value="'PAY_PER_VIEW'" ng-false-value="'FREE'"> Pay Per View</br>
+                  <div ng-if="obj.paymentMode == 'PAY_PER_VIEW'" class="well well-live-pay" ng-init="obj.ccy='EUR'">
+                    <div class="input-group">
+                    <input type="text" class="form-control form-control-live" ng-model="obj.pricePerView"  ng-required="true"> <span class="input-group-addon"><i class="fa fa-eur" aria-hidden="true"></i></span>
+                    <input type="hidden" ng-model="obj.ccy">
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group form-group-live">
+              <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.TIME-ZONE' | translate}} <span class="required"> * </span> </label>
+              <div class="col-md-4 col-sm-11 col-xs-11">
+               <div class="input-group">
+                 <select ng-model="obj.eventTimeZone" class="form-control" ng-required="true">
+                   <option ng-repeat="timezone in $root.TIMEZONE" value="{{timezone.value}}">{{timezone.text}}</option>
+                 </select>
+               </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group form-group-live">
+              <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.DATE' | translate}} <span class="required"> * </span> </label>
+                <div class="col-md-4 col-sm-11 col-xs-11">
+                  <div class="input-group">
+                    <input  name="Data"  class="form-control"  type="date" ng-model="obj.tmpDateUpdate" ng-change="obj.eventDate.date = wimLiveScope.formatEventDate(obj.tmpDateUpdate)" ng-required="true">
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group form-group-live">
+              <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.TIME' | translate}} <span class="required"> * </span> </label>
+                <div class="col-md-6 col-sm-11 col-xs-11">
+                  <div class="row">
+                      <div class="col-md-6">
+                        <input type="number" ng-model="obj.eventHour" class="form-control" ng-required="true">
+                        <strong>{{'lang.wimlive.HOURS' | translate}} </strong>
+                      </div>
+                      <div class="col-md-6">
+                        <input type="number" ng-model="obj.eventMinute" class="form-control" ng-required="true">
+                        <strong>{{'lang.wimlive.MINUTES' | translate}} </strong>
+                      </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group form-group-live">
+              <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.DURATION' | translate}} <span class="required"> * </span> </label>
+                <div class="col-md-6 col-sm-11 col-xs-11">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="input-group">
+                        <input class="form-control" type="number" ng-model="obj.duration" ng-required="true"> {{'lang.wimlive.DURATION-TEXT' | translate}}
+                        <input type="checkbox" ng-model="obj.durationUnit" ng-true-value="'Hour'" ng-false-value="'Minute'">  {{obj.durationUnit}}</br>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group form-group-live">
+              <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.PUBLIC' | translate}}</label>
+                <div class="col-md-4 col-sm-3 col-xs-3">
+                  <input type="checkbox" name="Rendi pubblico" ng-model="obj.publicEvent">
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group form-group-live">
+              <label class="col-md-2 col-sm-3 col-xs-3">{{'lang.wimlive.RECORDING' | translate}}</label>
+                <div class="col-md-4 col-sm-3 col-xs-3">
+                  <input type="checkbox" name="Registra evento" ng-model="obj.recordEvent">
+                </div>
+            </div>
+          </div>
+          <input class="btn btn-warning btn-warning-live" type="submit" value="{{'lang.wimlive.UPDATE-EVENT' | translate}}">
+        </form>
+      </div>
+    </script>
+    <!-- ui-bootstrap modal removeLive -->
+    <script type="text/ng-template" id="removeModal.html">
+      <div class='modal-body'>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='close()'>
+           <span aria-hidden='true'>&times;</span>
+        </button>
+        <h4><strong>{{'lang.wimlive.MODAL-DELETE-TITLE' | translate}}</strong></h4>
+        <p class="margin-top-15">{{'lang.wimlive.MODAL-DELETE-TEXT' | translate}}</p>
+      </div>
+      <div class='modal-footer'>
+        <div class="row">
+          <div class="col-md-8">
+            <h4 style="text-align:left" ng-show="wimLiveScope.errors.delete.message" class="alert-message alert-message-danger margin-top-30">{{wimLiveScope.errors.delete.message | translate}}</h4>
+          </div>
+          <div class="col-md-4">
+            <button ng-click='close();wimLiveScope.errors.delete.message=null;' class="btn btn-default buttonannulla">{{'lang.wimlive.MODAL-DELETE-CANCEL' | translate}}</button>
+            <button ng-click="wimLiveScope.deleteLive(obj.identifier)" class="btn btn-primary buttonrimuovi">{{'lang.wimlive.MODAL-DELETE-CONFIRM' | translate}}</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+  </div>
+  <div id="producer">
+
+  </div>
+</div>

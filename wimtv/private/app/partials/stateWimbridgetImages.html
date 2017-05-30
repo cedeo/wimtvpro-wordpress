@@ -1,0 +1,204 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-amber">
+				<div class="panel-heading">
+					<h3>
+						<i class="fa fa-window-restore"></i> WimBridge <span class="beta">Beta</span>
+						<small class="small-private display-none-mobile"> | {{'lang.wimbridget.IMAGES' | translate}}</small>
+					</h3>
+				</div>
+				<bridget-home-headers location="images" show-add="true" add-action="vm.toggleAdd(vm.adding)"
+					refresh-action="vm.imageList()" add-text="vm.addText"></bridget-home-headers>
+
+				<!-- ADD IMAGE -->
+				<div uib-collapse="!vm.adding" class="row container-fluid">
+					<div class="panel-body upload-drop-zone">
+						<form ng-submit="vm.imageCreate(vm.image)" name="imageForm">
+							<div class="flex flex-column center sec-stretch padding-10">
+								<!-- TITLE -->
+								<div class="flex flex-row between sec-center flex-wrap form-group">
+										<label for="title" class="col-xs-12 col-sm-4">{{'lang.wimbridget.image.TITLE' | translate}}<span class="required"> * </span></label>
+										<div class="col-xs-12 col-sm-8">
+											<input id="title" type="text" name="title" class="form-control col-xs-12" ng-model="vm.image.title"
+												placeholder="{{'lang.wimbridget.image.TITLE' | translate}}" ng-required="true">
+										</div>
+								</div>
+
+								<!-- DESCRIPTION -->
+								<div class="flex flex-row between sec-center flex-wrap">
+									<label for="description" class="col-xs-12 col-sm-4">{{'lang.wimbridget.image.DESCRIPTION' | translate}}</label>
+									<div class="form-group col-xs-12 col-sm-8">
+										<input id="description" type="text" class="form-control margin-top-5" ng-model="vm.image.description" placeholder="{{'lang.wimbridget.image.DESCRIPTION' | translate}}">
+									</div>
+								</div>
+
+								<!-- TAGS -->
+								<div class="flex flex-row between sec-center flex-wrap">
+									<label for="tags" class="col-xs-12 col-sm-4">{{'lang.wimbridget.image.TAGS' | translate}}</label>
+									<div class="form-group col-xs-12 col-sm-8">
+										<input id="tags" type="text" class="form-control margin-top-5" ng-model="vm.image.tags" placeholder="{{'lang.wimbridget.image.TAGS' | translate}}">
+									</div>
+								</div>
+
+								<!-- UPLOAD IMAGE -->
+								<div class="flex flex-row between sec-center flex-wrap">
+									<label for="thumbnail" class="col-xs-12 col-sm-4">{{'lang.wimbridget.image.UPLOAD-IMAGE' | translate}}</label>
+									<div class="col-xs-12 col-sm-4">
+										<button id="thumbnail" class="btn btn-default margin-5" ngf-select ng-model="vm.image.file" ngf-accept="'image/*'">
+											{{'lang.wimbridget.image.UPLOAD-IMAGE' | translate}}
+										</button>
+									</div>
+									<div class="col-xs-12 col-sm-4">
+										<div class="break-all" ng-if="vm.image.file"
+											ng-init="vm.image.title = (vm.image.title=='' || !vm.image.title) ? vm.image.file.name : vm.image.title">
+											<img ngf-src="vm.image.file" class="img-responsive">
+											<strong>{{vm.image.file.name}}</strong>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="flex flex-row-center-center">
+								<button type="submit" class="btn btn-success" ng-disabled="!vm.image.file || !vm.image.title">
+									{{'lang.wimbridget.image.BUTTON-UPLOAD' | translate}}
+								</button>
+								<div ng-if="vm.addingWaiting">
+									<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+									<span class="sr-only">Loading...</span>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!-- LISTA DELLE IMMAGINI -->
+				<div class="panel-body">
+					<div class="container-fluid text-center">
+						<div ng-if="!vm.imagesLoaded">
+							<div class="spinner">
+							</div>
+						</div>
+						<div ng-if="vm.imagesLoaded && vm.images.length === 0" class="text-center">
+							<h4>{{'lang.wimbridget.image.LIST.NO-IMAGES-AVAILABLE' | translate}}</h4>
+						</div>
+						<div ng-if="vm.imagesLoaded">
+
+							<div class="row wimbox-contents wimbridge-image-content margin-top-10 thumbnail-item" ng-repeat="image in vm.images | orderBy:'date_modified':true">
+								<!-- THUMBNAIL -->
+								<div class="col-md-2 col-sm-6 col-xs-12">
+									<div class="row">
+										<div ng-if="image.status == 'SUCCESS' || image.status == 'FAILURE'" class="image-rectangle-box image-box cover" style="background-image: url('{{$root.getBridgetThumbnail(image)}}');">
+										</div>
+										<div ng-if="image.status == 'PENDING'" class="">
+											</br>
+											<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+											<span class="sr-only">Loading...</span>
+										</div>
+									</div>
+								</div>
+
+								<!-- title and description -->
+								<div class="col-md-4 col-sm-6 col-xs-12 padding-top-10">
+									<h5><strong>{{image.title}}</strong></h5>
+									<p>{{image.description}}</p>
+									<div class="chips-container">
+										<span class="label label-default" ng-repeat="tag in image.tags">
+											{{tag}}
+										</span>
+									</div>
+								</div>
+
+								<div class="col-md-3 col-sm-12 col-xs-12 col-md-offset-3">
+									<div class="row">
+										<!-- edit button -->
+										<div class="col-xs-6 padding-top-10 margin-bottom-10">
+											<button type="button" class="btn btn-success" title="{{'lang.wimbox.EDIT-INFO' | translate}}" ng-click="vm.openModal(image, 'editModal.html')">
+												<i class="fa fa-edit"></i>
+											</button>
+											<!-- EDIT MODAL -->
+											<script type="text/ng-template" id="editModal.html">
+												<div class="modal-content">
+													<div class='modal-header'>
+														<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close()'>
+															<span aria-hidden='true'>&times;</span>
+														</button>
+														<h4 class='modal-title'>{{'lang.wimbridget.EDIT-METADATA' | translate}}</h4>
+													</div>
+													<div class='modal-body'>
+														<div class="row">
+															<div class="col-md-12">
+																<form class="form" name="imageEditForm">
+																	<!-- TITLE -->
+																	<div class="form-group" ng-class="{ 'has-error': imageEditForm.title.$invalid }">
+																		<label>{{'lang.wimbridget.image.TITLE' | translate}}</label>
+																		<input class="form-control"
+																			   type="text" required name="title"
+																			   ng-model="vm.image.title">
+																	</div>
+																	<!-- DESCRIPTION -->
+																	<div class="form-group">
+																		<label>{{'lang.wimbridget.image.DESCRIPTION' | translate}}</label>
+																		<input class="form-control"
+																			   type="text"
+																			   ng-model="vm.image.description">
+																	</div>
+																	<!-- TAGS -->
+																	<div class="form-group">
+																		<label>{{'lang.wimbridget.image.TAGS' | translate}}</label>
+																		<input class="form-control"
+																			   type="text"
+																			   ng-model="vm.image.tags">
+																	</div>
+
+																	<button type="button"
+																			class="btn btn-success margin-top-10 margin-bottom-10"
+																			ng-click="vm.imagePatch(vm.image)"
+																			title="{{'lang.wimbox.SAVE-BUTTON' | translate}}">
+																		{{'lang.wimbox.SAVE-BUTTON' | translate}}
+																	</button>
+																</form>
+															</div>
+														</div>
+													</div>  <!-- Modal Body -->
+												</div><!-- Modal Content -->
+											</script>
+										</div>
+										<!-- delete button -->
+										<div class="col-xs-6 padding-top-10 margin-bottom-10">
+											<button type="button" class="btn btn-danger" ng-click="vm.openModal(image, 'deleteImage.html')" title="{{'lang.wimbox.DELETE-INFO' | translate}}">
+												<i class="fa fa-trash-o"></i>
+											</button>
+											<!-- REMOVE MODAL -->
+											<script type="text/ng-template" id="deleteImage.html">
+												<div class='modal-body'>
+													<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close()'>
+														<span aria-hidden='true'>&times;</span>
+													</button>
+													<h4>
+														<strong>{{'lang.wimbridget.image.MODAL-DELETE-CONFIRM' | translate}}</strong>
+													</h4>
+													<p class="margin-top-15">&nbsp;</p>
+												</div>
+												<div class='modal-footer'>
+													<div class="row">
+														<div class="col-md-12">
+															<button ng-click='vm.close();' class="btn btn-default buttonannulla">{{'lang.wimbox.MODAL-DELETE-CANCEL' | translate}}</button>
+															<button ng-click="vm.imageDelete(vm.image)" class="btn btn-primary buttonrimuovi">{{'lang.wimbox.MODAL-DELETE-YES' | translate}}</button>
+														</div>
+													</div>
+												</div>
+											</script>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!--<div class="col-xs-6 col-md-4 col-lg-3" ng-repeat="image in vm.images">
+								<bridget-asset type="IMAGE" asset="image" editable="true" delete-call="vm.imageDelete" edit-call="vm.imagePatch"></bridget-asset>
+							</div>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

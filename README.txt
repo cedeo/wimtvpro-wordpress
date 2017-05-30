@@ -2,12 +2,12 @@
 Contributors: WimLabs
 Tags: video, plugin, admin, media, live, on demand, streaming, playlist, web, tv, webtv, gallery, embed, channel, broadcast, stream, manage, wimtv, wimtvpro, player
 Requires at least: 3.4
-Tested up to: 4.7
+Tested up to: 4.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 5.0.1
+Stable tag: 10.1.0
 
-WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
+WimTVPro is the video plugin that adds several features to manage and publish video on demand, video schedules and stream live events on your website.
 
 == Description ==
 
@@ -22,18 +22,16 @@ WimTVPro allows its users to:
 *  set a price for the visualisation of your video content. Just connect your Web TV to your PayPal account
 *  given a list of videos, publish those of choice on your website
 *  insert videos anywhere on the page (e.g. in posts, pages or widgets)
-*  choose the skin and the size of the video player
+*  customize the logo of the video player
 *  set your privacy to make videos available to everyone or only to certain users
-*  create a new video playlist and insert into the pages and posts of the site
+*  create a new video schedules and insert into the pages and posts of the site
 *  create live streaming events to be published on the pages of your site
 *  recording video of live events that have been already broadcasted
-*  change with drag-and-drop the order of presentation of videos on a web page
 *  control and monitor access analytics for your content
-*  embed your live and on demand videos on any site
-*  synchronize videos with your WimTV account 
+*  embed your live, schedules and on demand videos on any site
 *  create a video channel on WimTV, becoming part of the community
 
-The plugin is integrated into the menu and is divided in section, to always have an ordered control of content.
+The plugin is integrated into the WordPress menu and is divided in specific section, to always have an ordered control of content.
 For more details about WimTVPro's functionalities visit: http://wimtvpro.tv/functionalities.html
  
 == Installation ==
@@ -125,9 +123,11 @@ Check the [Wimlabs support site](http://support.wim.tv)
 * New version redesigned to communicate with the new wimtv platform
 = 5.0.1 =
 * Bugfix
+= 10.1.0 =
+* New version connected to the new platform WimTV
 
 == Upgrade Notice ==
-Into version 2.0 added videos Playlist and Report. When you update insert again your wimtv user and password.
+
 
 == Contacts ==
 For product support and general information:
@@ -137,4 +137,4 @@ WimLabs srl
 Visit the [plugin's website](http://wimtvpro.tv)
 
 == Last updated ==
-26/01/2017
+29/05/2017

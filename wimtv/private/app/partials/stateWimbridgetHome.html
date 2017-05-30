@@ -1,0 +1,135 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-amber">
+				<div class="panel-heading">
+					<h3>
+						<i class="fa fa-window-restore"></i> WimBridge <span class="beta">Beta</span>
+						<small class="small-private display-none-mobile"> | {{'lang.wimbridget.WELCOME' | translate}}</small>
+					</h3>
+				</div>
+				<bridget-home-headers location="home"></bridget-home-headers>
+				<div class="panel-body">
+					<div class="container-fluid text-center">
+						<div ng-if="vm.videosBridget.length == 0"><h4>{{'lang.wimbridget.NO-VIDEOS-BRIDGET-AVAILABLE' | translate}}</h4></div>
+						<a href="http://support.wim.tv/wimbridge/" target="_blank" ng-if="(currentLang == 'it')"><h4>WimBridge: {{'lang.privatepage.SUPPORT' | translate}}</h4></a>
+						<a href="http://support.wim.tv/en/wimbridge/" target="_blank" ng-if="(currentLang == 'en')"><h4>WimBridge: {{'lang.privatepage.SUPPORT' | translate}}</h4></a>
+						<a href="http://support.wim.tv/fr/wimbridge/" target="_blank" ng-if="(currentLang == 'fr')"><h4>WimBridge: {{'lang.privatepage.SUPPORT' | translate}}</h4></a>
+						<a href="http://support.wim.tv/es/wimbridge/" target="_blank" ng-if="(currentLang == 'es')"><h4>WimBridge: {{'lang.privatepage.SUPPORT' | translate}}</h4></a>
+						<a href="http://support.wim.tv/pt/wimbridge/" target="_blank" ng-if="(currentLang == 'pt')"><h4>WimBridge: {{'lang.privatepage.SUPPORT' | translate}}</h4></a>
+						<div class="row wimbox-contents margin-top-10 thumbnail-item" ng-repeat="video in vm.videosBridget">
+							<!-- THUMBNAIL -->
+							<div class="col-md-2 col-sm-6 col-xs-12">
+								<div class="row">
+									<div class="margin-bottom-10">
+										<div class="image-rectangle-box image-box cover" style="background-image: url('{{$root.getBridgetThumbnail(video)}}');">
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- title and description -->
+							<div class="col-md-4 col-sm-6 col-xs-12 padding-top-10">
+								<h5><strong>{{video.title}}</strong></h5>
+								<p>{{video.description}}</p>
+								<div class="chips-container" ng-init="tagsArray = video.tags.split(',')">
+									<span class="label label-default" ng-repeat="tag in tagsArray">
+										{{tag.replace(",","")}}
+									</span>
+								</div>
+							</div>
+
+							<!-- bridget editor -->
+							<div class="col-md-3 col-sm-12 col-xs-12 padding-top-10 margin-bottom-10 flex-column-center-center">
+								<a href="#wimbridge/bridgeteditor/{{video._id}}" class="btn btn-success white">
+									<i class="fa fa-window-restore" aria-hidden="true"></i> Bridget Editor
+								</a>
+							</div>
+
+							<div class="col-md-3 col-sm-12 col-xs-12">
+								<div class="row">
+									<!-- Edit Video Button -->
+									<div class="col-xs-6 padding-top-10 margin-bottom-10">
+										<button type="button" class="btn btn-success" title="{{'lang.wimbox.EDIT-INFO' | translate}}" ng-click="vm.openModal(video)">
+											<i class="fa fa-edit"></i>
+										</button>
+									</div>
+									<!-- EDIT MODAL -->
+									<script type="text/ng-template" id="editModal.html">
+										<div class="modal-content">
+											<div class='modal-header'>
+												<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close()'>
+													<span aria-hidden='true'>&times;</span>
+												</button>
+												<h4 class='modal-title'>{{'lang.wimbridget.EDIT-METADATA' | translate}}</h4>
+											</div>
+											<div class='modal-body'>
+												<div class="row">
+													<div class="col-md-12">
+														<form class="form">
+															<!-- TITLE -->
+															<div class="form-group">
+																<label>{{'lang.wimbridget.bridget.TITLE' | translate}}</label>
+																<input class="form-control"
+																	   type="text"
+																	   ng-model="vm.video.title">
+															</div>
+															<!-- DESCRIPTION -->
+															<div class="form-group">
+																<label>{{'lang.wimbridget.bridget.DESCRIPTION' | translate}}</label>
+																<input class="form-control"
+																	   type="text"
+																	   ng-model="vm.video.description">
+															</div>
+															<!-- TAGS -->
+															<div class="form-group">
+																<label>{{'lang.wimbridget.bridget.TAGS' | translate}}</label>
+																<input class="form-control"
+																	   type="text"
+																	   ng-model="vm.video.tags">
+															</div>
+
+															<button type="button"
+																	class="btn btn-success margin-top-10 margin-bottom-10"
+																	ng-click="vm.videoPatch(vm.video)"
+																	title="{{'lang.wimbox.SAVE-BUTTON' | translate}}">
+																{{'lang.wimbox.SAVE-BUTTON' | translate}}
+															</button>
+														</form>
+													</div>
+												</div>
+											</div>  <!-- Modal Body -->
+										</div><!-- Modal Content -->
+									</script>
+
+									<!-- delete button -->
+									<div class="col-xs-6 padding-top-10 margin-bottom-10">
+										<button type="button" class="btn btn-danger" ng-click="vm.bridgetsClear(video)" title="{{'lang.wimbox.DELETE-INFO' | translate}}">
+											<i class="fa fa-trash-o"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+					<!--<h3>List Bridgets</h3>
+					<div ng-if="!vm.videosBridgetLoaded">
+						<div class="spinner"></div>
+					</div>
+					<div ng-if="vm.videosBridgetLoaded">
+						<div ng-if="!vm.videosBridget || vm.videosBridget.length === 0"><h4>{{'lang.wimbridget.NO-VIDEOS-BRIDGET-AVAILABLE' | translate}}</h4></div>
+
+						<div ng-if="vm.videosBridget && vm.videosBridget.length > 0">
+							<div class="col-xs-6 col-md-4 col-lg-3" ng-repeat="video in vm.videosBridget">
+								<bridget-asset type="VIDEO" asset="video" editable="true" delete-call="vm.bridgetsClear">
+								</bridget-asset>
+							</div>
+						</div>
+					</div>-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

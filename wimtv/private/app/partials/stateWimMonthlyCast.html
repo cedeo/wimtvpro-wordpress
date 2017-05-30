@@ -1,0 +1,65 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-red">
+				<div class="panel-heading">
+					<div class="panel-intro flex-row-between-center flex-wrap">
+						<div class="col-md-8">
+							<h3>
+								<i class="fa fa-calendar"></i>
+								WimCast
+								<small class="small-private display-none-mobile">| {{vm.castChannel.name}} | {{'lang.wimcast.MONTHLY-INFO' | translate}}</small>
+							</h3>
+						</div>
+						<div class="col-xs-12 flex flex-row start flex-wrap">
+							<button type="button" class="btn btn-default margin-5" title="Help" ng-click="$root.showHelp('cast')">
+								<i class="fa fa-info-circle" aria-hidden="true"></i> Help
+							</button>
+							<a href="#/wimcast" class="btn btn-default margin-5">
+								<i class="fa fa-chevron-left" aria-hidden="true"></i>
+								{{'lang.wimcast.BACK' | translate}}</a>
+						</div>
+					</div>
+				</div>
+				<!-- /fine panel-heading -->
+
+				<div id="body-content" class="panel-body">
+					<div class="text-center">
+						<div class="flex-row-center-center flex-wrap wimbox-contents">
+							<div class="col-xs-12 col-sm-3 image-profile image-medium" style="background-image: url('{{getThumbnailUrl(vm.castChannel.thumbnailId)}}');"></div>
+							<div class="col-xs-12 col-sm-9 flex flex-row center sec-center flex-wrap">
+								<div class="col-xs-12 col-sm-12 col-md-6">
+									<h4><strong>{{vm.castChannel.name}}</strong></h4>
+									<p>{{vm.castChannel.description}}</p>
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-6 padding-top-10 margin-bottom-5">
+									<textarea onclick="this.focus(); this.select();" style="width:100%" ng-bind-html="getIframe('cast', vm.castChannel.channelId)">
+									</textarea>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12">
+							<legend class="margin-top-10">{{'lang.wimcast.MONTHLY-SELECT' | translate}}</legend>
+						</div>
+						<p class="margin-top-10">{{'lang.wimcast.MONTHLY-SELECT-INFO' | translate}}</p>
+						<div class="flex flex-row around col-xs-12 well" ng-if="vm.deleting">
+							<h4><strong>{{'lang.wimcast.DELETE-FROM' | translate}} {{vm.selection.start}} {{'lang.wimcast.DELETE-TO' | translate}} {{vm.selection.end}}?</strong></h4>
+							<button class="btn btn-default" ng-click="vm.deleting = false">{{'lang.userprofile.UNDO' | translate}}</button>
+							<button class="btn btn-danger" ng-click="vm.deleteDays()">{{'lang.wimcast.MONTHLY-SELECT-DELETE' | translate}}</button>
+						</div>
+						<div class="flex flex-row around col-xs-12" ng-if="!vm.deleting">
+							<button class="btn btn-default" ng-if="vm.selection" ng-click="vm.selection = null">{{'lang.userprofile.UNDO' | translate}}</button>
+							<button class="btn btn-danger btn-lg" ng-if="vm.selection && !vm.copying" ng-click="vm.deleting = true">{{'lang.wimcast.MONTHLY-SELECT-DELETE' | translate}}</button>
+							<button class="btn btn-success btn-lg" ng-if="vm.selection && !vm.copying" ng-click="vm.copy()">{{'lang.wimcast.MONTHLY-SELECT-COPY' | translate}}</button>
+							<button class="btn btn-success btn-lg" ng-if="vm.selection && vm.copying" ng-click="vm.paste()">{{'lang.wimcast.MONTHLY-SELECT-PASTE' | translate}}</button>
+							<!--<button class="btn btn-default" ng-if="vm.selection" ng-click="vm.copyTo()">Copy To</button>-->
+						</div>
+						<div id="monthlyProgramming" ui-calendar="vm.calendarOptions" calendar="month"></div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

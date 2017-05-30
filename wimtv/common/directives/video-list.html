@@ -1,0 +1,68 @@
+<div class="panel panel-blue">
+	<div class="panel-heading">
+		<div class="panel-intro">
+			<div class="row">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					<h3>{{'lang.wimcast.daily.BOX-VIDEOS' | translate}}</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel-body">
+		<div class="container-fluid text-center">
+			<div ng-if="!loaded">
+				<div class="spinner"></div>
+			</div>
+			<div ng-if="loaded">
+				<div ng-if="!videos || videos.totalCount === 0"><h4>{{'lang.wimbox.NO-VIDEO-AVAILABLE' | translate}}</h4></div>
+				<div class="row flex-row-start-center flex-wrap">
+					<div class="bundle-item draggable" ng-repeat="video in videos.items">
+						<span class="hidden duration">{{video.duration}}</span>
+						<span class="hidden boxId">{{video.boxId}}</span>
+						<span class="hidden title">{{video.title}}</span>
+						<div class="overlay-bundle-container relative">
+							<div class="thumbnail">
+								<div class="image-box cover" style="background-image: url('{{$root.getThumbnailUrl(video.thumbnailId)}}');">
+									<div ng-if="bundle.updatingThumbnail" class="profile-image-loading">
+										<div class="snake-spinner"></div>
+									</div>
+									<div ng-if="bundle.updatingThumbnailError && !bundle.updatingThumbnail" class="profile-image-loading" ng-click="vm.updatingProfileImageError = false">
+										<span class="glyphicon glyphicon-exclamation-sign"></span>
+									</div>
+									<button ng-if="!bundle.updatingThumbnail && !bundle.updatingThumbnailError" class="profile-image-change" type="file" ngf-select="vm.changeBundleThumbnail($file, $invalidFiles,bundle)" accept="image/*">{{'lang.userprofile.UPLOAD-IMAGE' | translate}}</button>
+								</div>
+								<div class="caption">
+									<p>{{video.title}}</p>
+								</div>
+							</div>
+							<div class="absolute overlay-bundle flex-column-center-center">
+											<span ng-if="video.status==='READY'">
+												<i class="fa fa-plus fa-3x" aria-hidden="true"></i><br/>
+												{{'lang.wimcast.daily.ADD.TEXT' | translate}}
+											</span>
+								<span ng-if="video.status!=='READY'">
+												<i class="fa fa-exclamation-triangle fa-3x" aria-hidden="true"></i><br/>
+												{{'lang.wimcast.daily.ADD.NOT-READY' | translate}}
+											</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Wimbox Pagination buttons -->
+				<ul ng-if="videos.totalCount > itemsPerPage"
+					ng-model="pageIndex"
+					ng-change="changePage()"
+					uib-pagination boundary-links="true"
+					class="pagination-sm"
+					items-per-page="itemsPerPage"
+					max-size="5"
+					total-items="videos.totalCount"
+					class="pagination-sm"
+					previous-text="&lsaquo;"
+					next-text="&rsaquo;"
+					first-text="&laquo;"
+					last-text="&raquo;"></ul>
+			</div>
+		</div>
+	</div>
+</div>

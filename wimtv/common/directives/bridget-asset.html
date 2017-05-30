@@ -1,0 +1,104 @@
+<div ng-if="editable && asset.edit" class="bridget-asset card">
+	<form name="assetForm">
+		<div class="flex flex-column center sec-stretch">
+			<!-- TITLE -->
+			<div class="flex flex-row between sec-center flex-wrap">
+				<label for="title" class="col-xs-12 col-sm-2">{{'lang.wimbridget.bridget.TITLE' | translate}}</label>
+				<div class="form-group col-xs-12 col-sm-10" ng-class="{ 'has-error': assetForm.title.$invalid}">
+					<input id="title" name="title" type="text" required class="form-control margin-top-5"
+					ng-model="asset.title" placeholder="{{'lang.wimbridget.bridget.TITLE' | translate}}">
+				</div>
+			</div>
+
+			<!-- DESCRIPTION -->
+			<div class="flex flex-row between sec-center flex-wrap">
+				<label for="description" class="col-xs-12 col-sm-2">{{'lang.wimbridget.bridget.DESCRIPTION' | translate}}</label>
+				<div class="form-group col-xs-12 col-sm-10">
+					<input id="description" type="text" class="form-control margin-top-5" ng-model="asset.description" placeholder="{{'lang.wimbridget.bridget.DESCRIPTION' | translate}}">
+				</div>
+			</div>
+
+			<!-- TAGS -->
+			<div class="flex flex-row between sec-center flex-wrap">
+				<label for="tags" class="col-xs-12 col-sm-2">{{'lang.wimbridget.bridget.TAGS' | translate}}</label>
+				<div class="form-group col-xs-12 col-sm-10">
+					<input id="tags" type="text" class="form-control margin-top-5" ng-model="asset.tags" placeholder="{{'lang.wimbridget.bridget.TAGS' | translate}}">
+				</div>
+			</div>
+		</div>
+	</form>
+	<div class="flex flex-row-around-center sec-center">
+		<button type="button" class="btn btn-default margin-5" ng-click="undoEdit()">{{'lang.wimbridget.bridget.BUTTON-UNDO' | translate}}</button>
+		<button type="button" class="btn btn-success margin-5" ng-click="confirmEdit()">{{'lang.wimbox.SAVE-BUTTON' | translate}}</button>
+	</div>
+</div>
+
+
+<div ng-if="!asset.edit" class="bridget-asset" ng-click="click(asset)">
+	<div class="card overlay-container relative row sec-stretch">
+		<div class="col-sm-6">
+			<div class="image-container margin-5">
+				<div ng-if="type=='VIDEO'" class="label label-warning label-bridget">{{asset.sourceof.length}} bridgets</div>
+				<div>
+					<div ng-if="type!=='VIDEO' || asset.status==='SUCCESS'" class="image flex flex-column end sec-stretch  margin-top-5" style="background-image: url('{{$root.getBridgetThumbnail(asset)}}');">
+					</div>
+				</div>
+				<div class="image image-loading" ng-if="type==='VIDEO' && asset.status==='PENDING'">
+					<div class="spinner"></div>
+				</div>
+				<div class="flex flex-column center sec-center margin-top-10" ng-if="type==='VIDEO' && asset.status==='FAILURE'">
+					<i class="fa fa-exclamation-triangle fa-3x" aria-hidden="true"></i>
+					<h5 class="text-center">{{'lang.wimbridget.bridget.ERROR-VIDEO' | translate}}</h5>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-6">
+			<div class="margin-5">
+				<h5 class="title truncate width-100"><strong>{{asset.title}}</strong></h5>
+				<p class="description truncate width-100">{{asset.description}}</p>
+				<p class="chips-container">
+					<span class="label label-default" ng-repeat="tag in asset.tags">
+						{{tag}}
+					</span>
+				</p>
+				<div class="flex flex-row-center-center flex-wrap sec-center width-100">
+					<div class="col-xs-12 text-center margin-5">
+						<a ng-if="type==='VIDEO' && editable && asset.status==='SUCCESS'" href="#wimbridge/bridgeteditor/{{asset._id}}" class="btn btn-success white">
+							<i class="fa fa-window-restore" aria-hidden="true"></i> Bridget Editor
+						</a>
+					</div>
+					<div class="col-xs-12 text-center">
+					<button ng-if="editable" ng-disabled="type==='VIDEO' && asset.status!=='SUCCESS'" ng-click="edit()" type="button" class="btn btn-success">
+						<i class="fa fa-edit"></i>
+					</button>
+					<button ng-if="editable" ng-disabled="type==='VIDEO' && asset.status==='PENDING'" ng-click="remove()" type="button" class="btn btn-danger">
+						<i class="fa fa-remove"></i>
+					</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-if="addTo" class="absolute overlay flex flex-column center sec-center">
+			<span class="flex flex-column center sec-center" ng-if="asset.type==='image' || (asset.type==='video' && asset.status==='READY') || asset.mimetype === 'video'">
+				<i class="fa fa-plus fa-3x" aria-hidden="true"></i><br/>
+				{{'lang.wimbox.boxlist.addto.' + addTo | translate}}
+			</span>
+			<span class="flex flex-column center sec-center" ng-if="asset.type==='video' && !asset.status==='READY'">
+				<i class="fa fa-exclamation-triangle fa-3x" aria-hidden="true"></i><br/>
+				{{'lang.wimbundle.boxlist.addto.UNABLE' | translate}}
+			</span>
+		</div>
+		<div ng-if="addTo" class="absolute overlay-focus flex flex-column center sec-center">
+			<span class="flex flex-column center sec-center" ng-if="asset.type==='image' || (asset.type==='video' && asset.status==='READY') || asset.mimetype === 'video'">
+				<i class="fa fa-check fa-3x" aria-hidden="true"></i><br/>
+				{{'lang.wimbox.boxlist.addedTo.' + addTo | translate}}
+			</span>
+			<span class="flex flex-column center sec-center" ng-if="type==='VIDEO' && asset.status!=='SUCCESS'">
+				<i class="fa fa-exclamation-triangle fa-3x" aria-hidden="true"></i><br/>
+				{{'lang.wimbundle.boxlist.addto.UNABLE' | translate}}
+			</span>
+		</div>
+
+	</div>
+</div>

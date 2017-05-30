@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="sky-form">
+            <header ng-if="vm.flipped">
+              <h3><small><strong>Chat</strong> | {{vm.video.title? vm.video.title : vm.video.name}} </small>
+                <button class="btn btn-default pull-right" ng-click="vm.flipped = !vm.flipped">
+                  <i class="fa fa-times" aria-hidden="true"></i> {{'lang.webtv.HIDE-CHAT' | translate}}
+                </button>
+              </h3>
+            </header>
+
+            <ul class="message-list">
+                <li class="message-item flex-row-start-center" ng-repeat="message in messages">
+                    <div class="image-chat" style="background-image: url({{$root.getThumbnailUrl(message.thumbnailId)}}"></div>
+                    <div style="flex:1;">
+                      <strong ng-class="isAuthor(message.sender_uuid)">{{message.pageTitle && message.pageTitle !== 'undefined' ? message.pageTitle : message.sender_uuid}}</strong>: {{message.content}}
+                    </div>
+                </li>
+            </ul>
+          <form ng-submit="sendMessage()">
+            <div class="input-group" ng-show="isKeyboardEnabled">
+              <input ng-model="messageContent" type="text" class="form-control form-chat" style="width:100%" placeholder="{{'lang.webtv.CHAT-SEND' | translate}}">
+              <span class="input-group-btn">
+                  <button type="submit" class="btn btn-info"><strong>{{'lang.webtv.SEND' | translate}}</strong></button>
+              </span>
+            </div>
+          </form>
+          <div ng-show="!isKeyboardEnabled">
+            <div class="form-control" style="width:100%">
+              <a href="#/login"><strong>{{'lang.webtv.CHAT-LOGIN' | translate}}</strong></a>
+            </div>
+          </div>
+
+        </div>
+    </div>
+</div>

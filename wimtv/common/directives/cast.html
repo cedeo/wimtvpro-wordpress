@@ -1,0 +1,22 @@
+<a href="#/webtv/{{cast.publisher.userCode}}/cast/{{cast.channelId}}" class="schedule flex flex-column between" ng-class="{'fixed-height':fixedHeight}">
+	<div class="flex flex-row center flex-wrap">
+		<div class="col-xs-12 col-sm-5 image-profile image-small" style="background-image: url('{{getThumbnail(cast)}}');"></div>
+		<h4 class="col-xs-12 col-sm-7">{{cast.name}}
+			<span ng-if="cast.onAir" class="label label-red">
+			<strong>{{'lang.home.ON-AIR' | translate}}
+				<i class="fa fa-caret-square-o-right"></i>
+			</strong>
+		</span>
+		</h4>
+	</div>
+	<div class="text-center flex flex-row center flex-wrap" ng-if="cast.nextEvent">
+		<p>{{'lang.webtv.NEXT-PROGRAM' | translate}}<br>
+			<strong>{{cast.nextEvent.startDate.time}} | {{cast.nextEvent.startDate.date}}</strong><br>
+			<strong>{{cast.nextEvent.title}}</strong>
+		</p>
+	</div>
+	<div class="text-center flex flex-row center flex-wrap" ng-if="!cast.nextEvent">
+		<p>{{'lang.wimcast.NO-PROGRAMS' | translate}}
+		</p>
+	</div>
+</a>

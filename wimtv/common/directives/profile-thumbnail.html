@@ -1,0 +1,11 @@
+<div class="image-profile image-medium" ng-class="{'force-image-change' : getThumbnail(object.thumbnailId) === defaultThumbnail}" style="background-image: url('{{getThumbnail(object.thumbnailId)}}');">
+	<div ng-if="editable" class="height-100">
+		<div ng-if="updatingThumbnail" class="profile-image-loading">
+			<div class="snake-spinner"></div>
+		</div>
+		<div ng-if="updatingThumbnailError && !updatingThumbnail" class="profile-image-loading" ng-click="updatingProfileImageError = false">
+			<span class="glyphicon glyphicon-exclamation-sign"></span>
+		</div>
+		<button ng-if="!updatingThumbnail && !updatingThumbnailError" class="image-change" type="file" ngf-select="changeThumbnail($file, $invalidFiles, object)" accept="image/*">{{'lang.userprofile.UPLOAD-IMAGE' | translate}}</button>
+	</div>
+</div>

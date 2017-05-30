@@ -1,0 +1,198 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-xs-12">
+			<!-- Panel Bundle Form & List -->
+			<div class="panel panel-purple">
+				<div class="panel-heading">
+					<div class="panel-intro flex-row-between-center flex-wrap">
+						<div class="col-md-8">
+							<h3>
+								<i class="fa fa-film"></i>
+								WimBundle
+								<small class="small-private display-none-mobile"> | {{'lang.wimbundle.WELCOME' | translate}}</small>
+							</h3>
+						</div>
+						<div class="col-md-4">
+							<form class="search-form">
+								<input name="inputSearch"
+										 id="inputSearch"
+										 type="text"
+										 ng-model="vm.querySearchString"
+										 ng-model-options="{debounce: 500}"
+										 ng-change="vm.getVideos()"
+										 ng-maxlength="50"
+										 class="form-control input-search"
+										 placeholder="{{'lang.wimbox.QUERY-SEARCH' | translate}}">
+								<span class="glyphicon glyphicon-remove search-icon" ng-if="vm.querySearchString.length > 0" ng-click="vm.querySearchString = ''; vm.getBundles();"></span>
+								<span class="glyphicon glyphicon-search search-icon" ng-if="!vm.querySearchString"></span>
+							</form>
+						</div>
+					<div class="col-md-12 margin-5">
+						<button type="button" class="btn btn-default" title="Help" ng-click="$root.showHelp('bundle')">
+							<i class="fa fa-info-circle" aria-hidden="true"></i> Help
+						</button>
+						<a href="/#/webtv/{{$root.loggedUser.username}}/bundles" target="_blank">
+								<button class="btn btn-info" type="button" title="">
+									<i class="fa fa-film fa-fw"></i>
+									{{'lang.dashboard.WATCH-WIMBUNDLE' | translate}}
+								</button>
+							</a>
+								<button class="btn btn-primary" type="button" ng-click="vm.toggleShowBundleForm()" title="{{'lang.wimlive.NEW-INFO' | translate}}">
+									 <i class="fa fa-plus" aria-hidden="true"></i>
+									 {{'lang.wimbundle.NEW-BUNDLE.TITLE' | translate}}
+								</button>
+						</div>
+					</div>
+
+					<!-- NEW BUNDLE form -->
+					<div uib-collapse="vm.showBundleForm == false" class="new-collapse">
+						<div class="panel-body upload-drop-zone">
+							<form class="container-fluid" ng-submit="vm.saveBundle()">
+								<div class="row">
+									<legend>{{'lang.wimbundle.NEW-BUNDLE.TITLE' | translate}}</legend>
+								</div>
+								<!-- NAME -->
+								<div class="row form-group flex-row-between-center">
+									<label class="required col-xs-12 col-md-4">{{'lang.wimbundle.NEW-BUNDLE.NAME' | translate}}</label>
+									<div class="col-xs-12 col-sm-8">
+										<input class="form-control" type="text" name="name" ng-model="vm.newBundle.name"
+											   placeholder="{{'lang.wimbundle.NEW-BUNDLE.NAME' | translate}}">
+									</div>
+								</div>
+								<!-- DESCRIPTION -->
+								<div class="row form-group flex-row-between-center">
+									<label class="required col-xs-12 col-md-4">{{'lang.wimbundle.NEW-BUNDLE.DESCRIPTION' | translate}}</label>
+									<div class="col-xs-12 col-sm-8">
+										<input class="form-control" type="text" name="description" ng-model="vm.newBundle.description"
+											   placeholder="{{'lang.wimbundle.NEW-BUNDLE.DESCRIPTION' | translate}}">
+									</div>
+								</div>
+								<!-- PRICE -->
+								<div class="row form-group flex-row-between-center">
+									<label class="required col-xs-12 col-md-4">{{'lang.wimbundle.NEW-BUNDLE.PRICE' | translate}}</label>
+									<div class="col-xs-12 col-sm-8">
+										<input class="form-control" type="text" name="price" ng-model="vm.newBundle.price"
+										   placeholder="{{'lang.wimbox.PAY-PER-VIEW-INFO' | translate}}">
+									</div>
+								</div>
+								<!-- DURATION -->
+								<div class="row form-group flex-row-between-center">
+									<label class="required col-xs-12 col-md-4">{{'lang.wimbundle.NEW-BUNDLE.DURATION' | translate}}</label>
+									<div class="col-xs-12 col-sm-8">
+										<input class="form-control col-xs-12 col-md-8" type="text" name="duration" ng-model="vm.newBundle.duration"
+										   placeholder="{{'lang.wimbundle.NEW-BUNDLE.DURATION' | translate}}">
+									</div>
+								</div>
+								<!-- DURATION UNIT -->
+								<div class="row form-group flex-row-between-center">
+									<label class="required col-xs-12 col-md-4">{{'lang.wimbundle.NEW-BUNDLE.DURATION-UNIT' | translate}}</label>
+									<div class="col-xs-12 col-sm-8">
+										<select class="form-control" ng-model="vm.newBundle.durationUnit">
+											<option default="true" value="DAYS">
+												{{'lang.wimbundle.DURATION.DAYS' | translate}}
+											</option>
+											<option value="MONTHS">
+												{{'lang.wimbundle.DURATION.MONTHS' | translate}}
+											</option>
+											<option value="YEARS">
+												{{'lang.wimbundle.DURATION.YEARS' | translate}}
+											</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="row margin-10 flex-column-center-center">
+									<button type="submit" class="btn btn-primary" ng-disabled="vm.isNewBundleDisabled()">{{'lang.wimbundle.SAVE' | translate}}</button>
+									<div ng-if="vm.missingPaypal">{{'lang.wimbox.MISSING-PAYPAL-EMAIL' | translate}}</div>
+									<div ng-if="vm.missingBillingInfo">{{'lang.wimbox.MISSING-BILLING-INFO' | translate}}</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- End NEW BUNDLE form -->
+
+				<!-- Bundle list -->
+				<div class="panel-body">
+					<div class="container-fluid text-center">
+						<div ng-if="!vm.bundlesLoaded">
+							<div class="spinner"></div>
+						</div>
+							<div ng-if="vm.bundlesLoaded">
+							<div ng-if="!vm.totalItems || vm.totalItems === 0"><h4>{{'lang.wimbundle.NO-BUNDLE-AVAILABLE' | translate}}</h4></div>
+
+							<div class="row wimbox-contents flex-row-around-center flex-wrap margin-top-10 thumbnail-item" ng-repeat="bundle in vm.bundles">
+								<div class="col-md-2 col-sm-4 col-xs-12">
+									<div class="image-bundle" ng-class="{'force-image-change' : getThumbnailUrl(bundle.thumbnailId) === defaultThumbnail}" style="background-image: url('{{getThumbnailUrl(bundle.thumbnailId)}}');">
+										<div ng-if="bundle.updatingThumbnail" class="image-loading">
+											<div class="snake-spinner"></div>
+										</div>
+										<div ng-if="bundle.updatingThumbnailError && !bundle.updatingThumbnail" class="image-loading" ng-click="vm.updatingProfileImageError = false">
+											<span class="glyphicon glyphicon-exclamation-sign"></span>
+										</div>
+										<button ng-if="!bundle.updatingThumbnail && !bundle.updatingThumbnailError" class="image-change" type="file" ngf-select="vm.changeBundleThumbnail($file, $invalidFiles,bundle)" accept="image/*">{{'lang.userprofile.UPLOAD-IMAGE' | translate}}</button>
+									</div>
+								</div>
+								<div class="col-md-2 col-sm-8 col-xs-12">
+									<h4><strong>{{bundle.name}}</strong></h4>
+									<p>{{bundle.description}}</p>
+								</div>
+								<div class="col-md-2 col-sm-4 col-xs-12 margin-bottom-10">
+									{{bundle.price}} &euro;
+									<br />
+									{{bundle.itemCount}} videos
+									<br />
+									{{bundle.duration}} {{bundle.durationUnit}}
+								</div>
+								<div class="col-md-5 col-sm-6 col-xs-12 padding-top-10">
+									<a href="#/wimbundle/{{bundle.bundleId}}" class="btn btn-success">
+										<span class="white"><i class="fa fa-edit"></i> {{'lang.wimbundle.MANAGE-VIDEOS-IN-BUNDLE' | translate}}</span>
+									</a>
+								</div>
+								<div class="col-md-1 col-sm-2 col-xs-12 padding-top-10">
+									<button title="{{'lang.wimvod.TABLE-REMOVE-INFO' | translate}}" ng-click="vm.openDeleteModal(bundle)" type="button" class="btn btn-danger">
+										<i class="fa fa-times" aria-hidden="true"></i>
+									</button>
+								</div>
+							</div>
+							<!-- Bundle Pagination buttons -->
+							<ul ng-if="vm.totalItems > 0"
+								uib-pagination
+								ng-model="vm.pageIndex"
+								ng-change="vm.getBundles()"
+								total-items="vm.totalItems"
+								items-per-page="5"
+								class="pagination-sm"
+								boundary-links="true"
+								previous-text="&lsaquo;"
+								next-text="&rsaquo;"
+								first-text="&laquo;"
+								last-text="&raquo;"></ul>
+						</div>
+					</div>
+				</div>
+				<!-- End of Bundle list -->
+			</div>
+			<!-- End of Panel Form & List -->
+		</div>
+	</div>
+</div>
+<!-- ui-bootstrap modal templateUrl -->
+<script type="text/ng-template" id="removeModal.html">
+	<div class='modal-body'>
+		<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close()'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+		<h4><strong>{{'lang.wimbundle.MODAL-REMOVE-TITLE' | translate}}</strong></h4>
+		<p class="margin-top-15">{{'lang.wimbundle.MODAL-REMOVE-TEXT' | translate}}</p>
+	</div>
+	<div class='modal-footer'>
+		<div class="row">
+		</div>
+		<div class="col-md-12">
+			<button ng-click='vm.close()' class="btn btn-default buttonannulla">{{'lang.wimvod.MODAL-REMOVE-CANCEL' | translate}}</button>
+			<button ng-click="vm.deleteVideo(vm.selectedBundle)" class="btn btn-primary buttonrimuovi">{{'lang.wimvod.MODAL-REMOVE-CONFIRM' | translate}}</button>
+		</div>
+		</div>
+	</div>
+</script>

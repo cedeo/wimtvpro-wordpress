@@ -1,0 +1,35 @@
+<div class="panel" ng-class="colorPanel">
+	<a href="{{linkHeader}}" title="{{title | translate}}">
+		<div class="panel-heading panel-heading-dashboard">
+			<div class="row">
+				<div class="col-xs-3">
+					<i class="fa fa-3x" ng-class="iconClass"></i>
+				</div>
+				<div class="col-xs-9 text-right">
+					<h3>{{title | translate}}</h3>
+				</div>
+			</div>
+			<div class="row">
+				<span class="padding-5 span-private-dashboard">{{keyMessageWelcome | translate}}</span>
+			</div>
+		</div>
+	</a>
+	<a href="{{linkFirstLine}}" title="">
+		<div class="panel-footer thumbnail-item">
+			<h4 class="h4-dashboard">
+				<span class="pull-left truncate" style="width: 95%">{{keyMessageFirstLine | translate}}</span>
+				<span class="pull-right"><i class="fa fa-chevron-right"></i></span>
+				<div class="clearfix"></div>
+			</h4>
+		</div>
+	</a>
+	<a href="{{linkSecondLine}}" title="">
+		<div class="panel-footer thumbnail-item">
+			<h4 class="h4-dashboard">
+				<span class="pull-left">{{keyMessageSecondLine | translate}}</span>
+				<span class="pull-right"><i class="fa fa-chevron-right"></i></span>
+				<div class="clearfix"></div>
+			</h4>
+		</div>
+	</a>
+</div>

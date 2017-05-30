@@ -1,0 +1,27 @@
+<div class="breadcrumbs">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-6">
+				<a href="#/webtv/{{webTv.userCode}}">
+					<div class="logo-webtv pull-left" style="background-image: url({{$root.wimtvUrl}}/asset/thumbnail/{{webTv.thumbnailId}});">
+					</div>
+				</a>
+				<h1>
+					<strong>
+						<a href="#/webtv/{{webTv.userCode}}"><span ng-if="webTv.pageTitle">{{webTv.pageTitle}}</span></a>
+						<a href="#/webtv/{{webTv.userCode}}"><span ng-if="!webTv.pageTitle">{{webTv.userCode}}</span></a>
+					</strong>	
+					<small>{{webTv.pageDescription}}</small>
+				</h1>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-6">
+				<ul class="nav navbar-nav navbar-webtv pull-right">
+					<li class="pull-right"><a href="#/webtv/{{webTv.userCode}}/casts"><i class="fa fa-calendar"></i> {{'lang.webtv.CASTS' | translate}}</a></li>
+					<li class="pull-right"><a href="#/webtv/{{webTv.userCode}}/bundles"><i class="fa fa-film"></i> {{'lang.webtv.BUNDLE-TITLE' | translate}}</a></li>
+					<li class="pull-right"><a href="#/webtv/{{webTv.userCode}}/lives"><i class="fa fa-video-camera"></i> {{'lang.webtv.LIVE-TITLE' | translate}}</a></li>
+					<li class="pull-right"><a href="#/webtv/{{webTv.userCode}}/vods"><i class="fa fa-play-circle-o"></i> {{'lang.webtv.VIDEO-TITLE' | translate}}</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

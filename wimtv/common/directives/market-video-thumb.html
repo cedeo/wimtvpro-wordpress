@@ -1,0 +1,31 @@
+<div class="video-thumb card video">
+	<span class="duration">{{video.duration}}</span>
+	<div class="overflow-hidden-scale">
+    <a ng-if="$root.loggedUser !== null" href="privatePage.html#/wimMarket/{{video.marketplaceId}}">
+	    <div class="image" style="background-image: url('{{$root.getThumbnailUrl(video.thumbnailId)}}');">
+	        <div class="overlay"></div>
+	    </div>
+    </a>
+		<a ng-if="$root.loggedUser === null" data-toggle="modal" data-target="#rrModal">
+			<div class="image"  style="background-image: url('{{$root.getThumbnailUrl(video.thumbnailId)}}');">
+				<div class="overlay"></div>
+			</div>
+		</a>
+	</div>
+	<div class="info">
+    <span class="title truncate-more" style="display: inline-block"><strong>{{video.title}}</strong>
+		</span>
+		<span class="pull-right" style="display: inline-block">{{video.conditions.activationPrice}}
+			<span ng-if="video.conditions.activationPrice">€</span>
+		</span>
+		<div class="flex-row-between-center">
+			<div class="truncate-more">
+				{{'lang.home.SELLER' | translate}}<br>
+				<a href="#/webtv/{{video.seller.userCode}}">
+					<strong>{{video.seller.userCode}}</strong>
+				</a>
+			</div>
+			<div class="truncate-more">{{'lang.home.LICENSE' | translate}}:<br>{{'lang.wimmarket.' + video.conditions.licenseType | translate}}</div>
+		</div>
+	</div>
+</div>

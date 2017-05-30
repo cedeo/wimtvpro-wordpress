@@ -1,0 +1,245 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h4 ng-click="errors.getVideos=null" ng-show="errors.getVideos.message" class="margin-bottom-10 alert-message alert-message-danger">
+				<a ng-href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>{{errors.getVideos.message | translate}}</h4>
+			<!--<h4 ng-show="msgs.getVideos" class="alert-message">{{msgs.getVideos | translate}}</h4>-->
+			<h4 ng-click="errors.deleteVideo=null" ng-show="msgs.deleteVideo" class="margin-bottom-10 alert-message alert-message-danger">
+				<a ng-href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>{{msgs.deleteVideo | translate}}</h4>
+			<div class="panel panel-green">
+				<div class="panel-heading">
+					<div class="panel-intro flex-row-between-center flex-wrap">
+						<div class="col-md-8">
+							<h3>
+								<i class="fa fa-play-circle-o"></i>
+								WimVod
+								<small class="small-private display-none-mobile"> | {{'lang.wimvod.WELCOME' | translate}}</small>
+							</h3>
+						</div>
+						<div class="col-md-4">
+							<form>
+								<input name="inputSearch"
+										 id="inputSearch"
+										 type="text"
+										 ng-model="vm.querySearchString"
+										 ng-model-options="{debounce: 500}"
+										 ng-change="vm.getVideos()"
+										 ng-maxlength="50"
+										 class="form-control input-search"
+										 placeholder="{{'lang.wimbox.QUERY-SEARCH' | translate}}">
+								<span class="glyphicon glyphicon-remove search-icon" ng-if="vm.querySearchString.length > 0" ng-click="vm.querySearchString = ''; vm.getVideos();"></span>
+								<span class="glyphicon glyphicon-search search-icon" ng-if="!vm.querySearchString"></span>
+							</form>
+						</div>
+					<div class="col-md-12 margin-5">
+							<button type="button" class="btn btn-default" title="Help" ng-click="$root.showHelp('vod')">
+								<i class="fa fa-info-circle" aria-hidden="true"></i> Help
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="panel-body">
+					<div class="container-fluid text-center">
+						<div ng-if="!vm.videosLoaded">
+							<div class="spinner"></div>
+						</div>
+						<div ng-if="vm.videosError">
+							<h4>{{'lang.wimvod.GETVIDEOS.ERROR' | translate}}</h4>
+						</div>
+						<div ng-if="vm.videosLoaded && !vm.videosError">
+							<div ng-if="!vm.totalItems || vm.totalItems === 0"><h4>{{'lang.wimbox.NO-VIDEO-AVAILABLE' | translate}}</h4></div>
+							<div class="row wimbox-contents margin-top-10 thumbnail-item" ng-repeat="video in vm.videos">
+								<div class="col-md-2 col-sm-6 col-xs-12">
+									<div class="row"
+										 ng-init="playUrl = getPlayUrl(video, false); playUrlAutoplay = getPlayUrl(video, true); videoDetails = getVideoDetails(video);">
+										<!-- INZIO PREVIEW - Button trigger modal -->
+										<div class="image-rectangle-box image-box cover" ng-click="vm.openPreview(video)" style="background-image: url('{{getThumbnailUrl(video.thumbnailId)}}');">
+										</div>
+										<span class="duration" ng-if="video.status.toLowerCase()!=='pending'">{{video.duration}}</span>
+									</div>
+								</div>
+
+								<div class="col-md-4 col-sm-6 col-xs-12">
+									<h5><strong>{{video.title}}</strong></h5>
+									<p>{{video.description}}</p>
+									<div class="margin-bottom-10" ng-if="video.bundle"><strong>WimBundle</strong>: {{video.bundle.name}}</div>
+									<div class="margin-bottom-10" ng-if="video.licenseType === 'FREE'">
+										{{'lang.wimvod.LICENSE-FREE' | translate}} <img src="../wp-content/plugins/wimvideopro/wimtv/private/assets/img/free.png" alt="FREE" style="width:20px">
+									</div>
+									<div class="margin-bottom-10" ng-if="video.licenseType === 'CREATIVE_COMMONS'">
+										Creative Commons <img src="../wp-content/plugins/wimvideopro/wimtv/private/assets/img/cc.png" alt="Creative Commons" style="width:20px">
+									</div>
+									<div class="margin-bottom-10" ng-if="video.licenseType === 'PAY_PER_VIEW'">
+										Pay per view <img src="../wp-content/plugins/wimvideopro/wimtv/private/assets/img/pay.png" alt="Creative Commons" style="width:20px"> {{video.pricePerView}} €
+									</div>
+
+									<div class="display-none">
+										<p ng-if="video.public">
+											<button class="btn btn-success btn-xs" ng-click="vm.togglePublic(video)">
+												<strong>{{'lang.wimvod.PUBLIC' | translate}}</strong>
+											</button>
+											<button class="btn btn-default btn-xs" ng-click="vm.togglePublic(video)">
+												{{'lang.wimvod.MAKE-PRIVATE' | translate}}
+											</button>
+										</p>
+										<p ng-if="!video.public">
+											<button class="btn btn-danger btn-xs" ng-click="vm.togglePublic(video)">
+												<strong>{{'lang.wimvod.PRIVATE' | translate}}</strong>
+											</button>
+											<button class="btn btn-default btn-xs" ng-click="vm.togglePublic(video)">
+												{{'lang.wimvod.MAKE-PUBLIC' | translate}}
+											</button>
+										</p>
+									</div>
+								</div>
+
+								<div class="col-md-3 col-sm-12 col-xs-12 padding-top-10">
+									<button title="{{'lang.wimvod.TABLE-REMOVE-INFO' | translate}}" ng-click="vm.openDeleteModal(video)" type="button" class="btn btn-danger">
+										<i class="fa fa-times" aria-hidden="true"></i>
+										{{'lang.wimvod.TABLE-REMOVE-TITLE' | translate}}
+									</button>
+								</div>
+
+								<div class="col-md-3 col-sm-12 col-xs-12 padding-top-10 margin-bottom-5">
+                    <textarea onclick="this.focus(); this.select();" style="width:100%" ng-bind-html="getIframe('vod', video.vodId)">
+                    </textarea>
+								</div>
+
+							</div>
+
+							<!-- Pagination buttons -->
+							<ul ng-if="vm.totalItems > 0"
+								ng-model="vm.pageIndex"
+								ng-change="vm.getVideos()"
+								uib-pagination boundary-links="true"
+								class="pagination-sm"
+								total-items="vm.totalItems"
+								class="pagination-sm"
+								previous-text="&lsaquo;"
+								next-text="&rsaquo;"
+								first-text="&laquo;"
+								last-text="&raquo;"/>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script type="text/ng-template" id="editModal.html">
+
+	<div class="modal-content" ng-init='originalTitle = vm.video.title;originalDescription = vm.video.description;originalTag = vm.video.tags'>
+		<div class='modal-header'>
+			<button type='button'
+					class='close'
+					data-dismiss='modal'
+					aria-label='Close'
+					ng-click='vm.close()'>
+				<span aria-hidden='true'>&times;</span>
+			</button>
+			<h4 class='modal-title'>{{'lang.wimbox.TABLE-EDIT-TITLE' | translate}}</h4>
+		</div>
+
+		<div class='modal-body'>
+			<h4 ng-show="errors.changeImage.message" class="alert-message alert-message-danger">{{errors.changeImage.message}}</h4>
+
+			<div class="row">
+				<div class="col-md-6">
+					<img ng-if="vm.thumbnailId"
+						 class="img-responsive"
+						 src="{{wimtvUrl}}/asset/thumbnail/{{vm.thumbnailId}}"/>
+				</div>
+				<div class="col-md-6">
+					<p>{{'lang.wimbox.UPLOAD-IMAGE' | translate}}</p>
+					<button class="btn btn-default margin-top-10" type="file" ngf-select="vm.changeImage($file, $invalidFiles)" accept="image/*">
+						{{'lang.userprofile.UPLOAD-IMAGE' | translate}}
+					</button>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<form class="form">
+						<div class="form-group">
+							<label>{{'lang.wimbox.TABLE-VIDEO-TITLE' | translate}}</label>
+							<input class="form-control"
+								   type="text"
+								   ng-model="originalTitle">
+						</div>
+
+						<div class="form-group">
+							<label>{{'lang.wimbox.TABLE-DESCRIPTION-TITLE' | translate}}</label>
+							<input class="form-control"
+								   type="text"
+								   ng-model="originalDescription">
+						</div>
+
+						<div class="form-group">
+							<label>{{'lang.wimbox.TABLE-TAGS-TITLE' | translate}}</label>
+							<input class="form-control"
+								   type="text"
+								   ng-model="originalTags">
+						</div>
+
+						<button type="button"
+								class="btn btn-success margin-top-10 margin-bottom-10"
+								ng-click="vm.video.title = originalTitle; vm.video.description = originalDescription;vm.video.tags = originalTag; vm.updateVideo()"
+								title="{{'lang.wimbox.PUBLISH-BUTTON-INFO' | translate}}">
+							{{'lang.wimbox.SAVE-BUTTON' | translate}}
+						</button>
+
+					</form>
+				</div>
+			</div>
+
+		</div>  <!-- Modal Body -->
+
+	</div>
+	</div> <!-- Modal Content -->
+
+</script>
+
+<!-- ui-bootstrap modal templateUrl -->
+<script type="text/ng-template" id="previewModal.html">
+	<div class='modal-header'>
+		<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close()'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+		<h4 class='modal-title'>{{vm.vod.title}}</h4>
+	</div>
+	<div class='modal-body video-container'>
+		<div class="col-md-12 padding-top-10 padding-bottom-10">
+			<div class="video-area" style="maxwidth: 900px; background: #CCC">
+				<div id="theplayer" class="fp-edgy"></div>
+			</div>
+		</div>
+	</div>
+	<div class='modal-footer'>
+		<p class='pull-left'>{{'lang.wimvod.EMBED-CODE' | translate}}</p>
+		<textarea id='embed-code' onclick='this.focus(); this.select();' style='width:100%' ng-bind-html="getIframe('vod', vm.vod.vodId)"></textarea>
+	</div>
+</script>
+
+<script type="text/ng-template" id="removeModal.html">
+	<div class='modal-body'>
+		<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close()'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+		<h4><strong>{{'lang.wimvod.MODAL-REMOVE-TITLE' | translate}}</strong></h4>
+		<p class="margin-top-15">{{'lang.wimvod.MODAL-REMOVE-TEXT' | translate}}</p>
+	</div>
+	<div class='modal-footer'>
+		<div class="row">
+			</div>
+			<div class="col-md-12">
+				<button ng-click='vm.close()' class="btn btn-default buttonannulla">{{'lang.wimvod.MODAL-REMOVE-CANCEL' | translate}}</button>
+				<button ng-click="vm.deleteVideo(vm.vod)" class="btn btn-primary buttonrimuovi">{{'lang.wimvod.MODAL-REMOVE-CONFIRM' | translate}}</button>
+			</div>
+		</div>
+	</div>
+</script>

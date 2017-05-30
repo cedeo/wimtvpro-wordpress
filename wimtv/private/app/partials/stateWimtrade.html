@@ -1,0 +1,427 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h4 ng-click="errors.getVideos=null" ng-show="errors.getVideos.message" class="margin-bottom-10 alert-message alert-message-danger">
+				<a ng-href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>{{errors.getVideos.message | translate}}</h4>
+			<!--<h4 ng-show="msgs.getVideos" class="alert-message">{{msgs.getVideos | translate}}</h4>-->
+			<h4 ng-click="errors.deleteVideo=null" ng-show="msgs.deleteVideo" class="margin-bottom-10 alert-message alert-message-danger">
+				<a ng-href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>{{msgs.deleteVideo | translate}}</h4>
+			<div class="panel panel-dark-green">
+				<div class="panel-heading">
+					<div class="panel-intro flex-row-between-center flex-wrap">
+						<div class="col-md-8">
+							<h3>
+								<i class="fa fa-handshake-o" aria-hidden="true"></i>
+								WimTrade
+								<small class="small-private display-none-mobile"> | {{'lang.wimtrade.WELCOME' | translate}}</small>
+							</h3>
+						</div>
+						<div class="col-md-4">
+							<form>
+								<input name="inputSearch"
+											 id="inputSearch"
+											 type="text"
+											 ng-model="vm.querySearchString"
+											 ng-model-options="{debounce: 500}"
+											 ng-change="vm.getVideos()"
+											 ng-maxlength="50"
+											 class="form-control input-search"
+											 placeholder="{{'lang.wimbox.QUERY-SEARCH' | translate}}">
+								<span class="glyphicon glyphicon-remove search-icon" ng-if="vm.querySearchString.length > 0" ng-click="vm.querySearchString = ''; vm.getVideos();"></span>
+								<span class="glyphicon glyphicon-search search-icon" ng-if="!vm.querySearchString"></span>
+							</form>
+						</div>
+						<div class="col-md-12 margin-5">
+							<button type="button" class="btn btn-default" title="Help" ng-click="$root.showHelp('trade')">
+								<i class="fa fa-info-circle" aria-hidden="true"></i> Help
+							</button>
+							<a type="button" class="btn btn-success white" title="WimMarket" href="#/wimMarket">
+								<i class="fa fa-shopping-cart"></i>
+								{{'lang.wimtrade.WIMMARKET-BUTTON' | translate}}
+							</a>
+							<button type="button" class="btn btn-default" title="Help" data-toggle="modal" data-target="#myModal">
+								<i class="fa fa-info-circle" aria-hidden="true"></i> {{'lang.wimmarket.HELP-BUTTON' | translate}}
+							</button>
+
+							<!-- Help Modal -->
+							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="color:#333;">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											<h4 class="modal-title" id="myModalLabel">{{'lang.wimmarket.HELP-BUTTON' | translate}}</h4>
+										</div>
+										<div class="modal-body">
+											<div class="row">
+												<div class="col-sm-2">
+													<strong>Spot Price</strong>
+												</div>
+												<div class="col-sm-10">
+													<p>{{'lang.wimmarket.SPOT-PRICE-DESCRIPTION' | translate}}</p>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-2">
+													<strong>Free</strong>
+												</div>
+												<div class="col-sm-10">
+													<p>{{'lang.wimmarket.FREE-DESCRIPTION' | translate}}</p>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-2">
+													<strong>Revenue Sharing</strong>
+												</div>
+												<div class="col-sm-10">
+													<p>{{'lang.wimmarket.REVENUE-SHARING-DESCRIPTION' | translate}}</p>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-2">
+													<strong>Cash per view</strong>
+												</div>
+												<div class="col-sm-10">
+													<p>{{'lang.wimmarket.PAYPERVIEW-DESCRIPTION' | translate}}</p>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-2">
+													<strong>Creative Commons</strong>
+												</div>
+												<div class="col-sm-10">
+													<p>{{'lang.wimmarket.CREATIVECOMMONS-DESCRIPTION' | translate}}</p>
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">{{'lang.wimmarket.CLOSE' | translate}}</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div clas="row">
+
+					<div class="col-md-6 margin-top-10">
+						<legend>{{'lang.wimtrade.WIMBOX-VIDEOS' | translate}}</legend>
+
+						<!-- Wimbox Video List -->
+						<div class="panel-body">
+
+							<div class="container-fluid">
+								<div ng-if="!vm.videosLoaded">
+									<div class="spinner"></div>
+								</div>
+								<div ng-if="vm.videosError">
+									<h4>{{'lang.wimvod.GETVIDEOS.ERROR' | translate}}</h4>
+								</div>
+								<div ng-if="vm.videosLoaded && !vm.videosError">
+									<div ng-if="!vm.totalItems || vm.totalItems === 0"><h4>{{'lang.wimbox.NO-VIDEO-AVAILABLE' | translate}}</h4></div>
+									<div class="row wimbox-contents margin-top-10 thumbnail-item" ng-repeat="video in vm.videos">
+
+										<div  ng-if="vm.selectedVideoToSell.contentId !== video.contentId" class="col-sm-6 col-md-4">
+
+											<div class="row" ng-init="playUrl = getPlayUrl(video, false); playUrlAutoplay = getPlayUrl(video, true); videoDetails = getVideoDetails(video);">
+												<!-- INZIO PREVIEW - Button trigger modal -->
+												<div class="image-rectangle-box image-box cover" ng-click="vm.preview(video)" style="background-image: url('{{getThumbnailUrl(video.thumbnailId)}}');">
+												</div>
+												<span class="duration" ng-if="video.status.toLowerCase()!=='pending'">{{video.duration}}</span>
+											</div>
+										</div>
+
+										<div class="col-sm-6 col-md-8">
+											<div class="row" ng-if="vm.selectedVideoToSell.contentId !== video.contentId">
+												<div class="col-md-3">
+													<small>{{'lang.wimbox.VIDEO-TITLE' | translate}}:</small>
+												</div>
+												<div class="col-md-9 truncate">
+													<strong>{{video.title}}</strong>
+												</div>
+											</div>
+											<div class="row" ng-if="vm.selectedVideoToSell.contentId !== video.contentId">
+												<div class="col-md-3">
+													<small>{{'lang.wimmarket.DESCRIPTION' | translate}}:</small>
+												</div>
+												<div class="col-md-9 truncate">
+													{{video.description}}&nbsp;
+												</div>
+											</div>
+											<div class="row margin-top-10" ng-if="vm.selectedVideoToSell.contentId !== video.contentId">
+												<div class="col-xs-12" ng-if="video.status.toLowerCase()!=='pending' && video.source==='UPLOAD'">
+													<button  type="button" class="btn btn-success" title="{{'lang.wimtrade.ADD-BUTTON' | translate}}" ng-click="vm.showSellForm(video)">
+														<i class="fa fa-money"></i>
+														{{'lang.wimtrade.ADD-BUTTON' | translate}}
+													</button>
+												</div>
+												<div class="col-xs-12" ng-if="video.status.toLowerCase()==='pending'">
+													<span class="btn btn-success">
+													 {{'lang.wimbox.TRANSCODING' | translate}}
+													</span>
+												</div>
+												<div class="col-xs-12" ng-if="video.source==='MARKET_PLACE'">
+													<span class="btn btn-default btn-sm">
+														<i class="fa fa-shopping-cart"></i>
+														{{'lang.wimbox.ACQUIRED' | translate}} {{video.marketplaceLicense.issuerCode}}
+													</span>
+												</div>
+											</div>
+										</div>
+
+
+										<!-- AREA SELEZIONE LICENZA -->
+										<div ng-if="vm.selectedVideoToSell.contentId === video.contentId" class="col-md-12 col-sm-6 col-xs-12 padding-top-10">
+											<form class="form">
+												<fieldset>
+													<div class="row">
+
+														<div class="col-md-12">
+															<div class="form-group">
+																<label><small>{{'lang.wimtrade.LICENSE-TYPE' | translate}}</small></label>
+																<select class="form-control" ng-model="vm.marketPlacePublishPolicy.licenseType">
+																	<option ng-repeat="(key, value) in vm.market.enumLicenseType" value="{{key}}">{{value}}</option>
+																</select>
+															</div>
+														</div>
+
+														<div class="col-md-12">
+															<div class="form-group" ng-if="vm.marketPlacePublishPolicy.licenseType === 'CREATIVE_COMMONS'">
+																<label><small>{{'lang.wimtrade.CC-LICENSE' | translate}}</small></label>
+																<select class="form-control" ng-model="vm.marketPlacePublishPolicy.ccType">
+																	<option ng-repeat="(key, value) in vm.market.enumCcType" value="{{key}}">{{value}}</option>
+																</select>
+															</div>
+														</div>
+													</div>
+
+													<div class="row">
+														<div class="col-md-6" ng-if="vm.marketPlacePublishPolicy.licenseType !== 'CREATIVE_COMMONS'">
+															<div class="form-group">
+																<label><small>{{'lang.wimtrade.DURATION' | translate}}</small></label>
+																<input class="form-control"
+																			 type="text"
+																			 ng-model="vm.marketPlacePublishPolicy.duration">
+															</div>
+														</div>
+														<div class="col-md-6" ng-if="vm.marketPlacePublishPolicy.licenseType !== 'CREATIVE_COMMONS'">
+															<div class="form-group">
+																<label><small>{{'lang.wimtrade.DURATION-UNIT' | translate}}</small></label>
+																<select class="form-control"
+																				ng-model="vm.marketPlacePublishPolicy.durationUnit">
+																	<option ng-repeat="(key, value) in vm.market.enumDurationUnit" value="{{key}}">{{value}}</option>
+																</select>
+															</div>
+														</div>
+														<div class="col-md-6">
+															<div ng-if="vm.marketPlacePublishPolicy.licenseType === 'SPOT_PRICE'"
+																	 class="form-group">
+																<label><small>{{'lang.wimtrade.ACTIVATION-PRICE' | translate}}</small></label>
+																<input class="form-control"
+																			 type="text"
+																			 ng-model="vm.marketPlacePublishPolicy.activationPrice" placeholder="{{'lang.wimlive.PRICE' | translate}}">
+															</div>
+
+															<div ng-if="vm.marketPlacePublishPolicy.licenseType === 'PAY_PER_VIEW'"
+																	 class="form-group">
+																<label><small>{{'lang.wimtrade.PRICE-PER-VIEW' | translate}}</small></label>
+																<input class="form-control"
+																			 type="text"
+																			 ng-model="vm.marketPlacePublishPolicy.pricePerView" placeholder="{{'lang.wimlive.PRICE' | translate}}">
+															</div>
+
+															<div class="form-group"
+																	 ng-if="vm.marketPlacePublishPolicy.licenseType === 'REVENUE_SHARING'">
+																<label><small>{{'lang.wimtrade.EARNING-PERCENTAGE' | translate}}</small></label>
+																<input class="form-control"
+																			 type="text"
+																			 ng-model="vm.marketPlacePublishPolicy.earningPercentage">
+															</div>
+														</div>
+													</div>
+
+													<div class="row" ng-if="vm.marketPlacePublishPolicy.licenseType !== 'CREATIVE_COMMONS'">
+														<div class="col-md-12">
+															<div ng-if="(vm.marketPlacePublishPolicy.licenseType === 'CREATIVE_COMMONS' ||   vm.marketPlacePublishPolicy.licenseType === 'SPOT_PRICE')"
+																	 class="form-group">
+																<label>{{'lang.wimtrade.DOWNLOAD' | translate}}</label>
+																<input type="checkbox"
+																			 ng-model="vm.marketPlacePublishPolicy.download"/>
+															</div>
+														</div>
+													</div>
+												</fieldset>
+											</form>
+											<button type="button"
+															class="btn btn-success margin-top-10 margin-bottom-10"
+															ng-click="vm.publishOnMarketPlace()">
+												{{'lang.wimtrade.ADD-BUTTON' | translate}}
+											</button>
+											<button type="button"
+															class="btn btn-default margin-top-10 margin-bottom-10"
+															ng-click="vm.closeSellForm()"
+															title="{{'lang.wimbox.SAVE-BUTTON' | translate}}">
+												{{'lang.wimtrade.CANCEL-BUTTON' | translate}}
+											</button>
+										</div>
+										<!-- FINE AREA SELEZIONE LICENZA -->
+
+
+									</div>
+
+									<!-- Pagination buttons -->
+									<ul ng-if="vm.totalItems > 0"
+											ng-model="vm.pageIndex"
+											ng-change="vm.getVideos()"
+											uib-pagination
+											boundary-links="true"
+											rotate="true"
+											force-ellipsis="true"
+											max-size="5"
+											class="pagination-sm"
+											total-items="vm.totalItems"
+											class="pagination-sm"
+											previous-text="&lsaquo;"
+											next-text="&rsaquo;"
+											first-text="&laquo;"
+											last-text="&raquo;"></ul>
+								</div>
+							</div>
+
+						</div>
+						<!-- End Wimbox  Video List -->
+					</div>
+					<div class="col-md-6 margin-top-10">
+						<!-- WimTrade Video List -->
+						<legend>{{'lang.wimtrade.WIMMARKET-VIDEOS' | translate}}</legend>
+						<div class="panel-body">
+							<div class="container-fluid">
+								<div ng-if="!vm.videosLoaded">
+									<div class="spinner"></div>
+								</div>
+								<div ng-if="vm.videosError">
+									<h4>{{'lang.wimvod.GETVIDEOS.ERROR' | translate}}</h4>
+								</div>
+								<div ng-if="vm.videosLoaded && !vm.videosError">
+									<div ng-if="!vm.totalItems || vm.totalItems === 0"><h4>{{'lang.wimbox.NO-VIDEO-AVAILABLE' | translate}}</h4></div>
+									<div class="row wimbox-contents margin-top-10 thumbnail-item" ng-repeat="video in vm.marketVideos">
+										<div class="col-sm-6 col-md-4">
+											<div class="row">
+												<div class="image-rectangle-box image-box cover" style="background-image: url('{{getThumbnailUrl(video.thumbnailId)}}');">
+												</div>
+												<span class="duration" ng-if="video.status.toLowerCase()!=='pending'">{{video.duration}}</span>
+											</div>
+										</div>
+
+										<div class="col-sm-6 col-md-8">
+											<div class="row">
+												<div class="col-xs-3">
+													<small>{{'lang.wimbox.VIDEO-TITLE' | translate}}:</small>
+												</div>
+												<div class="col-xs-9 truncate">
+													<strong>{{video.title}}</strong>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-xs-3">
+													<small>{{'lang.wimmarket.DESCRIPTION' | translate}}:</small>
+												</div>
+												<div class="col-xs-9 truncate">
+													{{video.description}}
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-xs-3">
+													<small>{{'lang.wimmarket.LICENSE' | translate}}:</small>
+												</div>
+												<div class="col-xs-9">
+													{{'lang.wimmarket.' + video.conditions.licenseType | translate}} <span ng-if="video.conditions.ccType">{{video.conditions.ccType}}</span>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-xs-3">
+													<small>{{'lang.wimmarket.DURATION' | translate}}:</small>
+												</div>
+												<div class="col-xs-9">
+													{{video.conditions.duration}}
+													<span ng-show="video.conditions.durationUnit === 'DAYS'">{{'lang.wimmarket.DURATION-DAYS' | translate}}</span>
+													<span ng-show="video.conditions.durationUnit === 'MONTHS'">{{'lang.wimmarket.DURATION-MONTHS' | translate}}</span>
+													<span ng-show="video.conditions.durationUnit === 'YEARS'">{{'lang.wimmarket.DURATION-YEARS' | translate}}</span>
+													<span ng-if="video.conditions.duration === empty">{{'lang.wimmarket.DURATION-UNLIMITED' | translate}}</span>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xs-4">
+													<small>{{'lang.wimmarket.DOWNLOAD' | translate}}:</small>
+												</div>
+												<div class="col-xs-5">
+													<span ng-if="video.conditions.download === true">{{'lang.wimmarket.DOWNLOAD-YES' | translate}}</span>
+													<span ng-if="video.conditions.download === false">{{'lang.wimmarket.DOWNLOAD-NO' | translate}}</span>
+												</div>
+												<div class="col-xs-2 text-center">
+													<button type="button" class="btn btn-default btn-danger" title="" ng-click="vm.removeFromMarket(video)">
+														<i class="fa fa-remove"></i>
+													</button>
+												</div>
+											</div>
+
+										</div>
+									</div>
+
+									<!-- Marketplace Paginatation buttons -->
+									<ul ng-if="vm.marketTotalItems > 0"
+											ng-model="vm.marketPageIndex"
+											ng-change="vm.getMarketVideos()"
+											uib-pagination
+											boundary-links="true"
+											boundary-links="true"
+											rotate="true"
+											force-ellipsis="true"
+											max-size="5"
+
+											class="pagination-sm"
+											total-items="vm.marketTotalItems"
+											class="pagination-sm"
+											previous-text="&lsaquo;"
+											next-text="&rsaquo;"
+											first-text="&laquo;"
+											last-text="&raquo;"></ul>
+
+								</div>
+							</div>
+
+						</div>
+						<!-- End WimTrade  Video List -->
+
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!--
+								Publish video on Market From
+-->
+
+<!-- PREVIEW MODAL -->
+<script type="text/ng-template" id="videoPreview.html">
+	<div class='modal-header' ng-init="vm.playBoxItem(vm.video.boxId)">
+		<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close()'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+		<h4 class='modal-title'>{{vm.video.title}} preview</h4>
+	</div>
+	<div class='modal-body video-container'>
+		<div class="col-md-12 padding-top-10 padding-bottom-10">
+			<div class="video-area" style="maxwidth: 900px; background: #CCC">
+				<div id="theplayer" class="fp-edgy"></div>
+			</div>
+		</div>
+	</div>
+</script>

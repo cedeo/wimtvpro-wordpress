@@ -1,0 +1,422 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="panel-body">
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs">
+							<li ng-class="vm.activePanel=='home'?'active':''">
+								<a href data-target="#home" data-toggle="tab" aria-expanded="true">{{'lang.userprofile.SETTING-WEBTV' | translate}}</a>
+							</li>
+							<li ng-class="vm.activePanel=='monetisation'?'active':''">
+								<a href data-target="#monetisation" data-toggle="tab" aria-expanded="false">{{'lang.userprofile.MONETISATION' | translate}}</a>
+							</li>
+							<li ng-class="vm.activePanel=='package'?'active':''">
+								<a href data-target="#package" data-toggle="tab" aria-expanded="false">{{'lang.userprofile.PACKAGE' | translate}}</a>
+							</li>
+						</ul>
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<!-- HOME -->
+							<div class="tab-pane fade" ng-class="vm.activePanel=='home'?'active in':''" id="home">
+								<form class="form-horizontal margin-top-15">
+									<h4>{{'lang.userprofile.SETTING-WEBTV' | translate}}</h4>
+									<!--<h4 ng-show="errors.changeImage.message" class="alert-message alert-message-danger">{{vm.errors.changeImage.message}}</h4>-->
+									<div class="form-group">
+										<div class="row">
+
+											<div class="col-xs-12 col-sm-7">
+												<div class="form-group">
+													<div class="col-xs-8 col-sm-8">
+														<input class="form-control" type="text" ng-model="vm.profile.pageTitle" placeholder="{{'lang.userprofile.WEBTV-NAME' | translate}}">
+													</div>
+													<span class="col-xs-4 col-sm-4 control-label">{{'lang.userprofile.WEBTV-NAME' | translate}}</span>
+												</div>
+												<div class="form-group">
+													<div class="col-xs-8 col-sm-8">
+														<input class="form-control" type="text" placeholder="{{'lang.userprofile.WEBTV-DESCRIPTION' | translate}}"
+																 ng-model="vm.profile.pageDescription" ng-change="vm.profile.motto = vm.profile.pageDescription">
+													</div>
+													<span class="col-xs-4 col-sm-4 control-label">{{'lang.userprofile.WEBTV-DESCRIPTION' | translate}}</span>
+												</div>
+												<div class="form-group">
+													<div class="col-xs-8 col-sm-8">
+														<input ng-class="{'warning-live-password': !vm.features.livePassword}" class="form-control" type="password" ng-model="vm.features.livePassword" placeholder="{{'lang.userprofile.WEBTV-WIMLIVE-PASSWORD' | translate}}">
+													</div>
+													<span class="col-xs-4 col-sm-4 control-label">{{'lang.userprofile.WEBTV-WIMLIVE-PASSWORD' | translate}}</span>
+												</div>
+												<p>
+													<input type="checkbox" class="custom-checkbox" ng-model="vm.features.transcoderNotifyEnabled">
+													{{'lang.userprofile.VIDEO-NOTIFICATION' | translate}}
+												</p>
+
+												<p>
+													<input type="checkbox" class="custom-checkbox" ng-model="vm.features.vodPublic">
+													{{'lang.userprofile.SHOW-VIDEOS' | translate}}
+												</p>
+
+											</div>
+
+											<div class="col-xs-12 col-sm-4 col-sm-offset-1 text-center flex-column-around-center">
+												<div ng-if="vm.profile.thumbnailId" class="image-profile image-medium"
+													 style="background-image: url({{wimtvUrl}}/asset/thumbnail/{{vm.profile.thumbnailId}})">
+												</div>
+												<button class="btn btn-default margin-top-10" type="file" ngf-select="vm.changeImage($file, $invalidFiles)" accept="image/*">{{'lang.userprofile.UPLOAD-IMAGE' | translate}}</button>
+											</div>
+
+
+										</div><!-- end row-->
+
+									</div><!-- end form-group-->
+
+
+								</form>
+
+								<form class="form-horizontal margin-top-15">
+									<div class="row">
+										<div class="col-xs-12 col-sm-7">
+											<div class="form-group">
+												<div class="col-xs-8 col-sm-8">
+													<input class="form-control" type="text" ng-model="vm.profile.firstName" placeholder="{{'lang.userprofile.NAME' | translate}}">
+												</div>
+												<span class="col-xs-8 col-sm-4 control-label">{{'lang.userprofile.NAME' | translate}}</span>
+											</div>
+											<div class="form-group">
+												<div class="col-xs-8 col-sm-8">
+													<input class="form-control" type="text" ng-model="vm.profile.lastName" placeholder="{{'lang.userprofile.SURNAME' | translate}}">
+												</div>
+												<span class="col-xs-8 col-sm-4 control-label">{{'lang.userprofile.SURNAME' | translate}}</span>
+											</div>
+											<div class="form-group">
+												<div class="col-xs-8 col-sm-8">
+													<input class="form-control" type="email" ng-model="vm.profile.email" placeholder="{{'lang.userprofile.EMAIL' | translate}}">
+												</div>
+												<span class="col-xs-2 col-sm-4 control-label">{{'lang.userprofile.EMAIL' | translate}}</span>
+											</div>
+											<div class="form-group">
+												<div class="col-xs-8 col-sm-8">
+													<input class="form-control date"
+															 ng-click="vm.openBirthDate = true;"
+															 is-open="vm.openBirthDate"
+															 uib-datepicker-popup="d!/M!/yyyy"
+															 ng-model="vm.profile.birthDate"
+															 ng-required="true" close-text="Close">
+												</div>
+												<span class="col-xs-8 col-sm-4 control-label">{{'lang.userprofile.BIRTH' | translate}}</span>
+											</div>
+											<div class="form-group">
+												<div class="col-xs-8 col-sm-8">
+													<button class="btn btn-default margin-top-10" ng-click="vm.showChangePassword()">{{'lang.userprofile.CHANGE-PASSWORD' | translate}}</button>
+												</div>
+											</div>
+
+										</div>
+
+									</div><!-- end row-->
+
+								</form>
+							</div>
+
+							<!-- MONETI_ATION -->
+							<div class="tab-pane fade" ng-class="vm.activePanel=='monetisation'?'active in':''" id="monetisation">
+								<form name="" class="form-horizontal margin-top-15">
+									<h4>{{'lang.userprofile.PAYPAL-INFO' | translate}}</h4>
+									<div class="form-group">
+										<div class="col-xs-8 col-lg-4">
+											<input class="form-control" type="text" ng-model="vm.finance.paypalEmail" placeholder="{{'lang.userprofile.PAYPAL-EMAIL' | translate}}">
+										</div>
+										<span class="col-xs-2 col-md-2 col-lg-3 control-label">{{'lang.userprofile.PAYPAL-EMAIL' | translate}}</span>
+									</div>
+									<h4>{{'lang.userprofile.BILLING-INFO' | translate}}</h4>
+									<div class="form-group">
+										<div class="col-xs-8 col-lg-4">
+											<input class="form-control" type="text" ng-model="vm.finance.vatNumber" placeholder="{{'lang.userprofile.VAT-CODE' | translate}}">
+										</div>
+										<span class="col-xs-2 col-md-2 col-lg-3 control-label">{{'lang.userprofile.VAT-CODE' | translate}}</span>
+									</div>
+									<div class="form-group">
+										<div class="col-xs-8 col-lg-4">
+											<input class="form-control" type="text" ng-model="vm.finance.taxCode" placeholder="{{'lang.userprofile.TAX-CODE' | translate}}">
+										</div>
+										<span class="col-xs-2 col-md-2 col-lg-3 control-label">{{'lang.userprofile.TAX-CODE' | translate}}</span>
+									</div>
+									<div class="form-group">
+										<div class="col-xs-8 col-lg-4">
+											<input class="form-control" type="text" ng-model="vm.finance.billingAddress.street" placeholder="{{'lang.userprofile.BILLING-ADDRESS' | translate}}">
+										</div>
+										<span class="col-xs-2 col-md-2 col-lg-3 control-label">{{'lang.userprofile.BILLING-ADDRESS' | translate}}</span>
+									</div>
+									<div class="form-group">
+										<div class="col-xs-8 col-lg-4">
+											<input class="form-control" type="text" ng-model="vm.finance.billingAddress.city" placeholder="{{'lang.userprofile.BILLING-CITY' | translate}}">
+										</div>
+										<span class="col-xs-2 col-md-2 col-lg-3 control-label">{{'lang.userprofile.BILLING-CITY' | translate}}</span>
+									</div>
+									<div class="form-group">
+										<div class="col-xs-8 col-lg-4">
+											<input class="form-control" type="text" ng-model="vm.finance.billingAddress.zipCode" placeholder="{{'lang.userprofile.BILLING-ZIPCODE' | translate}}">
+										</div>
+										<span class="col-xs-2 col-md-2 col-lg-3 control-label">{{'lang.userprofile.BILLING-ZIPCODE' | translate}}</span>
+									</div>
+									<div class="form-group">
+										<div class="col-xs-8 col-lg-4">
+											<input class="form-control" type="text" ng-model="vm.finance.billingAddress.state" placeholder="{{'lang.userprofile.BILLING-STATE' | translate}}">
+										</div>
+										<span class="col-xs-2 col-md-2 col-lg-3 control-label">{{'lang.userprofile.BILLING-STATE' | translate}}</span>
+									</div>
+									<div class="form-group">
+										<div class="col-xs-8 col-lg-4">
+											<select country-picker class="form-control" ng-model="vm.finance.billingAddress.country" placeholder="{{'lang.userprofile.BILLING-COUNTRY' | translate}}"></select>
+										</div>
+										<span class="col-xs-2 col-md-2 col-lg-3 control-label">{{'lang.userprofile.BILLING-COUNTRY' | translate}}</span>
+									</div>
+									<h4>{{'lang.userprofile.AFFILIATION-COMPANY' | translate}}</h4>
+									<div class="form-group">
+										<div class="col-xs-8 col-lg-4">
+											<input class="form-control" type="text" ng-model="vm.finance.companyName" ng-keydown="vm.finance.companyConfirm = vm.finance.companyName === vm.oldCompanyName" placeholder="{{'lang.userprofile.COMPANY-NAME' | translate}}">
+										</div>
+										<span class="col-xs-2 col-md-2 col-lg-3 control-label">{{'lang.userprofile.COMPANY-NAME' | translate}}</span>
+									</div>
+
+									<input type="checkbox" ng-model="vm.finance.companyConfirm" class="custom-checkbox">
+									{{'lang.userprofile.COMPANY-RIGHTS' | translate}}
+
+								</form>
+							</div>
+
+							<div class="tab-pane fade" ng-class="vm.activePanel=='package'?'active in':''" id="package" ng-controller="analyticsController">
+								<div class="row margin-top-15">
+									<div class="col-md-12 col-sm-12">
+										<h4>{{'lang.userprofile.PACKAGE-INFO' | translate}}</h4>
+										<br>
+									</div>
+								</div>
+								<div class="flex-wrap flex-row-around-center">
+									<div class="col-md-2 col-package">
+										<div ng-class="vm.licenseName=='Free'?'panel panel-default':'panel panel-primary'">
+											<div class="panel-heading text-center">
+												<h4>Free</h4>
+												<h6>Gratis</h6>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-database"></i> {{'lang.userprofile.GB-STORAGE' | translate}}
+												<center><h4>1 GB</h4></center>
+											</div>
+
+											<div class="panel-body bg-white">
+												<i class="fa fa-caret-square-o-right"></i> {{'lang.userprofile.GB-BANDWIDTH' | translate}}
+												<center><h4>5 GB</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-globe"></i> {{'lang.userprofile.HOURS' | translate}}
+												<center><h4>10 hr</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-paypal"></i>  Pay per view
+											</div>
+											<div class="panel-footer text-center">
+												<h5 ng-show="vm.licenseName=='Free'" class="active-package">{{'lang.userprofile.ACTIVE' | translate}}</h5>
+												<button ng-show="vm.licenseName!='Free' && vm.licenseName.length > 0"
+														type="button" class="btn btn-success" ng-click="vm.downgrade();">
+													<i class="fa fa-check"></i> {{'lang.userprofile.SELECT-PACKAGE' | translate}}
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-2 col-package">
+										<div ng-class="vm.licenseName=='Entry'?'panel panel-default':'panel panel-primary'">
+											<div class="panel-heading text-center">
+												<h4>Entry</h4>
+												<h6>{{'lang.userprofile.PRICE-ENTRY' | translate}}</h6>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-database"></i> {{'lang.userprofile.GB-STORAGE' | translate}}
+												<center><h4>8 GB</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-caret-square-o-right"></i> {{'lang.userprofile.GB-BANDWIDTH' | translate}}
+												<center><h4>30 GB</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-globe"></i> {{'lang.userprofile.HOURS' | translate}}
+												<center><h4>60 hr</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-paypal"></i> Pay per view
+											</div>
+											<div class="panel-footer text-center">
+												<h5 ng-show="vm.licenseName=='Entry'" class="active-package">{{'lang.userprofile.ACTIVE' | translate}}</h5>
+												<button ng-show="vm.licenseName!='Entry' && vm.licenseName.length > 0"
+														type="button" class="btn btn-success" ng-click="vm.requestPacketPay('Entry')" ng-disabled="vm.isDisabledPacket()">
+													<i class="fa fa-check"></i> {{'lang.userprofile.SELECT-PACKAGE' | translate}}
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-2 col-package">
+										<div ng-class="vm.licenseName=='Basic'?'panel panel-default':'panel panel-primary'">
+											<div class="panel-heading text-center">
+												<h4>Basic</h4>
+												<h6>{{'lang.userprofile.PRICE-BASIC' | translate}}</h6>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-database"></i> {{'lang.userprofile.GB-STORAGE' | translate}}
+												<center><h4>20 GB</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-caret-square-o-right"></i> {{'lang.userprofile.GB-BANDWIDTH' | translate}}
+												<center><h4>80 GB</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-globe"></i> {{'lang.userprofile.HOURS' | translate}}
+												<center><h4>160 hr</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-paypal"></i> Pay per view
+											</div>
+											<div class="panel-footer text-center">
+												<h5 ng-show="vm.licenseName=='Basic'" class="active-package">{{'lang.userprofile.ACTIVE' | translate}}</h5>
+												<button ng-show="vm.licenseName!='Basic' && vm.licenseName.length > 0"
+														type="button" class="btn btn-success" ng-click="vm.requestPacketPay('Basic')" ng-disabled="vm.isDisabledPacket()">
+													<i class="fa fa-check"></i> {{'lang.userprofile.SELECT-PACKAGE' | translate}}
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-2 col-package">
+										<div ng-class="vm.licenseName=='Professional'?'panel panel-default':'panel panel-primary'">
+											<div class="panel-heading text-center">
+												<h4>Professional</h4>
+												<h6>{{'lang.userprofile.PRICE-PROFESSIONAL' | translate}}</h6>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-database"></i> {{'lang.userprofile.GB-STORAGE' | translate}}
+												<center><h4>65 GB</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-caret-square-o-right"></i> {{'lang.userprofile.GB-BANDWIDTH' | translate}}
+												<center><h4>250 GB</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-globe"></i> {{'lang.userprofile.HOURS' | translate}}
+												<center><h4>500 hr</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-paypal"></i> Pay per view
+											</div>
+											<div class="panel-footer text-center">
+												<h5 ng-show="vm.licenseName=='Professional'" class="active-package">{{'lang.userprofile.ACTIVE' | translate}}</h5>
+												<button ng-show="vm.licenseName!='Professional' && vm.licenseName.length > 0"
+														type="button" class="btn btn-success" ng-click="vm.requestPacketPay('Professional')" ng-disabled="vm.isDisabledPacket()">
+													<i class="fa fa-check"></i> {{'lang.userprofile.SELECT-PACKAGE' | translate}}
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-2 col-package">
+										<div ng-class="vm.licenseName=='Business'?'panel panel-default':'panel panel-primary'">
+											<div class="panel-heading text-center">
+												<h4>Business</h4>
+												<h6>{{'lang.userprofile.PRICE-BUSINESS' | translate}}</h6>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-database"></i> {{'lang.userprofile.GB-STORAGE' | translate}}
+												<center><h4>200 GB</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-caret-square-o-right"></i> {{'lang.userprofile.GB-BANDWIDTH' | translate}}
+												<center><h4>800 GB</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-globe"></i> {{'lang.userprofile.HOURS' | translate}}
+												<center><h4>1600 hr</h4></center>
+											</div>
+											<div class="panel-body bg-white">
+												<i class="fa fa-paypal"></i> Pay per view
+											</div>
+											<div class="panel-footer text-center">
+												<h5 ng-show="vm.licenseName=='Business'" class="active-package">{{'lang.userprofile.ACTIVE' | translate}}</h5>
+												<button ng-show="vm.licenseName!='Business' && vm.licenseName.length > 0"
+														type="button" class="btn btn-success" ng-click="vm.requestPacketPay('Business')" ng-disabled="vm.isDisabledPacket()">
+													<i class="fa fa-check"></i> {{'lang.userprofile.SELECT-PACKAGE' | translate}}
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<p class="alert-title" ng-if="vm.missingBillingInfo">{{'lang.wimbox.MISSING-BILLING-INFO' | translate}}</p>
+								<br>
+								<div class="col-md-8">
+									<h4>{{'lang.userprofile.DISCOUNTS' | translate}}</h4>
+								</div>
+								<div class="col-md-4">
+									<a class="btn btn-info" href="mailto:info@wimlabs.com">{{'lang.userprofile.CONTACT-US' | translate}}</a>
+								</div>
+								<div class="col-md-12">
+									<hr>
+									<p>{{'lang.userprofile.PRICE-TAX' | translate}}</p>
+									<p>{{'lang.userprofile.HOURS-INFO' | translate}}</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="panel-intro">
+							<div class="row">
+								<div class="col-xs-12">
+									<br>
+									<!--<h1>TODO QUI l'errore specifico per ogni field {{errors.profileUpdate}}</h1>-->
+									<button type="button" id="submit" ng-click="vm.profileUpdate()" class="btn btn-success">{{'lang.userprofile.SAVE' | translate}}</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<script type="text/ng-template" id="changePassword.html">
+	<div class='modal-body'>
+		<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close("modal close")'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+		<h4>{{'lang.userprofile.CHANGE-PASSWORD' | translate}}</h4>
+		<form name="changePassword" ng-submit="vm.save();">
+			<div class="form-group row">
+				<div class="col-xs-12 col-lg-6">
+					<label class="required">{{'lang.userprofile.OLD-PASSWORD' | translate}}</label>
+					<input class="form-control" type="password" ng-model="vm.user.currentPassword">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-xs-12 col-lg-6">
+					<label class="required">{{'lang.userprofile.NEW-PASSWORD' | translate}}</label>
+					<input class="form-control" name="password" ng-model="vm.user.newPassword" type="password" ng-required="true" ng-minlength="6">
+					<validator element="changePassword.password"></validator>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-xs-12 col-lg-6">
+					<label class="required">{{'lang.userprofile.CONFIRM-PASSWORD' | translate}}</label>
+					<input class="form-control" name="passwordConfirm" ng-model="vm.user.passwordConfirm" match="vm.user.newPassword" type="password" ng-required="true" ng-minlength="6">
+					<validator element="changePassword.passwordConfirm"></validator>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class='modal-footer'>
+		<div class="row">
+			<div class="col-md-6 text-left">
+				<button ng-click='vm.close("modal cancel")' class="btn btn-default buttonannulla">{{'lang.userprofile.CHANGE-PASSWORD-CANCEL' | translate}}
+				</button>
+			</div>
+			<div class="col-md-6">
+				<button type="submit" ng-click="vm.save();" ng-disabled="changePassword.$invalid || !changePassword.$dirty" class="btn btn-success">{{'lang.userprofile.CHANGE-PASSWORD-SAVE' | translate}}
+				</button>
+			</div>
+		</div>
+</script>

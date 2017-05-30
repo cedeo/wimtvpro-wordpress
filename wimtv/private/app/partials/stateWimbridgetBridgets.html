@@ -1,0 +1,448 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-green">
+				<div class="panel panel-amber">
+					<fieldset ng-disabled="!vm.loadedRangeSlider">
+						<div class="panel-heading">
+							<h3>
+								<i class="fa fa-window-restore"></i> WimBridge <span class="beta">Beta</span>
+								<small class="small-private display-none-mobile"> | {{'lang.wimbridget.BRIDGETS-EDITOR' | translate}}</small>
+							</h3>
+						</div>
+						<bridget-home-headers location="bridgets"></bridget-home-headers>
+
+						<!-- CREATOR PLAYER -->
+						<ng-include src="'private/app/partials/stateWimbridgetCreatorPlayer.html'"></ng-include>
+						{{vm.rangeStart}}  {{vm.rangeEnd}}
+
+						<div class="panel-body">
+							<!-- BRIDGETS LIST -->
+							<div class="flex flex-column start sec-center">
+								<div class="width-100 flex flex-row flex-wrap between sec-center">
+									<h2>{{'lang.wimbridget.BRIDGETS-LIST' | translate}}</h2>
+									<button class="btn btn-info" type="button" ng-click="vm.openModal(vm.bridgets, 'deleteAllBridgets.html')"><i class="fa fa-eraser"></i> {{'lang.wimbridget.bridget.CLEAR-ALL' | translate}}</button>
+									<!-- REMOVE ALL MODAL -->
+									<script type="text/ng-template" id="deleteAllBridgets.html">
+										<div class='modal-body'>
+											<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close()'>
+												<span aria-hidden='true'>&times;</span>
+											</button>
+											<h4>
+												<strong>{{'lang.wimbridget.MODAL-DELETE-ALL-CONFIRM' | translate}}</strong>
+											</h4>
+										</div>
+										<div class='modal-footer'>
+											<div class="row">
+												<div class="col-md-12">
+													<button ng-click='vm.close();' class="btn btn-default buttonannulla">{{'lang.wimbox.MODAL-DELETE-CANCEL' | translate}}</button>
+													<button ng-click="vm.bridgetsDeleteAll()" class="btn btn-primary buttonrimuovi">{{'lang.wimbox.MODAL-DELETE-YES' | translate}}</button>
+												</div>
+											</div>
+										</div>
+									</script>
+									<button class="btn btn-success" type="button" ng-click="vm.toggleAdd()">
+										<span ng-if="!vm.adding"><i class="fa fa-plus"></i> {{'lang.wimbridget.bridget.ADD' | translate}}</span>
+										<span ng-if="vm.adding"><i class="fa fa-minus"></i> {{'lang.wimbridget.CLOSE-ADDING' | translate}}</span>
+									</button>
+								</div>
+								<!-- NEW BRIDGET -->
+								<div uib-collapse="!vm.adding" class="row container-fluid new-collapse panel-body upload-drop-zone width-100">
+									<form ng-submit="vm.bridgetCreate(vm.bridget)" name="createBridgetForm">
+										<div class="flex flex-column center sec-stretch padding-10">
+											<!-- TIME -->
+											<div class="flex flex-row between sec-center flex-wrap">
+												<label for="start" class="control-label col-xs-12 col-sm-4 col-md-2">{{'lang.wimbridget.bridget.START' | translate}}</label>
+												<div class="form-group col-xs-12 col-sm-8 col-md-4">
+													<input id="start" type="number" step="0.01" placeholder="{{'lang.wimbridget.bridget.START' | translate}}"
+														   ng-model="vm.bridget.newStart"
+														   ng-model-options="{debounce: 500}"
+														   ng-change="vm.timeChange(vm.bridget.newStart, vm.bridget.newEnd)"
+														   class="form-control margin-top-5" >
+												</div>
+												<label for="end" class="control-label col-xs-12 col-sm-4 col-md-2">{{'lang.wimbridget.bridget.END' | translate}}</label>
+												<div class="form-group col-xs-12 col-sm-8 col-md-4">
+													<input id="end" type="number" step="0.01" placeholder="{{'lang.wimbridget.bridget.END' | translate}}"
+														   class="form-control margin-top-5"
+														   ng-model="vm.bridget.newEnd"
+														   ng-model-options="{debounce: 500}"
+														   ng-change="vm.timeChange(vm.bridget.newStart, vm.bridget.newEnd)" >
+												</div>
+											</div>
+
+											<!-- TITLE -->
+											<div class="flex flex-row between sec-center flex-wrap form-group">
+												<label for="title" class="col-xs-12 col-sm-4">{{'lang.wimbridget.bridget.TITLE' | translate}} <span class="required"> * </span></label>
+												<div class="col-xs-12 col-sm-8">
+													<input id="title" name="title" type="text" class="form-control col-xs-12" ng-model="vm.bridget.title"
+													placeholder="{{'lang.wimbridget.bridget.TITLE' | translate}}" ng-required="true">
+												</div>
+											</div>
+
+											<!-- DESCRIPTION -->
+											<div class="flex flex-row between sec-center flex-wrap">
+												<label for="description" class="col-xs-12 col-sm-4">{{'lang.wimbridget.bridget.DESCRIPTION' | translate}}</label>
+												<div class="form-group col-xs-12 col-sm-8">
+													<input id="description" type="text" class="form-control margin-top-5" ng-model="vm.bridget.description" placeholder="{{'lang.wimbridget.bridget.DESCRIPTION' | translate}}">
+												</div>
+											</div>
+
+											<!-- TAGS -->
+											<div class="flex flex-row between sec-center flex-wrap">
+												<label for="tags" class="col-xs-12 col-sm-4">{{'lang.wimbridget.bridget.TAGS' | translate}}</label>
+												<div class="form-group col-xs-12 col-sm-8">
+													<input id="tags" type="text" class="form-control margin-top-5" ng-model="vm.bridget.tags" placeholder="{{'lang.wimbridget.bridget.TAGS' | translate}}">
+												</div>
+											</div>
+
+											<!-- THUMBNAIL -->
+											<div class="flex flex-row between sec-center flex-wrap" style="margin-bottom: 15px">
+												<label for="thumbnail" class="col-xs-12 col-sm-4">Thumbnail</label>
+												<div class="col-xs-12 col-sm-4">
+													<button id="thumbnail" class="btn btn-default margin-top-5" ngf-select ng-model="vm.bridget.file" ngf-accept="'image/*'">
+														<span ng-if="vm.bridget.file">{{'lang.wimbridget.bridget.BUTTON-CHANGE-THUMB' | translate}}</span>
+														<span ng-if="!vm.bridget.file">{{'lang.wimbridget.bridget.BUTTON-CHOOSE-THUMB' | translate}}</span>
+													</button>
+												</div>
+												<div class="col-xs-12 col-sm-4">
+													<div class="break-all" ng-if="vm.bridget.file">
+														<img ngf-src="vm.bridget.file" class="img-responsive">
+														<strong>{{vm.bridget.file.name}}</strong>
+													</div>
+												</div>
+											</div>
+
+											<!-- LAYOUT -->
+											<div class="flex flex-row between sec-center flex-wrap">
+												<label for="layout" class="col-xs-12 col-sm-4">{{'lang.wimbridget.bridget.LAYOUT' | translate}}</label>
+												<div class="form-group col-xs-12 col-sm-8">
+													<select id="layout" class="form-control" ng-model="vm.bridget.layout_type" ng-change="vm.setDestination(null, vm.bridget)">
+														<option value="" disabled="" selected="" class="ng-binding">Select {{'lang.wimbridget.bridget.LAYOUT' | translate}}</option>
+														<option ng-repeat="layout in vm.bridgetLayouts" ng-value="layout.type">{{layout.name}}</option>
+													</select>
+												</div>
+											</div>
+
+											<!-- SELECTED VIDEO -->
+											<div ng-if="vm.bridget.verboseDestination" class="flex flex-row between sec-center flex-wrap">
+												<label class="col-xs-12 col-sm-4"></label>
+												<div class="col-xs-12 col-sm-8">
+													<bridget-asset type="vm.bridget.verboseDestination.type" asset="vm.bridget.verboseDestination"></bridget-asset>
+													<div class="form-group col-xs-12 text-center">
+														<button type="button" class="btn btn-default" ng-click="vm.setDestination(null, vm.bridget)">{{'lang.wimbridget.bridget.CHANGE-DESTINATION' | translate}}</button>
+													</div>
+												</div>
+											</div>
+
+											<!-- VIDEO LIST -->
+											<div ng-if="vm.checkLayout(vm.bridget, 'video')" class="panel-body">
+												<div ng-if="vm.videos.length === 0" class="text-center">
+													<h4>
+														{{'lang.wimbridget.video.LIST.NO-VIDEOS-AVAILABLE' | translate}}
+														<a class="clickable" ng-click="vm.videoList()">
+															<span><i ng-class="{'fa fa-refresh fa-spin':vm.videoRefreshing, 'fa fa-refresh':!vm.videoRefreshing}"
+																aria-hidden="true"></i></span></a> |
+														<a href="#/wimbridge/videos" target="_blank">{{'lang.wimbridget.ADD-ASSET' | translate}}</a>
+													</h4>
+												</div>
+												<div ng-if="vm.videos.length > 0" class="text-center">
+													<h5>{{'lang.wimbridget.AVAILABLE-VIDEOS' | translate}}
+														<a class="clickable" ng-click="vm.videoList()">
+															<span><i ng-class="{'fa fa-refresh fa-spin':vm.videoRefreshing, 'fa fa-refresh':!vm.videoRefreshing}"
+																aria-hidden="true"></i></span></a> |
+														<a href="#/wimbridge/videos" target="_blank">{{'lang.wimbridget.ADD-VIDEO' | translate}}</a>
+													</h5>
+												</div>
+												<div class="flex-row-start-center flex-wrap">
+													<div class="container-fluid" ng-if="!vm.videosLoaded">
+														<div class="spinner">
+														</div>
+													</div>
+													<div class="col-xs-6 col-md-4 col-lg-3" ng-if="vm.videosLoaded" ng-repeat="video in vm.videos">
+														<bridget-asset ng-if="video.status == 'SUCCESS' || video.status == 'FAILURE'"
+															click-action="vm.setDestination(bridgetItem, vm.bridget)" type="VIDEO" asset="video" add-to="VIDEO-BRIDGET">
+														</bridget-asset>
+													</div>
+												</div>
+											</div>
+
+											<!-- IMAGE LIST -->
+											<div ng-if="vm.checkLayout(vm.bridget, 'image')" class="panel-body">
+												<div ng-if="vm.images.length === 0" class="text-center">
+													<h5>
+														{{'lang.wimbridget.image.LIST.NO-IMAGES-AVAILABLE' | translate}}
+														<a class="clickable" ng-click="vm.imageList()">
+															<span><i ng-class="{'fa fa-refresh fa-spin':vm.imageRefreshing, 'fa fa-refresh':!vm.imageRefreshing}"
+																aria-hidden="true"></i></span></a> |
+														<a href="#/wimbridge/images" target="_blank">{{'lang.wimbridget.ADD-IMAGE' | translate}}</a>
+													</h5>
+												</div>
+												<div ng-if="vm.images.length > 0" class="text-center">
+													<h5>{{'lang.wimbridget.AVAILABLE-IMAGES' | translate}}
+														<a class="clickable" ng-click="vm.imageList()">
+															<span><i ng-class="{'fa fa-refresh fa-spin':vm.imageRefreshing, 'fa fa-refresh':!vm.imageRefreshing}"
+																aria-hidden="true"></i></span></a> |
+														<a href="#/wimbridge/images" target="_blank">{{'lang.wimbridget.ADD-IMAGE' | translate}}</a>
+													</h5>
+												</div>
+												<div class="flex-row-start-center flex-wrap">
+													<div class="container-fluid" ng-if="!vm.imagesLoaded" >
+														<div class="spinner">
+														</div>
+													</div>
+													<div class="col-xs-6 col-md-4 col-lg-3" ng-if="vm.imagesLoaded" ng-repeat="image in vm.images">
+														<bridget-asset ng-if="image.status == 'SUCCESS' || image.status == 'FAILURE'"
+															click-action="vm.setDestination(bridgetItem, vm.bridget)" accesskey="" type="IMAGE" asset="image" add-to="VIDEO-BRIDGET">
+														</bridget-asset>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="flex flex-row-around-center flex-wrap">
+											<button type="reset" ng-click="vm.toggleAdd()" class="btn btn-default">
+												{{'lang.wimbridget.bridget.BUTTON-UNDO' | translate}}
+											</button>
+											<button type="submit" class="btn btn-info">
+												{{'lang.wimbridget.bridget.BUTTON-UPLOAD' | translate}}
+											</button>
+										</div>
+									</form>
+								</div>
+
+								<div ng-if="!vm.videosLoaded">
+									<div class="spinner"></div>
+								</div>
+								<div ng-if="vm.videosLoaded" class="flex flex-column center sec-stretch width-100">
+									<div ng-if="!vm.bridgets || vm.bridgets.length === 0">
+										<h3>{{'lang.wimbridget.NO-VIDEOS-BRIDGET-AVAILABLE' | translate}}</h3>
+									</div>
+									<div ng-if="vm.bridgets.length > 0" class="bridget-element wimbox-contents" ng-repeat="bridget in vm.bridgets | orderBy:['start']">
+										<div ng-if="bridget.editing" class="upload-drop-zone container-fluid" ng-init="vm.initEditing(bridget)">
+
+											<!-- EDIT BRIDGET-->
+											<form ng-submit="vm.bridgetPatch(bridget)" name="editBridgetForm">
+												<div class="flex flex-column center sec-stretch padding-10">
+													<!-- TIME -->
+													<div class="flex flex-row between sec-center flex-wrap">
+														<label for="start-{{$index}}" class="control-label col-xs-12 col-sm-4 col-md-2">{{'lang.wimbridget.bridget.START' | translate}}</label>
+														<div class="form-group col-xs-12 col-sm-8 col-md-4">
+															<input id="start-{{$index}}" type="number" step="0.01" placeholder="{{'lang.wimbridget.bridget.START' | translate}}"
+																   ng-model="bridget.newStart"
+																   ng-model-options="{debounce: 500}"
+																   ng-change="vm.timeChange(bridget.newStart, bridget.newEnd)"
+																   class="form-control margin-top-5" >
+														</div>
+														<label for="end-{{$index}}" class="control-label col-xs-12 col-sm-4 col-md-2">{{'lang.wimbridget.bridget.END' | translate}}</label>
+														<div class="form-group col-xs-12 col-sm-8 col-md-4">
+															<input id="end-{{$index}}" type="number" step="0.01" placeholder="{{'lang.wimbridget.bridget.END' | translate}}"
+																   class="form-control margin-top-5"
+																   ng-model="bridget.newEnd"
+																   ng-model-options="{debounce: 500}"
+																   ng-change="vm.timeChange(bridget.newStart, bridget.newEnd)" >
+														</div>
+													</div>
+
+													<!-- TITLE -->
+													<div class="flex flex-row between sec-center flex-wrap form-group">
+														<label for="title-{{$index}}" class="col-xs-12 col-sm-4">{{'lang.wimbridget.bridget.TITLE' | translate}}</label>
+														<div class="col-xs-12 col-sm-8">
+															<input id="title-{{$index}}" name="title" required type="text" class="form-control col-xs-12" ng-model="bridget.title"
+															placeholder="{{'lang.wimbridget.bridget.TITLE' | translate}}" ng-required="true">
+														</div>
+													</div>
+
+													<!-- DESCRIPTION -->
+													<div class="flex flex-row between sec-center flex-wrap">
+														<label for="description-{{$index}}" class="col-xs-12 col-sm-4">{{'lang.wimbridget.bridget.DESCRIPTION' | translate}}</label>
+														<div class="form-group col-xs-12 col-sm-8">
+															<input id="description-{{$index}}" type="text" class="form-control margin-top-5" ng-model="bridget.description" placeholder="{{'lang.wimbridget.bridget.DESCRIPTION' | translate}}">
+														</div>
+													</div>
+
+													<!-- TAGS -->
+													<div class="flex flex-row between sec-center flex-wrap">
+														<label for="tags-{{$index}}" class="col-xs-12 col-sm-4">{{'lang.wimbridget.bridget.TAGS' | translate}}</label>
+														<div class="form-group col-xs-12 col-sm-8">
+															<input id="tags-{{$index}}" type="text" class="form-control margin-top-5" ng-model="bridget.tags" placeholder="{{'lang.wimbridget.bridget.TAGS' | translate}}">
+														</div>
+													</div>
+
+													<!-- THUMBNAIL -->
+													<div class="flex flex-row between sec-center flex-wrap" style="margin-bottom: 15px">
+														<label for="thumbnail-{{$index}}" class="col-xs-12 col-sm-4">Thumbnail</label>
+														<div class="col-xs-12 col-sm-4">
+															<button id="thumbnail-{{$index}}" class="btn btn-default margin-top-5" ngf-select ng-model="bridget.file" ngf-accept="'image/*'">
+																<span ng-if="bridget.file">{{'lang.wimbridget.bridget.BUTTON-CHANGE-THUMB' | translate}}</span>
+																<span ng-if="!bridget.file">{{'lang.wimbridget.bridget.BUTTON-CHOOSE-THUMB' | translate}}</span>
+															</button>
+														</div>
+														<div class="col-xs-12 col-sm-4">
+															<div class="break-all" ng-if="bridget.file">
+																<img ngf-src="bridget.file" class="img-responsive">
+															</div>
+															<div class="break-all" ng-if="!bridget.file && bridget.thumb_url">
+																<img ng-src="{{bridget.thumb_url}}" class="img-responsive">
+															</div>
+														</div>
+													</div>
+
+													<!-- LAYOUT -->
+													<div class="flex flex-row between sec-center flex-wrap">
+														<label for="layout-{{$index}}" class="col-xs-12 col-sm-4">{{'lang.wimbridget.bridget.LAYOUT' | translate}}</label>
+														<div class="form-group col-xs-12 col-sm-8">
+															<select id="layout-{{$index}}" class="form-control" ng-model="bridget.layout_type" ng-change="vm.setDestination(null, bridget)">
+																<option ng-repeat="layout in vm.bridgetLayouts" value="{{layout.type}}">{{layout.name}}</option>
+															</select>
+														</div>
+													</div>
+
+													<!-- SELECTED VIDEO -->
+													<div ng-if="bridget.verboseDestination" class="flex flex-row between sec-center flex-wrap">
+														<label class="col-xs-12 col-sm-4"></label>
+														<div class="col-xs-12 col-sm-8">
+															<bridget-asset type="bridget.verboseDestination.type" asset="bridget.verboseDestination"></bridget-asset>
+															<div class="form-group col-xs-12 text-center">
+																<button type="button" class="btn btn-default" ng-click="vm.setDestination(null, bridget)">{{'lang.wimbridget.bridget.CHANGE-DESTINATION' | translate}}</button>
+															</div>
+														</div>
+													</div>
+
+													<!-- VIDEO LIST -->
+													<div ng-if="vm.checkLayout(bridget, 'video')" class="panel-body">
+														<div ng-if="vm.videos.length === 0" class="text-center">
+															<h4>
+																{{'lang.wimbridget.video.LIST.NO-VIDEOS-AVAILABLE' | translate}}
+																<a class="clickable" ng-click="vm.videoList()">
+																	<span><i ng-class="{'fa fa-refresh fa-spin':vm.videoRefreshing, 'fa fa-refresh':!vm.videoRefreshing}"
+																		aria-hidden="true"></i></span></a> |
+																<a href="#/wimbridge/videos" target="_blank">{{'lang.wimbridget.ADD-ASSET' | translate}}</a>
+															</h4>
+														</div>
+														<div ng-if="vm.videos.length > 0" class="text-center">
+															<h5>{{'lang.wimbridget.AVAILABLE-VIDEOS' | translate}}
+																<a class="clickable" ng-click="vm.videoList()">
+																	<span><i ng-class="{'fa fa-refresh fa-spin':vm.videoRefreshing, 'fa fa-refresh':!vm.videoRefreshing}"
+																		aria-hidden="true"></i></span></a> |
+																<a href="#/wimbridge/videos" target="_blank">{{'lang.wimbridget.ADD-VIDEO' | translate}}</a>
+															</h5>
+														</div>
+
+														<div class="flex-row-start-center flex-wrap">
+															<div class="container-fluid" ng-if="!vm.videosLoaded">
+																<div class="spinner">
+																</div>
+															</div>
+															<div class="col-xs-6 col-md-4 col-lg-3" ng-if="vm.videosLoaded" ng-repeat="video in vm.videos">
+																<bridget-asset ng-if="video.status == 'SUCCESS' || video.status == 'FAILURE'"
+																	click-action="vm.setDestination(bridgetItem, bridget)" type="VIDEO" asset="video" add-to="VIDEO-BRIDGET">
+																</bridget-asset>
+															</div>
+														</div>
+													</div>
+
+													<!-- IMAGE LIST -->
+													<div ng-if="vm.checkLayout(bridget, 'image')" class="panel-body">
+														<div ng-if="vm.images.length === 0" class="text-center">
+															<h5>
+																{{'lang.wimbridget.image.LIST.NO-IMAGES-AVAILABLE' | translate}}
+																<a class="clickable" ng-click="vm.imageList()">
+																	<span><i ng-class="{'fa fa-refresh fa-spin':vm.imageRefreshing, 'fa fa-refresh':!vm.imageRefreshing}"
+																		aria-hidden="true"></i></span></a> |
+																<a href="#/wimbridge/images" target="_blank">{{'lang.wimbridget.ADD-IMAGE' | translate}}</a>
+															</h5>
+														</div>
+														<div ng-if="vm.images.length > 0" class="text-center">
+															<h5>{{'lang.wimbridget.AVAILABLE-IMAGES' | translate}}
+																<a class="clickable" ng-click="vm.imageList()">
+																	<span><i ng-class="{'fa fa-refresh fa-spin':vm.imageRefreshing, 'fa fa-refresh':!vm.imageRefreshing}"
+																		aria-hidden="true"></i></span></a> |
+																<a href="#/wimbridge/images" target="_blank">{{'lang.wimbridget.ADD-IMAGE' | translate}}</a>
+															</h5>
+														</div>
+														<div class="flex-row-start-center flex-wrap">
+															<div class="container-fluid" ng-if="!vm.imagesLoaded" >
+																<div class="spinner">
+																</div>
+															</div>
+															<div class="col-xs-6 col-md-4 col-lg-3" ng-if="vm.imagesLoaded" ng-repeat="image in vm.images">
+																<bridget-asset ng-if="image.status == 'SUCCESS' || image.status == 'FAILURE'"
+																	click-action="vm.setDestination(bridgetItem, bridget)" accesskey="" type="IMAGE" asset="image" add-to="VIDEO-BRIDGET">
+																</bridget-asset>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<!-- BUTTONS -->
+												<div class="flex flex-row-around-center margin-5">
+													<button type="reset" ng-click="bridget.editing = false" class="btn btn-default">
+														{{'lang.wimbridget.bridget.BUTTON-UNDO' | translate}}
+													</button>
+													<button type="submit" class="btn btn-info">
+														{{'lang.wimbridget.bridget.BUTTON-SAVE' | translate}}
+													</button>
+												</div>
+											</form>
+										</div>
+
+										<div class="flex flex-row between flex-wrap sec-center width-100" ng-if="!bridget.editing">
+											<div class="col-xs-12 col-sm-2 title flex flex-row start sec-center">
+												<div class="col-xs-12">
+													<div class="row">
+														<div class="margin-bottom-10">
+															<div class="image-rectangle-box image-box cover" style="background-image: url('{{$root.getBridgetThumbnail(bridget)}}');">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="col-sm-2 title flex flex-column flex-wrap start sec-center">
+												<div title="{{'lang.wimbridget.image.TITLE' | translate}}"><strong>{{bridget.title}}</strong></div>
+												<div title="{{'lang.wimbridget.LAYOUT-TYPE' | translate}}"><small>({{bridget.layout_type}})</small></div>
+											</div>
+
+											<div class="col-sm-2 title flex flex-column flex-wrap start sec-center">
+												<a ng-if="bridget.layout_type == 'video'" href="#wimbridge/bridgeteditor/{{bridget.destinations[0].id}}" class="btn btn-success white">
+													<i class="fa fa-window-restore" aria-hidden="true"></i> Bridget Editor
+												</a>
+											</div>
+
+											<div class="col-sm-4 flex flex-column start sec-center">
+												{{'lang.wimbridget.bridget.START' | translate}}: {{(bridget.start*1000) | date:'mm:ss'}}<br />
+												{{'lang.wimbridget.bridget.END' | translate}}: {{((bridget.start+bridget.duration)*1000) | date:'mm:ss'}}
+											</div>
+											<div class="col-xs-12 col-sm-2 flex flex-row-around-center sec-center">
+												<button class="btn btn-success" ng-click="bridget.editing = true"><i class="fa fa-edit"></i></button>
+												<button class="btn btn-danger" ng-click="vm.openModal(bridget, 'deleteBridget.html')"><i class="fa fa-trash-o"></i></button>
+												<!-- REMOVE MODAL -->
+												<script type="text/ng-template" id="deleteBridget.html">
+													<div class='modal-body'>
+														<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close()'>
+															<span aria-hidden='true'>&times;</span>
+														</button>
+														<h4>
+															<strong>{{'lang.wimbridget.MODAL-DELETE-CONFIRM' | translate}}</strong>
+														</h4>
+													</div>
+													<div class='modal-footer'>
+														<div class="row">
+															<div class="col-md-12">
+																<button ng-click='vm.close();' class="btn btn-default buttonannulla">{{'lang.wimbox.MODAL-DELETE-CANCEL' | translate}}</button>
+																<button ng-click="vm.bridgetDelete(vm.bridget, true)" class="btn btn-primary buttonrimuovi">{{'lang.wimbox.MODAL-DELETE-YES' | translate}}</button>
+															</div>
+														</div>
+													</div>
+												</script>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,61 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-amber">
+				<div class="panel-heading">
+					<h3>
+						<i class="fa fa-window-restore"></i> WimBridge <span class="beta">Beta</span>
+						<small class="small-private display-none-mobile"> | {{'lang.wimbridget.VIDEO' | translate}}</small>
+					</h3>
+				</div>
+				<bridget-home-headers location="videos"></bridget-home-headers>
+			</div>
+
+
+			<div class="row">
+
+				<!-- WIMBOX VIDEOS -->
+				<div class="col-xs-12 col-md-6">
+					<box-list click-action="vm.addToWimBridget(boxItem)" page-size="6" add-to="BRIDGET" inner-class="col-xs-6"></box-list>
+				</div>
+
+				<!-- VIDEO BRIDGET LIST -->
+				<div class="col-xs-12 col-md-6">
+					<div class="panel">
+						<!-- header -->
+						<div class="panel-heading">
+							<div class="panel-intro">
+								<div class="flex-row-between-center flex-wrap">
+								<div class="col-xs-12">
+									<h3 class="ng-binding" style="color:#FF6F00;">
+										WimBridge {{'lang.wimbridget.VIDEO' | translate}}
+									</h3>
+								</div>
+							</div>
+
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="flex flex-row start sec-center flex-wrap">
+								<div class="container-fluid" ng-if="!vm.videosLoaded">
+									<div class="spinner">
+									</div>
+								</div>
+								<div ng-if="vm.videosLoaded && vm.videos.length === 0" class="col-xs-12 text-center">
+										<h4>{{'lang.wimbridget.NO-VIDEOS-BRIDGET-AVAILABLE' | translate}}</h4>
+										<h5>{{'lang.wimbridget.LOAD-NEW-VIDEO-MESSAGE' | translate}}</h5>
+								</div>
+								<div ng-if="vm.videosLoaded" class="col-xs-12" ng-repeat="video in vm.videos">
+									<bridget-asset type="VIDEO" asset="video" editable="true" delete-call="vm.videoDelete" edit-call="vm.videoPatch"></bridget-asset>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+	</div>
+</div>

@@ -1,0 +1,659 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<!-- HEADER + NEW-CHANNEL -->
+			<div class="panel panel-yellow">
+				<div class="panel-heading">
+					<div class="panel-intro flex-row-between-center flex-wrap">
+						<div class="col-md-8">
+							<h3>
+								<i class="fa fa-video-camera"></i>
+								WimLive
+								<small class="small-private display-none-mobile"> | {{'lang.wimchannel.WELCOME' | translate}}
+								</small>
+							</h3>
+						</div>
+						<div class="col-md-4">
+							<form class="search-form">
+								<input name="inputSearch"
+									   id="inputSearch"
+									   type="text"
+									   ng-model="vm.querySearchString"
+									   ng-model-options="{debounce: 500}"
+									   ng-change="vm.getChannels()"
+									   ng-maxlength="50"
+									   class="form-control input-search"
+									   placeholder="{{'lang.wimbox.QUERY-SEARCH' | translate}}">
+								<span class="glyphicon glyphicon-remove search-icon" ng-if="vm.querySearchString.length > 0" ng-click="vm.querySearchString = ''; vm.getChannels();"></span>
+								<span class="glyphicon glyphicon-search search-icon" ng-if="!vm.querySearchString"></span>
+							</form>
+						</div>
+					<div class="col-md-12 margin-5">
+							<button type="button" class="btn btn-default" title="Help" ng-click="$root.showHelp('live')">
+								<i class="fa fa-info-circle" aria-hidden="true"></i> Help
+							</button>
+							<button class="btn btn-primary" type="button" ng-click="vm.isCreateChannelFromVisible = !vm.isCreateChannelFromVisible">
+								<span ng-if="vm.isCreateChannelFromVisible"><i class="fa fa-times" aria-hidden="true"></i> {{'lang.wimchannel.CLOSE' | translate}}</span>
+								<span ng-if="!vm.isCreateChannelFromVisible" title="{{'lang.wimchannel.NEW-INFO' | translate}}"><i class="fa fa-plus" aria-hidden="true"></i> {{'lang.wimchannel.NEW' | translate}}</span>
+							</button>
+						</div>
+					</div>
+
+					<!-- Form New Channel -->
+					<div uib-collapse="!vm.isCreateChannelFromVisible" class="new-collapse">
+						<div class="panel-body upload-drop-zone">
+
+							<form ng-submit="vm.createChannel()" class=" form-horizontal" name="createChannel">
+									<legend>{{'lang.wimchannel.NEW-CHANNEL' | translate}}</legend>
+
+								<div class="row">
+									<div class="col-md-9 col-sm-12">
+
+											<div class="form-group">
+												<label class="col-sm-3 col-xs-12">{{'lang.wimchannel.NAME' | translate}}<span class="required"> * </span></label>
+												<div class="input-group col-sm-8 col-xs-12">
+													<input name="Name" class="form-control" type="text"
+														   ng-model="vm.newChannel.name" ng-required="true">
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-sm-3 col-xs-12">{{'lang.wimchannel.DESCRIPTION' | translate}}<span class="required"> * </span></label>
+													<div class="input-group col-sm-8 col-xs-12">
+														<input name="Description" class="form-control" type="text"
+															   ng-model="vm.newChannel.description" ng-required="true">
+													</div>
+											</div>
+
+											<div class="form-group">
+												<div class="col-sm-3 col-xs-12">
+													<label for="">{{'lang.wimchannel.URL' | translate}} <span class="required"> * </span></label>
+													<p><small>{{'lang.wimcast.INFO-URL' | translate}}</small></p>
+												</div>
+												<div class="input-group form-inline">
+													<input name="Url" placeholder="url" class="form-control"
+														   type="text" ng-model="vm.newChannel.streamPath"
+														   ng-required="true">
+													<span class="input-group-btn" style="width: inherit;">
+                            <button class="btn btn-secondary btn-secondary-live"
+													  type="button"
+													  ng-click="vm.getStreamingUrl(vm.newChannel)"
+													  title="{{'lang.wimchannel.GET-URL-INFO' | translate}}">{{'lang.wimchannel.GET-URL' | translate}}</button>
+                          </span>
+												</div>
+											</div>
+
+										</div>
+
+										<div class="col-md-3 col-sm-12">
+											<div class="form-group">
+												<!-- Image Upload -->
+												<div class="col-xs-8 col-lg-4">
+													<div class="form-group">
+														<div class="row">
+															<div class="image-profile image-medium"
+																 style="background-image: url({{getThumbnailUrl(vm.newChannel.thumbnailId)}});"></div>
+														</div>
+														<div class="row" style="text-align: center">
+															<button class="btn btn-default margin-top-10" type="file"
+																	ngf-select="vm.changeImage($file, $invalidFiles, vm.newChannel)" accept="image/*">
+																{{'lang.userprofile.UPLOAD-IMAGE' | translate}}
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<!-- end row-->
+
+									<div class="row">
+										<div class="form-group">
+											<div class="col-xs-12">
+												<input class="btn btn-warning btn-warning-live" type="submit"
+													   value="{{'lang.wimchannel.CREATE-CHANNEL' | translate}}">
+												<h4 ng-show="liveCreated"
+													class="margin-top-10 alert-message alert-message-success">
+													{{'lang.wimchannel.CREATE-EVENT-SUCCESS' | translate}}</h4>
+											</div>
+										</div>
+									</div>
+
+							</form>
+						</div>
+					</div>
+					<!-- End Form New Channel -->
+				</div>
+				<!-- END HEADER + NEW-CHANNEL -->
+
+				<!-- BODY CONTENT: LIST CHANNEL -->
+				<div class="panel-body">
+					<div class="container-fluid">
+						<div ng-if="!vm.videosLoaded">
+							<div class="spinner"></div>
+						</div>
+						<div ng-if="vm.videosLoaded">
+							<div ng-if="!vm.channels || vm.channels.length === 0" class="text-center">
+								<h4>{{'lang.wimchannel.NO-CHANNEL-AVAILABLE' | translate}}</h4>
+							</div>
+							<div ng-if="vm.channels.length > 0">
+								<div ng-repeat="channel in vm.channels" class="row wimchannel-contents margin-top-10">
+									<div class="flex flex-row-around-center padding-list channel-header flex-channel-header">
+
+										<div class="col-xs-12 col-md-2 flex-column-center-center">
+											<div class="image-profile image-medium" style="background-image: url({{getThumbnailUrl(channel.thumbnailId)}});"></div>
+										</div>
+										<div class="col-xs-12 col-md-6">
+											<p><strong>{{channel.name}}</strong> | {{channel.description}}</p>
+											<p>Streaming URL: <span  class="troncate"><strong>{{channel.streamingBaseUrl}}</strong></span></p>
+											<p>Stream: <strong><i>{{channel.streamPath}}</i></strong></p>
+											<p>
+												<small>{{'lang.wimcast.INFO-URL' | translate}}.
+													<strong><a href="http://support.wim.tv/obs-tutorial/" target="_blank">{{'lang.privatepage.SUPPORT' | translate}}</a></strong>
+												</small>
+											</p>
+										</div>
+										<div class="col-xs-12 col-md-4">
+											<div class="flex-row-around-center">
+												<button type="button" ng-click="$event.preventDefault(); $event.stopPropagation(); vm.openIframeDetail(channel, this)"
+														class="btn btn-info"
+														tooltip-placement="top"
+														uib-tooltip="{{'lang.wimchannel.EMBED-CODE' | translate}}">
+													<i class="fa fa-code" aria-hidden="true"></i> Iframe
+												</button>
+												<button type="button" ng-click="$event.preventDefault(); $event.stopPropagation(); channel.editing = !channel.editing"
+														class="btn btn-success"
+														title="{{'lang.wimchannel.EDIT-BUTTON-INFO' | translate}}">
+													<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+												</button>
+												<button class="btn btn-danger" type="button"
+														ng-click="$event.preventDefault(); $event.stopPropagation(); vm.openDeleteChannel(channel)"
+														title="{{'lang.wimchannel.DELETE-BUTTON-INFO' | translate}}">
+													<i class="fa fa-trash-o"></i>
+												</button>
+												<!--<a title="{{'lang.wimchannel.PRODUCER-BUTTON-INFO' | translate}}" ui-sref="stateProducer({hostId: live.hostId, url: live.url})" target="_blank" class="btn btn-info white" title="{{'lang.wimchannel.PRODUCER-INFO' | translate}}"><i class="fa fa-video-camera"></i></a>-->
+											</div>
+										</div>
+
+									</div>
+
+									<div class="col-sm-12 padding-top-5 margin-bottom-5" uib-collapse="!channel.editing">
+
+										<!-- EDIT channel -->
+										<form ng-submit="vm.editChannel(channel)" class=" form-horizontal" name="editChannel">
+
+											<legend  class="text-center">
+												{{'lang.wimchannel.EDIT-CHANNEL' | translate}}: {{channel.name}}
+											</legend>
+											<div class="col-md-8 col-xs-12 container-fluid">
+
+												<div class="form-group">
+													<label class="col-sm-3 col-xs-12">{{'lang.wimchannel.NAME' | translate}}
+													<span class="required"> * </span></label>
+													<div class="input-group col-sm-8 col-xs-12">
+														<input name="Name" class="form-control" type="text"
+															   ng-model="channel.name" ng-required="true">
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label class="col-sm-3 col-xs-12">{{'lang.wimchannel.DESCRIPTION' | translate}}<span class="required"> * </span></label>
+													<div class="input-group col-sm-8 col-xs-12">
+														<input name="Description" class="form-control"
+															   type="text" ng-model="channel.description"
+															   ng-required="true">
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label class="col-sm-3 col-xs-12">{{'lang.wimchannel.URL' | translate}} <span class="required"> * </span> </label>
+													<div class="input-group form-inline">
+														<input name="Url" placeholder="url" class="form-control"
+															   type="text" ng-model="channel.streamPath"
+															   ng-required="true">
+														<span class="input-group-btn">
+                          		<button class="btn btn-secondary btn-secondary-live"
+															type="button"
+															ng-click="getStreamingUrl(channel)"
+															title="{{'lang.wimchannel.GET-URL-INFO' | translate}}">{{'lang.wimchannel.GET-URL' | translate}}
+															</button>
+                          	</span>
+													</div>
+												</div>
+
+											</div>
+
+											<div class="col-md-4 col-xs-12 container-fluid">
+												<div class="form-group container-fluid">
+													<div class="row">
+														<div ng-if="channel.thumbnailId"
+															 class="image-profile image-medium"
+															 style="background-image: url({{wimtvUrl}}/asset/thumbnail/{{channel.thumbnailId}});"></div>
+													</div>
+													<div class="row" style="text-align: center">
+														<button class="btn btn-default margin-top-10" type="file"
+																ngf-select="vm.changeImage($file, $invalidFiles, channel)" accept="image/*">{{'lang.userprofile.UPLOAD-IMAGE' | translate}}
+														</button>
+													</div>
+												</div>
+											</div>
+
+											<div class="col-md-4 col-xs-12 margin-bottom-10 text-center">
+												<input class="btn btn-success" type="submit"
+													   value="{{'lang.wimchannel.EDIT-CHANNEL' | translate}}">
+											</div>
+										</form>
+									</div>
+
+									<div class="col-sm-12 text-center" expanding="vm.showEventList(channel)">
+										<!-- EVENT LIST -->
+										<legend ng-if="channel.eventList.length!==0">{{'lang.wimchannel.CHANNEL-EVENTS' | translate}}</legend>
+										<legend ng-if="channel.eventList.length===0">{{'lang.wimchannel.NO-CHANNEL-EVENTS' | translate}}</legend>
+										<div class="row" ng-repeat="live in channel.eventList">
+											<div class="container-fluid">
+												<div class="row wimbox-contents margin-top-10">
+
+													<div class="col-md-3 col-sm-12 padding-top-5 margin-bottom-5">
+														<strong>{{live.name}}</strong>
+														<div ng-show="live.pricePerView">{{live.pricePerView + '' + live.ccy}} €
+														</div>
+														<div ng-show="!live.pricePerView">{{'lang.wimvod.LICENSE-FREE' | translate}}</div>
+													</div>
+
+													<div class="col-md-2 col-sm-12 padding-top-5 margin-bottom-5">
+														<strong>{{'lang.wimlive.DATE' | translate}}<br>
+														{{live.eventDate.date}} | {{live.eventDate.time}}</strong>
+													</div>
+													<div class="col-md-2 col-sm-12 padding-top-5 margin-bottom-5">
+														<strong>{{'lang.wimlive.END-DATE' | translate}}<br>
+														{{live.endDate.date}} | {{live.endDate.time}}</strong>
+													</div>
+
+													<div class="col-md-3 col-sm-12 padding-top-5 margin-bottom-5">
+														<a ng-if="!vm.isPastEvent(live)" title="{{'lang.wimlive.PRODUCER-BUTTON-INFO' | translate}}" href="#/producer?hostId={{live.eventId}}&channelId={{live.channel.channelId}}"
+														   class="btn btn-warning white" target="_blank"
+														   title="{{'lang.wimlive.PRODUCER-INFO' | translate}}">
+															 <i	class="fa fa-video-camera"></i>
+															 {{'lang.wimlive.TABLE-PRODUCER' | translate}}
+                            </a>
+													</div>
+
+													<div class="col-md-2 col-xs-12 padding-top-5 margin-bottom-5">
+														<button type="button" class="btn btn-success" ng-click="vm.openUpdateLive(live)"
+																title="{{'lang.wimlive.EDIT-BUTTON-INFO' | translate}}">
+															<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+														</button>
+														<button class="btn btn-danger btn-info" type="button" ng-click="vm.openDeleteLive(live)"
+																title="{{'lang.wimlive.DELETE-BUTTON-INFO' | translate}}">
+															<i class="fa fa-trash-o"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="flex-row-around-center flex-wrap margin-bottom-5">
+											<div class="padding-top-10 margin-bottom-5">
+												<button type="button" class="btn btn-info pull-left" title="{{'lang.wimchannel.ADD-EVENT' | translate}}"
+														ng-disabled="vm.disableLiveCreating" ng-click="channel.createEvent = !channel.createEvent">
+													<span ng-if="!channel.createEvent"><i class="fa fa-plus" aria-hidden="true"></i> {{'lang.wimchannel.ADD-EVENT' | translate}}</span>
+													<span ng-if="channel.createEvent"><i class="fa fa-minus" aria-hidden="true"></i> {{'lang.wimchannel.CLOSE' | translate}}</span>
+												</button>
+											</div>
+											<div class="padding-top-10 margin-bottom-5">
+											<button type="button" class="btn btn-default pull-right" ng-click="vm.togglePastEvents(channel)">
+												<span ng-if="channel.showPastEvents"><i class="fa fa-minus" aria-hidden="true"></i> {{'lang.wimchannel.CLOSE' | translate}}</span>
+												<span ng-if="!channel.showPastEvents"><i class="fa fa-archive" aria-hidden="true"></i> {{'lang.wimchannel.EVENT-ARCHIVE' | translate}}</span>
+											</button>
+											</div>
+
+											<!-- NEW EVENT IN CHANNEL-->
+											<div class="col-sm-12 margin-bottom-5" uib-collapse="!channel.createEvent" expanded="channel.newLive.publicEvent = true">
+												<!-- CREATE EVENT -->
+												<div class="panel-body upload-drop-zone">
+													<form ng-submit="vm.createLive(channel)" name="newLive" class="form-horizontal" name="createlive">
+														<fieldset>
+															<legend>{{'lang.wimlive.NEW-LIVE' | translate}}</legend>
+															<div class="row">
+																<div class="form-group">
+																	<label class="col-md-4 col-sm-12">{{'lang.wimlive.TITLE' | translate}}<span class="required"> * </span></label>
+																	<div class="col-md-8 col-sm-12">
+																		<input name="Titolo" class="form-control" type="text" ng-model="channel.newLive.name" ng-required="true">
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<label class="col-md-4 col-sm-12">{{'lang.wimlive.THUMBNAIL' | translate}}</label>
+																<div class="image-profile image-medium" style="background-image: url({{getThumbnailUrl(channel.newLive.thumbnailId)}});"></div>
+																<p>
+																	<button class="btn btn-default margin-top-10" type="file"
+																					ngf-select="vm.changeImage($file, $invalidFiles, channel.newLive)" accept="image/*">
+																		{{'lang.userprofile.UPLOAD-IMAGE' | translate}}
+																	</button>
+																</p>
+															</div>
+															<div class="row">
+																<div class="form-group">
+																	<label class="col-md-4 col-sm-12">Pay per view</label>
+																	<div class="col-md-8 col-sm-12 text-left">
+																		<input type="checkbox" class="custom-checkbox"
+																			   ng-model="channel.newLive.paymentMode"
+																			   ng-true-value="'PAY_PER_VIEW'"
+																			   ng-false-value="'FREE'">
+																		{{'lang.wimlive.SELECT-PAY-PER-VIEW' | translate}} </br>
+																		<div ng-if="channel.newLive.paymentMode == 'PAY_PER_VIEW'" class="well well-live-pay">
+																			<div class="input-group col-xs-12">
+																				<input
+																					type="text"
+																					class="form-control form-control-live"
+																					ng-model="channel.newLive.pricePerView"
+																					placeholder="{{'lang.wimlive.PRICE' | translate}}"
+																					ng-required="true">
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="form-group">
+																	<label class="col-md-4 col-sm-12">{{'lang.wimlive.DATE' | translate}} <span class="required"> * </span> </label>
+																	<div class="col-md-4 col-sm-6">
+																		<input class="form-control date margin-bottom-5"
+																			   uib-datepicker-popup="d!/M!/yyyy"
+																			   ng-click="channel.newLive.openedStartDate = true"
+																			   is-open="channel.newLive.openedStartDate"
+																			   ng-model="channel.newLive.dateStart"
+																			   ng-required="true" close-text="Close">
+																	</div>
+																	<div class="col-md-4 col-sm-6">
+																		<div class="input-group clockpicker" data-autoclose="true">
+																			<input type="text" ng-model="channel.newLive.eventDate.time" class="form-control" value="">
+																			<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="form-group">
+																	<label class="col-md-4 col-sm-12">{{'lang.wimlive.END-DATE' | translate}} <span class="required"> * </span> </label>
+																	<div class="col-md-4 col-sm-6">
+																		<input class="form-control date date margin-bottom-5"
+																					uib-datepicker-popup="d!/M!/yyyy"
+																					is-open="channel.newLive.openedEndDate"
+																					ng-model="channel.newLive.dateEnd"
+																					close-text="Close"
+																					ng-click="channel.newLive.openedEndDate = true">
+																	</div>
+																	<div class="col-md-4 col-sm-6">
+																		<div class="input-group clockpicker" data-autoclose="true">
+																			<input type="text" ng-model="channel.newLive.endDate.time" class="form-control" value="">
+																			<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+																		</div>
+																		<script type="text/javascript">
+																			$('.clockpicker').clockpicker();
+																		</script>
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="form-group">
+																	<label class="col-md-4 col-sm-6 col-xs-6" title="{{'lang.wimlive.PUBLIC-INFO' | translate}}">{{'lang.wimlive.PUBLIC' | translate}} </label>
+																	<div class="col-md-8 col-sm-2 col-xs-6 text-left">
+																		<input type="checkbox" class="custom-checkbox" name="Rendi pubblico" ng-model="channel.newLive.publicEvent" title="{{'lang.wimlive.PUBLIC-INFO' | translate}}">
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="form-group">
+																	<label class="col-md-4 col-sm-6 col-xs-6">{{'lang.wimlive.RECORDING' | translate}}</label>
+																	<div class="col-md-8 col-sm-6 col-xs-6 text-left">
+																		<input type="checkbox" class="custom-checkbox" name="Registra evento" ng-model="channel.newLive.recordEvent" title="{{'lang.wimlive.RECORDING-INFO' | translate}}">
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="form-group">
+																	<label class="col-md-4 col-sm-6 col-xs-6">{{'lang.wimlive.VIDEO-RIGHTS' | translate}}<span class="required"> * </span></label>
+																	<div class="col-md-8 col-sm-6 col-xs-6 text-left">
+																		<input type="checkbox" class="custom-checkbox" name="Registra evento" ng-model="channel.newLive.haveRights" title="{{'lang.wimlive.VIDEO-RIGHTS' | translate}}">
+																	</div>
+																</div>
+															</div>
+
+															<div class="row">
+																<div class="form-group">
+																	<label class="col-md-2 control-label"></label>
+																	<div class="col-md-6  col-sm-12 col-xs-12">
+																		<input class="btn btn-warning btn-warning-live" ng-disabled="vm.disabledNewLive(channel.newLive)" type="submit" value="{{'lang.wimlive.CREATE-EVENT' | translate}}">
+																		<h4 ng-show="liveCreated" class="margin-top-10 alert-message alert-message-success"> {{'lang.wimlive.CREATE-EVENT-SUCCESS' | translate}}</h4>
+																	</div>
+																</div>
+																<div ng-if="vm.missingPaypal && channel.newLive.paymentMode === 'PAY_PER_VIEW'">{{'lang.wimbox.MISSING-PAYPAL-EMAIL' | translate}}</div>
+																<div ng-if="vm.missingBillingInfo && channel.newLive.paymentMode === 'PAY_PER_VIEW'">{{'lang.wimbox.MISSING-BILLING-INFO' | translate}}</div>
+
+															</div>
+														</fieldset>
+													</form>
+												</div>
+											</div>
+
+										</div>
+									</div>
+
+
+
+									<!-- Pagination buttons -->
+									<!--<ul ng-show="lives.length > itemsPerPage" ng-model="currentPage" uib-pagination boundary-links="true"-->
+									<!--class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"-->
+									<!--total-items="totalItems"  class="pagination-sm" items-per-page="itemsPerPage"></ul>-->
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<!-- Error responses -->
+					<div class="row">
+						<div ng-repeat="errorMessage in errorMessages">
+							{{errorMessage.error}} --- {{errorMessage.message}}
+						</div>
+					</div>
+
+					<div class="row">
+						<div ng-repeat="successMessage in successMessages">
+							{{successMessage}}
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODALS -->
+<!-- ui-bootstrap modal updateLive -->
+<script type="text/ng-template" id="updateLive.html">
+	<div class='modal-header'>
+		<button type='button' class='close' data-dismiss='modal' aria-label='Close'
+				ng-click='vm.close()'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+		<h4 class='modal-title'>{{vm.live.name}}</h4>
+	</div>
+
+	<div class='modal-body'>
+		<form ng-submit="vm.updateLive(vm.live)" class="form-horizontal">
+
+				<div class="form-group">
+					<label class="col-sm-2 col-xs-12">{{'lang.wimchannel.TITLE' | translate}}<span class="required"> * </span></label>
+					<div class="col-sm-10 col-xs-12">
+							<input name="Titolo" class="form-control" type="text" ng-model="vm.live.name" ng-required="true">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+						<div class="image-profile image-medium"
+								 style="background-image: url({{getThumbnailUrl(vm.live.thumbnailId)}});"></div>
+					</div>
+					<div class="row" style="text-align: center">
+						<button class="btn btn-default margin-top-10" type="file"
+										ngf-select="vm.changeImage($file, $invalidFiles, vm.live)" accept="image/*">
+							{{'lang.userprofile.UPLOAD-IMAGE' | translate}}
+						</button>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 col-sm-12">Pay per view</label>
+					<div class="col-md-10 col-sm-12 text-left">
+						<p>
+							<input type="checkbox" class="custom-checkbox"
+								   ng-model="vm.live.paymentMode"
+								   ng-true-value="'PAY_PER_VIEW'"
+								   ng-false-value="'FREE'">
+							{{'lang.wimlive.SELECT-PAY-PER-VIEW' | translate}}
+						</p>
+						<div ng-if="vm.live.paymentMode == 'PAY_PER_VIEW'"
+							 class="well well-live-pay">
+							<div class="input-group col-xs-12">
+								<input
+									type="text"
+									class="form-control form-control-live"
+									ng-model="vm.live.pricePerView"
+									placeholder="{{'lang.wimlive.PRICE' | translate}}"
+									ng-required="true">
+							</div>
+						</div>
+					</div>
+				</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 col-xs-12">{{'lang.wimlive.DATE' | translate}}<span class="required">*</span> </label>
+				<div class="col-sm-5 col-xs-12 margin-bottom-5">
+					<input name="Data" class="form-control date"
+							 uib-datepicker-popup="d!/M!/yyyy"
+							 is-open="vm.live.openedStartDate"
+							 ng-model="vm.live.dateStart" ng-required="true"
+							 close-text="Close" ng-click="vm.live.openedStartDate = true">
+					</span>
+				</div>
+				<div class="col-sm-5 col-xs-12">
+					<div class="input-group clockpicker" data-autoclose="true">
+						<input type="text" ng-model="vm.live.eventDate.time"
+							   class="form-control" value="">
+						<span class="input-group-addon">
+                  <span class="glyphicon glyphicon-time"></span>
+              </span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 col-xs-12">{{'lang.wimlive.END-DATE' | translate}}<span class="required">*</span> </label>
+				<div class="col-sm-5 col-xs-12 margin-bottom-5">
+					<input name="Data" class="form-control date"
+						   uib-datepicker-popup="d!/M!/yyyy"
+						   is-open="vm.live.openedEndDate"
+						   ng-model="vm.live.dateEnd" ng-required="true"
+						   close-text="Close"
+						   ng-click="vm.live.openedEndDate = true">
+				</div>
+				<div class="col-sm-5 col-xs-12">
+					<div class="input-group clockpicker" data-autoclose="true">
+						<input type="text" ng-model="vm.live.endDate.time"
+							   class="form-control" value="" style="width:100%;">
+						<span class="input-group-addon">
+                  <span class="glyphicon glyphicon-time"></span>
+              </span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-xs-6">{{'lang.wimchannel.PUBLIC' | translate}}
+				</label>
+				<div class="col-sm-3 col-xs-6">
+					<p>
+						<input type="checkbox" name="Rendi pubblico" class="custom-checkbox" ng-model="vm.live.publicEvent">
+					</p>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-xs-6">{{'lang.wimchannel.RECORDING' | translate}}
+				</label>
+				<div class="col-sm-3 col-xs-6">
+					<p>
+						<input type="checkbox" name="Registra evento" ng-model="vm.live.recordEvent" class="custom-checkbox">
+					</p>
+				</div>
+			</div>
+
+		</form>
+
+	</div>
+	<!--END modal body -->
+
+	<div class='modal-footer'>
+		<div class="row">
+			<div class="col-md-6">
+				<h4 style="text-align:left" ng-show="wimLiveScope.errors.delete.message" class="alert-message alert-message-danger margin-top-30">
+					{{wimLiveScope.errors.delete.message | translate}}</h4>
+			</div>
+			<div class="col-md-6">
+				<button ng-click='vm.close("modal cancel")' class="btn btn-default buttonannulla">{{'lang.wimchannel.MODAL-UPDATE-CANCEL' | translate}}
+				</button>
+				<button ng-disabled="vm.disabledEditLive(vm.live)" ng-click="vm.updateLive(vm.live)" class="btn btn-primary buttonrimuovi">{{'lang.wimchannel.MODAL-UPDATE-CONFIRM' | translate}}
+				</button>
+			</div>
+		</div>
+	</div>
+</script>
+<!-- ui-bootstrap modal removeChannel -->
+<script type="text/ng-template" id="removeModal.html">
+	<div class='modal-body'>
+		<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close("modal close")'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+		<h4><strong>{{'lang.wimchannel.MODAL-DELETE-TITLE' | translate}} {{vm.live.name}}</strong></h4>
+		<p class="margin-top-15">{{'lang.wimchannel.MODAL-DELETE-TEXT' | translate}} </p>
+	</div>
+	<div class='modal-footer'>
+		<div class="row">
+			<div class="col-md-6">
+				<h4 style="text-align:left" ng-show="wimLiveScope.errors.delete.message" class="alert-message alert-message-danger margin-top-30">
+					{{wimLiveScope.errors.delete.message | translate}}</h4>
+			</div>
+			<div class="col-md-6">
+				<button ng-click='vm.close("modal cancel")' class="btn btn-default buttonannulla">{{'lang.wimchannel.MODAL-DELETE-CANCEL' | translate}}
+				</button>
+				<button ng-click="vm.confirm(vm.live)" class="btn btn-primary buttonrimuovi">{{'lang.wimchannel.MODAL-DELETE-CONFIRM' | translate}}
+				</button>
+			</div>
+		</div>
+	</div>
+</script>
+
+<!-- ui-bootstrap modal get iframe detail -->
+<script type="text/ng-template" id="iframeModal.html">
+	<div class='modal-body'>
+		<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close("modal close")'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+		<h4><strong>{{'lang.wimchannel.MODAL-GET-IFRAME' | translate}}</strong></h4>
+		<p class="margin-top-15">
+			<textarea id="embed-code" onclick="this.focus(); this.select();" style="width: 100%; resize: none; max-width:100%;"></textarea>
+		</p>
+	</div>
+	<div class='modal-footer'>
+		<div class="row">
+			<div class="col-md-6">
+			</div>
+			<div class="col-md-6">
+				<button ng-click='vm.close("modal cancel")' class="btn btn-default buttonannulla">{{'lang.wimchannel.MODAL-GET-IFRAME-CANCEL' | translate}}
+				</button>
+			</div>
+		</div>
+	</div>
+</script>

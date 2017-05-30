@@ -1,0 +1,23 @@
+<div ng-if="hideLink" class="col-xs-12 card bundle">
+	<div class="overflow-hidden-scale">
+		<div class="logo-bundle" style="background-image: url({{$root.getThumbnailUrl(bundle.thumbnailId)}});">
+			<div class="overlay"></div>
+		</div>
+	</div>
+	<div class="overlay-text text-center">
+		<h3>{{bundle.name}}</h3>
+		<p>{{bundle.price}} € - {{bundle.duration}} {{'lang.wimbundle.DURATION.' + bundle.durationUnit | translate}}<br/>{{bundle.itemCount}} Video{{bundle.itemCount > 0 && $root.currentLang === 'en' ? 's' : ''}}</p>
+	</div>
+</div>
+
+<a ng-if="!hideLink" href="#/webtv/{{bundle.publisher.userCode}}/bundle/{{bundle.bundleId}}" class="col-xs-12 card bundle">
+	<div class="overflow-hidden-scale">
+		<div class="logo-bundle" style="background-image: url({{$root.getThumbnailUrl(bundle.thumbnailId)}});">
+			<div class="overlay"></div>
+		</div>
+	</div>
+	<div class="overlay-text text-center">
+		<h3>{{bundle.name}}</h3>
+		<p>{{bundle.price}} € - {{bundle.duration}} {{'lang.wimbundle.DURATION.' + bundle.durationUnit | translate}}<br/>{{bundle.itemCount}} Video{{bundle.itemCount > 0 && $root.currentLang === 'en' ? 's' : ''}}</p>
+	</div>
+</a>

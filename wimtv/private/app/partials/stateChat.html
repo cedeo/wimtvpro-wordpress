@@ -1,0 +1,38 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-default">
+                <div class="panel-heading">
+                    <div class="panel-intro flex-row-between-center flex-wrap">
+                      <div class="col-md-12 margin-5">
+                        <h3>
+                          <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                          Chat
+                          <small class="display-none-mobile"> | {{'lang.wimlive.CHAT-WELCOME' | translate}}</small>
+                        </h3>
+                      </div>
+                      <div ng-if="isChatEnabled == false" class="col-xs-12">
+                          <div class="btn btn-default" ng-click="toggleEnableChat()">
+                              {{'lang.wimlive.ENABLE-CHAT' | translate}}
+                          </div>
+                      </div>
+                      <div ng-if="isChatEnabled == true" class="col-xs-12">
+                          <div class="btn btn-default" ng-click="toggleEnableChat()">
+                              {{'lang.wimlive.DISABLE-CHAT' | translate}}
+                          </div>
+                      </div>
+                    </div>
+
+                </div>
+
+                <div ng-if="isChatEnabled === true" class="row">
+                    <div class="col-xs-12">
+                        <chat-console></chat-console>
+                    </div>
+                </div>
+
+              </div>
+
+        </div>
+    </div>
+</div>

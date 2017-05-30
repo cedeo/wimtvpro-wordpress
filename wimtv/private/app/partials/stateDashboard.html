@@ -1,0 +1,80 @@
+<div id="wrapper">
+	<div id="page-wrapper">
+
+		<div class="row">
+			<div class="col-md-12" ng-controller="userprofileController as vm">
+				<div class="panel panel-default">
+					<div class="panel-welcome">
+						<div class="flex-row-between-center flex-wrap">
+							<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+								<div class="image-profile image-small-medium" ng-class="{'force-image-change' : $root.getThumbnailUrl(vm.profile.thumbnailId) === $root.defaultThumbnail}"  style="background-image: url({{$root.getThumbnailUrl(vm.profile.thumbnailId)}});margin:0 auto;">
+									<div ng-if="vm.updatingProfileImage" class="image-loading">
+										<div class="snake-spinner"></div>
+									</div>
+									<div ng-if="vm.updatingProfileImageError && !vm.updatingProfileImage" class="image-loading" ng-click="vm.updatingProfileImageError = false">
+										<span class="glyphicon glyphicon-exclamation-sign"></span>
+									</div>
+									<button ng-if="!vm.updatingProfileImage && !vm.updatingProfileImageError" class="image-change" type="file" ngf-select="vm.changeImmediatelyImage($file, $invalidFiles)" accept="image/*">{{'lang.userprofile.UPLOAD-IMAGE' | translate}}</button>
+								</div>
+							</div>
+							<div class="col-lg-10 col-md-9 col-sm-8 col-xs-12">
+								<h3><span ng-bind="'lang.dashboard.WELCOME' | translate"></span>
+									<a href="#/userprofile" class="link-userprofile">
+										<span ng-if="vm.profile.pageTitle">{{vm.profile.pageTitle}}</span>
+										<span ng-if="!vm.profile.pageTitle">{{$root.loggedUser.username}}</span>
+									</a>
+								</h3>
+								<div ng-controller="userOverviewController as oc" class="row">
+									<div class="col-xs-4 flex-column-center-center">
+											<h5><span ng-bind="('lang.userprofile.PACKAGE' | translate) + ':'"></span> <strong ng-bind="oc.profileOverview.licenseName"></strong></h5>
+											<span ng-if="oc.profileOverview.daysToExpiration">{{oc.profileOverview.daysToExpiration}} {{'lang.privatepage.DAYS-LEFT' | translate}}</span>
+											<h5>
+												<a href="#/userprofile?activePanel=package" ng-bind="'lang.privatepage.CHANGE-PACKAGE' | translate">
+												</a>
+											</h5>
+									</div>
+									<a href="#/analytics" class="col-xs-4 flex-column-center-center no-decoration">
+										<span ng-bind="'lang.privatepage.STORAGE' | translate"></span>
+										<div class="c100 small " ng-class="oc.profileOverview.storagePercentClass">
+											<span ng-bind="oc.profileOverview.storagePercentRound + '%'"></span>
+											<div class="slice">
+												<div class="bar"></div>
+												<div class="fill"></div>
+											</div>
+										</div>
+									</a>
+									<a href="#/analytics" class="col-xs-4 flex-column-center-center no-decoration">
+										<span ng-bind="'lang.privatepage.BANDWIDTH' | translate"></span>
+										<div class="c100 small" ng-class="oc.profileOverview.bandPercentClass">
+											<span ng-bind="oc.profileOverview.bandPercentRound + '%'"></span>
+											<div class="slice">
+												<div class="bar"></div>
+												<div class="fill"></div>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<dashboard-panel class="col-xs-12 col-sm-6 col-md-4" ng-repeat="item in dashCtrl.items"
+								 color-panel="item.colorPanel"
+								 title="item.title"
+								 icon-class="item.iconClass"
+								 link-header="item.linkHeader"
+								 key-message-welcome="item.keyMessageWelcome"
+								 link-first-line="item.linkFirstLine"
+								 key-message-first-line="item.keyMessageFirstLine"
+								 link-second-line="item.linkSecondLine"
+								 key-message-second-line="item.keyMessageSecondLine">
+				</dashboard-panel>
+		</div>
+		<!-- /.row -->
+
+	</div>
+	<!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->

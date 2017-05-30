@@ -1,0 +1,27 @@
+<div class="video-thumb card video">
+	<span class="duration">{{video.duration}}</span>
+	<div class="overflow-hidden-scale">
+		<a href="#/webtv/{{video.publisher.userCode}}/vod/{{video.vodId}}">
+			<div class="image" style="background-image: url('{{$root.getThumbnailUrl(video.thumbnailId)}}');">
+				<div class="overlay"></div>
+			</div>
+		</a>
+	</div>
+	<div class="info">
+		<a href="#/webtv/{{video.publisher.userCode}}/vod/{{video.vodId}}">
+			<p class="title truncate text-center"><strong>{{video.title}}</strong></p>
+		</a>
+		<div ng-if="showUser || showPrice" class="flex-row-between-center">
+			<div class="truncate-more">
+				<a ng-if="showUser" href="#/webtv/{{video.publisher.userCode}}">
+					<strong>{{video.publisher.pageTitle ? video.publisher.pageTitle : video.publisher.userCode}}</strong>
+				</a>
+			</div>
+			&nbsp;
+			<div class="price" ng-if="showPrice">
+				<div class="thumb-icon" ng-class="video.licenseType"></div>
+				<div class="price-value" ng-if="video.licenseType === 'PAY_PER_VIEW'">{{video.pricePerView}} €</div>
+			</div>
+		</div>
+	</div>
+</div>

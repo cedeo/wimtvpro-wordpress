@@ -1,0 +1,42 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h3>WimTV Pro Login page</h3>
+
+
+					<div class="col-md-4"></div>
+					<div class="col-md-4">
+						<form class="form" ng-submit="vm.login" role="form" accept-charset="UTF-8" id="login-nav">
+							<div class="form-group">
+								<label class="sr-only">Username</label>
+								<input type="text" ng-model="vm.auth.username" class="form-control" placeholder="Username" required>
+							</div>
+							<div class="form-group">
+								<label class="sr-only">Password</label>
+								<input type="password" ng-model="vm.auth.password" class="form-control" placeholder="Password" required>
+							</div>
+							<div class="form-group">
+								<button ng-click="vm.login()" type="submit" class="btn btn-primary btn-block">{{'lang.home.LOGINBUTTON' | translate}}</button>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="row">
+					<div class="bottom text-center">
+						{{'lang.home.ACCOUNT' | translate}} <a href="#/registrazione"><b>{{'lang.home.REGISTER' | translate}}</b></a>
+						<p>{{'lang.login.FORGOT-PASSWORD' | translate}}
+							<a href="#/reset-password">
+								<b>{{'lang.login.CLICK-HERE' | translate}}</b>
+							</a>
+						</p>
+						<div class="row" ng-if="message">
+							<div class="alert fade in text-center alert-password" ng-class="messageClass">
+								<p>{{message}}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+		</div>
+	</div>
+</div>

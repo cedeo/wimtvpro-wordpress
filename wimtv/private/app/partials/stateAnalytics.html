@@ -1,0 +1,187 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-analytics">
+				<div class="panel-heading">
+					<div class="panel-intro flex-row-between-center flex-wrap">
+						<div class="col-md-8">
+							<h3>
+								<i class="fa fa-bar-chart-o"></i>
+								Analytics
+								<small class="small-private display-none-mobile"> | {{'lang.analytics.WELCOME' | translate}}</small>
+							</h3>
+						</div>
+					</div>
+				</div>
+
+				<div class="panel-body">
+					<div class="container-fluid bg-white padding-10">
+
+						<h4>{{'lang.analytics.ACTIVE-PACKAGE' | translate}}: <strong>{{vm.profileOverview.licenseName}}</strong>
+							<span ng-if="vm.profileOverview.daysToExpiration">({{vm.profileOverview.daysToExpiration}})</span> |
+							<small><a href="#/userprofile?activePanel=package">{{'lang.analytics.CHANGE-PACKAGE' | translate}}</a>
+							</small>
+						</h4>
+							<hr>
+						<div class="margin-bottom-10" ng-show="!errors.usageStatistics">
+
+							<h4>
+								<strong>{{'lang.privatepage.STORAGE' | translate}}</strong>
+								<span class="pull-right text-muted">
+								<strong>{{vm.profileOverview.storagePercent || 0}}%</strong>
+								{{'lang.analytics.USED' | translate}} | <strong>{{vm.globalStats.storage}}</strong></span>
+							</h4>
+
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{vm.bandPercent || 0}}" aria-valuemin="0" aria-valuemax="100" style="width: {{vm.storagePercent}}%">
+									<span class="sr-only">{{vm.profileOverview.storagePercent || 0}}% Complete (success)</span>
+								</div>
+							</div>
+							<br>
+							<h4>
+								<strong>{{'lang.privatepage.BANDWIDTH' | translate}}</strong>
+								<span class="pull-right text-muted">
+									<strong>{{vm.profileOverview.bandPercent || 0}}%</strong>
+									{{'lang.analytics.CONSUMED' | translate}} | <strong>{{vm.globalStats.traffic}}</strong></span>
+							</h4>
+
+							<div class="progress">
+								<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{vm.profileOverview.bandPercent || 0}}" aria-valuemin="0" aria-valuemax="100" style="width: {{vm.bandPercent}}%">
+									<span class="sr-only">{{vm.profileOverview.bandPercent || 0}}% {{'lang.analytics.COMPLETE' | translate}}</span>
+								</div>
+							</div>
+
+						</div>
+						<br>
+						<div class="col-xs-12 flex-row-between-center flex-wrap margin-bottom-20 analytics-details">
+							<div class="col-xs-12 col-sm-3 flex-column-center-center">
+								<h5><strong>{{'lang.analytics.FROM' | translate}}</strong></h5>
+								<input class="form-control date date-analytics"
+											 uib-datepicker-popup="d!/M!/yyyy"
+											 ng-click="vm.openedStartDate = true"
+											 is-open="vm.openedStartDate"
+											 ng-model="vm.dateStart"
+											 ng-required="true" close-text="Close">
+							</div>
+							<div class="col-xs-12 col-sm-3 flex-column-center-center">
+								<h5><strong>{{'lang.analytics.TO' | translate}}</strong></h5>
+								<input class="form-control date date-analytics"
+										 uib-datepicker-popup="d!/M!/yyyy"
+										 ng-click="vm.openedEndDate = true"
+										 is-open="vm.openedEndDate"
+										 ng-model="vm.dateEnd"
+										 ng-required="true" close-text="Close">
+							</div>
+							<div class="col-xs-12 col-sm-3 flex-column-center-center">
+								<h5><strong>{{'lang.analytics.TYPE' | translate}}</strong></h5>
+								<select class="form-control" ng-model="vm.type">
+									<option default="true" value="hour">
+										{{'lang.analytics.TYPE-DURATION.HOURS' | translate}}
+									</option>
+									<option default="true" value="day">
+										{{'lang.analytics.TYPE-DURATION.DAYS' | translate}}
+									</option>
+									<option value="week">
+										{{'lang.analytics.TYPE-DURATION.WEEKS' | translate}}
+									</option>
+									<option value="month">
+										{{'lang.analytics.TYPE-DURATION.MONTHS' | translate}}
+									</option>
+								</select>
+							</div>
+							<div class="col-xs-12 col-sm-2 flex-column-center-center margin-top-10">
+								<button class="btn btn-default" ng-click="vm.applyFilters()">{{'lang.analytics.APPLY-FILTER' | translate}}</button>
+							</div>
+						</div>
+						<br>
+						<ul class="nav nav-tabs">
+							<li ng-class="vm.activePanel=='vod'?'active':''">
+								<a href data-target="#vod" data-toggle="tab" aria-expanded="true"><strong>{{'lang.analytics.VOD' | translate}}</strong></a>
+							</li>
+							<li ng-class="vm.activePanel=='live'?'active':''">
+								<a href data-target="#live" data-toggle="tab" aria-expanded="false"><strong>{{'lang.analytics.LIVE-SCHEDULE' | translate}}</strong></a>
+							</li>
+						</ul>
+						<br>
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<!-- HOME -->
+							<div class="tab-pane fade" ng-class="vm.activePanel=='vod'?'active in':''" id="vod">
+
+								<div class="flex-column-around-center col-xs-12" style="height:200px">
+									<canvas id="line" class="chart chart-line"
+													chart-data="vm.viewData" chart-labels="vm.viewLabels" chart-series="vm.viewSeries" chart-options="vm.options">
+									</canvas>
+								</div>
+
+								<div class="flex-column-around-center col-xs-12 margin-top-10">
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th></th>
+												<th>{{'lang.analytics.TABLE-VIDEO' | translate}}</th>
+												<th>{{'lang.analytics.VIEWS' | translate}}</th>
+												<th>{{'lang.analytics.MAX-VIEWER' | translate}}</th>
+												<th>{{'lang.analytics.TRAFFIC' | translate}}</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-click="vm.toggleItem({title:'total'})" ng-class="{enabled: vm.enabledTotal}">
+												<td><input type="checkbox" class="custom-checkbox" ng-model="vm.enabledTotal"></td>
+												<td>{{'lang.analytics.TOTAL' | translate}}</td>
+												<td>{{vm.totalViews}}</td>
+												<td>__</td>
+												<td>{{vm.globalStats.traffic}}</td>
+											</tr>
+											<tr ng-click="vm.toggleItem(vod)" ng-if="vod.type" ng-repeat="vod in vm.viewsStats.vod" ng-class="{enabled: vod.enabled}">
+												<td><input type="checkbox" class="custom-checkbox" ng-model="vod.enabled"></td>
+												<td>{{vod.title}}</td>
+												<td>{{vod.views}}</td>
+												<td>{{vod.max_viewers}}</td>
+												<td>{{vod.trafficString}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+							<!-- END tab vod -->
+
+							<div class="tab-pane fade" ng-class="vm.activePanel=='live'?'active in':''" id="live">
+								<!--<div class="flex-column-around-center col-xs-12" style="height:200px">-->
+									<!--<canvas id="bars" class="chart chart-bar"-->
+													<!--chart-data="vm.liveValues" chart-labels="vm.liveSeries" chart-series="['views']" chart-options="vm.options">-->
+									<!--</canvas>-->
+								<!--</div>-->
+								<table class="table table-striped">
+									<thead>
+									<tr>
+										<th>{{'lang.analytics.TABLE-VIDEO' | translate}}</th>
+										<th>{{'lang.analytics.VIEWS' | translate}}</th>
+										<th>{{'lang.analytics.MAX-VIEWER' | translate}}</th>
+										<th>{{'lang.analytics.TRAFFIC' | translate}}</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td>{{'lang.analytics.TOTAL' | translate}}</td>
+										<td>{{vm.totalViews}}</td>
+										<td>__</td>
+										<td>{{vm.globalStats.traffic}}</td>
+									</tr>
+									<tr ng-repeat="live in vm.viewsStats.live">
+										<td>{{live.title}}</td>
+										<td>{{live.views}}</td>
+										<td>{{live.max_viewers}}</td>
+										<td>{{live.trafficString}}</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

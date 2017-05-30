@@ -1,0 +1,30 @@
+<div class="breadcrumbs">
+	<div class="flex flex-row between sec-center">
+		<div>
+			<ul class="nav navbar-nav flex flex-row flex-wrap margin-5">
+				<button type="button" class="btn btn-default margin-5" title="Help" ng-click="$root.showHelp('bridge')">
+					<i class="fa fa-info-circle" aria-hidden="true"></i> Help
+				</button>
+				<li><a href="#/wimbridge/videos">{{'lang.wimbridget.VIDEO' | translate}}</a></li>
+				<li><a href="#/wimbridge/images">{{'lang.wimbridget.IMAGES' | translate}}</a></li>
+			</ul>
+
+		</div>
+		<div class="flex flex-row end sec-center" ng-if="showAdd">
+			<ul class="nav navbar-nav margin-5">
+				<li>
+					<a class="clickable" ng-click="refresh()">
+						<span><i ng-class="{'fa fa-refresh fa-spin':refreshing, 'fa fa-refresh':!refreshing}"
+							aria-hidden="true" title="{{'lang.wimbox.SYNCH-BUTTON' | translate}}"></i></span>
+					</a>
+				</li>
+				<li>
+					<a class="clickable" ng-click="addAction()">
+						<span ng-if="addText"><i class="fa fa-plus" aria-hidden="true"></i> {{'lang.wimbridget.ADD-ASSET' | translate}}</span>
+						<span ng-if="!addText"><i class="fa fa-times" aria-hidden="true"></i> {{'lang.wimbridget.CLOSE-ADDING' | translate}}</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

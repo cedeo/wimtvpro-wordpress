@@ -1,0 +1,47 @@
+<div>
+	<div class="equal-height-column service-block service-block-default" ng-class="{'live-active' : live.onAir}">
+		<a href="#/webtv/{{live.channel.publisher.userCode}}/live/{{live.channel.channelId}}">
+			<h3 class="truncate">{{live.name}}</h3>
+		</a>
+		<div class="flex-row-around-center flex-wrap">
+			<a href="#/webtv/{{live.channel.publisher.userCode}}/live/{{live.channel.channelId}}">
+				<div class="image-profile image-medium"
+						 style="background-image: url({{getThumbnail()}});"></div>
+			</a>
+		<div class="flex-column-center-center">
+			<p ng-if="!live.onAir" class="margin-top-10">
+				<strong>
+					{{live.timer}}
+					<br>
+					<span ng-if="!live.onAir">{{live.eventDate.date}} | {{live.eventDate.time}}</span>
+				</strong>
+			</p>
+			<span ng-if="live.onAir" class="margin-top-10">
+				<!--<strong>{{'lang.home.LIVE-FROM' | translate}} {{live.timer}}</strong>-->
+				<a class="no-decoration" href="#/webtv/{{live.channel.publisher.userCode}}/live/{{live.channel.channelId}}">
+					<span ng-if="live.onAir" class="label label-red">
+						<strong>{{'lang.home.ON-AIR' | translate}}
+							<i class="fa fa-caret-square-o-right"></i>
+						</strong>
+					</span>
+				</a>
+			</span>
+			<p>
+				<span ng-if="live.paymentMode === 'PAY_PER_VIEW'">
+					<strong>{{'lang.live.PRICE' | translate}}  {{live.pricePerView}} &euro;</strong>
+				</span>
+			</p>
+		</div>
+		</div>
+		<div class="row container-fluid">
+			<div class="col-xs-12">
+
+			</div>
+			<div class="col-md-12 col-sm-12">
+				<a href="#/webtv/{{live.channel.publisher.userCode}}">
+					{{live.channel.publisher.pageTitle ? live.channel.publisher.pageTitle : live.channel.publisher.userCode}}
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

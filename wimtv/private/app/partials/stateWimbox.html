@@ -1,0 +1,412 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-blue">
+				<div class="panel-heading">
+					<div class="panel-intro flex-row-between-center flex-wrap">
+						<div class="col-md-8">
+							<h3>
+								<i class="fa fa-folder-open-o"></i>
+								WimBox
+								<small class="small-private display-none-mobile"> | {{'lang.wimbox.WELCOME' | translate}}</small>
+							</h3>
+						</div>
+						<div class="col-md-4">
+							<form class="search-form">
+								<input name="inputSearch"
+									   id="inputSearch"
+									   type="text"
+									   ng-model="vm.querySearchString"
+									   ng-model-options="{debounce: 500}"
+									   ng-change="vm.getVideos()"
+									   ng-maxlength="50"
+									   class="form-control input-search"
+									   placeholder="{{'lang.wimbox.QUERY-SEARCH' | translate}}">
+								<span class="glyphicon glyphicon-remove search-icon" ng-if="vm.querySearchString.length > 0" ng-click="vm.querySearchString = ''; vm.getVideos();"></span>
+								<span class="glyphicon glyphicon-search search-icon" ng-if="!vm.querySearchString"></span>
+							</form>
+						</div>
+					<div class="col-md-12 margin-5">
+							<button type="button" class="btn btn-default" title="Help" ng-click="$root.showHelp('box')">
+								<i class="fa fa-info-circle" aria-hidden="true"></i> Help
+							</button>
+							<button ng-click="vm.getVideos(vm.pageIndex)" class="btn btn-primary" title="{{'lang.wimbox.SYNCH-TITLE' | translate}}">
+								<i ng-class="{'fa fa-refresh fa-spin':vm.refreshing, 'fa fa-refresh':!vm.refreshing}"></i>
+							</button>
+							<button class="btn btn-info" type="button" ng-click="vm.uploadCollapse = !vm.uploadCollapse">
+								<span ng-if="vm.uploadCollapse"><i class="fa fa-close"></i> {{'lang.wimchannel.CLOSE' | translate}}</span>
+								<span ng-if="!vm.uploadCollapse" title="{{'lang.wimbox.UPLOAD-TITLE' | translate}}"><i class="fa fa-cloud-upload"></i> {{'lang.wimbox.UPLOAD-BUTTON' | translate}}</span>
+							</button>
+						</div>
+					</div>
+
+					<div uib-collapse="!vm.uploadCollapse" class="new-collapse">
+						<div ng-if="!vm.limitReached" class="panel-body upload-drop-zone">
+							<h3 class="text-center margin-top-15" ng-if="vm.uploading">{{'lang.wimbox.UPLOADING-DONOT-CLOSE' | translate}}</h3>
+							<h4 class="text-center margin-top-15" ng-if="!vm.uploading">{{'lang.wimbox.SELECT-FILES' | translate}}</h4>
+							<span class="browse-button text-center margin-top-30" ng-if="!vm.uploading && !vm.videosToUpload">
+								<div class="btn btn-primary image-preview-input" required ng-model="vm.videosToUpload" ng-click="vm.uploadDisabled = false"
+									 ngf-select accept="video/*, .mov, .m4v"
+									 ngf-max-size="4GB"
+									 ngf-model-invalid="errorFile"
+									 ngf-pattern="'video/*'"
+									 ngf-multiple="true">
+									<span class="glyphicon glyphicon-folder-open"></span>
+									<span class="image-preview-input-title">
+									{{'lang.wimbox.SELECT-FILES-BUTTON' | translate}}</span>
+									<!--<input class="form-control" type="file" ng-click="vm.uploadDisabled = false" ga-upload-videos="vm.videosToUpload" multiple>-->
+								</div>
+							</span>
+							<p class="text-center" ng-if="!vm.uploading">
+								<small>{{'lang.wimbox.SELECT-FILES-INFO' | translate}}</small>
+							</p>
+							<!--<h4 class=" text-center">Oppure trascinali qui</h4>-->
+							<form name="uploadVideoForm" ng-submit="vm.upload(vm.videosToUpload)" class="form-horizontal margin-top-15">
+								<div ng-repeat="video in vm.videosToUpload" class="margin-top-10" ng-class="{'wimbox-contents padding-10': !vm.uploading}">
+									<div class="list-group margin-top-10" ng-if="!video.completedUpload">
+										<div class="list-group-item list-group-item-primary">
+											<!-- Progress Bar -->
+											<div class="progress-info-container flex-row-between-center" ng-if="vm.uploading">
+												<label class="uploaded-video" ng-if="video.total > 3000000 && video.loaded < video.total">
+													{{video.loaded / 1048576 | number: 3}}MB
+												</label>
+												<strong>{{video.progress || 0}}%</strong>
+												<label class="video-size" ng-if="video.total > 3000000 && video.loaded < video.total">
+													{{video.total / 1048576 | number: 3}}MB
+												</label>
+												<div ng-if="video.total && (video.loaded === video.total)" class="uploading-video-info">
+													<label class="video-size">{{'lang.wimbox.FINALIZING-UPLOAD' | translate}}</label>
+												</div>
+											</div>
+											<div class="progress progress-container" ng-if="vm.uploading">
+												<div ng-class="video.progress > 99 ? 'indeterminate' : 'determinate'" aria-valuenow="{{video.progress || 0}}" aria-valuemin="0" aria-valuemax="100" ng-style="{'width' : video.progress+'%'}"></div>
+											</div>
+											<span ng-show="video.msg" class="badge badge-success pull-right">{{video.msg}}</span>
+											<span ng-show="video.error" class="badge badge-danger badge-error pull-right">{{video.error.message}}</span>
+											{{video.name}} | {{video.size / 1048576 | number: 2}} MB
+										</div>
+									</div>
+									<div ng-if="vm.videosToUpload.length>0 && !vm.uploading">
+										<div class="form-group">
+											<div class="col-sm-3 col-md-2">
+												<label for="inputTitle" class="control-label required">{{'lang.wimbox.VIDEO-TITLE' | translate}}</label>
+											</div>
+											<div class="col-sm-8 col-md-10">
+												<input name="inputTitle"
+													   id="inputTitle"
+													   type="text"
+													   ng-model="video.metadata.title"
+													   ng-maxlength="50"
+													   ng-init="video.metadata.title = video.name"
+													   class="form-control"
+															 ng-required="true"
+													   placeholder="{{'lang.wimbox.VIDEO-TITLE' | translate}}">
+												<span class="alert-title" ng-show="!uploadVideoForm.inputTitle.$valid">{{'lang.wimbox.INPUT-TEXT-MAX' | translate}}</span>
+												<br>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="inputDescrizione" class="col-sm-3 col-md-2 control-label">{{'lang.wimbox.VIDEO-DESCRIPTION' | translate}}</label>
+											<div class="col-sm-8 col-md-10">
+												<input name="inputDescrizione"
+													   id="inputDescrizione"
+													   type="text"
+													   ng-model="video.metadata.description"
+													   ng-maxlength="400"
+													   class="form-control"
+													   placeholder="{{'lang.wimbox.VIDEO-DESCRIPTION' | translate}}">
+												<span class="alert-title" ng-show="!uploadVideoForm.inputDescrizione.$valid">{{'lang.wimbox.INPUT-TEXT-MAX' | translate}}</span>
+											</div>
+										</div>
+									</div>
+									<!-- Drop and drop Zone -->
+								</div>
+								<span class="text-center">
+
+									<div class="checkbox" ng-if="vm.videosToUpload.length > 0 && !vm.uploading">
+										<label>
+											<input type="checkbox" class="custom-checkbox" ng-model="haveRightToUpload" ng-required="true">
+											<strong>{{'lang.wimbox.VIDEO-RIGHTS' | translate}}</strong>
+										</label>
+									</div>
+									<div class="form-signin" ng-if="!vm.uploading">
+										<div class="col-xs-6 col-sm-4">
+											<button class="btn btn-default margin-top-10"
+													type="reset"
+													value="cancel"
+													ng-click="vm.clearUploadData()"
+													ng-if="vm.videosToUpload.length>0">
+												<div class="row">
+													<span class="col-lg-4 col-md-4 col-sm-4 col-xs-4 glyphicon glyphicon-repeat"></span>
+													<span class="col-lg-4 col-md-4 col-sm-4 col-xs-4">{{'lang.wimbox.MODAL-DELETE-CANCEL' | translate}}</span>
+												</div>
+											</button>
+										</div>
+										<div class="col-sm-4 hidden-xs">
+
+										</div>
+										<div class="col-xs-6 col-sm-4">
+											<button class="btn btn-primary margin-top-10"
+													type="submit"
+													value="upload"
+													ng-disabled="!uploadVideoForm.inputTitle.$valid || !uploadVideoForm.inputDescrizione.$valid "
+													ng-if="vm.videosToUpload.length>0">
+												<div class="row">
+													<span class="col-lg-4 col-md-4 col-sm-4 col-xs-4 glyphicon glyphicon-open"></span>
+													<span class="col-lg-4 col-md-4 col-sm-4 col-xs-4 submit-text">{{'lang.wimbox.VIDEO-UPLOAD' | translate}}</span>
+												</div>
+											</button>
+										</div>
+									</div>
+            				    </span>
+							</form>
+						</div>
+						<div ng-if="vm.limitReached" class="panel-body upload-drop-zone">
+							<h3 class="text-center">{{'lang.wimbox.UPLOAD-LIMIT-REACHED' | translate}}</h3>
+						</div>
+					</div>
+					<!-- /fine collapse upload -->
+				</div>
+				<!-- /fine panel-heading -->
+
+				<div class="panel-body">
+					<div class="container-fluid text-center">
+						<div ng-if="!vm.videosLoaded">
+							<div class="spinner"></div>
+						</div>
+						<div ng-if="vm.videosError">
+							<h4>{{'lang.wimbox.GETPAGE.ERROR' | translate}}</h4>
+						</div>
+						<div ng-if="vm.videosLoaded && !vm.videosError">
+							<h4 ng-if="!vm.totalItems || vm.totalItems === 0">{{'lang.wimbox.NO-VIDEO-AVAILABLE' | translate}}</h4>
+							<div ng-if="vm.totalItems > 0" class="row wimbox-contents margin-top-10 thumbnail-item" ng-class="[{'thumbnail-item-archive':(video.vodCount <= 0), 'thumbnail-item-vod':(video.vodCount > 0)}, video.status.toLowerCase()]" ng-repeat="video in vm.videos">
+								<div class="col-md-2 col-sm-6 col-xs-12">
+									<div class="row">
+										<div ng-click="vm.preview(video);">
+											<div class="image-rectangle-box image-box cover" ng-if="video.status.toLowerCase()!=='pending'" style="background-image: url('{{getThumbnailUrl(video.thumbnailId)}}');">
+											</div>
+											<div class="xs-spinner thumbnail-pending" ng-if="video.status.toLowerCase()==='pending'"></div>
+											<div ng-if="video.status.toLowerCase()==='pending'">{{'lang.wimbox.TRANSCODING' | translate}}</div>
+											<div class="thumbnail-failed" ng-if="video.status.toLowerCase()==='failed'"></div>
+											<div ng-if="video.status.toLowerCase()==='failed'">{{'lang.wimbox.TRANSCODING-ERROR' | translate}}</div>
+											<!--<img class="img-thumbnail" ng-src="{{wimtvUrl}}/asset/thumbnail/{{video.thumbnailId}}" title="{{video.title}}" alt="thumbnail video">-->
+											<span class="duration" ng-if="video.status.toLowerCase()!=='pending'">{{video.duration}}</span>
+										</div>
+									</div>
+								</div>
+
+								<!-- title and description -->
+								<div class="col-md-4 col-sm-6 col-xs-12 padding-top-10">
+									<h5><strong>{{video.title}}</strong></h5>
+									<p>{{video.description}}</p>
+									<div class="chips-container"><span class="label label-default" ng-repeat="tag in video.tags">{{tag}}</span></div>
+								</div>
+
+								<div class="col-md-3 col-sm-12 col-xs-12 padding-top-10 margin-bottom-10 flex-column-center-center">
+									<div ng-show="(video.vodCount <= 0)" style="z-index: 19">
+										<button class="btn btn-info" type="button" ng-click="video.publish = !video.publish">
+											<span ng-if="video.publish"><i class="fa fa-close"></i> {{'lang.wimchannel.CLOSE' | translate}}</span>
+											<span ng-if="!video.publish" title="{{'lang.wimbox.PUBLISH-BUTTON' | translate}}"><i class="fa fa-play-circle-o"></i> {{'lang.wimbox.PUBLISH-BUTTON' | translate}}</span>
+										</button>
+									</div>
+									<div class="margin-bottom-5">
+										<div ng-show="(video.vodCount > 0)">
+											<a href="#/wimvod">
+												<button type="button" class="btn btn-success" title="{{'lang.wimbox.ALREADY-PUBLISHED' | translate}}">
+													<i class="fa fa-check" aria-hidden="true"></i>
+													{{'lang.wimbox.ALREADY-PUBLISHED' | translate}}
+												</button>
+											</a>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<!--<div ng-if="video.source==='UPLOAD'">Caricato da te</div>-->
+											<div ng-if="video.source==='MARKET_PLACE'">
+												<span>
+													<i class="fa fa-shopping-cart"></i>
+													{{'lang.wimbox.ACQUIRED' | translate}} {{video.marketplaceLicense.issuerCode}}
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-3 col-sm-12 col-xs-12">
+									<div class="row">
+										<!-- Edit Video Button -->
+										<div class="col-md-4 col-sm-4 col-xs-4 padding-top-10 margin-bottom-10">
+											<button type="button" class="btn btn-success" title="{{'lang.wimbox.EDIT-INFO' | translate}}" ng-click="vm.openModal(video)">
+												<i class="fa fa-edit"></i>
+											</button>
+										</div>
+
+										<!-- download button -->
+										<div class="col-md-4 col-sm-4 col-xs-4 padding-top-10 margin-bottom-10">
+											<button type="button" ng-click="vm.download(video)" class="btn btn-warning" title="{{'lang.wimbox.DOWNLOAD-INFO' | translate}}">
+												<i class="fa fa-download"></i>
+											</button>
+										</div>
+
+										<!-- delete button -->
+										<div class="col-md-4 col-sm-4 col-xs-4 padding-top-10 margin-bottom-10">
+											<button type="button" class="btn btn-danger" ng-click="vm.openDeleteModal(video)" title="{{'lang.wimbox.DELETE-INFO' | translate}}">
+												<i class="fa fa-trash-o"></i>
+											</button>
+										</div>
+									</div>
+									<div class="row">
+										{{'lang.wimbox.UPLOADED-ON' | translate}} {{video.valueDate}}
+									</div>
+								</div>
+
+								<!-- -->
+								<div uib-collapse="!video.publish" class="col-md-12 col-sm-12">
+									<div class="col-md-offset-3 col-md-6">
+										<form class="form-horizontal" name="publishForm" ng-submit="vm.publishVideo(video)">
+											<h3>{{'lang.wimbox.PUBLISH-SET' | translate}}</h3>
+											<select class="form-control form-control-license" ng-model="video.publishData.licenseType" ng-init="video.publishData.licenseType = 'FREE'">
+												<option ng-repeat="(key, value) in vm.licenseTypes" value="{{key}}">{{value}}</option>
+											</select>
+											<select ng-if="video.publishData.licenseType === 'CREATIVE_COMMONS'" class="form-control form-control-license margin-top-10" ng-model="video.publishData.ccType" ng-init="video.publishData.ccType = 'BY'">
+												<option ng-repeat="(key, value) in vm.ccTypes" value="{{key}}">{{key}}: {{value}}</option>
+											</select>
+											<input ng-if="video.publishData.licenseType === 'PAY_PER_VIEW'" class="form-control form-control-license margin-top-10" name="pricePerView"
+												   type="text" ng-model="video.publishData.pricePerView" required="true" placeholder="{{'lang.wimbox.PAY-PER-VIEW-INFO' | translate}}">
+											<div class="margin-top-10">
+												<select ng-model="video.publishData.public" class="form-control form-control-license" ng-init="video.publishData.public = 'true'">
+													<option value="true">{{'lang.wimbox.PUBLIC' | translate}}</option>
+													<option value="false">{{'lang.wimbox.PRIVATE' | translate}}</option>
+												</select>
+											</div>
+											<button type="submit" class="btn btn-success margin-top-10 margin-bottom-10" title="{{'lang.wimbox.PUBLISH-BUTTON-INFO' | translate}}"
+													ng-disabled="vm.isPublishable(video, publishForm)">
+												{{'lang.wimbox.PUBLISH-INPUT' | translate}}
+											</button>
+											<div ng-if="vm.missingPaypal && video.publishData.licenseType !== 'FREE' && video.publishData.licenseType !== 'CREATIVE_COMMONS'">{{'lang.wimbox.MISSING-PAYPAL-EMAIL' | translate}}</div>
+											<div ng-if="vm.missingBillingInfo && video.publishData.licenseType !== 'FREE' && video.publishData.licenseType !== 'CREATIVE_COMMONS'">{{'lang.wimbox.MISSING-BILLING-INFO' | translate}}</div>
+										</form>
+									</div>
+								</div>
+							</div>
+
+							<iframe src="#" id="iframe-downloader" frameborder="0" width="0" height="0" style="display:none !important"></iframe>
+							<!-- Pagination buttons -->
+							<ul ng-if="vm.totalItems > 0" ng-model="vm.pageIndex" ng-change="vm.getVideos($page)" uib-pagination boundary-links="true" class="pagination-sm" total-items="vm.totalItems" class="pagination-sm" previous-text="&lsaquo;"
+								next-text="&rsaquo;"
+								first-text="&laquo;"
+								last-text="&raquo;"></ul>
+						</div>
+
+					</div>
+				</div>
+				<!-- /.panel-body -->
+			</div>
+
+		</div>
+
+	</div>
+</div>
+<!-- /#page-wrapper -->
+
+
+<!-- REMOVE MODAL -->
+<script type="text/ng-template" id="removeModal.html">
+	<div class='modal-body'>
+		<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close()'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+		<h4>
+			<strong>{{'lang.wimbox.MODAL-DELETE-CONFIRM' | translate}}</strong>
+		</h4>
+		<p class="margin-top-15">&nbsp;</p>
+	</div>
+	<div class='modal-footer'>
+		<div class="row">
+			<div class="col-md-12">
+				<button ng-click='vm.close();' class="btn btn-default buttonannulla">{{'lang.wimbox.MODAL-DELETE-CANCEL' | translate}}</button>
+				<button ng-click="vm.deleteVideo(vm.video)" class="btn btn-primary buttonrimuovi">{{'lang.wimbox.MODAL-DELETE-YES' | translate}}</button>
+			</div>
+		</div>
+	</div>
+</script>
+
+<!-- PREVIEW MODAL -->
+<script type="text/ng-template" id="videoPreview.html">
+	<div class='modal-header' ng-init="vm.playBoxItem(vm.video.boxId)">
+		<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close()'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+		<h4 class='modal-title'>{{vm.video.title}} preview</h4>
+	</div>
+	<div class='modal-body video-container'>
+		<div class="col-md-12 padding-top-10 padding-bottom-10">
+			<div class="video-area" style="maxwidth: 900px; background: #CCC">
+				<div id="theplayer" class="fp-edgy"></div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<!-- EDIT MODAL -->
+<script type="text/ng-template" id="editModal.html">
+	<div class="modal-content" ng-init='originalTitle = vm.video.title;originalDescription = vm.video.description;originalTag = vm.video.tags'>
+		<div class='modal-header'>
+			<button type='button' class='close' data-dismiss='modal' aria-label='Close' ng-click='vm.close()'>
+				<span aria-hidden='true'>&times;</span>
+			</button>
+			<h4 class='modal-title'>{{'lang.wimbox.TABLE-EDIT-TITLE' | translate}}</h4>
+		</div>
+		<div class='modal-body'>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="image-rectangle-box image-box cover" style="background-image: url('{{getThumbnailUrl(vm.video.thumbnailId)}}');"></div>
+				</div>
+				<div class="col-md-6">
+					<p>{{'lang.wimbox.UPLOAD-IMAGE' | translate}}</p>
+					<button class="btn btn-default margin-top-10" type="file" ngf-select="vm.changeImage($file, $invalidFiles)" accept="image/*">
+						{{'lang.userprofile.UPLOAD-IMAGE' | translate}}
+					</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<form class="form">
+						<div class="form-group">
+							<label>{{'lang.wimbox.TABLE-VIDEO-TITLE' | translate}}</label>
+							<input class="form-control"
+								   type="text"
+								   ng-model="originalTitle">
+						</div>
+						<div class="form-group">
+							<label>{{'lang.wimbox.TABLE-DESCRIPTION-TITLE' | translate}}</label>
+							<input class="form-control"
+								   type="text"
+								   ng-model="originalDescription">
+						</div>
+						<div class="chips-container">
+							<div class="chip" ng-repeat="tag in vm.video.tags">
+								{{tag}}<i class="fa fa-close chip-close" ng-click="vm.removeTag(vm.video, tag)"></i>
+							</div>
+						</div>
+							<label for="inputEditTags" class="control-label">{{'lang.wimbox.TAGS' | translate}}</label>
+							<input name="inputTags"
+								   id="inputEditTags"
+								   type="text"
+								   ng-model="vm.video.tagText"
+								   maxlength="80"
+								   class="form-control"
+								   ng-keydown="vm.checkAndUpdateTags($event, vm.video)"
+								   placeholder="{{'lang.wimbox.TAGS' | translate}}">
+						<button type="button"
+								class="btn btn-success margin-top-10 margin-bottom-10"
+								ng-click="vm.video.title = originalTitle; vm.video.description = originalDescription; vm.updateVideo()"
+								title="{{'lang.wimbox.SAVE-BUTTON' | translate}}">
+							{{'lang.wimbox.SAVE-BUTTON' | translate}}
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>  <!-- Modal Body -->
+	</div><!-- Modal Content -->
+</script>
